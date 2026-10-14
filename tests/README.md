@@ -24,6 +24,7 @@ python tests/test_step2.py
 python tests/test_step3.py
 python tests/test_step4.py
 python tests/test_step5.py
+python tests/test_step6.py
 ```
 
 可以用環境變數 `BASE_URL` 指定網址。測試截圖會存在 `tests/screenshots/`，這個資料夾不會上傳到 git。
@@ -33,9 +34,11 @@ python tests/test_step5.py
 | `test_step1.py` | 新增、刪除、編輯、搜尋、翻卡、中英切換、標記不熟、重新整理後資料保留、深色模式、手機版面 |
 | `test_step2.py` | 本機字典查詢（繁體）、Free Dictionary 依詞性挑解釋、發音與口音設定、手動修改不被覆蓋、API 掛掉後自動重試 |
 | `test_step3.py` | 拆字規則（逗號、換行、空白、中文、編號、片語）、預覽、去重、100 個字的效能、進度條 |
-| `test_step4.py` | 金鑰檢查、模型清單、每批 20 個字、429 重試、截斷時拆半重送、額度用完、停止、失敗重試、手動修改不被覆蓋、金鑰不放在網址裡 |
+| `test_step4.py` | 金鑰檢查、模型清單、每批 20 個字、429 重試、截斷時拆半重送、額度用完、停止、失敗重試、手動修改不被覆蓋、金鑰不放在網址裡、字典與 AI 寫入的競態 |
 | `test_step5.py` | 複習排序、按鈕／鍵盤／滑鼠／觸控評分、拖不夠會彈回、上下滑不評分、復原、自動取消不熟、每日新字上限、滑完立刻點擊 |
+| `test_step6.py` | 四種測驗模式、答錯標記不熟並加入錯題本、Part 5 出題（錯誤選項來自字卡、壞題目被丟掉、題目快取、出新題目、金鑰錯誤）、錯題本重做與清除、手機版面 |
 | `unit/srs.test.mjs` | 間隔重複演算法：間隔計算、答錯重設、ease 下限、早上 4 點換日、複習清單排序 |
 | `unit/parse.test.mjs` | 批次輸入解析：分隔符號、中文與編號、片語、去重 |
+| `unit/quiz.test.mjs` | 出題邏輯：錯誤選項（不含答案、不重複、同詞性優先）、遮住答案字、不熟優先、Part 5 題目驗證 |
 
 `capture_screenshots.py` 用來產生 `docs/images/` 裡的截圖。
