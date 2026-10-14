@@ -122,6 +122,7 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 
 .nav { display: flex; gap: 2px; }
 .nav a {
+  white-space: nowrap;      /* 導覽文字不換行 */
   padding: 6px 12px;
   border-radius: 999px;
   text-decoration: none;
@@ -786,4 +787,142 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
   .nav a { padding: 6px 6px; font-size: 13px; }
   .nav-badge { margin-left: 2px; }
   .question { padding: 20px 16px; }
+}
+
+/* ===== 圖表色彩（已用 dataviz 的 validate_palette.js 驗證過，背景是本站的卡片色） =====
+   系列 1／2：會＝藍、不熟＝橘（兩張圖意思一致）
+   熟練度：同一個藍色由淺到深（有順序的分組），深色模式另外挑過、對深色背景驗證 */
+:root {
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --lvl-new: #86b6ef;
+  --lvl-learning: #3987e5;
+  --lvl-familiar: #1c5cab;
+  --lvl-mastered: #0d366b;
+  --chart-grid: #ebe4d4;
+  --chart-axis: #cfc6b3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --lvl-new: #1c5cab;
+    --lvl-learning: #3987e5;
+    --lvl-familiar: #86b6ef;
+    --lvl-mastered: #cde2fb;
+    --chart-grid: #2f333b;
+    --chart-axis: #454a54;
+  }
+}
+:root[data-theme="dark"] {
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --lvl-new: #1c5cab;
+  --lvl-learning: #3987e5;
+  --lvl-familiar: #86b6ef;
+  --lvl-mastered: #cde2fb;
+  --chart-grid: #2f333b;
+  --chart-axis: #454a54;
+}
+
+/* ===== 設定齒輪 ===== */
+.settings-link { text-decoration: none; }
+.settings-link.active { background: var(--surface); color: var(--ink); border-color: var(--line); }
+
+/* ===== 統計頁 ===== */
+.filter-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.kpi {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-width: 0;
+}
+.kpi-hero { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; grid-template-areas: "label label" "value sub"; align-items: end; column-gap: 16px; }
+.kpi-hero .kpi-label { grid-area: label; }
+.kpi-hero .kpi-value { grid-area: value; font-size: 56px; line-height: 1; }
+.kpi-hero .kpi-sub { grid-area: sub; margin-bottom: 8px; }
+.kpi-label { margin: 0 0 4px; font-size: 13px; color: var(--ink-soft); }
+/* 大數字用和介面一樣的無襯線字體、比例數字（不用 tabular-nums） */
+.kpi-value { margin: 0; font-family: var(--font-ui); font-size: 30px; font-weight: 700; line-height: 1.15; color: var(--ink); }
+.kpi-value small { font-size: 0.45em; font-weight: 500; margin-left: 3px; color: var(--ink-soft); }
+.kpi-sub { margin: 4px 0 0; font-size: 12px; color: var(--ink-faint); }
+
+.chart-card { padding-bottom: 12px; }
+.chart-card .panel-title { margin-bottom: 2px; }
+.chart-sub { margin: 0 0 12px; font-size: 13px; color: var(--ink-soft); }
+
+/* 熟練度：一條 100% 堆疊橫條，各段之間 2px 空隙 */
+.mastery-bar { display: flex; gap: 2px; height: 18px; margin-bottom: 14px; }
+.mastery-seg { flex: 0 1 0; min-width: 4px; }
+.mastery-seg:first-child { border-radius: 4px 0 0 4px; }
+.mastery-seg:last-child { border-radius: 0 4px 4px 0; }
+.mastery-seg:only-child { border-radius: 4px; }
+.lvl-new { background: var(--lvl-new); }
+.lvl-learning { background: var(--lvl-learning); }
+.lvl-familiar { background: var(--lvl-familiar); }
+.lvl-mastered { background: var(--lvl-mastered); }
+.mastery-legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; }
+.mastery-legend li { display: grid; grid-template-columns: auto auto 1fr auto; grid-template-areas: "sw name count pct" ". desc desc desc"; align-items: center; column-gap: 8px; }
+.mastery-legend .legend-swatch { grid-area: sw; }
+.ml-name { grid-area: name; font-size: 14px; }
+.ml-count { grid-area: count; font-size: 16px; justify-self: end; font-variant-numeric: tabular-nums; }
+.ml-pct { grid-area: pct; font-size: 13px; color: var(--ink-faint); min-width: 3em; text-align: right; font-variant-numeric: tabular-nums; }
+.ml-desc { grid-area: desc; font-size: 12px; color: var(--ink-faint); }
+
+/* 直條圖 */
+.chart-legend { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 6px; padding: 0; font-size: 13px; color: var(--ink-soft); }
+.chart-legend li { display: flex; align-items: center; gap: 6px; }
+.legend-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.chart-plot { position: relative; }
+.chart-plot svg { display: block; overflow: visible; }
+.chart-grid { stroke: var(--chart-grid); stroke-width: 1; }
+.chart-axis { stroke: var(--chart-axis); stroke-width: 1; }
+.chart-tick { fill: var(--ink-faint); font-size: 11px; font-family: var(--font-ui); font-variant-numeric: tabular-nums; }
+.chart-value { fill: var(--ink-soft); font-size: 12px; font-weight: 600; font-family: var(--font-ui); }
+.chart-hit { fill: transparent; cursor: default; }
+.chart-hit:focus { outline: none; }
+.chart-hit:focus-visible { fill: color-mix(in srgb, var(--focus) 10%, transparent); }
+.chart-col.is-hover path { filter: brightness(1.12); }
+.chart-tip {
+  position: absolute;
+  z-index: 3;
+  min-width: 110px;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  font-size: 13px;
+}
+.chart-tip[hidden] { display: none; }
+.tip-title { margin: 0 0 4px; color: var(--ink-faint); font-size: 12px; font-variant-numeric: tabular-nums; }
+.tip-row { display: flex; align-items: center; gap: 6px; margin: 0; }
+.tip-key { display: inline-block; width: 12px; height: 2px; border-radius: 1px; }
+.tip-row strong { color: var(--ink); }
+.tip-name { color: var(--ink-soft); }
+.chart-table { margin-top: 6px; font-size: 13px; }
+.chart-table summary { cursor: pointer; color: var(--ink-soft); width: max-content; }
+.chart-table table { width: 100%; margin-top: 8px; border-collapse: collapse; }
+.chart-table th, .chart-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+.chart-table th { color: var(--ink-soft); font-weight: 500; }
+.chart-table td.num, .chart-table th:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 560px) {
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .kpi-value { font-size: 26px; }
+  .mastery-legend { grid-template-columns: 1fr; }
+  .topbar { gap: 6px; }
+  .theme-toggle, .settings-link { width: 34px; height: 34px; }
+}
+
+/* 很窄的手機：藏起品牌圖示，讓 5 個導覽項目、設定、深色模式排得下 */
+@media (max-width: 420px) {
+  .brand { display: none; }
+  .nav { flex: 1; justify-content: space-between; }
+  .nav a { padding: 6px 5px; font-size: 13px; }
+  .topbar { padding-left: 10px; padding-right: 10px; gap: 4px; }
 }

@@ -3,6 +3,7 @@ import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js';
 import { renderCards } from './views/cards.js';
 import { renderQuiz } from './views/quiz.js';
+import { renderStats } from './views/stats.js';
 import { pruneMistakes } from './mistakes.js';
 import { renderWords } from './views/words.js';
 import { renderSettings } from './views/settings.js';
@@ -14,6 +15,7 @@ const routes = {
   review: renderReview,
   cards: renderCards,
   quiz: renderQuiz,
+  stats: renderStats,
   words: renderWords,
   settings: renderSettings,
 };
@@ -30,7 +32,7 @@ function render() {
   const name = currentRoute();
   if (cleanup) cleanup();
   cleanup = routes[name](view) || null;
-  document.querySelectorAll('.nav a').forEach((a) => {
+  document.querySelectorAll('a[data-route]').forEach((a) => {
     a.classList.toggle('active', a.dataset.route === name);
     if (a.dataset.route === name) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
