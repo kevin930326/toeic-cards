@@ -30,6 +30,13 @@ python tests/test_step8.py
 python tests/test_pronunciation.py
 python tests/test_daily_goal.py
 python tests/test_step9.py   # 可加 LAN_URL=http://你的區網IP:8000/ 測試非 HTTPS 的情況
+python tests/test_ai_speed.py
+```
+
+改完 JS 之後，可以先用 Node 檢查所有檔案的語法（很快，能抓到打錯字造成整個網站打不開的問題）：
+
+```bash
+for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤：$f"; done
 ```
 
 可以用環境變數 `BASE_URL` 指定網址。測試截圖會存在 `tests/screenshots/`，這個資料夾不會上傳到 git。
@@ -47,6 +54,7 @@ python tests/test_step9.py   # 可加 LAN_URL=http://你的區網IP:8000/ 測試
 | `test_pronunciation.py` | 四種口音與多益混合（假語音清單，模擬沒有加拿大口音）、例句與搭配詞發音、聽力題口音、Part 5 朗讀整句 |
 | `test_daily_goal.py` | 每日目標設定、進度徽章、達標慶祝（只一次）、測驗也算進度、改目標不影響過去、完成畫面提示 |
 | `test_step9.py` | manifest 與圖示、Service Worker 快取、離線字典、真正離線時重新整理／複習／測驗／查字典、AI 生成暫停與恢復、安裝按鈕、App 模式、iPhone 教學、非 HTTPS 提示 |
+| `test_ai_speed.py` | 思考設定（2.5 用 budget 0、3 以後 minimal → low → 不帶）、不支援時自動換並記住、第一批 5 個字、失敗時用字典補、測試 AI 按鈕、請求耗時顯示 |
 | `unit/srs.test.mjs` | 間隔重複演算法：間隔計算、答錯重設、ease 下限、早上 4 點換日、複習清單排序 |
 | `unit/parse.test.mjs` | 批次輸入解析：分隔符號、中文與編號、片語、去重 |
 | `unit/stats.test.mjs` | 統計計算：連續天數（跨日、跨月、早上 4 點換日）、加總與正確率、熟練度邊界、未來到期、座標刻度 |
