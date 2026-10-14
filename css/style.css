@@ -1010,3 +1010,26 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .import-title { font-weight: 700; }
 .import-merge { color: var(--ink-soft); }
 #importArea .ai-error { margin-top: 12px; }
+
+/* ===== PWA ===== */
+/* iPhone 全螢幕 App：頂端留出瀏海／狀態列的空間 */
+.topbar { padding-top: max(10px, env(safe-area-inset-top)); }
+.offline-bar {
+  position: sticky;
+  top: 58px;
+  z-index: 9;
+  margin: 0;
+  padding: 8px 16px;
+  background: var(--warn-soft);
+  border-bottom: 1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+  color: var(--ink);
+  font-size: 13px;
+  text-align: center;
+}
+.offline-bar[hidden] { display: none; }
+.pwa-ok { margin: 0 0 8px; color: #3f8a4f; font-weight: 600; }
+.pwa-note { margin: 10px 0; padding: 10px 12px; border-radius: 10px; background: var(--warn-soft); font-size: 13px; color: var(--ink); }
+.sub-title { margin: 16px 0 4px; font-size: 14px; }
+.dict-status { margin: 0 0 8px; font-size: 14px; color: var(--ink-soft); }
+.dict-status.ok { color: #3f8a4f; }
+.inline-icon { vertical-align: -3px; }

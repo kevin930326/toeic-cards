@@ -9,11 +9,13 @@ import { onLogChange, todayProgress, getLog, currentGoal } from './log.js';
 import { streak } from './stats.js';
 import { dayKey } from './srs.js';
 import { toast } from './ui.js';
+import { initPWA } from './pwa.js';
+import { hasApiKey } from './llm.js';
 import { renderWords } from './views/words.js';
 import { renderSettings } from './views/settings.js';
 import { lookupMissing } from './dictionary.js';
 import { onRateWait } from './llm.js';
-import { setWaiting } from './generate.js';
+import { setWaiting, generateMissing } from './generate.js';
 
 const routes = {
   review: renderReview,
@@ -95,3 +97,12 @@ render();
 updateBadge();
 lookupMissing();
 onRateWait(setWaiting);
+
+// PWA：離線使用、安裝到主畫面。重新連上網路時，補查字典、繼續 AI 生成
+initPWA({
+  onBackOnline: () => {
+    toast('已重新連上網路');
+    lookupMissing();
+    if (hasApiKey() && getSettings().autoGenerate) generateMissing();
+  },
+});

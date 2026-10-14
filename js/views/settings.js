@@ -1,9 +1,10 @@
-// 設定頁：Gemini 金鑰與模型、備份與還原、複習、外觀、發音
+// 設定頁：Gemini 金鑰與模型、備份與還原、安裝與離線、複習、外觀、發音
 import { getSettings, updateSettings } from '../store.js';
 import { speak, canSpeak, ACCENTS, MIXED, accentAvailability, onVoicesChanged } from '../speech.js';
 import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel } from '../llm.js';
 import { esc, toast } from '../ui.js';
 import { renderBackupPanel } from './backup-panel.js';
+import { renderPwaPanel } from './pwa-panel.js';
 
 // 模型清單只在這次開啟網站時記住（不需要存）
 let modelCache = null;
@@ -82,6 +83,8 @@ export function renderSettings(root) {
 
       <div class="panel" id="backupPanel"></div>
 
+      <div class="panel" id="pwaPanel"></div>
+
       <div class="panel">
         <h2 class="panel-title">複習</h2>
         <div class="setting-row wrap">
@@ -122,6 +125,7 @@ export function renderSettings(root) {
     </section>`;
 
   renderBackupPanel(root.querySelector('#backupPanel'));
+  const unsubPwa = renderPwaPanel(root.querySelector('#pwaPanel'));
 
   const statusEl = root.querySelector('#keyStatus');
   const setStatus = (msg, kind = '') => {
@@ -209,5 +213,6 @@ export function renderSettings(root) {
     const b = e.target.closest('[data-try]');
     if (b) speak('Please submit the invoice by Friday.', { accent: b.dataset.try });
   });
-  return onVoicesChanged(drawAccents);
+  const unsubVoices = onVoicesChanged(drawAccents);
+  return () => { unsubVoices(); unsubPwa(); };
 }
