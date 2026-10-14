@@ -30,18 +30,35 @@
 | **多益四種口音** | 美、英、加、澳，以及「多益混合」；例句、搭配詞也能點來發音 |
 | **每日目標＋連續打卡** | 達標才算打卡，統計頁有每日複習量、熟練度分布、未來 7 天到期量 |
 | **離線使用（PWA）** | 可以安裝到手機主畫面或電腦桌面，沒有網路也能複習、測驗、查字典 |
+| **跨裝置同步** | 用 Google 或 Email＋密碼登入，手機和電腦自動同步單字、複習進度、學習紀錄和錯題本（Firebase）；不登入也能用 |
 | **備份與還原** | 匯出成 JSON，換裝置時匯入（可以合併或取代）；備份不包含金鑰 |
 | **深色模式** | 跟隨系統，也可以手動切換 |
 
-<p>
-  <img src="docs/images/05-swipe-mobile.png" alt="手機滑卡" width="24%">
-  <img src="docs/images/07-stats-mobile.png" alt="手機版統計" width="24%">
-  <img src="docs/images/03-batch-preview.png" alt="批次新增預覽" width="50%">
+### 畫面
+
+<p align="center">
+  <img src="docs/images/readme/phones.png" alt="手機畫面：滑卡複習、學習統計（連續打卡、熟練度）、每日複習與測驗圖表" width="100%">
 </p>
-<p>
-  <img src="docs/images/07-stats.png" alt="學習統計" width="49%">
-  <img src="docs/images/01-dark-mode.png" alt="深色模式" width="49%">
-</p>
+<p align="center"><sub>手機：滑卡複習 ／ 學習統計 ／ 每日複習與測驗圖表（深色模式）</sub></p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/readme/batch.png" alt="批次新增預覽"></td>
+    <td width="50%"><img src="docs/images/06-listen.png" alt="聽力測驗"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>批次新增：貼上一整段，自動拆字、去重</sub></td>
+    <td align="center"><sub>聽力測驗：聽發音選意思</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/06-mistakes.png" alt="錯題本"></td>
+    <td width="50%"><img src="docs/images/01-dark-mode.png" alt="深色模式字卡"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>錯題本：答錯的題目可以重做</sub></td>
+    <td align="center"><sub>深色模式</sub></td>
+  </tr>
+</table>
 
 ## 開始使用
 
