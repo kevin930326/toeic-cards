@@ -1,7 +1,9 @@
 // 主程式：依網址的 #/xxx 切換頁面
-import { getSettings, updateSettings, subscribe } from './store.js';
+import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js';
 import { renderCards } from './views/cards.js';
+import { renderQuiz } from './views/quiz.js';
+import { pruneMistakes } from './mistakes.js';
 import { renderWords } from './views/words.js';
 import { renderSettings } from './views/settings.js';
 import { lookupMissing } from './dictionary.js';
@@ -11,6 +13,7 @@ import { setWaiting } from './generate.js';
 const routes = {
   review: renderReview,
   cards: renderCards,
+  quiz: renderQuiz,
   words: renderWords,
   settings: renderSettings,
 };
@@ -63,6 +66,8 @@ function updateBadge() {
   el.hidden = n === 0;
 }
 subscribe(updateBadge);
+// 單字被刪掉時，錯題本裡相關的題目也一起清掉
+subscribe(() => pruneMistakes(getWords().map((w) => w.id)));
 
 window.addEventListener('hashchange', () => { render(); updateBadge(); });
 applyTheme();

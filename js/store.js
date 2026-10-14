@@ -14,6 +14,9 @@ const DEFAULT_SETTINGS = {
   llmRpm: 5,            // 每分鐘最多送幾個請求（免費額度保守值）
   autoGenerate: true,   // 新增單字後自動用 AI 生成
   newPerDay: 20,        // 每天最多學幾個新字
+  quizScope: 'all',     // 測驗範圍：'all' | 'unfamiliar'
+  quizCount: 10,        // 每次測驗題數
+  part5Fresh: false,    // Part 5 每次都出新題目（會用 AI 額度）
 };
 
 const listeners = new Set();
