@@ -1,0 +1,23 @@
+# 金鑰與環境變數（絕對不能上傳）
+.env
+.env.*
+*.key
+
+# 系統與編輯器
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python / 測試暫存
+__pycache__/
+*.pyc
+test-results/
+screenshots/
+
+# 原始字典資料（體積大，只上傳處理後的子集）
+data/raw/
+node_modules/
+
+# Claude Code 本機設定與第三方 skill（不屬於網站本身）
+.claude/
