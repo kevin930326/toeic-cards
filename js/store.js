@@ -114,6 +114,7 @@ export function addWords(list) {
       continue;
     }
     seen.add(n);
+    clearTombstone(n);   // 刪掉後又加回來
     const w = createWord(n);
     w.createdAt = w.updatedAt = base + added.length;
     words.unshift(w);
@@ -152,9 +153,31 @@ export function updateWords(patches) {
 }
 
 export function deleteWord(id) {
-  const before = words.length;
+  const target = words.find((w) => w.id === id);
+  if (!target) return;
   words = words.filter((w) => w.id !== id);
-  if (words.length !== before) saveWords();
+  // 留下「刪除紀錄」，同步時其他裝置也會跟著刪掉
+  const tombs = getTombstones();
+  tombs[target.word] = Date.now();
+  setTombstones(tombs);
+  saveWords();
+}
+
+function clearTombstone(word) {
+  const tombs = getTombstones();
+  if (tombs[word]) {
+    delete tombs[word];
+    setTombstones(tombs);
+  }
+}
+
+// ---- 刪除紀錄（跨裝置同步用）：{ 單字: 刪除時間 } ----
+const TOMB_KEY = 'toeic-cards:deleted';
+export function getTombstones() {
+  return readJSON(TOMB_KEY, {});
+}
+export function setTombstones(map) {
+  writeJSON(TOMB_KEY, map || {});
 }
 
 export function toggleUnfamiliar(id, value) {
@@ -183,8 +206,22 @@ export function getSettings() {
   return settings;
 }
 
-export function updateSettings(patch) {
+// 會跨裝置同步的設定（要和 sync-core.js 的 SYNCED_SETTINGS 一致；這裡不 import 它，避免互相依賴）
+const SYNCED_KEYS = ['dailyGoal', 'newPerDay', 'cardMode', 'autoGenerate', 'quizScope', 'quizCount', 'part5Fresh'];
+const SETTINGS_AT_KEY = 'toeic-cards:settingsAt';
+
+export function updateSettings(patch, { fromSync = false } = {}) {
+  const changedSynced = SYNCED_KEYS.some((k) => k in patch && patch[k] !== settings[k]);
   settings = { ...settings, ...patch };
   writeJSON(SETTINGS_KEY, settings);
+  // 記下「要同步的設定」最後修改的時間；從雲端套用時不算本機修改
+  if (changedSynced && !fromSync) writeJSON(SETTINGS_AT_KEY, Date.now());
   emit();
+}
+
+export function settingsUpdatedAt() {
+  return Number(readJSON(SETTINGS_AT_KEY, 0)) || 0;
+}
+export function setSettingsUpdatedAt(t) {
+  writeJSON(SETTINGS_AT_KEY, t);
 }

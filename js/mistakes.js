@@ -13,8 +13,23 @@ function read() {
   }
 }
 
-function write(list) {
-  try { localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX))); } catch (e) { console.error('寫入錯題本失敗', e); }
+const AT_KEY = 'toeic-cards:mistakesAt';   // 最後修改時間（跨裝置同步用）
+
+function write(list, { touch = true } = {}) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX)));
+    if (touch) localStorage.setItem(AT_KEY, String(Date.now()));
+  } catch (e) { console.error('寫入錯題本失敗', e); }
+}
+
+export function mistakesUpdatedAt() {
+  try { return Number(localStorage.getItem(AT_KEY)) || 0; } catch (e) { return 0; }
+}
+
+// 從雲端套用（記下雲端的時間，不算本機修改）
+export function setMistakesFromSync(list, time) {
+  write(Array.isArray(list) ? list : [], { touch: false });
+  try { localStorage.setItem(AT_KEY, String(time || 0)); } catch (e) { /* 只是同步用的時間 */ }
 }
 
 // 同一個字、同一種題型、同一個題目算同一題

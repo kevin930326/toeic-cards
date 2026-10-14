@@ -2,10 +2,15 @@
 // 存在 localStorage：{ '2026-10-14': { reviews, again, good, learned, quiz, quizCorrect, goal } }
 //   reviews／again／good／learned：複習；quiz／quizCorrect：測驗題數、答對題數
 //   goal：那一天的每日目標（之後改目標，不會影響過去的打卡紀錄）
+//
+// 跨裝置同步時：'toeic-cards:log' 只放「這台裝置自己」的紀錄；
+// 其他裝置的紀錄放在 'toeic-cards:remoteLogs'（{ 裝置 id: 紀錄 }），顯示時加總（getLog）。
 import { dayKey } from './srs.js';
 import { getSettings } from './store.js';
+import { combineLogs } from './sync-core.js';
 
 const LOG_KEY = 'toeic-cards:log';
+const REMOTE_KEY = 'toeic-cards:remoteLogs';
 const listeners = new Set();
 
 function read() {
@@ -28,8 +33,28 @@ export function onLogChange(fn) {
   return () => listeners.delete(fn);
 }
 
+function readRemote() {
+  try {
+    const v = JSON.parse(localStorage.getItem(REMOTE_KEY) || '{}');
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+// 所有裝置加總後的紀錄（統計、打卡、每日目標都用這個）
 export function getLog() {
+  return combineLogs(read(), Object.values(readRemote()));
+}
+
+// 只有這台裝置自己的紀錄（同步時上傳這份）
+export function getOwnLog() {
   return read();
+}
+
+// 同步時把其他裝置的紀錄存起來（不跳慶祝訊息）
+export function setRemoteLogs(map) {
+  try { localStorage.setItem(REMOTE_KEY, JSON.stringify(map && typeof map === 'object' ? map : {})); } catch (e) { /* 存不了只是統計少算 */ }
 }
 
 // 匯入備份時整個換掉（不通知「紀錄改變」，免得匯入時跳出達標慶祝）
@@ -45,8 +70,9 @@ export function currentGoal() {
   return Math.max(1, Number(getSettings().dailyGoal) || 20);
 }
 
+// 某一天（所有裝置加總）
 export function getDay(now = Date.now()) {
-  return { reviews: 0, again: 0, good: 0, learned: 0, quiz: 0, quizCorrect: 0, ...read()[dayKey(now)] };
+  return { reviews: 0, again: 0, good: 0, learned: 0, quiz: 0, quizCorrect: 0, ...getLog()[dayKey(now)] };
 }
 
 // 每日目標的進度：複習一張卡或測驗答一題都算 1
