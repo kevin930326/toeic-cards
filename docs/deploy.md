@@ -30,8 +30,11 @@
 **API 金鑰絕對不能進 GitHub。** 這個專案的金鑰只存在使用者的瀏覽器，程式碼裡本來就不應該有任何金鑰。push 前可以用這行指令再確認一次（沒有輸出就是安全的）：
 
 ```bash
-git grep -nE "AIza[0-9A-Za-z_-]{30,}|sk-[A-Za-z0-9]{20,}" -- . ":!data/"
+git grep -nE "AIza[0-9A-Za-z_-]{30,}|sk-[A-Za-z0-9]{20,}" -- . ":!data/" ":!js/firebase-config.js"
 ```
+
+> `js/firebase-config.js` 裡的 Firebase `apiKey` 也是 `AIza` 開頭，但它本來就是公開的（用來辨識 Firebase 專案，不是密碼），所以排除在檢查之外。GitHub 可能會寄「偵測到 Google API 金鑰」的通知，對這個檔案可以忽略。
+> 想更保險的話，可以到 Google Cloud 主控台的「API 和服務 › 憑證」，把這把金鑰限制成只能從 `kevin930326.github.io` 使用。
 
 `.gitignore` 已經排除了 `.env`、原始字典檔 `data/raw/`、測試截圖，以及 `.claude/` 本機設定。
 
