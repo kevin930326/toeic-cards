@@ -90,7 +90,8 @@ export function attachSwipe(el, { onSwipe, onDrag, onTap, threshold = 90 }) {
   }
 
   function click(e) {
-    if (Date.now() < suppressClickUntil) {
+    // 只擋滑鼠／觸控產生的 click（detail ≥ 1）；鍵盤觸發的 click（detail 0）一律放行
+    if (Date.now() < suppressClickUntil && e.detail !== 0) {
       e.stopPropagation();
       e.preventDefault();
     }
