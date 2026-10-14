@@ -1,0 +1,25 @@
+{
+  "name": "多益字卡 TOEIC Cards",
+  "short_name": "多益字卡",
+  "description": "只要輸入英文單字，自動產生中文、英文解釋與多益例句；間隔重複複習、多益風格測驗。",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./#/review",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4efe4",
+  "theme_color": "#f4efe4",
+  "categories": ["education"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "複習", "url": "./#/review", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "測驗", "url": "./#/quiz", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "新增單字", "url": "./#/words", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
