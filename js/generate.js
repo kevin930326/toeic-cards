@@ -256,14 +256,14 @@ async function run() {
         clearQueue();
         break;
       }
-      // 金鑰、模型、額度問題：整個佇列停下來（剩下的字不算失敗，修好後可再生成）
-      if (e.kind === 'key' || e.kind === 'model' || e.kind === 'quota') {
+      // 金鑰、模型、額度、網路問題：整個佇列停下來（剩下的字不算失敗，修好或連上網路後可再生成）
+      if (e.kind === 'key' || e.kind === 'model' || e.kind === 'quota' || e.kind === 'network') {
         batch.forEach((id) => inQueue.delete(id));
         status.error = { kind: e.kind, message: e.message, detail: e.detail };
         clearQueue();
         break;
       }
-      // 其他錯誤（網路、伺服器、格式）：這批標為失敗，繼續下一批
+      // 其他錯誤（伺服器、格式）：這批標為失敗，繼續下一批
       markFailed(batch, e.message);
       status.failed += batch.length;
     }
