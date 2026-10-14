@@ -79,20 +79,32 @@ function parseRetryDelay(body) {
   return m ? Math.ceil(parseFloat(m[1]) * 1000) : 0;
 }
 
+const REQUEST_TIMEOUT = 120000;   // 2 分鐘還沒回來就放棄（避免卡住整個佇列）
+
 async function request(path, { method = 'GET', body, signal } = {}) {
   const key = getApiKey();
   if (!key) throw new LlmError('key', '還沒有設定 Gemini API 金鑰');
+  // 使用者按「停止」或逾時，兩種都要能中斷請求
+  const ctrl = new AbortController();
+  const onAbort = () => ctrl.abort();
+  signal?.addEventListener('abort', onAbort);
+  let timedOut = false;
+  const timer = setTimeout(() => { timedOut = true; ctrl.abort(); }, REQUEST_TIMEOUT);
   let res;
   try {
     res = await fetch(`${API}/${path}`, {
       method,
       headers: { 'x-goog-api-key': key, ...(body ? { 'Content-Type': 'application/json' } : {}) },
       body: body ? JSON.stringify(body) : undefined,
-      signal,
+      signal: ctrl.signal,
     });
   } catch (e) {
     if (signal?.aborted) throw new LlmError('aborted', '已停止');
+    if (timedOut) throw new LlmError('server', `Gemini 超過 ${REQUEST_TIMEOUT / 1000} 秒沒有回應`);
     throw new LlmError('network', '連不上 Gemini，請檢查網路');
+  } finally {
+    clearTimeout(timer);
+    signal?.removeEventListener('abort', onAbort);
   }
   let data = null;
   try { data = await res.json(); } catch (e) { /* 有些錯誤沒有 JSON */ }
@@ -110,6 +122,7 @@ async function request(path, { method = 'GET', body, signal } = {}) {
     throw new LlmError('key', 'Gemini 金鑰無效或沒有權限，請到設定檢查', msg);
   }
   if (res.status >= 500) throw new LlmError('server', 'Gemini 伺服器暫時出問題', msg);
+  if (res.status === 400) throw new LlmError('invalid', `Gemini 不接受這個請求（${status || 400}）`, msg);
   throw new LlmError('server', `Gemini 回傳錯誤：${status || res.status}`, msg);
 }
 
@@ -137,24 +150,86 @@ export function pickDefaultModel(models) {
   return [...models].sort((a, b) => score(b.id) - score(a.id))[0]?.id || FALLBACK_MODEL;
 }
 
+// ---- 思考（thinking）設定 ----
+// 新版 Flash 模型預設會先「思考」再回答：又慢、又會吃掉輸出上限（思考的字數也算在 maxOutputTokens 裡），
+// 輸出被截斷時還會觸發「拆半重送」，所以變得更慢。這個網站的工作很單純，把思考降到最低。
+//   - Gemini 2.5 系列用 thinkingBudget（0 ＝ 不思考）
+//   - Gemini 3 以後用 thinkingLevel（minimal → low）
+// 送了模型不支援的設定會回 400，這時自動改用下一個選項，並記住這個模型用哪一個可以。
+const THINKING_KEY = 'toeic-cards:thinking';
+
+export function thinkingOptions(model) {
+  if (/gemini-2\.5/.test(model)) return [{ thinkingBudget: 0 }, null];
+  return [{ thinkingLevel: 'minimal' }, { thinkingLevel: 'low' }, null];
+}
+
+// 給使用者看的思考設定名稱
+export function thinkingLabel(opt) {
+  if (!opt) return '模型預設';
+  if (opt.thinkingBudget === 0) return '不思考';
+  return { minimal: '最少', low: '低' }[opt.thinkingLevel] || '其他';
+}
+
+function rememberedThinking(model) {
+  try { return JSON.parse(localStorage.getItem(THINKING_KEY) || '{}')[model] ?? 0; } catch (e) { return 0; }
+}
+function rememberThinking(model, index) {
+  try {
+    const all = JSON.parse(localStorage.getItem(THINKING_KEY) || '{}');
+    all[model] = index;
+    localStorage.setItem(THINKING_KEY, JSON.stringify(all));
+  } catch (e) { /* 記不住只是每次多試一次 */ }
+}
+
+// ---- 診斷資料：最近一次請求花多久、用了多少 token、有沒有出錯 ----
+let lastStats = null;
+const statsListeners = new Set();
+export function lastRequestStats() {
+  return lastStats;
+}
+export function onRequestStats(fn) {
+  statsListeners.add(fn);
+  return () => statsListeners.delete(fn);
+}
+function recordStats(stats) {
+  lastStats = { ...stats, at: Date.now() };
+  for (const fn of statsListeners) fn(lastStats);
+}
+
 // 呼叫 Gemini 產生 JSON。會自動限速與重試。
 export async function generateJSON({ prompt, schema, signal, maxRetries = 3, temperature = 0.4 }) {
-  const body = {
+  const model = getModel();
+  const options = thinkingOptions(model);
+  let thinkIdx = Math.min(rememberedThinking(model), options.length - 1);
+  const makeBody = () => ({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: {
       temperature,
       maxOutputTokens: 16384,
       responseMimeType: 'application/json',
       ...(schema ? { responseSchema: schema } : {}),
+      ...(options[thinkIdx] ? { thinkingConfig: options[thinkIdx] } : {}),
     },
-  };
+  });
   let attempt = 0;
   for (;;) {
     await waitForSlot(signal);
+    const started = performance.now();
     try {
-      const data = await request(`models/${encodeURIComponent(getModel())}:generateContent`, { method: 'POST', body, signal });
+      const data = await request(`models/${encodeURIComponent(model)}:generateContent`, { method: 'POST', body: makeBody(), signal });
       const cand = data?.candidates?.[0];
       const text = (cand?.content?.parts || []).filter((p) => !p.thought).map((p) => p.text || '').join('');
+      const usage = data?.usageMetadata || {};
+      recordStats({
+        ok: !!text,
+        model,
+        ms: Math.round(performance.now() - started),
+        thinking: thinkingLabel(options[thinkIdx]),
+        outputTokens: usage.candidatesTokenCount || 0,
+        thoughtTokens: usage.thoughtsTokenCount || 0,
+        finishReason: cand?.finishReason || '',
+      });
+      rememberThinking(model, thinkIdx);
       if (!text) {
         const reason = cand?.finishReason || data?.promptFeedback?.blockReason || '空白回應';
         throw new LlmError('parse', `Gemini 沒有回傳內容（${reason}）`);
@@ -167,6 +242,14 @@ export async function generateJSON({ prompt, schema, signal, maxRetries = 3, tem
         throw err;
       }
     } catch (err) {
+      if (err.kind !== 'parse') {
+        recordStats({ ok: false, model, ms: Math.round(performance.now() - started), error: err.message, detail: err.detail || '' });
+      }
+      // 模型不支援這個思考設定 → 換下一個選項，馬上重送（不算重試次數）
+      if (err.kind === 'invalid' && /think/i.test(err.detail || '') && thinkIdx < options.length - 1) {
+        thinkIdx++;
+        continue;
+      }
       const retryable = err.kind === 'quota' || err.kind === 'server';
       if (!retryable || attempt >= maxRetries) throw err;
       attempt++;
