@@ -247,6 +247,39 @@ with sync_playwright() as p:
     # 11. 金鑰不會出現在網址
     check(all('key=' not in u and GOOD_KEY not in u for u in all_urls), '金鑰沒有放在網址裡')
 
+    # 12. 競態（曾經發生過的 bug）：一批字的字典檔不同時下載完。
+    #     舊版先算好 approve 的字典資料，等 n.json 下載時 AI 寫好了，最後才把舊的字典資料寫回去，蓋掉 AI 的中文
+    rc = browser.new_context()
+    rc.route('https://generativelanguage.googleapis.com/**', gemini)
+    rc.route('https://api.dictionaryapi.dev/**', fake_dict)
+    rc.add_init_script("""
+      const realFetch = window.fetch;
+      // 時間順序：a.json 先到 → 0.5 秒後 AI 回來 → 1.5 秒後 n.json 才到
+      const delay = (u) => (String(u).includes('data/dict/n.json') ? 1500
+        : String(u).includes('generativelanguage') ? 500 : 0);
+      window.fetch = (u, ...a) => new Promise((r) => setTimeout(r, delay(u))).then(() => realFetch(u, ...a));
+    """)
+    rp = rc.new_page()
+    rp.goto(URL)
+    rp.evaluate(f"""() => {{
+      localStorage.setItem('toeic-cards:gemini-key', '{GOOD_KEY}');
+      localStorage.setItem('toeic-cards:settings', JSON.stringify({{ llmRpm: 600 }}));
+    }}""")
+    rp.goto(URL + '#/words')
+    rp.reload()
+    rp.wait_for_load_state('networkidle')
+    rp.click('#batch summary')
+    rp.fill('#batchInput', 'approve\nnegotiate')
+    rp.click('#batchAdd')
+    rp.wait_for_function("""() => {
+      const ws = JSON.parse(localStorage.getItem('toeic-cards:words') || '[]');
+      return ws.length === 2 && ws.every((w) => w.llm && w.llm.status === 'done' && w.lookup && w.lookup.dictAt);
+    }""", timeout=15000)
+    rw = words_db(rp)
+    ok = all(rw[x]['zh'].startswith(f'v. {x}的多益意思') and rw[x]['src']['zh'] == 'llm' for x in ('approve', 'negotiate'))
+    check(ok, f"字典檔下載時間不同時，不會用舊的字典資料蓋掉 AI 的中文（{[(x, rw[x]['zh'][:12], rw[x]['src'].get('zh')) for x in rw]}）")
+    rc.close()
+
     browser.close()
 
 print('\nERRORS:' if errors else '\nALL PASSED', *errors, sep='\n')

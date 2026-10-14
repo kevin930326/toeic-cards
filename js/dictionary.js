@@ -94,12 +94,20 @@ export function isLookingUp(id) {
 
 // 第一階段：本機字典（中文、詞性、音標）。很快，整批一起處理、只存一次檔
 async function fillLocal(ids) {
-  const patches = [];
+  // 1. 先把需要的字典資料都查好（會等待下載）
+  const found = new Map();
   for (const id of ids) {
     const w = getWord(id);
     if (!w || (w.zh && w.phonetic)) continue;
     const local = await lookupLocal(w.word);
-    if (!local) continue;
+    if (local) found.set(id, local);
+  }
+  // 2. 再「一口氣」檢查並寫入，中間沒有任何等待：
+  //    等待下載時 AI 可能已經寫好內容，這時要看最新的資料，才不會用字典蓋掉 AI 的結果
+  const patches = [];
+  for (const [id, local] of found) {
+    const w = getWord(id);
+    if (!w) continue;
     const patch = {};
     const src = { ...(w.src || {}) };
     if (canFill(w, 'zh') && local.zh) {
