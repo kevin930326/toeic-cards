@@ -32,9 +32,13 @@ export function getLog() {
   return read();
 }
 
-// 匯入備份時整個換掉
+// 匯入備份時整個換掉（不通知「紀錄改變」，免得匯入時跳出達標慶祝）
 export function replaceLog(log) {
-  write(log && typeof log === 'object' ? log : {});
+  try {
+    localStorage.setItem(LOG_KEY, JSON.stringify(log && typeof log === 'object' ? log : {}));
+  } catch (e) {
+    console.error('寫入學習紀錄失敗', e);
+  }
 }
 
 export function currentGoal() {

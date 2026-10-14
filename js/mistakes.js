@@ -53,6 +53,11 @@ export function pruneMistakes(existingIds) {
   if (kept.length !== list.length) write(kept);
 }
 
+// 匯入備份時整個換掉
+export function replaceMistakes(list) {
+  write(Array.isArray(list) ? list : []);
+}
+
 export function clearMistakes() {
   write([]);
 }

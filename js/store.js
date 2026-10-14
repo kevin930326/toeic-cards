@@ -163,6 +163,22 @@ export function toggleUnfamiliar(id, value) {
   updateWord(id, { unfamiliar: value === undefined ? !w.unfamiliar : !!value });
 }
 
+// 匯入備份：整批換掉
+export function replaceWords(list) {
+  words = Array.isArray(list) ? list : [];
+  saveWords();
+}
+
+export function replaceSettings(obj) {
+  settings = { ...DEFAULT_SETTINGS, ...(obj || {}) };
+  writeJSON(SETTINGS_KEY, settings);
+  emit();
+}
+
+export function getDefaultSettings() {
+  return { ...DEFAULT_SETTINGS };
+}
+
 export function getSettings() {
   return settings;
 }

@@ -998,3 +998,15 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 @media (max-width: 420px) {
   .goal-pill { margin-left: 6px; padding-right: 8px; }
 }
+
+/* ===== 備份與還原 ===== */
+.backup-now { margin: 0 0 12px; font-size: 14px; }
+.backup-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.file-btn { position: relative; overflow: hidden; }
+.file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; font-size: 0; }
+.file-btn:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.import-preview { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); font-size: 14px; }
+.import-preview p { margin: 0 0 8px; }
+.import-title { font-weight: 700; }
+.import-merge { color: var(--ink-soft); }
+#importArea .ai-error { margin-top: 12px; }

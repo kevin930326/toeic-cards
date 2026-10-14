@@ -1,8 +1,9 @@
-// 設定頁：外觀、發音、Gemini 金鑰與模型（之後會加上匯出匯入）
+// 設定頁：Gemini 金鑰與模型、備份與還原、複習、外觀、發音
 import { getSettings, updateSettings } from '../store.js';
 import { speak, canSpeak, ACCENTS, MIXED, accentAvailability, onVoicesChanged } from '../speech.js';
 import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel } from '../llm.js';
 import { esc, toast } from '../ui.js';
+import { renderBackupPanel } from './backup-panel.js';
 
 // 模型清單只在這次開啟網站時記住（不需要存）
 let modelCache = null;
@@ -79,6 +80,8 @@ export function renderSettings(root) {
           送給 Gemini 的內容只有英文單字。免費方案下 Google 可能用這些內容改進模型。</p>
       </div>
 
+      <div class="panel" id="backupPanel"></div>
+
       <div class="panel">
         <h2 class="panel-title">複習</h2>
         <div class="setting-row wrap">
@@ -117,6 +120,8 @@ export function renderSettings(root) {
         ` : '<p class="muted">這個瀏覽器不支援語音播放。</p>'}
       </div>
     </section>`;
+
+  renderBackupPanel(root.querySelector('#backupPanel'));
 
   const statusEl = root.querySelector('#keyStatus');
   const setStatus = (msg, kind = '') => {
