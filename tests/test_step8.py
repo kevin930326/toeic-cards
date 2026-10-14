@@ -6,7 +6,7 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'screenshots')
 os.makedirs(OUT, exist_ok=True)
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 TMP = tempfile.mkdtemp(prefix='toeic-backup-')
-KEY = 'AIzaTEST-not-a-real-key-123'
+KEY = 'fake-key-for-tests-only'
 errors = []
 
 def check(cond, msg):
