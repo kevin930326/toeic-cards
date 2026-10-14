@@ -1,6 +1,6 @@
 // 設定頁：外觀、發音、Gemini 金鑰與模型（之後會加上匯出匯入）
 import { getSettings, updateSettings } from '../store.js';
-import { speak, canSpeak } from '../speech.js';
+import { speak, canSpeak, ACCENTS, MIXED, accentAvailability, onVoicesChanged } from '../speech.js';
 import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel } from '../llm.js';
 import { esc, toast } from '../ui.js';
 
@@ -96,10 +96,14 @@ export function renderSettings(root) {
       <div class="panel">
         <h2 class="panel-title">發音</h2>
         ${canSpeak() ? `
-          <div class="setting-row">
+          <div class="setting-row wrap">
             <span class="setting-label">口音</span>
-            ${segmented('accent', s.accent, [['en-US', '美式'], ['en-GB', '英式']], '口音')}
+            ${segmented('accent', s.accent, [...ACCENTS.map((a) => [a.id, a.label]), [MIXED, '多益混合']], '口音')}
           </div>
+          <p class="hint-text">多益聽力會出現美式、英式、加拿大、澳洲四種口音。「多益混合」每次隨機換一種，最接近真實考試。</p>
+          <ul class="accent-list" id="accentList"></ul>
+          <p class="hint-text">發音使用瀏覽器內建的語音合成，免費、不需網路，也不用 AI 額度；可用的口音取決於裝置。
+            Windows 可到「設定 › 時間與語言 › 語音」新增英文語音；Edge 瀏覽器內建較多自然的語音。</p>
           <div class="setting-row">
             <span class="setting-label">速度</span>
             ${segmented('speechRate', s.speechRate, [['0.7', '慢'], ['0.9', '標準'], ['1.1', '快']], '速度')}
@@ -175,4 +179,22 @@ export function renderSettings(root) {
     input.addEventListener('change', () => updateSettings({ speechRate: Number(input.value) }));
   });
   root.querySelector('#testSpeak')?.addEventListener('click', () => speak('schedule'));
+
+  // 各口音在這台裝置上有沒有語音（語音清單會非同步載入，所以要能重畫）
+  const list = root.querySelector('#accentList');
+  function drawAccents() {
+    if (!list) return;
+    list.innerHTML = accentAvailability().map((a) => `
+      <li class="${a.available ? 'ok' : 'missing'}">
+        <span class="accent-name">${a.label}</span>
+        <span class="accent-voice">${a.available ? `✓ ${esc(a.voiceName)}` : '✗ 這台裝置沒有，會用其他英文語音代替'}</span>
+        <button class="btn btn-ghost btn-sm" type="button" data-try="${a.id}">試聽</button>
+      </li>`).join('');
+  }
+  drawAccents();
+  list?.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-try]');
+    if (b) speak('Please submit the invoice by Friday.', { accent: b.dataset.try });
+  });
+  return onVoicesChanged(drawAccents);
 }

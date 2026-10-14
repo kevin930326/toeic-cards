@@ -1,10 +1,27 @@
 // 字卡的畫面（「字卡」瀏覽頁和「複習」頁共用）
 import { esc, zhLines } from './ui.js';
-import { canSpeak, speakerIcon } from './speech.js';
+import { canSpeak, speakerIcon, speak } from './speech.js';
 import { isLookingUp } from './dictionary.js';
 import { isGenerating } from './generate.js';
 
 const chips = (list) => `<p class="chips">${list.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</p>`;
+
+// 可以點來發音的搭配詞（按鈕）
+const speakChips = (list) => canSpeak()
+  ? `<p class="chips">${list.map((c) => `<button type="button" class="chip chip-speak" data-speak-text="${esc(c)}" aria-label="播放「${esc(c)}」">${esc(c)}<span class="chip-icon" aria-hidden="true">${speakerIcon}</span></button>`).join('')}</p>`
+  : chips(list);
+
+const miniSpeak = (text) => canSpeak()
+  ? `<button type="button" class="mini-speak" data-speak-text="${esc(text)}" aria-label="播放例句">${speakerIcon}</button>`
+  : '';
+
+// 卡片被點一下時：點到發音按鈕就發音，否則翻面（「複習」和「字卡」頁共用）
+export function handleCardTap(target, word, flip) {
+  const sp = target.closest('[data-speak-text]');
+  if (sp) { speak(sp.dataset.speakText); return; }
+  if (target.closest('[data-speak]')) { speak(word.word); return; }
+  flip();
+}
 
 export function backHTML(w, mode) {
   const empty = isLookingUp(w.id) || isGenerating(w.id)
@@ -27,9 +44,9 @@ export function backHTML(w, mode) {
   const extras = [];
   if (w.examples.length) {
     extras.push(`<div class="extra"><h3>例句</h3>${w.examples.map((e) => `
-      <p class="ex-en">${esc(e.en)}</p>${e.zh ? `<p class="ex-zh">${esc(e.zh)}</p>` : ''}`).join('')}</div>`);
+      <p class="ex-en">${esc(e.en)}${miniSpeak(e.en)}</p>${e.zh ? `<p class="ex-zh">${esc(e.zh)}</p>` : ''}`).join('')}</div>`);
   }
-  if (w.collocations.length) extras.push(`<div class="extra"><h3>常見搭配</h3>${chips(w.collocations)}</div>`);
+  if (w.collocations.length) extras.push(`<div class="extra"><h3>常見搭配</h3>${speakChips(w.collocations)}</div>`);
   if (w.forms.length || w.synonyms.length) {
     extras.push(`<div class="extra">
       ${w.forms.length ? `<h3>詞性變化</h3>${chips(w.forms)}` : ''}

@@ -4,7 +4,7 @@
 import { getWords, getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { openEditor } from '../ui.js';
 import { speak } from '../speech.js';
-import { flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js';
+import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js';
 import { attachSwipe, flyOut } from '../swipe.js';
 import {
   grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
@@ -97,10 +97,7 @@ export function renderReview(root) {
     const card = root.querySelector('#card');
     const wrap = root.querySelector('#swipe');
     // 滑鼠／觸控的點擊由 attachSwipe 的 onTap 處理；這裡處理鍵盤觸發的 click
-    const tap = (target) => {
-      if (target.closest('[data-speak]')) speak(w.word);
-      else flip();
-    };
+    const tap = (target) => handleCardTap(target, w, flip);
     card.addEventListener('click', (e) => { e.stopPropagation(); tap(e.target); });
     attachSwipe(wrap, {
       onTap: tap,

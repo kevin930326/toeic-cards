@@ -5,7 +5,7 @@ import { openEditor } from '../ui.js';
 import { speak } from '../speech.js';
 import { onLookupStatus } from '../dictionary.js';
 import { onGenerateStatus } from '../generate.js';
-import { flashcardHTML, modeToggleHTML } from '../cardview.js';
+import { handleCardTap, flashcardHTML, modeToggleHTML } from '../cardview.js';
 import { attachSwipe } from '../swipe.js';
 
 // 跨頁面保留目前看到哪一張
@@ -75,10 +75,7 @@ export function renderCards(root) {
     bindToolbar();
     const card = root.querySelector('#card');
     // 滑鼠／觸控的點擊由 attachSwipe 的 onTap 處理；這裡處理鍵盤觸發的 click
-    const tap = (target) => {
-      if (target.closest('[data-speak]')) speak(w.word);
-      else flip();
-    };
+    const tap = (target) => handleCardTap(target, w, flip);
     card.addEventListener('click', (e) => { e.stopPropagation(); tap(e.target); });
     attachSwipe(root.querySelector('#swipe'), {
       onTap: tap,

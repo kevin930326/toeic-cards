@@ -2,7 +2,7 @@
 //   答錯的字自動標記「不熟」，並把整題存進錯題本；在錯題本重做答對就移除
 import { getWords, getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { esc, toast, confirmAction } from '../ui.js';
-import { speak, canSpeak, speakerIcon } from '../speech.js';
+import { speak, canSpeak, speakerIcon, resolveAccent, accentLabel } from '../speech.js';
 import { hasApiKey, onRateWait } from '../llm.js';
 import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK } from '../quiz.js';
 import { preparePart5 } from '../part5.js';
@@ -120,7 +120,10 @@ export function renderQuiz(root) {
     const targets = targetsForScope();
     const all = getWords();
     if (mode !== 'part5') {
-      newSession(mode, buildSimpleQuiz(mode, targets, all, count));
+      let questions = buildSimpleQuiz(mode, targets, all, count);
+      // 聽力題：每題先決定口音（「多益混合」時每題隨機），重聽時用同一個口音
+      if (mode === 'listen') questions = questions.map((q) => ({ ...q, accent: resolveAccent(getSettings().accent) }));
+      newSession(mode, questions);
       draw();
       autoPlay();   // 聽力題第一題也要自動播放
       return;
@@ -212,10 +215,14 @@ export function renderQuiz(root) {
     let feedback = '';
     if (answered) {
       const ok = s.answered === q.answerIndex;
-      const detail = q.mode === 'part5'
-        ? `${q.extra?.translation ? `<p class="fb-trans">${esc(q.extra.translation)}</p>` : ''}
-           ${q.extra?.explanation ? `<p class="fb-explain">💡 ${esc(q.extra.explanation)}</p>` : ''}`
-        : '';
+      let detail = '';
+      if (q.mode === 'part5') {
+        detail = `${q.extra?.translation ? `<p class="fb-trans">${esc(q.extra.translation)}</p>` : ''}
+           ${q.extra?.explanation ? `<p class="fb-explain">💡 ${esc(q.extra.explanation)}</p>` : ''}
+           ${canSpeak() ? `<button class="btn btn-ghost btn-sm fb-read" type="button" id="readSentence">${speakerIcon} 朗讀整句</button>` : ''}`;
+      } else if (q.mode === 'listen' && q.accent) {
+        detail = `<p class="fb-explain">這題是<strong>${esc(accentLabel(q.accent))}</strong>口音</p>`;
+      }
       feedback = `
         <div class="feedback ${ok ? 'ok' : 'bad'}" role="status">
           <p class="fb-head">${ok ? '✓ 答對了！' : `✗ 答錯了，正確答案是「${esc(q.options[q.answerIndex])}」`}</p>
@@ -245,7 +252,9 @@ export function renderQuiz(root) {
       </section>`;
 
     root.querySelectorAll('.option').forEach((b) => b.addEventListener('click', () => choose(Number(b.dataset.i))));
-    root.querySelector('#play')?.addEventListener('click', () => speak(q.word));
+    root.querySelector('#play')?.addEventListener('click', () => speak(q.word, { accent: q.accent }));
+    root.querySelector('#readSentence')?.addEventListener('click', () =>
+      speak(q.prompt.replace(BLANK, q.options[q.answerIndex])));
     root.querySelector('#fbSpeak')?.addEventListener('click', () => speak(word.word));
     root.querySelector('#next')?.addEventListener('click', next);
     root.querySelector('#quit').addEventListener('click', () => {
@@ -286,7 +295,7 @@ export function renderQuiz(root) {
     const s = state.session;
     if (state.view !== 'question' || !s) return;
     const q = s.questions[s.index];
-    if (q.mode === 'listen' && s.answered === null) speak(q.word);
+    if (q.mode === 'listen' && s.answered === null) speak(q.word, { accent: q.accent });
   }
 
   // ---------- 結果 ----------
@@ -393,7 +402,7 @@ export function renderQuiz(root) {
       next();
       return;
     }
-    if (k === 'p' && q.mode === 'listen') speak(q.word);
+    if (k === 'p' && q.mode === 'listen') speak(q.word, { accent: q.accent });
   }
 
   draw();

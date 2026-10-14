@@ -926,3 +926,40 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
   .nav a { padding: 6px 5px; font-size: 13px; }
   .topbar { padding-left: 10px; padding-right: 10px; gap: 4px; }
 }
+
+/* ===== 例句、搭配詞發音 ===== */
+.mini-speak {
+  display: inline-grid; place-items: center;
+  width: 26px; height: 26px;
+  margin-left: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  vertical-align: -6px;
+  cursor: pointer;
+}
+.mini-speak svg { width: 16px; height: 16px; }
+.mini-speak:hover { background: var(--accent-soft); }
+.chip-speak {
+  display: inline-flex; align-items: center; gap: 4px;
+  cursor: pointer;
+  font: inherit;
+  font-family: var(--font-en);
+  font-size: 14px;
+  color: var(--ink);
+}
+.chip-speak:hover { border-color: var(--accent); }
+.chip-icon { display: inline-grid; color: var(--accent); }
+.chip-icon svg { width: 13px; height: 13px; }
+.fb-read { margin-top: 8px; gap: 4px; color: var(--accent); }
+.fb-read svg { width: 16px; height: 16px; }
+
+/* ===== 口音清單 ===== */
+.accent-list { list-style: none; margin: 0 0 10px; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.accent-list li { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px; border-top: 1px solid var(--line); font-size: 14px; }
+.accent-list li:first-child { border-top: 0; }
+.accent-name { width: 4em; flex: none; font-weight: 500; }
+.accent-voice { flex: 1; min-width: 0; color: var(--ink-soft); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.accent-list li.missing .accent-voice { color: var(--ink-faint); white-space: normal; }
