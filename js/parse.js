@@ -5,7 +5,11 @@
 //   - 中文、數字、項目符號都會被當成分隔（所以「1. approve 批准」→ approve）
 //   - 同一段裡有空白時：如果像片語（含 up / over / of 等小字，最多 4 個字）就保留成片語，
 //     否則依空白拆成多個字（所以「approve deadline invoice」→ 三個字）
-import { normalizeWord } from './store.js';
+
+// 單字一律用小寫、去頭尾空白、多個空白合成一個，再比較是否重複
+export function normalizeWord(w) {
+  return String(w || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
 
 const PARTICLES = new Set([
   'up', 'down', 'out', 'off', 'on', 'in', 'into', 'over', 'of', 'to', 'for', 'with',

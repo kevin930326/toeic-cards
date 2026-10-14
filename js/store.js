@@ -1,4 +1,6 @@
 // 資料儲存：所有單字和設定都存在瀏覽器的 localStorage
+import { normalizeWord } from './parse.js';
+
 const WORDS_KEY = 'toeic-cards:words';
 const SETTINGS_KEY = 'toeic-cards:settings';
 
@@ -11,6 +13,7 @@ const DEFAULT_SETTINGS = {
   llmModel: '',         // Gemini 模型（空白＝用預設）
   llmRpm: 5,            // 每分鐘最多送幾個請求（免費額度保守值）
   autoGenerate: true,   // 新增單字後自動用 AI 生成
+  newPerDay: 20,        // 每天最多學幾個新字
 };
 
 const listeners = new Set();
@@ -51,10 +54,8 @@ export function subscribe(fn) {
   return () => listeners.delete(fn);
 }
 
-// 單字一律用小寫、去頭尾空白來比較是否重複
-export function normalizeWord(w) {
-  return String(w || '').trim().toLowerCase().replace(/\s+/g, ' ');
-}
+// normalizeWord 放在 parse.js（純函式、可單獨測試），這裡轉出去給其他模組用
+export { normalizeWord };
 
 function newId() {
   return (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -98,6 +99,8 @@ export function addWords(list) {
   const added = [];
   const skipped = [];
   const seen = new Set(words.map((w) => w.word));
+  // 同一批的字時間各差 1 毫秒，讓「新字」照貼上的順序出現在複習裡
+  const base = Date.now();
   for (const raw of list) {
     const n = normalizeWord(raw);
     if (!n) continue;
@@ -107,6 +110,7 @@ export function addWords(list) {
     }
     seen.add(n);
     const w = createWord(n);
+    w.createdAt = w.updatedAt = base + added.length;
     words.unshift(w);
     added.push(w);
   }
