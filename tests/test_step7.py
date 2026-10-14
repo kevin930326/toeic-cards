@@ -21,12 +21,12 @@ SEED = """async () => {
   const now = Date.now();
   const key = (i) => { const d = new Date(dayStart(now)); d.setDate(d.getDate() - i); return dayKey(d.getTime() + 60000); };
   const log = {};
-  // 今天、昨天、前天有學（連續 3 天）；第 4 天前有學（中斷）；第 10~14 天前連續 5 天（最長紀錄）
+  // 每日目標 3 題：今天、昨天、前天達標（連續 3 天）；第 4 天前達標（中斷）；第 10~14 天前連續 5 天（最長紀錄）
   log[key(0)] = { reviews: 5, good: 4, again: 1, learned: 2, quiz: 10, quizCorrect: 8 };
   log[key(1)] = { reviews: 12, good: 9, again: 3, learned: 5 };
   log[key(2)] = { reviews: 3, good: 3, again: 0, learned: 0, quiz: 4, quizCorrect: 1 };
   log[key(4)] = { reviews: 7, good: 6, again: 1, learned: 3 };
-  for (let i = 10; i <= 14; i++) log[key(i)] = { reviews: 2, good: 2, again: 0, learned: 1 };
+  for (let i = 10; i <= 14; i++) log[key(i)] = { reviews: 3, good: 3, again: 0, learned: 1 };
   log[key(40)] = { reviews: 50, good: 50, again: 0, learned: 0 };   // 超過 30 天，不算在預設期間
   const start = dayStart(now);
   const w = (id, srs, unfamiliar = false) => ({ id, word: id, phonetic: '', pos: 'n.', zh: 'n. ' + id, en: 'x', examples: [],
@@ -41,6 +41,7 @@ SEED = """async () => {
     w('masterB', { reps: 6, interval: 45, ease: 2.6, lapses: 0, due: start + 45 * 86400e3 }),
   ];
   localStorage.clear();
+  localStorage.setItem('toeic-cards:settings', JSON.stringify({ dailyGoal: 3 }));   // 每天 3 題就算打卡
   localStorage.setItem('toeic-cards:words', JSON.stringify(words));
   localStorage.setItem('toeic-cards:log', JSON.stringify(log));
 }"""
@@ -76,11 +77,11 @@ with sync_playwright() as p:
     # ---- 數字卡片 ----
     check(page.locator('#streakDays').inner_text() == '3', f"連續學習 3 天（{page.locator('#streakDays').inner_text()}）")
     hero = page.locator('.kpi-hero').inner_text()
-    check('今天已完成' in hero and '最長 5 天' in hero, f'今天已完成、最長紀錄 5 天：{hero!r}')
+    check('打卡成功' in hero and '最長 5 天' in hero and '今日 15 / 3 題' in hero.replace('\n', ' '), f'今日已打卡、最長紀錄 5 天：{hero!r}')
     check(page.locator('#kpiWords').inner_text() == '7', '單字總數 7')
     check('不熟 2 個' in page.locator('.kpi').nth(1).inner_text(), '不熟 2 個')
     check(page.locator('#kpiMastered').inner_text() == '2' and '佔 29%' in page.locator('.kpi').nth(2).inner_text(), '已熟 2 個（29%）')
-    check(page.locator('#kpiReviews').inner_text() == '37', f"近 30 天複習 37 次（不含 40 天前的 50 次）：{page.locator('#kpiReviews').inner_text()}")
+    check(page.locator('#kpiReviews').inner_text() == '42', f"近 30 天複習 42 次（不含 40 天前的 50 次）：{page.locator('#kpiReviews').inner_text()}")
     check('新學 15 個・學習 9 天' in page.locator('.kpi').nth(3).inner_text(), '近 30 天新學 15 個、學習 9 天')
     acc = page.locator('#kpiAccuracy').inner_text().replace('\n', '')
     check(acc == '64%' and '共 14 題，答對 9 題' in page.locator('.kpi').nth(4).inner_text(), f'測驗正確率 9/14 = 64%（{acc}）')

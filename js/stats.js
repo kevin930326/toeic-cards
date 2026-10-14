@@ -11,6 +11,14 @@ export function isActive(day) {
   return !!day && (n(day.reviews) > 0 || n(day.quiz) > 0);
 }
 
+// 那一天有沒有「打卡」：複習＋測驗題數達到當天的目標
+//   當天紀錄裡有 goal 就用它（之後改目標不影響過去）；舊資料沒有 goal 時用目前的目標
+export function goalMet(day, fallbackGoal) {
+  if (!day) return false;
+  const goal = n(day.goal) || n(fallbackGoal) || 1;
+  return n(day.reviews) + n(day.quiz) >= goal;
+}
+
 // 從今天往回數 count 天的 key（舊 → 新），用 setDate 避免夏令時間差一小時
 export function lastDayKeys(now, count) {
   const keys = [];
@@ -23,24 +31,27 @@ export function lastDayKeys(now, count) {
   return keys;
 }
 
-// 連續學習天數：今天有學習就從今天算；今天還沒學習，從昨天算（今天還有機會延續）
-export function streak(log, now) {
-  const todayDone = isActive(log[dayKey(now)]);
+// 連續打卡天數：今天已達標就從今天算；今天還沒達標，從昨天算（今天還有機會延續）
+//   今天一律用「目前的目標」（今天改目標要立刻生效）；過去的日子用當天記下的目標
+export function streak(log, now, goal) {
+  const todayKey = dayKey(now);
+  const todayDone = goalMet(log[todayKey] && { ...log[todayKey], goal }, goal);
   let days = 0;
   const start = new Date(dayStart(now));
   if (!todayDone) start.setDate(start.getDate() - 1);
   for (;;) {
     const k = dayKey(start.getTime() + 60 * 1000);
-    if (!isActive(log[k])) break;
+    const day = k === todayKey && log[k] ? { ...log[k], goal } : log[k];
+    if (!goalMet(day, goal)) break;
     days++;
     start.setDate(start.getDate() - 1);
   }
   return { days, todayDone };
 }
 
-// 歷史上最長的連續學習天數
-export function longestStreak(log) {
-  const keys = Object.keys(log).filter((k) => isActive(log[k])).sort();
+// 歷史上最長的連續打卡天數
+export function longestStreak(log, goal) {
+  const keys = Object.keys(log).filter((k) => goalMet(log[k], goal)).sort();
   let best = 0;
   let run = 0;
   let prev = null;

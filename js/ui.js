@@ -16,6 +16,19 @@ export function zhLines(zh) {
   });
 }
 
+// 每日目標的進度環（複習頁、統計頁共用）
+export function goalRingHTML(done, goal, size = 40) {
+  const r = size / 2 - 4;
+  const c = 2 * Math.PI * r;
+  const ratio = Math.min(1, goal ? done / goal : 0);
+  return `<svg class="goal-ring ${ratio >= 1 ? 'is-met' : ''}" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+    <circle class="goal-track" cx="${size / 2}" cy="${size / 2}" r="${r}"/>
+    <circle class="goal-fill" cx="${size / 2}" cy="${size / 2}" r="${r}"
+      stroke-dasharray="${(c * ratio).toFixed(2)} ${c.toFixed(2)}" transform="rotate(-90 ${size / 2} ${size / 2})"/>
+    ${ratio >= 1 ? `<path class="goal-check" d="M${size * 0.32} ${size * 0.52} l${size * 0.12} ${size * 0.12} l${size * 0.24} -${size * 0.26}"/>` : ''}
+  </svg>`;
+}
+
 let toastTimer;
 export function toast(msg, kind = 'info') {
   const el = document.getElementById('toast');

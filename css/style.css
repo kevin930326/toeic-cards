@@ -545,7 +545,7 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .swipe-again { right: 22px; color: var(--accent); transform: rotate(10deg); opacity: var(--again); }
 
 /* ===== 複習頁 ===== */
-.review-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.review-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .review-count { margin: 0; color: var(--ink-soft); font-size: 15px; }
 .review-count strong { font-family: var(--font-en); font-size: 28px; color: var(--ink); margin-right: 4px; }
 .review-progress { margin-bottom: 16px; }
@@ -963,3 +963,38 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .accent-name { width: 4em; flex: none; font-weight: 500; }
 .accent-voice { flex: 1; min-width: 0; color: var(--ink-soft); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .accent-list li.missing .accent-voice { color: var(--ink-faint); white-space: normal; }
+
+/* ===== 每日目標 ===== */
+.goal-ring { flex: none; display: block; }
+.goal-track { fill: none; stroke: var(--line); stroke-width: 4; }
+.goal-fill { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dasharray 0.4s ease; }
+.goal-ring.is-met .goal-fill { stroke: #3f8a4f; }
+.goal-check { fill: none; stroke: #3f8a4f; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.goal-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-right: auto;
+  margin-left: 12px;
+  padding: 3px 12px 3px 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.goal-pill.is-met { color: #3f8a4f; border-color: color-mix(in srgb, #3f8a4f 40%, transparent); }
+.goal-line { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 14px; color: var(--ink-soft); }
+.goal-line strong { color: var(--ink); font-size: 16px; }
+.hero-sub p { margin: 0; }
+.goal-done { margin: 6px 0 2px; color: #3f8a4f; font-weight: 600; }
+.goal-done strong { font-size: 18px; }
+.goal-todo { margin: 6px 0 2px; color: var(--ink-soft); }
+.goal-todo strong { color: var(--accent); }
+.goal-todo a { color: var(--accent); font-weight: 600; margin-left: 4px; }
+.toast[data-kind="success"] { background: #3f8a4f; color: #fff; }
+
+@media (max-width: 420px) {
+  .goal-pill { margin-left: 6px; padding-right: 8px; }
+}

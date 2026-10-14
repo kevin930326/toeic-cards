@@ -5,6 +5,10 @@ import { renderCards } from './views/cards.js';
 import { renderQuiz } from './views/quiz.js';
 import { renderStats } from './views/stats.js';
 import { pruneMistakes } from './mistakes.js';
+import { onLogChange, todayProgress, getLog, currentGoal } from './log.js';
+import { streak } from './stats.js';
+import { dayKey } from './srs.js';
+import { toast } from './ui.js';
 import { renderWords } from './views/words.js';
 import { renderSettings } from './views/settings.js';
 import { lookupMissing } from './dictionary.js';
@@ -70,6 +74,20 @@ function updateBadge() {
 subscribe(updateBadge);
 // 單字被刪掉時，錯題本裡相關的題目也一起清掉
 subscribe(() => pruneMistakes(getWords().map((w) => w.id)));
+
+// 達成每日目標時跳出慶祝訊息（每天只跳一次；復原到目標以下再達標也不會重複）
+const CELEBRATED_KEY = 'toeic-cards:celebrated';
+onLogChange(() => {
+  const t = todayProgress();
+  if (!t.met) return;
+  const today = dayKey(Date.now());
+  let last = '';
+  try { last = localStorage.getItem(CELEBRATED_KEY) || ''; } catch (e) { /* 讀不到就當作還沒慶祝 */ }
+  if (last === today) return;
+  try { localStorage.setItem(CELEBRATED_KEY, today); } catch (e) { /* 寫不進去頂多再跳一次 */ }
+  const days = streak(getLog(), Date.now(), currentGoal()).days;
+  toast(`🎉 今日目標達成！連續打卡 ${days} 天`, 'success');
+});
 
 window.addEventListener('hashchange', () => { render(); updateBadge(); });
 applyTheme();

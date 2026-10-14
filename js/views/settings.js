@@ -82,6 +82,11 @@ export function renderSettings(root) {
       <div class="panel">
         <h2 class="panel-title">複習</h2>
         <div class="setting-row wrap">
+          <span class="setting-label">目標</span>
+          ${segmented('dailyGoal', s.dailyGoal, [['10', '10 題/天'], ['20', '20 題/天'], ['30', '30 題/天'], ['50', '50 題/天']], '每日目標')}
+        </div>
+        <p class="hint-text">複習一張卡或測驗答一題都算 1 題，達到目標才算「打卡」。之後改目標不會影響過去的打卡紀錄。</p>
+        <div class="setting-row wrap">
           <span class="setting-label">新字</span>
           ${segmented('newPerDay', s.newPerDay, [['10', '10 個/天'], ['20', '20 個/天'], ['30', '30 個/天'], ['50', '50 個/天']], '每天新字數')}
         </div>
@@ -165,6 +170,9 @@ export function renderSettings(root) {
 
   root.querySelectorAll('input[name="llmRpm"]').forEach((input) => {
     input.addEventListener('change', () => updateSettings({ llmRpm: Number(input.value) }));
+  });
+  root.querySelectorAll('input[name="dailyGoal"]').forEach((input) => {
+    input.addEventListener('change', () => updateSettings({ dailyGoal: Number(input.value) }));
   });
   root.querySelectorAll('input[name="newPerDay"]').forEach((input) => {
     input.addEventListener('change', () => updateSettings({ newPerDay: Number(input.value) }));

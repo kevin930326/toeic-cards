@@ -2,14 +2,15 @@
 //   往右滑／按「會」→ 隔越來越久才再出現
 //   往左滑／按「不熟」→ 標記不熟，這一輪稍後再出現一次，10 分鐘後也會再到期
 import { getWords, getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
-import { openEditor } from '../ui.js';
+import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
 import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js';
 import { attachSwipe, flyOut } from '../swipe.js';
 import {
   grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
 } from '../srs.js';
-import { recordReview, learnedToday, getDay } from '../log.js';
+import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal } from '../log.js';
+import { streak } from '../stats.js';
 import { onLookupStatus } from '../dictionary.js';
 import { onGenerateStatus } from '../generate.js';
 
@@ -64,6 +65,7 @@ export function renderReview(root) {
       <section class="page page-review">
         <div class="review-head">
           <p class="review-count"><strong id="remain">${session.queue.length}</strong> 張待複習</p>
+          ${goalPill()}
           ${modeToggleHTML(cardMode)}
         </div>
         <div class="progress review-progress" aria-hidden="true"><div class="progress-bar" style="width:${pct}%"></div></div>
@@ -113,6 +115,13 @@ export function renderReview(root) {
     root.querySelector('#edit').addEventListener('click', () => openEditor(w.id));
   }
 
+  // 今日目標的小徽章：進度環＋「今日 12/20」
+  function goalPill() {
+    const t = todayProgress();
+    return `<a class="goal-pill ${t.met ? 'is-met' : ''}" href="#/stats" title="今日目標" aria-label="今日目標 ${t.done} / ${t.goal} 題">
+      ${goalRingHTML(t.done, t.goal, 26)}<span>${t.done}/${t.goal}</span></a>`;
+  }
+
   function drawDone() {
     const now = Date.now();
     const words = getWords();
@@ -131,6 +140,7 @@ export function renderReview(root) {
         <p class="done-mark" aria-hidden="true">✓</p>
         <p class="empty-title">今天的複習完成了！</p>
         ${day.reviews ? `<p class="done-stats">今天複習了 <strong>${day.reviews}</strong> 次：會 ${day.good}・不熟 ${day.again}・新學 ${day.learned} 個字</p>` : ''}
+        ${goalLine()}
         <p class="muted">${dueTomorrow ? `明天有 ${dueTomorrow} 個字要複習` : '明天沒有到期的字'}</p>
         <div class="done-actions">
           ${newLeft ? `<button class="btn btn-primary" id="more" type="button">再學 ${Math.min(10, newLeft)} 個新字</button>` : ''}
@@ -141,6 +151,15 @@ export function renderReview(root) {
     root.innerHTML = `<section class="page"><div class="empty-state done-state">${body}</div></section>`;
     root.querySelector('#more')?.addEventListener('click', () => { startSession(10); draw(); });
     root.querySelector('#undo')?.addEventListener('click', undo);
+  }
+
+  // 完成畫面上的打卡狀態；還沒達標時建議去測驗補足
+  function goalLine() {
+    const t = todayProgress();
+    const st = streak(getLog(), Date.now(), currentGoal());
+    if (t.met) return `<p class="goal-done">🎉 今日目標達成！已連續打卡 <strong>${st.days}</strong> 天</p>`;
+    return `<p class="goal-todo">今日目標 ${t.done} / ${t.goal} 題，還差 <strong>${t.goal - t.done}</strong> 題就能打卡
+      <a href="#/quiz">去測驗 ›</a></p>`;
   }
 
   function bindMode() {

@@ -41,7 +41,9 @@ def db(page):
 
 def today_log(page):
     log = page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:log') || '{}')")
-    return list(log.values())[0] if log else {}
+    d = dict(list(log.values())[0]) if log else {}
+    d.pop('goal', None)   # 當天的每日目標（另外測試），這裡只比較複習數字
+    return d
 
 def head(page):
     return page.locator('.card-front .headword').inner_text()

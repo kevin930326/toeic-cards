@@ -1,8 +1,8 @@
 // 統計頁：連續學習天數、熟練度分布、每日複習／測驗量、未來到期量
 // 期間篩選（7／30／90 天）放在最上面，套用到下面所有「期間」相關的數字和圖表
 import { getWords, getSettings, updateSettings, subscribe } from '../store.js';
-import { esc } from '../ui.js';
-import { getLog } from '../log.js';
+import { esc, goalRingHTML } from '../ui.js';
+import { getLog, todayProgress, currentGoal } from '../log.js';
 import { columnChart } from '../charts.js';
 import {
   streak, longestStreak, dailySeries, totals, masteryBuckets, MASTERY_LEVELS, forecast,
@@ -24,8 +24,10 @@ export function renderStats(root) {
     const days = PERIODS.includes(Number(getSettings().statsDays)) ? Number(getSettings().statsDays) : 30;
     const series = dailySeries(log, now, days);
     const t = totals(series);
-    const st = streak(log, now);
-    const best = Math.max(longestStreak(log), st.days);
+    const goal = currentGoal();
+    const today = todayProgress(now);
+    const st = streak(log, now, goal);
+    const best = Math.max(longestStreak(log, goal), st.days);
     const m = masteryBuckets(words);
     const unfamiliar = words.filter((w) => w.unfamiliar).length;
 
@@ -38,8 +40,8 @@ export function renderStats(root) {
     }
 
     const streakSub = st.todayDone
-      ? '今天已完成 ✓'
-      : st.days ? '今天學習一下就能延續！' : '今天開始第一天吧';
+      ? '今日目標已達成，打卡成功 ✓'
+      : `今天還差 ${today.goal - today.done} 題就能打卡`;
 
     root.innerHTML = `
       <section class="page page-stats">
@@ -53,9 +55,13 @@ export function renderStats(root) {
 
         <div class="kpi-row">
           <div class="kpi kpi-hero">
-            <p class="kpi-label">連續學習</p>
+            <p class="kpi-label">連續打卡</p>
             <p class="kpi-value"><span id="streakDays">${st.days}</span><small>天</small></p>
-            <p class="kpi-sub">${esc(streakSub)}・最長 ${best} 天</p>
+            <div class="kpi-sub hero-sub">
+              <p class="goal-line">${goalRingHTML(today.done, today.goal, 28)}
+                <span>今日 <strong id="goalDone">${today.done}</strong> / ${today.goal} 題</span></p>
+              <p>${esc(streakSub)}・最長 ${best} 天</p>
+            </div>
           </div>
           <div class="kpi">
             <p class="kpi-label">單字總數</p>

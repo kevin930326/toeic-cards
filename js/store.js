@@ -18,6 +18,7 @@ const DEFAULT_SETTINGS = {
   quizCount: 10,        // 每次測驗題數
   part5Fresh: false,    // Part 5 每次都出新題目（會用 AI 額度）
   statsDays: 30,        // 統計頁的期間：7 | 30 | 90
+  dailyGoal: 20,        // 每日目標：複習＋測驗合計題數，達標才算打卡
 };
 
 const listeners = new Set();
