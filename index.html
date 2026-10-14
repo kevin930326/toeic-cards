@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>多益字卡 TOEIC Cards</title>
+  <meta name="description" content="只要輸入英文單字，自動產生中文、英文解釋與多益例句的背單字網站">
+  <meta name="theme-color" content="#f4efe4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16181d" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 在畫面出現前套用主題，避免閃一下白色
+    try {
+      const t = JSON.parse(localStorage.getItem('toeic-cards:settings') || '{}').theme;
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/cards">
+      <span class="brand-mark" aria-hidden="true">T</span>
+      <span class="brand-text">多益字卡</span>
+    </a>
+    <nav class="nav" aria-label="主要功能">
+      <a href="#/cards" data-route="cards">字卡</a>
+      <a href="#/words" data-route="words">單字庫</a>
+      <a href="#/settings" data-route="settings">設定</a>
+    </nav>
+    <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="切換深色模式" title="切換深色模式">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path class="sun" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+
+  <main id="view" class="view" tabindex="-1"></main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="editDialog" class="dialog">
+    <form method="dialog" id="editForm">
+      <h2 class="dialog-title">編輯單字</h2>
+      <label class="field">
+        <span>英文單字</span>
+        <input name="word" required autocomplete="off" spellcheck="false">
+      </label>
+      <div class="field-row">
+        <label class="field field-narrow">
+          <span>詞性</span>
+          <input name="pos" placeholder="例如 v. / n." autocomplete="off">
+        </label>
+        <label class="field">
+          <span>中文意思（多個詞性可分行）</span>
+          <textarea name="zh" rows="2" placeholder="v. 核准；批准"></textarea>
+        </label>
+      </div>
+      <label class="field">
+        <span>英文解釋</span>
+        <textarea name="en" rows="2" placeholder="用淺白的英文說明這個字"></textarea>
+      </label>
+      <label class="field">
+        <span>例句（一行一句；中文翻譯接在 <code>|</code> 後面）</span>
+        <textarea name="examples" rows="3" placeholder="The manager approved the budget. | 經理核准了預算。"></textarea>
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span>常見搭配詞（逗號分隔）</span>
+          <input name="collocations" placeholder="approve a request, approve a plan" autocomplete="off">
+        </label>
+      </div>
+      <div class="field-row">
+        <label class="field">
+          <span>詞性變化（逗號分隔）</span>
+          <input name="forms" placeholder="approval (n.), approved (adj.)" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>同義詞（逗號分隔）</span>
+          <input name="synonyms" placeholder="authorize, endorse" autocomplete="off">
+        </label>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" value="cancel" id="editCancel">取消</button>
+        <button type="submit" class="btn btn-primary" value="save">儲存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
