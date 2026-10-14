@@ -1059,3 +1059,6 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .link-steps { margin: 8px 0 4px; }
 .link-box { display: block; width: 100%; margin: 8px 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); font-size: 12px; }
 #copyLink { margin-top: 4px; }
+.link-login { margin-top: 14px; font-size: 14px; }
+.link-login > summary { cursor: pointer; color: var(--ink-soft); margin-bottom: 8px; }
+.set-pw { margin-top: 6px; padding-top: 4px; border-top: 1px dashed var(--line); }

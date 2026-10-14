@@ -34,6 +34,7 @@ export async function createFirebaseRemote(config) {
     email: u.email || '',
     name: u.displayName || '',
     provider: u.providerData?.[0]?.providerId || 'password',
+    providers: (u.providerData || []).map((p) => p.providerId),   // 例如 ['google.com', 'password']
   } : null);
 
   const wordsCol = (uid) => fs.collection(db, 'users', uid, 'words');
@@ -60,6 +61,38 @@ export async function createFirebaseRemote(config) {
     async completeEmailLink(email, url) {
       const res = await authMod.signInWithEmailLink(auth, email, url);
       return userInfo(res.user);
+    },
+    // Email＋密碼：iPhone 主畫面 App 打不開 Google 登入視窗，Email 連結又有每天 5 封的上限，這是最穩的方式
+    async signInPassword(email, password) {
+      const res = await authMod.signInWithEmailAndPassword(auth, email, password);
+      return userInfo(res.user);
+    },
+    async registerPassword(email, password) {
+      const res = await authMod.createUserWithEmailAndPassword(auth, email, password);
+      return userInfo(res.user);
+    },
+    // 已登入（例如用 Google）的帳號加上密碼，之後就能用 Email＋密碼登入同一個帳號
+    async setPassword(password) {
+      const u = auth.currentUser;
+      if (!u) throw Object.assign(new Error('尚未登入'), { code: 'auth/no-current-user' });
+      await u.reload();   // 這個帳號可能在別的裝置用 Email 連結登入過（也算「密碼」登入方式），先取得最新狀態
+      if (u.providerData.some((p) => p.providerId === 'password')) {
+        await authMod.updatePassword(u, password);
+      } else {
+        try {
+          await authMod.linkWithCredential(u, authMod.EmailAuthProvider.credential(u.email, password));
+        } catch (err) {
+          // 有些情況（例如 Firebase 模擬器）會因為「這個 Email 已經被自己的 Google 帳號使用」而拒絕連結，
+          // 這時直接替這個帳號設定密碼，效果一樣：之後可以用同一個 Email＋密碼登入同一個帳號
+          if (!['auth/email-already-in-use', 'auth/credential-already-in-use', 'auth/provider-already-linked'].includes(err?.code)) throw err;
+          await authMod.updatePassword(u, password);
+        }
+      }
+      await u.reload();
+      return userInfo(auth.currentUser);
+    },
+    async resetPassword(email) {
+      await authMod.sendPasswordResetEmail(auth, email);
     },
     async signOut() {
       await authMod.signOut(auth);

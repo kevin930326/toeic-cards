@@ -101,6 +101,16 @@ export function friendlyError(err) {
     'auth/expired-action-code': '登入連結已經過期，請重新寄一次',
     'auth/network-request-failed': '連不上網路，請稍後再試',
     'auth/too-many-requests': '嘗試次數太多，請稍後再試',
+    'auth/quota-exceeded': '今天寄登入信的次數已經達到上限（Firebase 免費方案整個專案每天只能寄 5 封），請改用「Email＋密碼」登入，或明天再試',
+    'auth/invalid-credential': 'Email 或密碼不正確。如果這個帳號是用 Google 註冊的，請先在電腦用 Google 登入，再到「帳號與同步」按「設定密碼」',
+    'auth/wrong-password': 'Email 或密碼不正確',
+    'auth/user-not-found': '找不到這個帳號，可以按「建立新帳號」',
+    'auth/missing-password': '請輸入密碼',
+    'auth/weak-password': '密碼至少要 6 個字元',
+    'auth/email-already-in-use': '這個 Email 已經註冊過了（可能是用 Google 註冊的），請直接登入；如果沒有密碼，先在電腦用 Google 登入後「設定密碼」',
+    'auth/requires-recent-login': '為了安全，請先登出、重新登入一次，再設定密碼',
+    'auth/provider-already-linked': '這個帳號已經有密碼了',
+    'auth/credential-already-in-use': '這個 Email 已經被另一個帳號使用',
     'permission-denied': '雲端資料庫拒絕存取（請確認 Firestore 安全規則，見 docs/firebase-setup.md 第 5 步）',
     unavailable: '暫時連不上雲端資料庫，稍後會自動重試',
   };
@@ -220,6 +230,38 @@ export async function completeEmailLink(email, link) {
   ls.del(EMAIL_KEY);
   emit({ pendingLink: '', linkSentTo: '' });
   if (/[?&]oobCode=/.test(location.search)) cleanUrl();
+}
+
+// ---- Email＋密碼 ----
+async function withFriendly(fn) {
+  try {
+    return await fn();
+  } catch (err) {
+    throw new Error(friendlyError(err));
+  }
+}
+
+export async function signInWithPassword(email, password) {
+  const remote = await ensureRemote();
+  return withFriendly(() => remote.signInPassword(email.trim(), password));
+}
+
+export async function registerWithPassword(email, password) {
+  const remote = await ensureRemote();
+  return withFriendly(() => remote.registerPassword(email.trim(), password));
+}
+
+// 已登入的帳號加上密碼（電腦用 Google 登入後設定，iPhone 主畫面 App 就能用 Email＋密碼登入同一個帳號）
+export async function setAccountPassword(password) {
+  const remote = await ensureRemote();
+  const user = await withFriendly(() => remote.setPassword(password));
+  emit({ user });
+  return user;
+}
+
+export async function sendPasswordReset(email) {
+  const remote = await ensureRemote();
+  return withFriendly(() => remote.resetPassword(email.trim()));
 }
 
 export async function signOutSync() {

@@ -149,7 +149,8 @@ with sync_playwright() as p:
     # ---- 電腦（A）：本機已經有 5 個字、今天複習 3 次，用 Google 登入 ----
     A_words = [word(w, i) for i, w in enumerate(['approve', 'invoice', 'negotiate', 'postpone', 'submit'])]
     ctxA, A = device(browser, 'A', A_words, own_log_reviews=3)
-    check(A.locator('#googleBtn').is_visible() and A.locator('#emailForm').is_visible(), '登入前：Google 登入與 Email 登入連結')
+    check(A.locator('#googleBtn').is_visible() and A.locator('#pwForm').is_visible() and A.locator('.link-login').count() == 1,
+          '登入前：Google 登入、Email＋密碼，以及收起來的 Email 登入連結')
     A.screenshot(path=os.path.join(OUT, 's11_login.png'), full_page=True)
     google_login(A)
     sa = state(A)
@@ -237,6 +238,7 @@ with sync_playwright() as p:
 
     # ---- 別人（C）用 Email 登入連結：同一個瀏覽器點連結 → 自動完成 ----
     ctxC, C = device(browser, 'C', [word('other', 1)])
+    C.click('.link-login > summary')
     C.fill('#emailInput', 'someone@example.com')
     C.click('#emailForm button[type=submit]')
     C.wait_for_selector('#syncPanel .sync-line.ok')
@@ -262,11 +264,13 @@ with sync_playwright() as p:
 
     # ---- iPhone 主畫面 App：在 Safari 開連結沒用 → 貼上連結登入 ----
     ctxS, S = device(browser, 'Safari', mobile=True)
+    S.click('.link-login > summary')
     S.fill('#emailInput', email)
     S.click('#emailForm button[type=submit]')
     S.wait_for_selector('#syncPanel .sync-line.ok')
     link = latest_link(email)
     ctxD, D = device(browser, 'App', [word('applocal', 3)], mobile=True)   # 主畫面 App：另一份 localStorage
+    D.click('.link-login > summary')
     D.click('.paste-link summary')
     D.fill('#pasteEmail', email)
     D.fill('#pasteLink', link)
@@ -275,6 +279,22 @@ with sync_playwright() as p:
     check(state(D)['user']['uid'] == uid and 'approve' in local_words(D), '貼上登入連結就能登入同一個帳號並同步')
     D.screenshot(path=os.path.join(OUT, 's11_paste.png'), full_page=True)
     ctxS.close()
+
+    # ---- 電腦用 Google 登入後「設定密碼」（讓 iPhone 主畫面 App 可以用 Email＋密碼登入）----
+    A.goto(URL + '#/settings')
+    A.wait_for_selector('#setPwForm')
+    check('設定密碼' in A.locator('#syncPanel').inner_text(), 'Google 登入的帳號會出現「設定密碼」')
+    A.fill('#newPassword', 'secret123')
+    A.click('#setPwForm button[type=submit]')
+    for _ in range(40):
+        if A.locator('#syncPanel .ai-error').count() or '密碼設定完成' in A.locator('#toast').inner_text():
+            break
+        A.wait_for_timeout(250)
+    if A.locator('#syncPanel .ai-error').count():
+        print('   PANEL ERROR:', A.locator('#syncPanel .ai-error').inner_text())
+    check('password' in state(A)['user'].get('providers', []) and 'google.com' in state(A)['user'].get('providers', []),
+          '帳號同時有 Google 和密碼兩種登入方式')
+    A.screenshot(path=os.path.join(OUT, 's11_set_password.png'), full_page=True)
 
     # ---- iPhone 主畫面 App：沒有 Google 按鈕；Safari 打開連結 →「複製登入連結」→ 回 App 貼上 ----
     IPHONE_UA = ('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 '
@@ -297,10 +317,28 @@ with sync_playwright() as p:
         pg.wait_for_selector('#syncPanel .panel-title')
         return c, pg
 
+    ctxPw, Pw = iphone('iPhoneAppPw', standalone=True)
+    t = Pw.locator('#syncPanel').inner_text()
+    check(Pw.locator('#googleBtn').count() == 0 and 'Apple 的限制' in t and '設定密碼' in t,
+          'iPhone 主畫面 App 不顯示 Google 按鈕，並說明「先在電腦設定密碼」')
+    check('btn-primary' in Pw.get_attribute('#pwForm button[type=submit]', 'class'), 'iPhone 主畫面 App 的主要登入方式是 Email＋密碼')
+    check(Pw.locator('.link-login').get_attribute('open') is None and '每天最多寄 5 封' in t, 'Email 登入連結收在次要位置，並標示每天 5 封的限制')
+    Pw.fill('#pwEmail', email)
+    Pw.fill('#pwPassword', 'wrong-password')
+    Pw.click('#pwForm button[type=submit]')
+    Pw.wait_for_selector('#syncPanel .ai-error')
+    check('Email 或密碼不正確' in Pw.locator('#syncPanel .ai-error').inner_text(), '密碼錯誤：在區塊裡持續顯示中文錯誤說明')
+    Pw.fill('#pwPassword', 'secret123')
+    Pw.click('#pwForm button[type=submit]')
+    wait_synced(Pw)
+    check(state(Pw)['user']['uid'] == uid and 'approve' in local_words(Pw), 'iPhone App 用同一個 Gmail＋密碼登入 → 同一個帳號，拿到電腦的單字')
+    check(Pw.locator('#syncPanel .ai-error').count() == 0, '登入成功後錯誤訊息消失')
+    Pw.screenshot(path=os.path.join(OUT, 's11_iphone_password.png'), full_page=True)
+    ctxPw.close()
+
+    # Email 登入連結（備用）：iPhone App 寄信 → Safari 複製 → App 貼上
     ctxApp, App = iphone('iPhoneApp', standalone=True)
-    t = App.locator('#syncPanel').inner_text()
-    check(App.locator('#googleBtn').count() == 0 and 'Apple 的限制' in t, 'iPhone 主畫面 App 不顯示 Google 按鈕，並說明原因')
-    check(App.locator('.paste-link').get_attribute('open') is not None, 'iPhone 主畫面 App 直接展開「貼上登入連結」')
+    App.click('.link-login > summary')
     App.fill('#emailInput', email)   # 和電腦 Google 登入同一個 Gmail
     App.click('#emailForm button[type=submit]')
     App.wait_for_selector('.link-steps')
@@ -344,6 +382,7 @@ with sync_playwright() as p:
 
     # ---- 錯誤的連結 ----
     ctxD2, D2 = device(browser, 'D2')
+    D2.click('.link-login > summary')
     D2.click('.paste-link summary')
     D2.fill('#pasteEmail', 'x@example.com')
     D2.fill('#pasteLink', 'https://example.com/not-a-link')
@@ -351,6 +390,30 @@ with sync_playwright() as p:
     D2.wait_for_timeout(800)
     check('不是有效的登入連結' in D2.locator('#toast').inner_text(), '貼錯連結時說明原因')
     ctxD2.close()
+
+    # ---- 建立新帳號（Email＋密碼）、用已註冊的 Email 建立、忘記密碼 ----
+    ctxR, R = device(browser, 'Register')
+    R.fill('#pwEmail', 'newbie@example.com')
+    R.fill('#pwPassword', 'abc12345')
+    R.click('#registerBtn')
+    wait_synced(R)
+    check(state(R)['user']['email'] == 'newbie@example.com' and state(R)['user']['uid'] != uid, '可以用 Email＋密碼建立新帳號')
+    R.evaluate("import('/js/sync.js').then((m) => m.signOutSync())")
+    R.wait_for_selector('#pwForm')
+    R.fill('#pwEmail', email)
+    R.fill('#pwPassword', 'abc12345')
+    R.click('#registerBtn')
+    R.wait_for_selector('#syncPanel .ai-error')
+    check('已經註冊過' in R.locator('#syncPanel .ai-error').inner_text(), '用已註冊（Google）的 Email 建立帳號：說明要直接登入或先設定密碼')
+    R.fill('#pwEmail', 'newbie@example.com')
+    R.click('#resetBtn')
+    R.wait_for_timeout(800)
+    resets = [c for c in http('GET', f'{AUTH}/emulator/v1/projects/{PROJECT}/oobCodes')['oobCodes']
+              if c['email'] == 'newbie@example.com' and c['requestType'] == 'PASSWORD_RESET']
+    check(len(resets) == 1 and '重設密碼' in R.locator('#toast').inner_text(), '忘記密碼：寄出重設密碼的信')
+    msg = R.evaluate("import('/js/sync.js').then((m) => m.friendlyError({ code: 'auth/quota-exceeded' }))")
+    check('每天只能寄 5 封' in msg and 'Email＋密碼' in msg, f'登入信額度用完時的說明：{msg}')
+    ctxR.close()
 
     # ---- 登出：資料保留 ----
     B.goto(URL + '#/settings')

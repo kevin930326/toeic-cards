@@ -1,6 +1,7 @@
 // 設定頁的「帳號與同步」區塊
 import {
   syncState, onSyncChange, signInWithGoogle, sendEmailLink, completeEmailLink, signOutSync, syncNow,
+  signInWithPassword, registerWithPassword, setAccountPassword, sendPasswordReset,
 } from '../sync.js';
 import { isIOS, isStandalone } from '../pwa.js';
 import { esc, toast, confirmAction } from '../ui.js';
@@ -16,19 +17,21 @@ function fmtTime(ms) {
 export function renderSyncPanel(container) {
   let busy = false;
   let lastKey = '';
+  let panelError = '';   // 登入相關的錯誤一直顯示在區塊裡（提示訊息只出現幾秒，容易沒看到）
 
   // 背景的狀態改變（例如 Firebase 載入完成、回報「尚未登入」）會重畫這個區塊；
   // 為了不把使用者正在輸入的 Email／連結清掉：
   //   1. 畫面上看得到的東西沒變就不重畫
   //   2. 重畫時保留輸入框的內容、「貼上連結」是否展開、以及游標所在的欄位
   function draw(st = syncState()) {
-    const key = JSON.stringify([st.configured, st.user?.uid, st.user?.email, st.status, st.error, st.lastSyncAt,
-      st.summary, st.pendingLink, st.linkSentTo]);
+    const key = JSON.stringify([st.configured, st.user?.uid, st.user?.email, st.user?.providers, st.status, st.error,
+      st.lastSyncAt, st.summary, st.pendingLink, st.linkSentTo, panelError]);
     if (key === lastKey && container.firstChild) return;
     lastKey = key;
     const typed = {};
     container.querySelectorAll('input[id]').forEach((i) => { if (i.value) typed[i.id] = i.value; });
     const pasteOpen = container.querySelector('.paste-link')?.open;
+    const linkOpen = container.querySelector('.link-login')?.open;
     const focusedId = container.contains(document.activeElement) ? document.activeElement.id : '';
     render(st);
     for (const [id, v] of Object.entries(typed)) {
@@ -36,6 +39,7 @@ export function renderSyncPanel(container) {
       if (el) el.value = v;
     }
     if (pasteOpen) container.querySelector('.paste-link')?.setAttribute('open', '');
+    if (linkOpen) container.querySelector('.link-login')?.setAttribute('open', '');
     if (focusedId) container.querySelector(`#${focusedId}`)?.focus();
   }
 
@@ -68,7 +72,17 @@ export function renderSyncPanel(container) {
           <button class="btn btn-outline" type="button" id="syncNow" ${st.status === 'syncing' ? 'disabled' : ''}>立即同步</button>
           <button class="btn btn-ghost" type="button" id="signOut">登出</button>
         </div>
-        <p class="hint-text">資料改變後會自動同步；打開網站、切回這個 App 時也會同步。登出後，這台裝置的資料會保留。</p>`;
+        <p class="hint-text">資料改變後會自動同步；打開網站、切回這個 App 時也會同步。登出後，這台裝置的資料會保留。</p>
+        <div class="set-pw">
+          <h3 class="sub-title">設定／變更密碼（讓 iPhone 主畫面 App 也能登入）</h3>
+          <p class="hint-text">iPhone 主畫面 App 不能用 Google 登入。替這個帳號設定密碼後，在 App 裡用
+            <strong>${esc(st.user.email)}</strong>＋密碼登入，就是同一個帳號。已經設定過的話，這裡可以改成新密碼。</p>
+          <form id="setPwForm" class="email-form">
+            <input type="password" id="newPassword" placeholder="至少 6 個字元" minlength="6" required autocomplete="new-password">
+            <button class="btn btn-outline" type="submit">設定密碼</button>
+          </form>
+          ${panelError ? `<p class="ai-error" role="alert">⚠ ${esc(panelError)}</p>` : ''}
+        </div>`;
     } else if (st.pendingLink) {
       // 用登入連結打開、但這個瀏覽器不知道 Email：
       //   - iPhone 的 Safari：多半是「主畫面 App 寄的信、在 Safari 打開」→ 建議複製連結回 App 貼上
@@ -90,36 +104,50 @@ export function renderSyncPanel(container) {
         ${iosSafari ? `<p class="pwa-note">📱 要在<strong>主畫面的 App</strong> 登入嗎？iPhone 會用 Safari 打開信裡的連結，但 Safari 和主畫面 App 的資料是分開的，
           所以請把連結帶回 App：</p>${copyBlock}${confirmBlock}` : `${confirmBlock}${copyBlock}`}`;
     } else {
-      // iPhone 主畫面 App 打不開 Google 的登入視窗（Apple 的限制），只提供 Email 登入連結
+      // iPhone 主畫面 App 打不開 Google 的登入視窗（Apple 的限制）→ 主要用 Email＋密碼；
+      // Email 登入連結整個專案每天只能寄 5 封（Firebase 免費方案），放在次要位置
       const iosApp = isIOS() && isStandalone();
       body = `
         <p class="panel-desc">登入後，手機和電腦會自動同步<strong>單字、AI 內容、複習進度、學習紀錄和錯題本</strong>。
           不登入也可以照常使用（資料只存在這台裝置）。Gemini 金鑰不會上傳。</p>
         ${iosApp
-          ? `<p class="pwa-note">📱 iPhone 主畫面 App 打不開 Google 的登入視窗（Apple 的限制），請用下面的 <strong>Email 登入連結</strong>。
-              電腦用 Google 登入的話，這裡輸入<strong>同一個 Gmail</strong>，就會是同一個帳號、共用同一份資料。</p>`
+          ? `<p class="pwa-note">📱 iPhone 主畫面 App 打不開 Google 的登入視窗（Apple 的限制），請用 <strong>Email＋密碼</strong>登入。<br>
+              電腦是用 Google 登入的話：先在<strong>電腦</strong>的「帳號與同步」按「<strong>設定密碼</strong>」，再回來這裡輸入同一個 Gmail＋密碼，就是同一個帳號。</p>`
           : `<button class="btn btn-outline google-btn" type="button" id="googleBtn">${googleIcon} 用 Google 帳號登入</button>
-             <p class="or-line"><span>或用 Email 登入（不用密碼）</span></p>`}
-        <form id="emailForm" class="email-form">
-          <input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email" value="${esc(st.linkSentTo)}">
-          <button class="btn ${iosApp ? 'btn-primary' : 'btn-outline'}" type="submit">寄登入連結</button>
+             <p class="or-line"><span>或用 Email＋密碼</span></p>`}
+        <form id="pwForm" class="email-form stacked">
+          <input type="email" id="pwEmail" placeholder="Email" required autocomplete="email">
+          <input type="password" id="pwPassword" placeholder="密碼（至少 6 個字元）" required minlength="6" autocomplete="current-password">
+          <div class="backup-actions">
+            <button class="btn ${iosApp ? 'btn-primary' : 'btn-outline'}" type="submit">登入</button>
+            <button class="btn btn-ghost" type="button" id="registerBtn">建立新帳號</button>
+            <button class="btn btn-ghost" type="button" id="resetBtn">忘記密碼</button>
+          </div>
         </form>
-        ${st.linkSentTo ? `<p class="sync-line ok">✓ 已寄出登入連結到 ${esc(st.linkSentTo)}（也請看一下垃圾郵件）。</p>` : ''}
-        ${iosApp && st.linkSentTo ? `<ol class="steps link-steps">
-            <li>打開「郵件」App，點信裡的登入連結（會用 Safari 打開）</li>
-            <li>在 Safari 打開的頁面按「<strong>複製登入連結</strong>」</li>
-            <li>回到這個 App，貼在下面，按「完成登入」</li>
-          </ol>` : ''}
-        <details class="paste-link" ${iosApp || (st.linkSentTo && isStandalone()) ? 'open' : ''}>
-          <summary>${iosApp ? '貼上登入連結' : '點了連結卻沒有登入？改用「貼上連結」'}</summary>
-          <p class="hint-text">${iosApp
-            ? '也可以在「郵件」App 裡<strong>長按連結 › 拷貝</strong>，直接貼在這裡。'
-            : '在信裡的連結上按右鍵（手機長按）› 複製連結網址，貼在下面。'}</p>
-          <form id="pasteForm" class="email-form stacked">
-            <input type="email" id="pasteEmail" placeholder="收到信的 Email" required autocomplete="email" value="${esc(st.linkSentTo)}">
-            <input type="url" id="pasteLink" placeholder="貼上登入連結（https://…）" required>
-            <button class="btn btn-primary" type="submit">完成登入</button>
+        ${panelError ? `<p class="ai-error" role="alert">⚠ ${esc(panelError)}</p>` : ''}
+        <details class="link-login" ${st.linkSentTo ? 'open' : ''}>
+          <summary>用 Email 登入連結（不用密碼；整個網站每天最多寄 5 封）</summary>
+          <form id="emailForm" class="email-form">
+            <input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email" value="${esc(st.linkSentTo)}">
+            <button class="btn btn-outline" type="submit">寄登入連結</button>
           </form>
+          ${st.linkSentTo ? `<p class="sync-line ok">✓ 已寄出登入連結到 ${esc(st.linkSentTo)}（也請看一下垃圾郵件）。</p>` : ''}
+          ${iosApp && st.linkSentTo ? `<ol class="steps link-steps">
+              <li>打開「郵件」App，點信裡的登入連結（會用 Safari 打開）</li>
+              <li>在 Safari 打開的頁面按「<strong>複製登入連結</strong>」</li>
+              <li>回到這個 App，貼在下面，按「完成登入」</li>
+            </ol>` : ''}
+          <details class="paste-link" ${st.linkSentTo && isStandalone() ? 'open' : ''}>
+            <summary>點了連結卻沒有登入？改用「貼上連結」</summary>
+            <p class="hint-text">${iosApp
+              ? '在「郵件」App 裡<strong>長按連結 › 拷貝</strong>，或在 Safari 打開的頁面按「複製登入連結」，貼在這裡。'
+              : '在信裡的連結上按右鍵（手機長按）› 複製連結網址，貼在下面。'}</p>
+            <form id="pasteForm" class="email-form stacked">
+              <input type="email" id="pasteEmail" placeholder="收到信的 Email" required autocomplete="email" value="${esc(st.linkSentTo)}">
+              <input type="url" id="pasteLink" placeholder="貼上登入連結（https://…）" required>
+              <button class="btn btn-primary" type="submit">完成登入</button>
+            </form>
+          </details>
         </details>
         ${st.status === 'error' && st.error ? `<p class="ai-error" role="alert">⚠ ${esc(st.error)}</p>` : ''}`;
     }
@@ -134,7 +162,9 @@ export function renderSyncPanel(container) {
     if (btn) btn.disabled = true;
     try {
       await fn();
+      panelError = '';
     } catch (err) {
+      panelError = err.message;
       toast(err.message, 'error');
     }
     busy = false;
@@ -147,6 +177,36 @@ export function renderSyncPanel(container) {
       await signInWithGoogle();
       toast('已登入，開始同步');
     }));
+    const pwValues = () => [container.querySelector('#pwEmail').value, container.querySelector('#pwPassword').value];
+    container.querySelector('#pwForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      run(e.submitter, async () => {
+        await signInWithPassword(...pwValues());
+        toast('已登入，開始同步');
+      });
+    });
+    container.querySelector('#registerBtn')?.addEventListener('click', (e) => {
+      if (!container.querySelector('#pwForm').reportValidity()) return;
+      run(e.currentTarget, async () => {
+        await registerWithPassword(...pwValues());
+        toast('帳號建立完成，開始同步');
+      });
+    });
+    container.querySelector('#resetBtn')?.addEventListener('click', (e) => {
+      const email = container.querySelector('#pwEmail');
+      if (!email.reportValidity()) return;
+      run(e.currentTarget, async () => {
+        await sendPasswordReset(email.value);
+        toast(`已寄出重設密碼的信到 ${email.value}`);
+      });
+    });
+    container.querySelector('#setPwForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      run(e.submitter, async () => {
+        await setAccountPassword(container.querySelector('#newPassword').value);
+        toast('密碼設定完成，iPhone App 可以用 Email＋密碼登入了');
+      });
+    });
     container.querySelector('#emailForm')?.addEventListener('submit', (e) => {
       e.preventDefault();
       run(e.submitter, async () => {
