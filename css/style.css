@@ -1056,3 +1056,6 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .paste-link { margin-top: 12px; font-size: 14px; }
 .paste-link summary { cursor: pointer; color: var(--ink-soft); }
 .paste-link .hint-text { margin: 8px 0; }
+.link-steps { margin: 8px 0 4px; }
+.link-box { display: block; width: 100%; margin: 8px 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); font-size: 12px; }
+#copyLink { margin-top: 4px; }

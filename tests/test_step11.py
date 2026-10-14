@@ -276,7 +276,60 @@ with sync_playwright() as p:
     D.screenshot(path=os.path.join(OUT, 's11_paste.png'), full_page=True)
     ctxS.close()
 
-    # ---- 在另一台裝置點連結（這台不知道 Email）→ 請使用者確認 Email ----
+    # ---- iPhone 主畫面 App：沒有 Google 按鈕；Safari 打開連結 →「複製登入連結」→ 回 App 貼上 ----
+    IPHONE_UA = ('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 '
+                 '(KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1')
+    STANDALONE = """
+      const realMM = window.matchMedia.bind(window);
+      window.matchMedia = (q) => q.includes('display-mode: standalone')
+        ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : realMM(q);"""
+    def iphone(name, standalone):
+        c = browser.new_context(viewport={'width': 390, 'height': 844}, user_agent=IPHONE_UA, is_mobile=True, has_touch=True,
+                                permissions=['clipboard-read', 'clipboard-write'])
+        c.add_init_script(CFG + (STANDALONE if standalone else ''))
+        c.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
+        pg = c.new_page()
+        pg.on('pageerror', lambda e: errors.append(f'{name} pageerror: ' + str(e)))
+        pg.goto(URL)
+        pg.evaluate('localStorage.clear()')
+        pg.goto(URL + '#/settings')
+        pg.reload()
+        pg.wait_for_selector('#syncPanel .panel-title')
+        return c, pg
+
+    ctxApp, App = iphone('iPhoneApp', standalone=True)
+    t = App.locator('#syncPanel').inner_text()
+    check(App.locator('#googleBtn').count() == 0 and 'Apple 的限制' in t, 'iPhone 主畫面 App 不顯示 Google 按鈕，並說明原因')
+    check(App.locator('.paste-link').get_attribute('open') is not None, 'iPhone 主畫面 App 直接展開「貼上登入連結」')
+    App.fill('#emailInput', email)   # 和電腦 Google 登入同一個 Gmail
+    App.click('#emailForm button[type=submit]')
+    App.wait_for_selector('.link-steps')
+    check('複製登入連結' in App.locator('.link-steps').inner_text(), '寄出後顯示「點連結 → 在 Safari 複製 → 回 App 貼上」三個步驟')
+    App.screenshot(path=os.path.join(OUT, 's11_iphone_app.png'), full_page=True)
+
+    ctxSaf, Saf = iphone('iPhoneSafari', standalone=False)
+    land = landing_url(latest_link(email))
+    Saf.goto(land)
+    Saf.wait_for_selector('#copyLink', timeout=15000)
+    check('btn-primary' in Saf.get_attribute('#copyLink', 'class') and '主畫面的 App' in Saf.locator('#syncPanel').inner_text(),
+          'Safari 打開連結：主要按鈕是「複製登入連結」，並說明要帶回 App')
+    Saf.screenshot(path=os.path.join(OUT, 's11_iphone_safari.png'), full_page=True)
+    Saf.click('#copyLink')
+    copied = Saf.evaluate('navigator.clipboard.readText()')
+    check(copied == land, '「複製登入連結」複製的是完整的登入連結')
+    check(state(Saf)['user'] is None, 'Safari 只複製、沒有用掉這個連結（還沒登入）')
+    ctxSaf.close()
+
+    App.fill('#pasteEmail', email)
+    App.fill('#pasteLink', copied)
+    App.click('#pasteForm button[type=submit]')
+    wait_synced(App)
+    sapp = state(App)
+    check(sapp['user']['uid'] == uid, f'同一個 Gmail：Google 登入和 Email 連結登入是同一個帳號（{sapp["user"]["uid"] == uid}）')
+    check('approve' in local_words(App), 'iPhone App 拿到電腦的單字')
+    ctxApp.close()
+
+
     ctxE, E = device(browser, 'E')
     C.evaluate("import('/js/sync.js').then((m) => m.sendEmailLink('someone@example.com'))")
     C.wait_for_timeout(500)

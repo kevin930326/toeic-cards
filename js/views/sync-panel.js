@@ -70,29 +70,50 @@ export function renderSyncPanel(container) {
         </div>
         <p class="hint-text">資料改變後會自動同步；打開網站、切回這個 App 時也會同步。登出後，這台裝置的資料會保留。</p>`;
     } else if (st.pendingLink) {
-      // 在另一台裝置（或另一個瀏覽器）點了登入連結：需要再輸入一次 Email
-      body = `
-        <p class="panel-desc">你是用登入連結打開的。請輸入<strong>收到這封信的 Email</strong> 完成登入：</p>
+      // 用登入連結打開、但這個瀏覽器不知道 Email：
+      //   - iPhone 的 Safari：多半是「主畫面 App 寄的信、在 Safari 打開」→ 建議複製連結回 App 貼上
+      //   - 其他情況：輸入 Email 就能在這裡完成登入
+      const iosSafari = isIOS() && !isStandalone();
+      const copyBlock = `
+        <button class="btn ${iosSafari ? 'btn-primary' : 'btn-outline'}" type="button" id="copyLink">複製登入連結</button>
+        <p class="hint-text">${iosSafari
+          ? '複製後回到<strong>主畫面的多益字卡 App</strong> › 設定 › 帳號與同步 › 「貼上連結」，貼上就能在 App 裡登入。'
+          : '如果是在另一台裝置（或主畫面 App）要求的登入，可以複製這個連結，到那邊貼上。'}</p>`;
+      const confirmBlock = `
+        <p class="panel-desc">${iosSafari ? '或者直接在 Safari 登入：' : ''}輸入<strong>收到這封信的 Email</strong> 完成登入：</p>
         <form id="confirmForm" class="email-form">
           <input type="email" id="confirmEmail" placeholder="you@example.com" required autocomplete="email">
-          <button class="btn btn-primary" type="submit">完成登入</button>
+          <button class="btn ${iosSafari ? 'btn-outline' : 'btn-primary'}" type="submit">在這裡登入</button>
         </form>`;
+      body = `
+        <p class="panel-desc">你是用 Email 登入連結打開的。</p>
+        ${iosSafari ? `<p class="pwa-note">📱 要在<strong>主畫面的 App</strong> 登入嗎？iPhone 會用 Safari 打開信裡的連結，但 Safari 和主畫面 App 的資料是分開的，
+          所以請把連結帶回 App：</p>${copyBlock}${confirmBlock}` : `${confirmBlock}${copyBlock}`}`;
     } else {
-      const iosApp = isIOS();
+      // iPhone 主畫面 App 打不開 Google 的登入視窗（Apple 的限制），只提供 Email 登入連結
+      const iosApp = isIOS() && isStandalone();
       body = `
         <p class="panel-desc">登入後，手機和電腦會自動同步<strong>單字、AI 內容、複習進度、學習紀錄和錯題本</strong>。
           不登入也可以照常使用（資料只存在這台裝置）。Gemini 金鑰不會上傳。</p>
-        <button class="btn btn-outline google-btn" type="button" id="googleBtn">${googleIcon} 用 Google 帳號登入</button>
-        <p class="or-line"><span>或用 Email 登入（不用密碼）</span></p>
+        ${iosApp
+          ? `<p class="pwa-note">📱 iPhone 主畫面 App 打不開 Google 的登入視窗（Apple 的限制），請用下面的 <strong>Email 登入連結</strong>。
+              電腦用 Google 登入的話，這裡輸入<strong>同一個 Gmail</strong>，就會是同一個帳號、共用同一份資料。</p>`
+          : `<button class="btn btn-outline google-btn" type="button" id="googleBtn">${googleIcon} 用 Google 帳號登入</button>
+             <p class="or-line"><span>或用 Email 登入（不用密碼）</span></p>`}
         <form id="emailForm" class="email-form">
           <input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email" value="${esc(st.linkSentTo)}">
-          <button class="btn btn-outline" type="submit">寄登入連結</button>
+          <button class="btn ${iosApp ? 'btn-primary' : 'btn-outline'}" type="submit">寄登入連結</button>
         </form>
-        ${st.linkSentTo ? `<p class="sync-line ok">✓ 已寄出登入連結到 ${esc(st.linkSentTo)}，請到信箱點連結（也請看一下垃圾郵件）。</p>` : ''}
-        <details class="paste-link" ${st.linkSentTo && (iosApp || isStandalone()) ? 'open' : ''}>
-          <summary>${iosApp ? 'iPhone 主畫面 App：' : ''}點了連結卻沒有登入？改用「貼上連結」</summary>
+        ${st.linkSentTo ? `<p class="sync-line ok">✓ 已寄出登入連結到 ${esc(st.linkSentTo)}（也請看一下垃圾郵件）。</p>` : ''}
+        ${iosApp && st.linkSentTo ? `<ol class="steps link-steps">
+            <li>打開「郵件」App，點信裡的登入連結（會用 Safari 打開）</li>
+            <li>在 Safari 打開的頁面按「<strong>複製登入連結</strong>」</li>
+            <li>回到這個 App，貼在下面，按「完成登入」</li>
+          </ol>` : ''}
+        <details class="paste-link" ${iosApp || (st.linkSentTo && isStandalone()) ? 'open' : ''}>
+          <summary>${iosApp ? '貼上登入連結' : '點了連結卻沒有登入？改用「貼上連結」'}</summary>
           <p class="hint-text">${iosApp
-            ? 'iPhone 會用 Safari 打開信裡的連結，登入的是 Safari，不是主畫面 App。請在「郵件」App 裡<strong>長按連結 › 拷貝</strong>，回到這裡貼上。'
+            ? '也可以在「郵件」App 裡<strong>長按連結 › 拷貝</strong>，直接貼在這裡。'
             : '在信裡的連結上按右鍵（手機長按）› 複製連結網址，貼在下面。'}</p>
           <form id="pasteForm" class="email-form stacked">
             <input type="email" id="pasteEmail" placeholder="收到信的 Email" required autocomplete="email" value="${esc(st.linkSentTo)}">
@@ -146,6 +167,22 @@ export function renderSyncPanel(container) {
         await completeEmailLink(container.querySelector('#confirmEmail').value, syncState().pendingLink);
         toast('已登入，開始同步');
       });
+    });
+    container.querySelector('#copyLink')?.addEventListener('click', async (e) => {
+      const link = syncState().pendingLink;
+      try {
+        await navigator.clipboard.writeText(link);
+        toast('已複製登入連結，回到 App 貼上');
+      } catch (err) {
+        // 不能寫入剪貼簿時，把連結放進輸入框並選取，讓使用者自己複製
+        const box = document.createElement('input');
+        box.className = 'link-box';
+        box.readOnly = true;
+        box.value = link;
+        e.currentTarget.after(box);
+        box.select();
+        toast('請手動複製下面的連結');
+      }
     });
     container.querySelector('#syncNow')?.addEventListener('click', (e) => run(e.currentTarget, syncNow));
     container.querySelector('#signOut')?.addEventListener('click', (e) => {
