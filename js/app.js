@@ -10,6 +10,7 @@ import { streak } from './stats.js';
 import { dayKey } from './srs.js';
 import { toast } from './ui.js';
 import { initPWA } from './pwa.js';
+import { initSync } from './sync.js';
 import { hasApiKey } from './llm.js';
 import { renderWords } from './views/words.js';
 import { renderSettings } from './views/settings.js';
@@ -97,6 +98,9 @@ render();
 updateBadge();
 lookupMissing();
 onRateWait(setWaiting);
+
+// 跨裝置同步（有設定 Firebase、而且登入過才會連線）
+initSync();
 
 // PWA：離線使用、安裝到主畫面。重新連上網路時，補查字典、繼續 AI 生成
 initPWA({

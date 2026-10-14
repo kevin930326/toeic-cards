@@ -1,4 +1,4 @@
-// 設定頁：Gemini 金鑰與模型、備份與還原、安裝與離線、複習、外觀、發音
+// 設定頁：帳號與同步、Gemini 金鑰與模型、備份與還原、安裝與離線、複習、外觀、發音
 import { getSettings, updateSettings } from '../store.js';
 import { speak, canSpeak, ACCENTS, MIXED, accentAvailability, onVoicesChanged } from '../speech.js';
 import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel, lastRequestStats } from '../llm.js';
@@ -6,6 +6,7 @@ import { testGeneration } from '../generate.js';
 import { esc, toast } from '../ui.js';
 import { renderBackupPanel } from './backup-panel.js';
 import { renderPwaPanel } from './pwa-panel.js';
+import { renderSyncPanel } from './sync-panel.js';
 
 // 模型清單只在這次開啟網站時記住（不需要存）
 let modelCache = null;
@@ -34,6 +35,8 @@ export function renderSettings(root) {
   root.innerHTML = `
     <section class="page">
       <h1 class="page-title">設定</h1>
+
+      <div class="panel" id="syncPanel"></div>
 
       <div class="panel" id="aiPanel">
         <h2 class="panel-title">Gemini AI</h2>
@@ -131,6 +134,7 @@ export function renderSettings(root) {
 
   renderBackupPanel(root.querySelector('#backupPanel'));
   const unsubPwa = renderPwaPanel(root.querySelector('#pwaPanel'));
+  const unsubSync = renderSyncPanel(root.querySelector('#syncPanel'));
 
   const statusEl = root.querySelector('#keyStatus');
   const setStatus = (msg, kind = '') => {
@@ -238,5 +242,5 @@ export function renderSettings(root) {
     if (b) speak('Please submit the invoice by Friday.', { accent: b.dataset.try });
   });
   const unsubVoices = onVoicesChanged(drawAccents);
-  return () => { unsubVoices(); unsubPwa(); };
+  return () => { unsubVoices(); unsubPwa(); unsubSync(); };
 }

@@ -1040,3 +1040,19 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .test-ok strong { color: #3f8a4f; }
 .test-cards { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
 .test-cards li { margin-bottom: 4px; }
+
+/* ===== 帳號與同步 ===== */
+.google-btn { gap: 10px; background: var(--surface); }
+.or-line { display: flex; align-items: center; gap: 10px; margin: 14px 0 10px; font-size: 13px; color: var(--ink-faint); }
+.or-line::before, .or-line::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.email-form { display: flex; flex-wrap: wrap; gap: 8px; }
+.email-form input { flex: 1; min-width: 200px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); }
+.email-form input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 22%, transparent); }
+.email-form.stacked { flex-direction: column; }
+.email-form.stacked input { min-width: 0; }
+.sync-user { margin: 0 0 6px; }
+.sync-line { margin: 0 0 12px; font-size: 14px; color: var(--ink-soft); }
+.sync-line.ok { color: #3f8a4f; }
+.paste-link { margin-top: 12px; font-size: 14px; }
+.paste-link summary { cursor: pointer; color: var(--ink-soft); }
+.paste-link .hint-text { margin: 8px 0; }
