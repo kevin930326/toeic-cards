@@ -255,7 +255,7 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 /* ===== 字卡 ===== */
 .card-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-bottom: 18px; }
 
-.card-stage { perspective: 1400px; }
+.card-stage { position: relative; }
 .flashcard {
   position: relative;
   display: block;
@@ -512,4 +512,87 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 @media (max-width: 560px) {
   .ai-head { flex-wrap: wrap; }
   .key-form .field { min-width: 100%; }
+}
+
+/* ===== 滑卡 ===== */
+.swipe-wrap {
+  position: relative;
+  perspective: 1400px;          /* 翻卡的 3D 效果要放在卡片的直接外層 */
+  touch-action: pan-y;          /* 左右交給滑卡手勢，上下照常捲動頁面 */
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.25s ease;
+  --good: 0;
+  --again: 0;
+}
+.swipe-wrap.is-dragging { transition: none; cursor: grabbing; }
+.swipe-wrap.is-flying { transition: transform 0.22s ease-in; }
+.swipe-label {
+  position: absolute;
+  top: 56px;
+  padding: 4px 14px;
+  border: 3px solid currentColor;
+  border-radius: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  background: var(--surface);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+}
+.swipe-good { left: 22px; color: #3f8a4f; transform: rotate(-10deg); opacity: var(--good); }
+.swipe-again { right: 22px; color: var(--accent); transform: rotate(10deg); opacity: var(--again); }
+
+/* ===== 複習頁 ===== */
+.review-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.review-count { margin: 0; color: var(--ink-soft); font-size: 15px; }
+.review-count strong { font-family: var(--font-en); font-size: 28px; color: var(--ink); margin-right: 4px; }
+.review-progress { margin-bottom: 16px; }
+.grade-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.grade-btn { flex-direction: column; gap: 0; min-height: 60px; border-radius: 16px; font-size: 18px; font-weight: 700; }
+.grade-btn small { font-size: 12px; font-weight: 400; opacity: 0.8; }
+.grade-again { background: var(--accent-soft); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.grade-again:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.grade-good { background: color-mix(in srgb, #3f8a4f 12%, transparent); color: #3f8a4f; border-color: color-mix(in srgb, #3f8a4f 35%, transparent); }
+.grade-good:hover { background: color-mix(in srgb, #3f8a4f 20%, transparent); }
+.review-tools { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+.review-tools .btn:disabled { opacity: 0.4; cursor: default; }
+
+.done-state { display: grid; justify-items: center; gap: 4px; }
+.done-mark {
+  display: grid; place-items: center;
+  width: 64px; height: 64px; margin: 0 0 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #3f8a4f 14%, transparent);
+  color: #3f8a4f;
+  font-size: 32px;
+}
+.done-stats { margin: 4px 0; color: var(--ink); }
+.done-stats strong { color: var(--accent); }
+.done-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+
+/* ===== 導覽列徽章 ===== */
+.nav-badge {
+  display: inline-block;
+  min-width: 18px;
+  margin-left: 4px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  vertical-align: 1px;
+}
+.nav-badge[hidden] { display: none; }
+
+@media (max-width: 560px) {
+  .nav a { padding: 6px 8px; font-size: 14px; }
+  .review-head .segmented { flex: none; }
+  .grade-btn { min-height: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .swipe-wrap, .swipe-wrap.is-flying { transition: none; }
 }

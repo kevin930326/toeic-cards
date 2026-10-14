@@ -1,0 +1,229 @@
+// 複習頁（首頁）：依間隔重複排程，一張一張複習
+//   往右滑／按「會」→ 隔越來越久才再出現
+//   往左滑／按「不熟」→ 標記不熟，這一輪稍後再出現一次，10 分鐘後也會再到期
+import { getWords, getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
+import { openEditor } from '../ui.js';
+import { speak } from '../speech.js';
+import { flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js';
+import { attachSwipe, flyOut } from '../swipe.js';
+import {
+  grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
+} from '../srs.js';
+import { recordReview, learnedToday, getDay } from '../log.js';
+import { onLookupStatus } from '../dictionary.js';
+import { onGenerateStatus } from '../generate.js';
+
+const AGAIN_GAP = 3;   // 答「不熟」的字，在這一輪中隔 3 張後再出現
+
+// 這一輪複習的狀態（切換頁面回來還在；過了一天會重建）
+let session = null;
+
+function newLimitLeft(extra = 0) {
+  return Math.max(0, (Number(getSettings().newPerDay) || 20) - learnedToday() + extra);
+}
+
+function startSession(extraNew = 0) {
+  const now = Date.now();
+  session = {
+    day: dayKey(now),
+    extraNew: (session && session.day === dayKey(now) ? session.extraNew : 0) + extraNew,
+    queue: [],
+    total: 0,
+    history: [],     // 用來「復原」
+    flipped: false,
+  };
+  session.queue = buildQueue(getWords(), now, newLimitLeft(session.extraNew));
+  session.total = session.queue.length;
+}
+
+export function renderReview(root) {
+  if (!session || session.day !== dayKey(Date.now()) || (!session.queue.length && !session.history.length)) {
+    startSession();
+  }
+  let busy = false;   // 飛出動畫進行中，避免連按
+
+  function current() {
+    // 單字被刪掉的話直接略過
+    while (session.queue.length && !getWord(session.queue[0])) session.queue.shift();
+    return session.queue.length ? getWord(session.queue[0]) : null;
+  }
+
+  function draw() {
+    const w = current();
+    const { cardMode } = getSettings();
+    if (!w) { drawDone(); return; }
+
+    const now = Date.now();
+    const iv = previewIntervals(w.srs, now);
+    const doneCount = session.total - session.queue.length;
+    const pct = session.total ? Math.round((doneCount / session.total) * 100) : 0;
+    const tag = isNew(w) ? '新字' : `複習・間隔 ${w.srs.interval || 0} 天`;
+    const touch = window.matchMedia('(hover: none)').matches;
+
+    root.innerHTML = `
+      <section class="page page-review">
+        <div class="review-head">
+          <p class="review-count"><strong id="remain">${session.queue.length}</strong> 張待複習</p>
+          ${modeToggleHTML(cardMode)}
+        </div>
+        <div class="progress review-progress" aria-hidden="true"><div class="progress-bar" style="width:${pct}%"></div></div>
+        <div class="card-stage review-stage">
+          <div class="swipe-wrap" id="swipe">
+            ${flashcardHTML(w, {
+              flipped: session.flipped,
+              mode: cardMode,
+              corner: tag,
+              hint: touch ? '點一下翻面・左右滑動評分' : '點一下翻面',
+            })}
+            ${swipeLabelsHTML}
+          </div>
+        </div>
+        <div class="grade-controls">
+          <button class="btn grade-btn grade-again" id="again" type="button">
+            <span>✗ 不熟</span><small>${formatInterval(iv.again)}後</small>
+          </button>
+          <button class="btn grade-btn grade-good" id="good" type="button">
+            <span>✓ 會</span><small>${formatInterval(iv.good)}後</small>
+          </button>
+        </div>
+        <div class="review-tools">
+          <button class="btn btn-ghost btn-sm" id="undo" type="button" ${session.history.length ? '' : 'disabled'}>↶ 復原</button>
+          <button class="btn btn-ghost btn-sm" id="edit" type="button">編輯</button>
+        </div>
+        <p class="kbd-hint">鍵盤：空白鍵翻面　← 不熟　→ 會　P 發音　Z 復原</p>
+      </section>`;
+
+    bindMode();
+    const card = root.querySelector('#card');
+    const wrap = root.querySelector('#swipe');
+    // 滑鼠／觸控的點擊由 attachSwipe 的 onTap 處理；這裡處理鍵盤觸發的 click
+    const tap = (target) => {
+      if (target.closest('[data-speak]')) speak(w.word);
+      else flip();
+    };
+    card.addEventListener('click', (e) => { e.stopPropagation(); tap(e.target); });
+    attachSwipe(wrap, {
+      onTap: tap,
+      onSwipe: (dir) => answer(dir === 'right' ? 'good' : 'again', { animated: true }),
+      onDrag: (dx) => {
+        wrap.style.setProperty('--good', Math.max(0, Math.min(1, dx / 90)));
+        wrap.style.setProperty('--again', Math.max(0, Math.min(1, -dx / 90)));
+      },
+    });
+    root.querySelector('#again').addEventListener('click', () => answer('again'));
+    root.querySelector('#good').addEventListener('click', () => answer('good'));
+    root.querySelector('#undo').addEventListener('click', undo);
+    root.querySelector('#edit').addEventListener('click', () => openEditor(w.id));
+  }
+
+  function drawDone() {
+    const now = Date.now();
+    const words = getWords();
+    const day = getDay(now);
+    const tomorrowEnd = dayStart(now) + 2 * DAY;
+    const dueTomorrow = words.filter((w) => w.srs && w.srs.due < tomorrowEnd).length;
+    const newLeft = words.filter(isNew).length;
+
+    let body;
+    if (!words.length) {
+      body = `<p class="empty-title">還沒有任何字卡</p>
+        <p>到「單字庫」輸入英文單字，就可以開始複習。</p>
+        <a class="btn btn-primary" href="#/words">新增單字</a>`;
+    } else {
+      body = `
+        <p class="done-mark" aria-hidden="true">✓</p>
+        <p class="empty-title">今天的複習完成了！</p>
+        ${day.reviews ? `<p class="done-stats">今天複習了 <strong>${day.reviews}</strong> 次：會 ${day.good}・不熟 ${day.again}・新學 ${day.learned} 個字</p>` : ''}
+        <p class="muted">${dueTomorrow ? `明天有 ${dueTomorrow} 個字要複習` : '明天沒有到期的字'}</p>
+        <div class="done-actions">
+          ${newLeft ? `<button class="btn btn-primary" id="more" type="button">再學 ${Math.min(10, newLeft)} 個新字</button>` : ''}
+          ${session.history.length ? '<button class="btn btn-ghost" id="undo" type="button">↶ 復原上一張</button>' : ''}
+          <a class="btn btn-outline" href="#/cards">自由瀏覽字卡</a>
+        </div>`;
+    }
+    root.innerHTML = `<section class="page"><div class="empty-state done-state">${body}</div></section>`;
+    root.querySelector('#more')?.addEventListener('click', () => { startSession(10); draw(); });
+    root.querySelector('#undo')?.addEventListener('click', undo);
+  }
+
+  function bindMode() {
+    root.querySelectorAll('input[name="mode"]').forEach((i) =>
+      i.addEventListener('change', () => updateSettings({ cardMode: i.value })));
+  }
+
+  function flip() {
+    session.flipped = !session.flipped;
+    root.querySelector('#card')?.classList.toggle('is-flipped', session.flipped);
+  }
+
+  // 評分：更新複習排程、記錄、換下一張
+  async function answer(rating, { animated = false } = {}) {
+    if (busy) return;
+    const w = current();
+    if (!w) return;
+    busy = true;
+    if (!animated) {
+      const wrap = root.querySelector('#swipe');
+      if (wrap) await flyOut(wrap, rating === 'good' ? 'right' : 'left');
+    }
+    const now = Date.now();
+    const wasNew = isNew(w);
+    session.history.push({ id: w.id, srs: w.srs || null, unfamiliar: w.unfamiliar, rating, wasNew, at: now, queue: [...session.queue] });
+    if (session.history.length > 50) session.history.shift();
+
+    const srs = grade(w.srs, rating, now);
+    const patch = { srs };
+    if (rating === 'again') patch.unfamiliar = true;
+    else if (srs.interval >= MASTERED_DAYS) patch.unfamiliar = false;   // 已經很熟了
+
+    session.queue.shift();
+    if (rating === 'again') session.queue.splice(Math.min(AGAIN_GAP, session.queue.length), 0, w.id);
+    session.flipped = false;
+    recordReview(rating, wasNew, now);
+    busy = false;
+    updateWord(w.id, patch);   // 會觸發 subscribe → draw()
+  }
+
+  function undo() {
+    const h = session.history.pop();
+    if (!h || !getWord(h.id)) return;
+    session.queue = h.queue;
+    session.flipped = false;
+    recordReview(h.rating, h.wasNew, h.at, -1);
+    updateWord(h.id, { srs: h.srs, unfamiliar: h.unfamiliar });
+  }
+
+  function onKey(e) {
+    if (document.querySelector('dialog[open]')) return;
+    if (e.target.matches('input, textarea, select')) return;
+    if (!current()) {
+      if (e.key === 'z' || e.key === 'Z') undo();
+      return;
+    }
+    if (e.key === ' ' || e.key === 'Enter') {
+      if (e.target.closest('button, a')) return;
+      e.preventDefault();
+      flip();
+    } else if (e.key === 'ArrowRight' || e.key === '2') answer('good');
+    else if (e.key === 'ArrowLeft' || e.key === '1') answer('again');
+    else if (e.key === 'z' || e.key === 'Z') undo();
+    else if (e.key === 'p' || e.key === 'P') speak(current().word);
+  }
+
+  draw();
+  const unsub = subscribe(() => { if (!busy) draw(); });
+  const unsubLookup = onLookupStatus(() => { if (!busy) draw(); });
+  let genKey = '';
+  const unsubGen = onGenerateStatus((st) => {
+    const k = `${st.running}|${st.done}|${st.failed}`;
+    if (k !== genKey) { genKey = k; if (!busy) draw(); }
+  });
+  document.addEventListener('keydown', onKey);
+  return () => { unsub(); unsubLookup(); unsubGen(); document.removeEventListener('keydown', onKey); };
+}
+
+// 導覽列上的待複習數字
+export function reviewBadgeCount() {
+  if (session && session.day === dayKey(Date.now())) return session.queue.filter((id) => getWord(id)).length;
+  return buildQueue(getWords(), Date.now(), newLimitLeft()).length;
+}

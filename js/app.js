@@ -1,5 +1,6 @@
 // 主程式：依網址的 #/xxx 切換頁面
 import { getSettings, updateSettings, subscribe } from './store.js';
+import { renderReview, reviewBadgeCount } from './views/review.js';
 import { renderCards } from './views/cards.js';
 import { renderWords } from './views/words.js';
 import { renderSettings } from './views/settings.js';
@@ -8,6 +9,7 @@ import { onRateWait } from './llm.js';
 import { setWaiting } from './generate.js';
 
 const routes = {
+  review: renderReview,
   cards: renderCards,
   words: renderWords,
   settings: renderSettings,
@@ -18,7 +20,7 @@ let cleanup = null;
 
 function currentRoute() {
   const name = location.hash.replace(/^#\/?/, '').split('?')[0];
-  return routes[name] ? name : 'cards';
+  return routes[name] ? name : 'review';
 }
 
 function render() {
@@ -53,8 +55,18 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 media.addEventListener('change', applyTheme);
 subscribe(applyTheme);
 
-window.addEventListener('hashchange', render);
+// 導覽列「複習」旁邊顯示今天還有幾張
+function updateBadge() {
+  const el = document.getElementById('reviewBadge');
+  const n = reviewBadgeCount();
+  el.textContent = n > 99 ? '99+' : String(n);
+  el.hidden = n === 0;
+}
+subscribe(updateBadge);
+
+window.addEventListener('hashchange', () => { render(); updateBadge(); });
 applyTheme();
 render();
+updateBadge();
 lookupMissing();
 onRateWait(setWaiting);

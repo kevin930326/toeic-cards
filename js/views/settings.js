@@ -80,6 +80,15 @@ export function renderSettings(root) {
       </div>
 
       <div class="panel">
+        <h2 class="panel-title">複習</h2>
+        <div class="setting-row wrap">
+          <span class="setting-label">新字</span>
+          ${segmented('newPerDay', s.newPerDay, [['10', '10 個/天'], ['20', '20 個/天'], ['30', '30 個/天'], ['50', '50 個/天']], '每天新字數')}
+        </div>
+        <p class="hint-text">每天最多學幾個新字。到期要複習的舊字不受限制；複習完後也可以按「再學 10 個新字」。</p>
+      </div>
+
+      <div class="panel">
         <h2 class="panel-title">外觀</h2>
         ${segmented('theme', s.theme, [['system', '跟隨系統'], ['light', '淺色'], ['dark', '深色']], '主題')}
       </div>
@@ -152,6 +161,9 @@ export function renderSettings(root) {
 
   root.querySelectorAll('input[name="llmRpm"]').forEach((input) => {
     input.addEventListener('change', () => updateSettings({ llmRpm: Number(input.value) }));
+  });
+  root.querySelectorAll('input[name="newPerDay"]').forEach((input) => {
+    input.addEventListener('change', () => updateSettings({ newPerDay: Number(input.value) }));
   });
   root.querySelectorAll('input[name="theme"]').forEach((input) => {
     input.addEventListener('change', () => updateSettings({ theme: input.value }));
