@@ -18,10 +18,12 @@ playwright install chromium
 python -m http.server 8123 --bind 127.0.0.1
 
 # 執行測試
+node --test "tests/unit/*.test.mjs"   # 單元測試（純函式，不需要瀏覽器和伺服器）
 python tests/test_step1.py
 python tests/test_step2.py
 python tests/test_step3.py
 python tests/test_step4.py
+python tests/test_step5.py
 ```
 
 可以用環境變數 `BASE_URL` 指定網址。測試截圖會存在 `tests/screenshots/`，這個資料夾不會上傳到 git。
@@ -32,5 +34,8 @@ python tests/test_step4.py
 | `test_step2.py` | 本機字典查詢（繁體）、Free Dictionary 依詞性挑解釋、發音與口音設定、手動修改不被覆蓋、API 掛掉後自動重試 |
 | `test_step3.py` | 拆字規則（逗號、換行、空白、中文、編號、片語）、預覽、去重、100 個字的效能、進度條 |
 | `test_step4.py` | 金鑰檢查、模型清單、每批 20 個字、429 重試、截斷時拆半重送、額度用完、停止、失敗重試、手動修改不被覆蓋、金鑰不放在網址裡 |
+| `test_step5.py` | 複習排序、按鈕／鍵盤／滑鼠／觸控評分、拖不夠會彈回、上下滑不評分、復原、自動取消不熟、每日新字上限、滑完立刻點擊 |
+| `unit/srs.test.mjs` | 間隔重複演算法：間隔計算、答錯重設、ease 下限、早上 4 點換日、複習清單排序 |
+| `unit/parse.test.mjs` | 批次輸入解析：分隔符號、中文與編號、片語、去重 |
 
 `capture_screenshots.py` 用來產生 `docs/images/` 裡的截圖。

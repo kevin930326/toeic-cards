@@ -157,6 +157,32 @@ with sync_playwright() as p:
     m.wait_for_load_state('networkidle')
     goto_word(m, 'reimbursement')
     shot(m, '01-mobile.png')
+
+    # ---- 第 5 步：複習頁、滑卡 ----
+    m.goto(URL + '#/review')
+    m.wait_for_load_state('networkidle')
+    box = m.locator('#swipe').bounding_box()
+    cx, cy = box['x'] + box['width'] / 2, box['y'] + 120
+    m.mouse.move(cx, cy)
+    m.mouse.down()
+    for i in range(1, 11):
+        m.mouse.move(cx + 9 * i, cy + i)
+    shot(m, '05-swipe-mobile.png')
+    for i in range(9, -1, -1):
+        m.mouse.move(cx + 9 * i, cy)
+    m.mouse.up()
+
+    page.goto(URL + '#/review')
+    page.wait_for_load_state('networkidle')
+    page.click('.card-front .headword')
+    page.wait_for_timeout(700)
+    shot(page, '05-review.png')
+    for _ in range(12):
+        if page.locator('.done-state').count():
+            break
+        page.keyboard.press('ArrowLeft' if _ == 1 else 'ArrowRight')
+        page.wait_for_timeout(450)
+    shot(page, '05-done.png')
     ctx.close()
 
     # ---- 第 4 步：有 Gemini 金鑰 ----
