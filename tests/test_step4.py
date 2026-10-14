@@ -150,12 +150,13 @@ with sync_playwright() as p:
     add_batch(page, batch)
     wait_idle(page)
     db = words_db(page)
-    check(gen_requests == [20, 20, 5], f'每批最多 20 個字：{gen_requests}')
+    check(gen_requests == [5, 20, 20], f'第一批 5 個字（很快看到結果），之後每批最多 20 個字：{gen_requests}')
     check(sum(1 for w in batch if db[w]['llm'] and db[w]['llm']['status'] == 'done') == 44, '44 個字生成完成')
     check(db['zzfail']['llm']['status'] == 'failed', '漏掉的字標為失敗')
     check('1 個字生成失敗' in page.locator('#aiBox').inner_text(), '顯示失敗數量')
     check(page.locator('.word-row', has_text='zzfail').locator('.badge-fail').count() == 1, '失敗的字有標記')
-    check(not dict_calls, f'有金鑰時不查 Free Dictionary（{len(dict_calls)} 次）')
+    # 有金鑰時，AI 成功的字不查 Free Dictionary；只有 AI 失敗的 zzfail 會改用字典補英文解釋
+    check([u.rstrip('/').split('/')[-1] for u in dict_calls] == ['zzfail'], f'只有 AI 失敗的字才查 Free Dictionary（{dict_calls}）')
     page.screenshot(path=os.path.join(OUT, 's4_failed.png'))
 
     # 單獨重試
@@ -185,12 +186,13 @@ with sync_playwright() as p:
 
     # 6. 回應被截斷 → 自動拆半重送
     gen_requests.clear()
-    mode['truncate_over'] = 10
-    add_batch(page, [f'trunc{chr(97 + i)}' for i in range(15)])
+    mode['truncate_over'] = 6   # 超過 6 個字的請求會被截斷
+    add_batch(page, [f'trunc{chr(97 + i)}' for i in range(25)])
     wait_idle(page)
     db = words_db(page)
-    check(gen_requests == [15, 8, 7], f'截斷時拆半重送：{gen_requests}')
-    check(all(db[f'trunc{chr(97 + i)}']['llm']['status'] == 'done' for i in range(15)), '拆半後全部完成')
+    # 第一批 5 個字正常；第二批 20 個被截斷 → 拆成 10、10 → 又被截斷 → 各拆成 5、5
+    check(gen_requests == [5, 20, 10, 5, 5, 10, 5, 5], f'截斷時拆半重送：{gen_requests}')
+    check(all(db[f'trunc{chr(97 + i)}']['llm']['status'] == 'done' for i in range(25)), '拆半後全部完成')
     mode['truncate_over'] = 0
 
     # 7. 額度用完（一直 429）→ 停下來、字不算失敗
