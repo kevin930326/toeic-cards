@@ -138,6 +138,7 @@ with sync_playwright() as p:
 
     # ---- 沒有設定 Firebase 時 ----
     plain = browser.new_context()
+    plain.add_init_script('window.__toeicFirebaseConfig = null;')   # 模擬「還沒設定 Firebase」
     pp = plain.new_page()
     pp.goto(URL + '#/settings')
     pp.wait_for_selector('#syncPanel .panel-title')

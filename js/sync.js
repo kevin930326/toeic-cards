@@ -45,9 +45,9 @@ const ls = {
   del(k) { try { localStorage.removeItem(k); } catch (e) { /* 忽略 */ } },
 };
 
-// 測試時可以用 window.__toeicFirebaseConfig 注入「本機模擬器」的設定
+// 測試時可以用 window.__toeicFirebaseConfig 注入「本機模擬器」的設定；設成 null 代表「沒有設定 Firebase」
 function getConfig() {
-  return window.__toeicFirebaseConfig || firebaseConfig;
+  return '__toeicFirebaseConfig' in window ? window.__toeicFirebaseConfig : firebaseConfig;
 }
 
 export function syncConfigured() {
