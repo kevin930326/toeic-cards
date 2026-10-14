@@ -3,7 +3,7 @@
 **只要輸入英文單字，其餘交給網站。**
 中文意思、詞性、音標、淺白英文解釋、多益情境例句、常見搭配詞都會自動產生，再用間隔重複和多益風格測驗幫你記住。
 
-🔗 **線上使用：** https://<你的帳號>.github.io/toeic-cards/ （手機可以「加入主畫面」當 App 用，離線也能複習）
+🔗 **線上使用：<https://kevin930326.github.io/toeic-cards/>**（手機可以「加入主畫面」當 App 用，離線也能複習）
 
 <p>
   <img src="docs/images/04-card-ai-zh.png" alt="AI 生成的多益單字卡" width="49%">
@@ -116,7 +116,7 @@ flowchart LR
 需要 Python（只用來開一個簡單的網頁伺服器）：
 
 ```bash
-git clone https://github.com/<你的帳號>/toeic-cards.git
+git clone https://github.com/kevin930326/toeic-cards.git
 cd toeic-cards
 python -m http.server 8000
 ```
