@@ -269,4 +269,50 @@ with sync_playwright() as p:
     shot(page, '06-mistakes.png', full_page=True)
     ctx.close()
 
+    # ---- 第 7 步：統計（一個月的示範學習紀錄，固定的數字，每次截圖都一樣）----
+    # 視窗設得夠高，滑鼠移到圖表上時頁面才不會捲動（否則整頁截圖會把置頂的導覽列拍在中間）
+    ctx = browser.new_context(viewport={'width': 1000, 'height': 1900}, device_scale_factor=1)
+    page = ctx.new_page()
+    page.goto(URL + '#/stats')
+    page.wait_for_load_state('networkidle')
+    page.evaluate("""async () => {
+      const { dayKey, dayStart } = await import('/js/srs.js');
+      const now = Date.now();
+      const key = (i) => { const d = new Date(dayStart(now)); d.setDate(d.getDate() - i); return dayKey(d.getTime() + 60000); };
+      const log = {};
+      for (let i = 0; i < 30; i++) {
+        if (i === 9 || i === 17 || i === 18) continue;                  // 有幾天沒學
+        const reviews = 14 + ((i * 7) % 19);
+        const again = Math.round(reviews * (0.28 - i * 0.004));         // 越近期答錯越少
+        const quiz = i % 3 === 0 ? 10 : i % 5 === 0 ? 20 : 0;
+        log[key(i)] = { reviews, again, good: reviews - again, learned: i < 25 ? 6 : 10,
+          quiz, quizCorrect: Math.round(quiz * (0.65 + (30 - i) * 0.008)) };
+      }
+      const start = dayStart(now);
+      const words = Array.from({ length: 160 }, (_, i) => {
+        const iv = i < 26 ? null : [1, 3, 3, 8, 8, 12, 20, 25, 30, 48][i % 10];
+        return { id: 'w' + i, word: 'word' + i, phonetic: '', pos: 'n.', zh: 'n. 示範', en: 'demo', examples: [],
+          collocations: [], forms: [], synonyms: [], unfamiliar: i % 9 === 0, src: {}, lookup: { dictAt: 1, enDone: true },
+          llm: null, srs: iv === null ? null : { reps: 2, interval: iv, ease: 2.5, lapses: 0, due: start + [0, 0, 1, 1, 1, 2, 3, 3, 4, 6, 6, 9, 12][(i * 7) % 13] * 86400e3 },
+          createdAt: i, updatedAt: i };
+      });
+      localStorage.setItem('toeic-cards:words', JSON.stringify(words));
+      localStorage.setItem('toeic-cards:log', JSON.stringify(log));
+    }""")
+    page.reload()
+    page.wait_for_load_state('networkidle')
+    page.locator('#chartReviews .chart-hit').nth(27).hover()
+    page.wait_for_timeout(200)
+    page.screenshot(path=os.path.join(OUT, '07-stats.png'), full_page=True)
+    print('saved 07-stats.png')
+    page.mouse.move(2, 2)
+    page.click('#themeToggle')
+    shot(page, '07-stats-dark.png', full_page=True)
+    m = ctx.new_page()
+    m.set_viewport_size({'width': 390, 'height': 800})
+    m.goto(URL + '#/stats')
+    m.wait_for_load_state('networkidle')
+    shot(m, '07-stats-mobile.png', full_page=True)
+    ctx.close()
+
     browser.close()

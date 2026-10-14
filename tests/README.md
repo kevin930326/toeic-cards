@@ -25,6 +25,7 @@ python tests/test_step3.py
 python tests/test_step4.py
 python tests/test_step5.py
 python tests/test_step6.py
+python tests/test_step7.py
 ```
 
 可以用環境變數 `BASE_URL` 指定網址。測試截圖會存在 `tests/screenshots/`，這個資料夾不會上傳到 git。
@@ -37,8 +38,10 @@ python tests/test_step6.py
 | `test_step4.py` | 金鑰檢查、模型清單、每批 20 個字、429 重試、截斷時拆半重送、額度用完、停止、失敗重試、手動修改不被覆蓋、金鑰不放在網址裡、字典與 AI 寫入的競態 |
 | `test_step5.py` | 複習排序、按鈕／鍵盤／滑鼠／觸控評分、拖不夠會彈回、上下滑不評分、復原、自動取消不熟、每日新字上限、滑完立刻點擊 |
 | `test_step6.py` | 四種測驗模式、答錯標記不熟並加入錯題本、Part 5 出題（錯誤選項來自字卡、壞題目被丟掉、題目快取、出新題目、金鑰錯誤）、錯題本重做與清除、手機版面 |
+| `test_step7.py` | 統計數字（連續天數、期間加總、正確率、熟練度）、圖表規格（柱寬、空隙、標示、圖例）、提示框（滑鼠與鍵盤）、表格、期間切換、即時更新、深色配色、手機版面 |
 | `unit/srs.test.mjs` | 間隔重複演算法：間隔計算、答錯重設、ease 下限、早上 4 點換日、複習清單排序 |
 | `unit/parse.test.mjs` | 批次輸入解析：分隔符號、中文與編號、片語、去重 |
+| `unit/stats.test.mjs` | 統計計算：連續天數（跨日、跨月、早上 4 點換日）、加總與正確率、熟練度邊界、未來到期、座標刻度 |
 | `unit/quiz.test.mjs` | 出題邏輯：錯誤選項（不含答案、不重複、同詞性優先）、遮住答案字、不熟優先、Part 5 題目驗證 |
 
 `capture_screenshots.py` 用來產生 `docs/images/` 裡的截圖。
