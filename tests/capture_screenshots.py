@@ -315,4 +315,67 @@ with sync_playwright() as p:
     shot(m, '07-stats-mobile.png', full_page=True)
     ctx.close()
 
+    # ---- 口音與例句發音、每日目標、備份（用假的語音清單：有美、英、澳，沒有加拿大）----
+    import tempfile
+    fake_voices = """
+      const V = [
+        { name: 'Microsoft Aria Online (Natural) - English (United States)', lang: 'en-US' },
+        { name: 'Microsoft Sonia Online (Natural) - English (United Kingdom)', lang: 'en-GB' },
+        { name: 'Microsoft Natasha Online (Natural) - English (Australia)', lang: 'en-AU' },
+      ];
+      window.SpeechSynthesisUtterance = class { constructor(t) { this.text = t; } };
+      if (window.speechSynthesis) { speechSynthesis.getVoices = () => V; speechSynthesis.speak = () => {}; speechSynthesis.cancel = () => {}; }
+    """
+    ctx = browser.new_context(viewport={'width': 1000, 'height': 1300}, device_scale_factor=1, accept_downloads=True)
+    ctx.add_init_script(fake_voices)
+    ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
+    page = ctx.new_page()
+    page.goto(URL)
+    page.evaluate("""(ai) => {
+      localStorage.clear();
+      const words = Object.entries(ai).map(([w, c], i) => ({ id: w, word: w, phonetic: '', ...c, unfamiliar: false,
+        src: {}, lookup: { dictAt: 1, enDone: true }, llm: { status: 'done' }, srs: null, createdAt: i, updatedAt: i }));
+      localStorage.setItem('toeic-cards:words', JSON.stringify(words));
+      localStorage.setItem('toeic-cards:settings', JSON.stringify({ accent: 'mixed', dailyGoal: 10 }));
+    }""", AI)
+    page.goto(URL + '#/settings')
+    page.reload()
+    page.wait_for_load_state('networkidle')
+    page.locator('#accentList').scroll_into_view_if_needed()
+    page.locator('#accentList').evaluate("e => e.closest('.panel').scrollIntoView({ block: 'center' })")
+    page.wait_for_timeout(200)
+    shot(page, '08-accents.png')
+
+    # 卡片背面：例句、搭配詞的發音按鈕
+    page.set_viewport_size({'width': 1000, 'height': 760})
+    page.goto(URL + '#/cards')
+    page.wait_for_load_state('networkidle')
+    goto_word(page, 'negotiate')
+    page.click('.card-front .headword')
+    page.wait_for_timeout(700)
+    shot(page, '08-card-speak.png')
+
+    # 每日目標：複習 7 題後的進度
+    page.goto(URL + '#/review')
+    for _ in range(4):
+        page.keyboard.press('ArrowRight')
+        page.wait_for_timeout(400)
+    page.click('.card-front .headword')
+    page.wait_for_timeout(700)
+    shot(page, '08-goal-review.png')
+
+    # 備份：匯出，再匯入同一個檔案看預覽
+    page.set_viewport_size({'width': 1000, 'height': 1000})
+    page.goto(URL + '#/settings')
+    page.wait_for_load_state('networkidle')
+    with page.expect_download() as dl:
+        page.click('#exportBtn')
+    bpath = os.path.join(tempfile.mkdtemp(), dl.value.suggested_filename)
+    dl.value.save_as(bpath)
+    page.set_input_files('#importFile', bpath)
+    page.wait_for_selector('.import-preview')
+    page.locator('#backupPanel').evaluate("e => e.scrollIntoView({ block: 'center' })")
+    shot(page, '08-backup.png')
+    ctx.close()
+
     browser.close()
