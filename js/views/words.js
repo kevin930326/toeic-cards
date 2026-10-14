@@ -3,7 +3,7 @@ import { getWords, getSettings, addWords, deleteWord, toggleUnfamiliar, subscrib
 import { esc, toast, openEditor, confirmAction, zhLines } from '../ui.js';
 import { enqueueLookup, isLookingUp, onLookupStatus, lookupStatus } from '../dictionary.js';
 import { analyzeInput } from '../parse.js';
-import { hasApiKey } from '../llm.js';
+import { hasApiKey, lastRequestStats } from '../llm.js';
 import {
   enqueueGenerate, generateMissing, retryFailed, stopGenerating,
   onGenerateStatus, generateStatus, countByState, isGenerating,
@@ -204,6 +204,13 @@ export function renderWords(root) {
 
   // ---- AI 生成 ----
   const aiBox = root.querySelector('#aiBox');
+  // 上一次 AI 請求花了多久（排查「很慢」用）
+  function statsLine() {
+    const r = lastRequestStats();
+    if (!r) return '';
+    if (!r.ok) return `<p class="ai-sub">上次請求 ${(r.ms / 1000).toFixed(1)} 秒後失敗：${esc(r.error || r.finishReason || '')}</p>`;
+    return `<p class="ai-sub">上次請求 ${(r.ms / 1000).toFixed(1)} 秒・輸出 ${r.outputTokens} tokens${r.thoughtTokens ? `・思考 ${r.thoughtTokens} tokens` : ''}</p>`;
+  }
   function drawAi(st = generateStatus()) {
     if (!getWords().length) { aiBox.hidden = true; return; }
     aiBox.hidden = false;
@@ -224,7 +231,8 @@ export function renderWords(root) {
         <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
         <p class="ai-sub" id="aiSub">${st.waiting
           ? `為了不超過免費額度，等待 ${st.waiting} 秒後送出下一批…`
-          : `正在處理 ${st.current} 個字（每批最多 20 個字，一次請求）`}</p>`;
+          : `正在處理 ${st.current} 個字（每批最多 20 個字，一次請求）`}</p>
+        ${statsLine()}`;
     } else {
       if (st.error && st.error.kind !== 'aborted') {
         html += `<p class="ai-error" role="alert">⚠ ${esc(st.error.message)}

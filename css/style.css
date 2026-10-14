@@ -1033,3 +1033,10 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .dict-status { margin: 0 0 8px; font-size: 14px; color: var(--ink-soft); }
 .dict-status.ok { color: #3f8a4f; }
 .inline-icon { vertical-align: -3px; }
+
+/* ===== 測試 AI ===== */
+.ai-test { margin: 0 0 14px; }
+.ai-test .ai-error, .ai-test .test-ok { margin: 8px 0 0; font-size: 14px; }
+.test-ok strong { color: #3f8a4f; }
+.test-cards { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
+.test-cards li { margin-bottom: 4px; }

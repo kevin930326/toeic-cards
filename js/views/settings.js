@@ -1,7 +1,8 @@
 // 設定頁：Gemini 金鑰與模型、備份與還原、安裝與離線、複習、外觀、發音
 import { getSettings, updateSettings } from '../store.js';
 import { speak, canSpeak, ACCENTS, MIXED, accentAvailability, onVoicesChanged } from '../speech.js';
-import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel } from '../llm.js';
+import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel, lastRequestStats } from '../llm.js';
+import { testGeneration } from '../generate.js';
 import { esc, toast } from '../ui.js';
 import { renderBackupPanel } from './backup-panel.js';
 import { renderPwaPanel } from './pwa-panel.js';
@@ -64,7 +65,11 @@ export function renderSettings(root) {
           </select>
           ${key ? '<button class="btn btn-ghost btn-sm" type="button" id="loadModels">重新載入清單</button>' : ''}
         </div>
-        <p class="hint-text">免費方案只能用 Flash／Flash-Lite 系列；Pro 需要付費。Flash-Lite 額度通常較多但品質稍差。</p>
+        <p class="hint-text">免費方案只能用 Flash／Flash-Lite 系列；Pro 需要付費。Flash-Lite 額度通常較多、速度較快，但品質稍差。</p>
+        ${key ? `<div class="ai-test">
+          <button class="btn btn-outline btn-sm" type="button" id="testAi">測試 AI（用 3 個字試生成，不會存檔）</button>
+          <div id="testAiResult" aria-live="polite"></div>
+        </div>` : ''}
 
         <div class="setting-row wrap">
           <span class="setting-label">速率</span>
@@ -174,6 +179,25 @@ export function renderSettings(root) {
   root.querySelector('#modelSelect').addEventListener('change', (e) => {
     updateSettings({ llmModel: e.target.value });
     toast(`已切換為 ${e.target.value}`);
+  });
+  // 測試 AI：實際送一次請求，看速度和內容品質
+  root.querySelector('#testAi')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const out = root.querySelector('#testAiResult');
+    btn.disabled = true;
+    out.innerHTML = '<p class="ai-sub">生成中…（如果要等很久，代表模型比較慢或在排隊）</p>';
+    try {
+      const r = await testGeneration();
+      const st = lastRequestStats();
+      out.innerHTML = `
+        <p class="test-ok">✓ 3 個字花了 <strong>${(r.ms / 1000).toFixed(1)} 秒</strong>
+          <span class="muted">（模型 ${esc(st?.model || '')}・輸出 ${st?.outputTokens ?? '?'} tokens・思考 ${st?.thoughtTokens ?? 0} tokens・思考設定 ${esc(st?.thinking || '')}）</span></p>
+        <ul class="test-cards">${r.cards.map((c) => `
+          <li><strong>${esc(c.word)}</strong>　${esc(c.zh.split('\n')[0])}<br><span class="muted">${esc(c.en)}</span></li>`).join('')}</ul>`;
+    } catch (err) {
+      out.innerHTML = `<p class="ai-error">⚠ ${esc(err.message)}${err.detail ? `<br><span>${esc(String(err.detail).slice(0, 200))}</span>` : ''}</p>`;
+    }
+    btn.disabled = false;
   });
   root.querySelector('#autoGenerate').addEventListener('change', (e) => updateSettings({ autoGenerate: e.target.checked }));
 

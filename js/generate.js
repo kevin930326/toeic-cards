@@ -6,8 +6,10 @@
 // 使用者手動改過的欄位（src[欄位] === 'user'）不會被覆蓋。
 import { getWord, getWords, updateWords } from './store.js';
 import { generateJSON, hasApiKey, LlmError } from './llm.js';
+import { enqueueLookup } from './dictionary.js';
 
 const BATCH_SIZE = 20;
+const FIRST_BATCH_SIZE = 5;   // 第一批少一點，幾秒內就能看到結果，不用等 20 個字全部生成完
 const FIELDS = ['pos', 'zh', 'en', 'examples', 'collocations', 'forms', 'synonyms'];
 
 const queue = [];          // 等待生成的字 id
@@ -184,6 +186,8 @@ async function runBatch(ids, signal) {
 
 function markFailed(ids, message) {
   updateWords(ids.map((id) => [id, { llm: { status: 'failed', at: Date.now(), error: message } }]));
+  // AI 失敗的字，改用免費字典補英文解釋，卡片才不會一直空白
+  enqueueLookup(ids);
 }
 
 export function enqueueGenerate(ids) {
@@ -218,6 +222,14 @@ export function retryFailed(id) {
   enqueueGenerate(ids);
 }
 
+// 設定頁的「測試 AI」：用 3 個字試生成一次（不會存檔），回傳花費時間與結果
+export async function testGeneration(words = ['approve', 'invoice', 'deadline']) {
+  const started = performance.now();
+  const { data } = await generateJSON({ prompt: buildPrompt(words), schema: SCHEMA });
+  const items = Array.isArray(data?.words) ? data.words.map(sanitizeCard) : [];
+  return { ms: Math.round(performance.now() - started), cards: items.map((c, i) => ({ word: words[i], ...c })) };
+}
+
 export function stopGenerating() {
   controller?.abort();
 }
@@ -237,8 +249,10 @@ async function run() {
   running = true;
   controller = new AbortController();
   emit();
+  let first = true;
   while (queue.length) {
-    const batch = queue.splice(0, BATCH_SIZE);
+    const batch = queue.splice(0, first ? FIRST_BATCH_SIZE : BATCH_SIZE);
+    first = false;
     status.current = batch.length;
     emit();
     try {
