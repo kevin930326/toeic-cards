@@ -62,3 +62,9 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `unit/quiz.test.mjs` | 出題邏輯：錯誤選項（不含答案、不重複、同詞性優先）、遮住答案字、不熟優先、Part 5 題目驗證 |
 
 `capture_screenshots.py` 用來產生 `docs/images/` 裡的截圖。
+
+`test_deployed.py` 是部署後的冒煙測試，直接測真正的 GitHub Pages 網址（子路徑、HTTPS、Service Worker、離線）：
+
+```bash
+python tests/test_deployed.py
+```
