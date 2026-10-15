@@ -37,6 +37,7 @@ python tests/test_word_packs.py # 內建多益單字包（不需要 Firebase）
 python tests/test_library_ui.py # 全站查字與單字庫 B 方案介面（不需要 Firebase）
 python tests/test_explore.py    # 單字探索、直接閱讀與複習分工（不需要 Firebase）
 python tests/test_inline_lookup.py # 解釋與例句點字查詢、收藏及複習狀態保護
+python tests/test_library_interactions.py # 1000字互動、星星局部更新與編輯模式
 ```
 
 改完 JS 之後，可以先用 Node 檢查所有檔案的語法（很快，能抓到打錯字造成整個網站打不開的問題）：
@@ -53,6 +54,7 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 | 檔案 | 測試內容 |
 |---|---|
+| `test_library_interactions.py` | 1000 字進頁／星星處理時間、保留原列節點與焦點、本機儲存及 SRS、編輯／刪除預設隱藏、開啟及完成編輯、切頁恢復關閉、搜尋完整範圍與手機排版；時間只記錄，不用固定門檻判定 |
 | `test_inline_lookup.py` | 解釋／例句點字查中文、桌面／手機／鍵盤、收藏到指定集、去重、關閉後焦點與原卡翻面／剩餘張數／SRS／每日紀錄保留、探索選字保留、HTML 安全顯示、不呼叫外部 API |
 | `unit/word-tokens.test.mjs` | 保留原句標點與空白、重音拼字、大小寫、連字號與撇號、非英文文字及不猜測變化形 |
 | `test_library_ui.py` | 六個頁面的全站查字、Ctrl／⌘ K 入口、Escape 關閉、免費英文與失敗重試、收藏／去重、獨立新增／批次／單字包／分類視窗、清單篩選、批次整理、複習／測驗不誤觸、320／375／768px 與深色畫面、不呼叫 Gemini |

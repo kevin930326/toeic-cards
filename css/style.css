@@ -415,6 +415,10 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .count { font-size: 14px; color: var(--ink-faint); white-space: nowrap; }
 
 .word-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.library-edit-tools { display: flex; align-items: center; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+.word-list:not(.is-editing) [data-act="edit"], .word-list:not(.is-editing) [data-act="delete"] { display: none; }
+/* 畫面外的列延後排版，仍保留搜尋、全選、鍵盤及完整清單。 */
+.word-list .word-row { content-visibility: auto; contain-intrinsic-size: auto 92px; }
 .word-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px 8px 6px; border-top: 1px solid var(--line); }
 .word-row:first-child { border-top: 0; }
 .word-row.is-unfamiliar { background: var(--warn-soft); }

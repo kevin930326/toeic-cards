@@ -43,6 +43,7 @@ with sync_playwright() as p:
     check(page.locator('.word-row').count() == 3, '非英文輸入被擋下')
 
     # 編輯
+    page.click('#toggleLibraryEdit')
     row = page.locator('.word-row', has_text='approve')
     row.locator('[data-act=edit]').click()
     page.fill('#editForm [name=pos]', 'v.')
@@ -52,6 +53,7 @@ with sync_playwright() as p:
     page.fill('#editForm [name=collocations]', 'approve a request, approve a plan')
     page.fill('#editForm [name=forms]', 'approval (n.), approved (adj.)')
     page.click('#editForm button[type=submit]')
+    row.scroll_into_view_if_needed()
     check('核准' in row.inner_text(), '編輯後列表顯示中文')
 
     # 搜尋

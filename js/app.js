@@ -12,7 +12,7 @@ import { toast } from './ui.js';
 import { initPWA } from './pwa.js';
 import { initSync } from './sync.js';
 import { hasApiKey } from './llm.js';
-import { renderWords } from './views/words.js';
+import { renderWords } from './views/words.js?v=library-response-1';
 import { renderSettings } from './views/settings.js';
 import { lookupMissing } from './dictionary.js';
 import { onRateWait } from './llm.js';

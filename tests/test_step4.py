@@ -179,6 +179,7 @@ with sync_playwright() as p:
     check(gen_requests == [1] and words_db(page)['zzfail']['llm']['status'] == 'done', '單獨重試失敗的字')
 
     # 5. 使用者改過的欄位不被 AI 覆蓋
+    page.click('#toggleLibraryEdit')
     page.locator('.word-row', has_text='approve').locator('[data-act=edit]').click()
     page.fill('#editForm [name=zh]', 'v. 我自己的解釋')
     page.fill('#editForm [name=collocations]', 'my own collocation')

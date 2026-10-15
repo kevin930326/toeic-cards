@@ -34,6 +34,8 @@ function chipList(words, cls = '') {
 
 export function renderWords(root) {
   const selected = new Set();
+  let editMode = false;
+  let markingId = null;
   root.innerHTML = `
     <section class="page">
       <div class="library-heading"><div><p class="eyebrow">MY VOCABULARY</p><h1 class="page-title">單字庫</h1><p class="hint-text">整理收藏，選好這次想背的範圍。</p></div>
@@ -80,6 +82,7 @@ export function renderWords(root) {
         <button class="btn btn-ghost btn-sm" id="bulkRemove" type="button">移出單字集</button>
       </div>
       </details>
+      <div class="library-edit-tools"><button class="btn btn-outline btn-sm" id="toggleLibraryEdit" type="button" aria-pressed="false" aria-controls="list">編輯模式</button><span class="hint-text" id="libraryEditHint">開啟編輯模式後，可修改或刪除字卡。</span></div>
       <ul class="word-list" id="list"></ul>
       <details class="library-ai" id="aiTools"><summary>AI 內容工具<span class="summary-hint">生成缺項、查看狀態</span></summary><div id="aiToolsBody"></div></details>
       <dialog class="dialog word-tools-dialog" id="addWordsDialog" aria-labelledby="addWordsTitle">
@@ -117,6 +120,13 @@ export function renderWords(root) {
 
   const listEl = root.querySelector('#list');
   const countEl = root.querySelector('#count');
+  root.querySelector('#toggleLibraryEdit').addEventListener('click', (event) => {
+    editMode = !editMode;
+    listEl.classList.toggle('is-editing', editMode);
+    event.currentTarget.setAttribute('aria-pressed', String(editMode));
+    event.currentTarget.textContent = editMode ? '完成編輯' : '編輯模式';
+    root.querySelector('#libraryEditHint').textContent = editMode ? '選擇字卡旁的編輯或刪除；完成後可收起操作。' : '開啟編輯模式後，可修改或刪除字卡。';
+  });
   const refreshPanel = renderSetsPanel(root.querySelector('#setsPanel'));
   const packPanel = renderWordPackPanel(root.querySelector('#wordPackPanel'));
   root.querySelector('.sets-panel').open = true;
@@ -175,8 +185,11 @@ export function renderWords(root) {
       listEl.innerHTML = `<li class="list-empty">${all.length ? '目前範圍沒有符合的單字，可切換單字集或新增單字。' : '還沒有收藏的單字。點「＋ 加入單字」，或用上方「查單字」找到第一個字。'}</li>`;
       return;
     }
+    const records = getSetRecords();
+    const speaking = canSpeak();
     listEl.innerHTML = shown.map((w) => {
-      const first = zhLines(w.zh)[0];
+      // 清單只呈現第一行，避免每次解析整份多行解釋。
+      const first = zhLines(w.zh.split('\n').find((line) => line.trim()) || '')[0];
       const zhText = first
         ? `${first.pos || w.pos ? `<em>${esc(first.pos || w.pos)}</em> ` : ''}${esc(first.text)}`
         : (isLookingUp(w.id) ? '<span class="muted">查字典中…</span>' : '<span class="muted">（尚無中文）</span>');
@@ -188,11 +201,11 @@ export function renderWords(root) {
         <div class="word-info">
           <span class="word-en">${esc(w.word)}${badge(w)}</span>
           <span class="word-zh">${zhText}</span>
-          <span class="word-set-tags">${setsForWord(getSetRecords(), w.word).map((s) => `<span class="chip">${esc(s.name)}</span>`).join('')}</span>
+          <span class="word-set-tags">${setsForWord(records, w.word).map((s) => `<span class="chip">${esc(s.name)}</span>`).join('')}</span>
         </div>
         <div class="row-actions">
           ${w.llm?.status === 'failed' ? `<button class="btn btn-ghost btn-sm" type="button" data-act="regen" title="${esc(w.llm.error || '')}">重試 AI</button>` : ''}
-          ${canSpeak() ? `<button class="icon-btn" type="button" data-act="speak" aria-label="播放 ${esc(w.word)} 的發音" title="發音">${speakerIcon}</button>` : ''}
+          ${speaking ? `<button class="icon-btn" type="button" data-act="speak" aria-label="播放 ${esc(w.word)} 的發音" title="發音">${speakerIcon}</button>` : ''}
           <button class="btn btn-ghost btn-sm" type="button" data-act="edit">編輯</button>
           <button class="btn btn-ghost btn-sm danger" type="button" data-act="delete" aria-label="刪除 ${esc(w.word)}">刪除</button>
         </div>
@@ -299,9 +312,15 @@ export function renderWords(root) {
     const act = btn.dataset.act;
     if (act === 'regen') retryFailed(id);
     else if (act === 'speak') speak(getWords().find((x) => x.id === id)?.word);
-    else if (act === 'mark') toggleUnfamiliar(id);
-    else if (act === 'edit') openEditor(id);
-    else if (act === 'delete') {
+    else if (act === 'mark') {
+      // 儲存與同步仍走原流程；本次本機操作不必重建清單及隱藏的工具。
+      markingId = id;
+      try { toggleUnfamiliar(id); }
+      catch (err) { toast(err.message, 'error'); }
+      finally { markingId = null; }
+    }
+    else if (act === 'edit' && editMode) openEditor(id);
+    else if (act === 'delete' && editMode) {
       const w = getWords().find((x) => x.id === id);
       if (w && confirmAction(`確定要刪除「${w.word}」嗎？`)) {
         deleteWord(id);
@@ -375,6 +394,20 @@ export function renderWords(root) {
   drawProgress();
   drawAi();
   const unsub = subscribe(() => {
+    if (markingId) {
+      const w = getWords().find((word) => word.id === markingId);
+      const row = [...listEl.children].find((element) => element.dataset.id === markingId);
+      if (w && row) {
+        row.classList.toggle('is-unfamiliar', w.unfamiliar);
+        const star = row.querySelector('[data-act=mark]');
+        const label = w.unfamiliar ? '取消不熟' : '標記不熟';
+        star.textContent = w.unfamiliar ? '★' : '☆';
+        star.setAttribute('aria-pressed', String(w.unfamiliar));
+        star.setAttribute('aria-label', `${label}：${w.word}`);
+        star.title = label;
+      }
+      return;
+    }
     refreshPanel(); refreshSetScope(root);
     packPanel.refresh();
     for (const id of ['addToSet', 'bulkSet']) {

@@ -70,6 +70,7 @@ with sync_playwright() as p:
     check(a['src'].get('zh') == 'dict' and a['src'].get('en') == 'freedict', '記錄資料來源')
     check('發票' in words['invoice']['zh'], f"invoice 中文: {words['invoice']['zh']!r}")
     check(words['zzqxv']['zh'] == '' and words['zzqxv']['en'] == '', '查不到的字留空，不會壞掉')
+    page.locator('.word-row', has_text='zzqxv').scroll_into_view_if_needed()
     check(page.locator('.word-row', has_text='zzqxv').locator('.muted').inner_text() == '（尚無中文）', '查不到的字顯示「尚無中文」')
     check(not any('贊' != c and '赞' in c for c in a['zh']) and '赞' not in a['zh'], '沒有殘留簡體字')
 
@@ -79,6 +80,7 @@ with sync_playwright() as p:
     check(spoken and spoken[-1]['text'] == 'invoice' and spoken[-1]['lang'] == 'en-US', f'列表發音 {spoken}')
 
     # 使用者手動改過的中文不會被字典覆蓋
+    page.click('#toggleLibraryEdit')
     row = page.locator('.word-row', has_text='invoice')
     row.locator('[data-act=edit]').click()
     page.fill('#editForm [name=zh]', 'n. 請款單')

@@ -270,6 +270,7 @@ with sync_playwright() as p:
     # 刪掉單字 → 相關錯題一起清掉
     wid = m[0]['question']['wordId']
     page.goto(URL + '#/words')
+    page.click('#toggleLibraryEdit')
     page.locator('.word-row', has_text=wid).first.locator('[data-act=delete]').click()
     page.wait_for_timeout(200)
     check(store(page, 'mistakes') == [], '刪除單字時相關錯題也清掉')

@@ -182,6 +182,7 @@ with sync_playwright() as p:
 
     # ---- 刪除：電腦刪掉 invoice → 手機也刪掉 ----
     A.goto(URL + '#/words')
+    A.click('#toggleLibraryEdit')
     A.locator('.word-row', has_text='invoice').locator('[data-act=delete]').click()
     sync_now(A)
     check(cloud_words(uid)['invoice']['deleted'] is True, '雲端留下刪除紀錄')
