@@ -5,10 +5,16 @@
 
 🔗 **線上使用：<https://kevin930326.github.io/toeic-cards/>**（手機可以「加入主畫面」當 App 用，離線也能複習）
 
-<p>
-  <img src="docs/images/04-card-ai-zh.png" alt="AI 生成的多益單字卡" width="49%">
-  <img src="docs/images/06-part5.png" alt="多益 Part 5 句子填空測驗" width="49%">
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/readme/review.png" alt="今日複習：字卡背面有中文、例句、搭配詞"></td>
+    <td width="50%"><img src="docs/images/readme/explore.png" alt="單字探索：清單＋直接閱讀解釋與例句"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>今日複習：翻面看中文、例句、搭配詞，每個都能發音</sub></td>
+    <td align="center"><sub>單字探索：不用翻面，直接讀完整內容</sub></td>
+  </tr>
+</table>
 
 ---
 
@@ -42,26 +48,34 @@
 ### 畫面
 
 <p align="center">
-  <img src="docs/images/readme/phones.png" alt="手機畫面：滑卡複習、學習統計（連續打卡、熟練度）、每日複習與測驗圖表" width="100%">
+  <img src="docs/images/readme/phones.png" alt="手機畫面：滑卡複習、單字探索、學習統計（深色模式）" width="100%">
 </p>
-<p align="center"><sub>手機：滑卡複習 ／ 學習統計 ／ 每日複習與測驗圖表（深色模式）</sub></p>
+<p align="center"><sub>手機：滑卡複習 ／ 單字探索 ／ 學習統計（深色模式）</sub></p>
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/images/readme/batch.png" alt="批次新增預覽"></td>
-    <td width="50%"><img src="docs/images/06-listen.png" alt="聽力測驗"></td>
+    <td width="50%"><img src="docs/images/readme/pack.png" alt="加入內建多益 1000 單字包"></td>
+    <td width="50%"><img src="docs/images/readme/lookup.png" alt="點解釋裡的字直接查詢"></td>
   </tr>
   <tr>
-    <td align="center"><sub>批次新增：貼上一整段，自動拆字、去重</sub></td>
-    <td align="center"><sub>聽力測驗：聽發音選意思</sub></td>
+    <td align="center"><sub>內建多益 1000 單字包：每 100 字一組，免金鑰</sub></td>
+    <td align="center"><sub>點解釋或例句裡的字就能查，還能收藏</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/images/06-mistakes.png" alt="錯題本"></td>
-    <td width="50%"><img src="docs/images/01-dark-mode.png" alt="深色模式字卡"></td>
+    <td width="50%"><img src="docs/images/readme/library.png" alt="單字庫與單字集"></td>
+    <td width="50%"><img src="docs/images/readme/quiz.png" alt="看中文選英文測驗"></td>
   </tr>
   <tr>
-    <td align="center"><sub>錯題本：答錯的題目可以重做</sub></td>
-    <td align="center"><sub>深色模式</sub></td>
+    <td align="center"><sub>單字庫：用單字集分類，搜尋英文或中文</sub></td>
+    <td align="center"><sub>多益風格測驗：答錯會說明，並加入錯題本</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/readme/stats.png" alt="學習統計"></td>
+    <td width="50%"><img src="docs/images/readme/dark.png" alt="深色模式的自由翻卡"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>學習統計：連續打卡、學習中、長期熟記</sub></td>
+    <td align="center"><sub>自由翻卡（深色模式）</sub></td>
   </tr>
 </table>
 

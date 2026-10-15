@@ -55,4 +55,4 @@ npx firebase-tools emulators:start --only auth,firestore --project demo-toeic
 - 要安裝軟體、下載檔案前，先問使用者
 - push 前檢查沒有金鑰（`js/firebase-config.js` 裡的 Firebase apiKey 是公開識別碼，可以放）
 - 部署：push 到 `main` 後 GitHub Pages 自動更新（https://kevin930326.github.io/toeic-cards/），說明見 [docs/deploy.md](docs/deploy.md)
-- README 的展示圖用 `python tools/make_readme_images.py` 產生
+- README 的展示圖：先 `python tests/capture_readme.py`（需要 8123 伺服器）再 `python tools/make_readme_images.py`；介面有明顯改變時重拍

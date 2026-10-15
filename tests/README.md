@@ -95,7 +95,7 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `unit/sync.test.mjs` | 同步合併規則：新增／更新／刪除與刪除後修改、重複套用不變、只傳變更、每日紀錄加總、同步設定的範圍、錯題 id 對應 |
 | `unit/quiz.test.mjs` | 出題邏輯：錯誤選項（不含答案、不重複、同詞性優先）、遮住答案字、不熟優先、Part 5 題目驗證 |
 
-`capture_screenshots.py` 用來產生 `docs/images/` 裡的截圖。
+`capture_screenshots.py` 用來產生 `docs/images/` 裡早期開發紀錄用的截圖；README 的展示圖改用 `capture_readme.py`（內建單字包的真實內容、統一尺寸），截完再執行 `python tools/make_readme_images.py` 合成手機圖。
 
 `test_step11.py` 也會驗證單字集的 Firestore 交易合併：兩台裝置同時建立、改名與成員修改互不覆蓋、離線裝置不復活已刪分類，以及其他帳號無法讀取分類。Firebase SDK 和字型快取測試需要連線取得公開檔案；帳號與資料僅寫入 `demo-toeic` 本機模擬器。
 
