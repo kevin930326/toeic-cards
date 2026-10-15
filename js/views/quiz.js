@@ -6,7 +6,7 @@ import { speak, canSpeak, speakerIcon, resolveAccent, accentLabel } from '../spe
 import { hasApiKey, onRateWait } from '../llm.js';
 import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK, SENTENCE_MODES } from '../quiz.js?v=forms-1';
 import { preparePart5 } from '../part5.js?v=forms-1';
-import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v=forms-1';
+import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v=review-fixes-1';
 import { normalizeWord } from '../parse.js';
 import { loadReadings } from './reading.js?v=badge-1';
 import { aiBadge, AI_BADGE_LEGEND } from '../ai-badge.js';
@@ -55,8 +55,11 @@ function newSession(mode, questions, { fromMistakes = false } = {}) {
 
 export function renderQuiz(root) {
   let unsubWait = null;
+  let alive = true;
+  let bankRefreshPending = false;
 
   function draw() {
+    if (!alive) return;
     unsubWait?.();
     unsubWait = null;
     if (state.view === 'question' && state.session) drawQuestion();
@@ -73,7 +76,11 @@ export function renderQuiz(root) {
     const unfamiliar = all.filter((w) => w.unfamiliar).length;
     const targets = targetsForScope();
     // 題庫在背景載入，載入後重畫，讓「哪些字有內建題目」更準確（失敗沒關係，開始測驗時會再試）
-    if (!loadedFormsBank()) loadFormsBank().then(() => { if (state.view === 'home') draw(); }).catch(() => {});
+    if (!loadedFormsBank() && !bankRefreshPending) {
+      bankRefreshPending = true;
+      loadFormsBank().then(() => { if (alive && state.view === 'home') draw(); })
+        .catch(() => {}).finally(() => { bankRefreshPending = false; });
+    }
     const ids = new Set(all.map((w) => w.id));
     const mistakes = getMistakes().filter((m) => ids.has(m.question.wordId)).length;
     const readings = loadReadings().length;
@@ -174,7 +181,8 @@ export function renderQuiz(root) {
         if (!result.questions.length && result.skipped) {
           throw new Error('目前範圍沒有內建題目的字（多益 1000 單字包）；填入 Gemini 金鑰後，自己加的字也能出詞性變化題');
         }
-        if (result.skipped && result.questions.length < count) toast(`有 ${result.skipped} 個字沒有內建題目，填入 Gemini 金鑰後也能考`);
+        if (result.bankUnavailable) toast('內建題庫暫時無法載入，這次只使用已存題目；其他字請連網後重試，未使用 AI 額度。');
+        else if (result.skipped && result.questions.length < count) toast(`有 ${result.skipped} 個字沒有內建題目，填入 Gemini 金鑰後也能考`);
       } else {
         result = await preparePart5(pickTargets('part5', targets, count), all, options);
       }
@@ -448,5 +456,5 @@ export function renderQuiz(root) {
   autoPlay();
   const unsub = subscribe(() => { if (state.view === 'home' || state.view === 'mistakes') draw(); });
   document.addEventListener('keydown', onKey);
-  return () => { unsub(); unsubWait?.(); document.removeEventListener('keydown', onKey); };
+  return () => { alive = false; unsub(); unsubWait?.(); document.removeEventListener('keydown', onKey); };
 }

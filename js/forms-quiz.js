@@ -69,18 +69,26 @@ async function generateBatch(batch, signal) {
 // 準備詞性變化測驗
 //   targets：可以考的字（已依範圍篩選）；count：題數
 //   fresh：有金鑰時，自己的字一律重新出題（內建題庫的字照常使用題庫）
-// 回傳 { questions, failed, skipped }：failed 是 AI 出題失敗的字，skipped 是沒有金鑰、也沒有題目而略過的字數
+// 回傳 { questions, failed, skipped, bankUnavailable }：題庫故障時只重用已存題目，不送 AI。
+// failed 是 AI 出題失敗的字，skipped 是這次沒有可用題目而略過的字數。
 export async function prepareForms(targets, count, { fresh = false, signal, onProgress } = {}) {
-  const bank = await loadFormsBank();
-  const canAI = hasApiKey();
+  let bank;
+  let bankError = null;
+  try { bank = await loadFormsBank(); }
+  catch (err) { bankError = err; bank = new Map(); }
+  if (signal?.aborted) throw new LlmError('aborted', '已停止');
+  // 題庫不可用時，只重用已存題目；不能把原本免費的內建字誤送給 AI。
+  const canAI = hasApiKey() && !bankError;
+  const useFresh = fresh && !bankError;
   const inBank = (w) => bank.has(normalizeWord(w.word));
   const hasSaved = (w) => !!(w.formQs && w.formQs.length);
+  if (bankError && !targets.some(hasSaved)) throw bankError;
   const answerable = (w) => inBank(w) || hasSaved(w) || canAI;
   const ordered = pickTargets('forms', targets, targets.length);
   const picked = ordered.filter(answerable).slice(0, count);
   const skipped = canAI ? 0 : targets.filter((w) => !answerable(w)).length;
 
-  const need = picked.filter((w) => !inBank(w) && canAI && (fresh || !hasSaved(w)));
+  const need = picked.filter((w) => !inBank(w) && canAI && (useFresh || !hasSaved(w)));
   const failed = [];
   let done = 0;
   onProgress?.({ done, total: need.length });
@@ -110,11 +118,11 @@ export async function prepareForms(targets, count, { fresh = false, signal, onPr
       continue;
     }
     const saved = w.formQs || [];
-    if (!saved.length || (fresh && failed.includes(w.id))) continue;
-    const q = fresh ? saved[saved.length - 1] : [...saved].sort((a, b) => (a.usedAt || 0) - (b.usedAt || 0))[0];
+    if (!saved.length || (useFresh && failed.includes(w.id))) continue;
+    const q = useFresh ? saved[saved.length - 1] : [...saved].sort((a, b) => (a.usedAt || 0) - (b.usedAt || 0))[0];
     questions.push(formsQuestion(w, q));
     patches.push([w.id, { formQs: saved.map((x) => (x.id === q.id ? { ...x, usedAt: now } : x)) }]);
   }
   updateWords(patches);
-  return { questions, failed, skipped };
+  return { questions, failed, skipped, bankUnavailable: !!bankError };
 }
