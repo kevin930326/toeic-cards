@@ -21,6 +21,9 @@ PHONE = {'width': 390, 'height': 760}
 os.makedirs(OUT, exist_ok=True)
 
 INIT = """
+// 固定的隨機數：每次截圖抽到同樣的題目、同樣的順序，畫面沒改時截圖也不會變
+(() => { let a = 20261016; Math.random = () => { a = (a + 0x6d2b79f5) >>> 0; let t = a;
+  t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; })();
 if (!localStorage.getItem('toeic-cards:onboarding'))
   localStorage.setItem('toeic-cards:onboarding', JSON.stringify({ version: 1, status: 'skipped' }));
 if (window.speechSynthesis) speechSynthesis.speak = () => {};
