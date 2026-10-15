@@ -1,6 +1,7 @@
 // 自由翻卡只讀目前範圍；不呼叫 SRS 評分或每日紀錄。
 import { scopedWords, activeSetId, getSettings, updateSettings, toggleUnfamiliar, subscribe } from '../store.js';
-import { flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=inline-lookup-1';
+import { flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=lookup-mode-1';
+import { createCardLookupMode } from '../card-lookup-mode.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js';
 import { speak } from '../speech.js';
 import { shuffle } from '../quiz.js';
@@ -11,6 +12,7 @@ import { onGenerateStatus } from '../generate.js';
 export function renderFreeCards(root) {
   let currentId = null, flipped = false, filter = 'all', random = false;
   let order = [], scope = activeSetId(), detachSwipe, disposed = false;
+  const lookupMode = createCardLookupMode();
   function deck() {
     const words = scopedWords().filter(w => filter !== 'unfamiliar' || w.unfamiliar);
     if (scope !== activeSetId()) { scope = activeSetId(); order = random ? shuffle(words.map(w => w.id)) : []; currentId = null; }
@@ -26,6 +28,7 @@ export function renderFreeCards(root) {
     if (words.length < 2) return;
     const at = Math.max(0, words.findIndex(w => w.id === currentId));
     currentId = words[(at + step + words.length) % words.length].id;
+    lookupMode.reset();
     flipped = false; draw();
   }
   function draw() {
@@ -36,6 +39,7 @@ export function renderFreeCards(root) {
     const w = words.find(w => w.id === currentId) || words[0];
     if (currentId !== w?.id) flipped = false;
     currentId = w?.id || null;
+    lookupMode.prepare(JSON.stringify([activeSetId(), currentId, getSettings().cardMode]));
     root.innerHTML = `<section class="page page-free-cards">
       <h1 class="page-title">自由翻卡</h1><p class="hint-text">依自己的節奏看所有字卡，不受到期日或每日新字數限制，也不更動複習排程與打卡紀錄。</p>
       <div class="free-toolbar">${setScopeHTML()}
@@ -43,7 +47,8 @@ export function renderFreeCards(root) {
         <button class="btn btn-outline btn-sm" id="freeShuffle" type="button" aria-pressed="${random}">${random ? '改回原順序' : '隨機排序'}</button>
       </div>
       ${w ? `<div class="card-toolbar">${modeToggleHTML(getSettings().cardMode)}<p id="freePosition" role="status">${words.findIndex(word => word.id === w.id) + 1} / ${words.length}</p></div>
-        <div id="freeSwipe">${flashcardHTML(w, { flipped, mode: getSettings().cardMode, corner: '自由翻卡', hint: '點一下翻面・左右滑動換字' })}</div>
+        ${lookupMode.html()}
+        <div id="freeSwipe">${flashcardHTML(w, { flipped, mode: getSettings().cardMode, corner: '自由翻卡', hint: '點一下翻面・左右滑動換字', lookupEnabled: lookupMode.enabled, lookupOnly: lookupMode.lookupOnly })}</div>
         <div class="free-actions"><button class="btn btn-outline" id="freePrev" type="button" ${words.length < 2 ? 'disabled' : ''}>← 上一張</button>
         <button class="btn btn-ghost" id="freeMark" type="button" aria-pressed="${w.unfamiliar}">${w.unfamiliar ? '★ 已標記不熟' : '☆ 標記不熟'}</button>
         <button class="btn btn-outline" id="freeNext" type="button" ${words.length < 2 ? 'disabled' : ''}>下一張 →</button></div>
@@ -60,6 +65,12 @@ export function renderFreeCards(root) {
       currentId = order[0] || null; flipped = false; draw();
     });
     if (w) {
+      root.querySelector('#cardLookupToggle')?.addEventListener('click', () => {
+        lookupMode.toggle();
+        if (lookupMode.enabled) flipped = true;
+        draw();
+        root.querySelector('#cardLookupToggle').focus({ preventScroll: true });
+      });
       for (const radio of root.querySelectorAll('[name=mode]')) radio.addEventListener('change', () => updateSettings({ cardMode: radio.value }));
       const tap = target => handleCardTap(target, w, flip);
       root.querySelector('#card').addEventListener('click', e => { e.stopPropagation(); tap(e.target); });

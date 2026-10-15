@@ -4,7 +4,8 @@
 import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
-import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=inline-lookup-1';
+import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=lookup-mode-1';
+import { createCardLookupMode } from '../card-lookup-mode.js';
 import { attachSwipe, flyOut } from '../swipe.js?v=swipe-isolation-1';
 import {
   grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
@@ -48,6 +49,7 @@ export function renderReview(root) {
   }
   let busy = false;   // 飛出動畫進行中，避免連按
   let detachSwipe;
+  const lookupMode = createCardLookupMode();
 
   function current() {
     // 單字被刪掉的話直接略過
@@ -68,6 +70,7 @@ export function renderReview(root) {
     }
     const w = current();
     const { cardMode } = getSettings();
+    lookupMode.prepare(JSON.stringify([activeSetId(), w?.id, cardMode]));
     if (!w) { drawDone(); return; }
 
     const now = Date.now();
@@ -87,12 +90,15 @@ export function renderReview(root) {
           ${modeToggleHTML(cardMode)}
         </div>
         <div class="progress review-progress" aria-hidden="true"><div class="progress-bar" style="width:${pct}%"></div></div>
+        ${lookupMode.html()}
         <div class="card-stage review-stage">
           <div class="swipe-wrap" id="swipe">
             ${flashcardHTML(w, {
               flipped: session.flipped,
               mode: cardMode,
               corner: tag,
+              lookupEnabled: lookupMode.enabled,
+              lookupOnly: lookupMode.lookupOnly,
               hint: touch ? '點一下翻面・左右滑動評分' : '點一下翻面',
             })}
             ${swipeLabelsHTML}
@@ -111,11 +117,17 @@ export function renderReview(root) {
           <button class="btn btn-ghost btn-sm" id="undo" type="button" ${session.history.length ? '' : 'disabled'}>↶ 復原</button>
           <button class="btn btn-ghost btn-sm" id="edit" type="button">編輯</button>
         </div>
-        <p class="hint-text">英文解釋與例句可點字查意思，也能加入單字集。</p>
+        ${lookupMode.touch ? '' : '<p class="hint-text">英文解釋與例句可點字查意思，也能加入單字集。</p>'}
         <p class="kbd-hint">鍵盤：空白鍵翻面　← 不熟　→ 會　P 發音　Z 復原</p>
       </section>`;
 
     bindMode();
+    root.querySelector('#cardLookupToggle')?.addEventListener('click', () => {
+      lookupMode.toggle();
+      if (lookupMode.enabled) session.flipped = true;
+      draw();
+      root.querySelector('#cardLookupToggle').focus({ preventScroll: true });
+    });
     bindSetScope(root);
     const card = root.querySelector('#card');
     const wrap = root.querySelector('#swipe');
@@ -200,6 +212,7 @@ export function renderReview(root) {
     const w = current();
     if (!w) return;
     busy = true;
+    lookupMode.reset();
     if (!animated) {
       const wrap = root.querySelector('#swipe');
       if (wrap) await flyOut(wrap, rating === 'good' ? 'right' : 'left');
@@ -223,6 +236,7 @@ export function renderReview(root) {
   }
 
   function undo() {
+    lookupMode.reset();
     const h = session.history.pop();
     if (!h || !getWord(h.id)) return;
     session.queue = h.queue;

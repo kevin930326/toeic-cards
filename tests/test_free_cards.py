@@ -49,6 +49,7 @@ with sync_playwright() as p:
     pg.set_viewport_size({'width':1100,'height':950})
     pg.click('.card-front .headword')
     expect(pg.locator('#card')).to_have_class(re.compile('is-flipped'))
+    pg.click('#cardLookupToggle')
     pg.locator('.back-en [data-lookup-word=meeting]').click()
     expect(pg.locator('#lookupInput')).to_have_value('meeting')
     pg.press('#lookupInput','Escape')

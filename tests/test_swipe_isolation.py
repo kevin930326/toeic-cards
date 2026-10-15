@@ -1,6 +1,7 @@
 """滑卡與頁面手勢分工；不代表已模擬 iPhone 系統返回動畫。"""
 import json
 import os
+import re
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
@@ -118,14 +119,16 @@ with sync_playwright() as p:
       el.dispatchEvent(e);return !e.defaultPrevented;
     }''')
     page.locator('.card-front .headword').tap()
-    expect(page.locator('#card')).to_have_class('flashcard is-flipped')
+    expect(page.locator('#card')).to_have_class(re.compile('is-flipped'))
+    page.locator('#cardLookupToggle').tap()
     page.locator('[data-lookup-word="document"]').tap()
     expect(page.locator('#lookupDialog')).to_be_visible()
     page.locator('#lookupDialog [data-close]').tap()
-    expect(page.locator('#card')).to_have_class('flashcard is-flipped')
+    expect(page.locator('#card')).to_have_class(re.compile('is-flipped'))
     assert snapshot(page) == before
     print('PASS 點擊翻面與點字查詢保留；卡片外不攔觸控')
 
+    page.locator('#cardLookupToggle').tap()
     page.locator('.card-back .card-corner').tap()
     page.locator('.card-front .speak-btn').tap()
     assert page.evaluate('spoken.length') > 0

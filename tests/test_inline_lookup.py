@@ -84,6 +84,7 @@ with sync_playwright() as p:
     mobile,mp,_,mobile_calls=setup(b,True)
     mp.tap('.card-front .headword')
     expect(mp.locator('#card')).to_have_class(re.compile('is-flipped'))
+    mp.locator('#cardLookupToggle').tap()
     mp.locator('.back-en [data-lookup-word=arrangement]').tap()
     expect(mp.locator('#lookupResult h3')).to_have_text('arrangement')
     mp.screenshot(path=str(OUT/'inline-lookup-mobile.png'))

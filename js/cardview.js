@@ -5,7 +5,7 @@ import { isLookingUp } from './dictionary.js';
 import { isGenerating } from './generate.js';
 import { wordTokens } from './word-tokens.js';
 
-const lookupText = (text) => wordTokens(text).map((part) => part.word
+const lookupText = (text, enabled = true) => !enabled ? esc(text) : wordTokens(text).map((part) => part.word
   ? `<button class="lookup-token" type="button" data-lookup-word="${esc(part.word)}" aria-label="查詢 ${esc(part.text)}">${esc(part.text)}</button>`
   : esc(part.text)).join('');
 
@@ -30,10 +30,11 @@ export function handleCardTap(target, word, flip) {
   const sp = target.closest('[data-speak-text]');
   if (sp) { speak(sp.dataset.speakText); return; }
   if (target.closest('[data-speak]')) { speak(word.word); return; }
+  if (target.closest('[data-lookup-only="true"]')) return;
   flip();
 }
 
-export function backHTML(w, mode) {
+export function backHTML(w, mode, { lookupEnabled = true } = {}) {
   const empty = isLookingUp(w.id) || isGenerating(w.id)
     ? `<p class="back-empty">${isGenerating(w.id) ? 'AI 生成中…' : '查字典中…'}</p>`
     : mode === 'both' ? '<p class="hint-text">尚無中文詞義，可用「編輯內容」補充。</p>'
@@ -49,15 +50,15 @@ export function backHTML(w, mode) {
       : empty;
   } else {
     main = w.en
-      ? `${w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}<p class="back-en">${lookupText(w.en)}</p>`
+      ? `${w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}<p class="back-en">${lookupText(w.en, lookupEnabled)}</p>`
       : empty;
   }
   if (mode === 'both') main = `<div class="explore-definition"><h3>中文詞義</h3>${main}</div>
-    <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${w.pos ? `<span class="zh-pos">${esc(w.pos)}</span>` : ''}${lookupText(w.en)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
+    <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${w.pos ? `<span class="zh-pos">${esc(w.pos)}</span>` : ''}${lookupText(w.en, lookupEnabled)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
   const extras = [];
   if (w.examples.length) {
     extras.push(`<div class="extra"><h3>例句</h3>${w.examples.map((e) => `
-      <p class="ex-en">${lookupText(e.en)}${miniSpeak(e.en)}</p>${e.zh ? `<p class="ex-zh">${esc(e.zh)}</p>` : ''}`).join('')}</div>`);
+      <p class="ex-en">${lookupText(e.en, lookupEnabled)}${miniSpeak(e.en)}</p>${e.zh ? `<p class="ex-zh">${esc(e.zh)}</p>` : ''}`).join('')}</div>`);
   }
   if (w.collocations.length) extras.push(`<div class="extra"><h3>常見搭配</h3>${speakChips(w.collocations)}</div>`);
   if (w.forms.length || w.synonyms.length) {
@@ -70,10 +71,10 @@ export function backHTML(w, mode) {
 }
 
 // 一張完整的卡片（含正反面）。corner：正面左上角的小字
-export function flashcardHTML(w, { flipped, mode, corner, hint = '點一下翻面' }) {
+export function flashcardHTML(w, { flipped, mode, corner, hint = '點一下翻面', lookupEnabled = true, lookupOnly = false }) {
   return `
     <div class="flashcard ${flipped ? 'is-flipped' : ''} ${w.unfamiliar ? 'is-unfamiliar' : ''}" id="card"
-      role="button" tabindex="0" aria-label="${esc(w.word)}，按一下翻面">
+      role="button" tabindex="0" data-lookup-only="${lookupOnly}" aria-label="${esc(w.word)}，${lookupOnly ? '點字查詢模式' : '按一下翻面'}">
       <div class="card-face card-front">
         <span class="card-corner">${esc(corner)}</span>
         ${w.unfamiliar ? '<span class="stamp">不熟</span>' : ''}
@@ -84,7 +85,7 @@ export function flashcardHTML(w, { flipped, mode, corner, hint = '點一下翻�
       </div>
       <div class="card-face card-back">
         <span class="card-corner">${esc(w.word)}</span>
-        ${backHTML(w, mode)}
+        ${backHTML(w, mode, { lookupEnabled })}
       </div>
     </div>`;
 }
