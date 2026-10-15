@@ -58,21 +58,10 @@
    （舊版主控台在 **建構（Build）› Firestore Database**）
 2. 版本選「**Standard**」（如果有問）；位置選 **`asia-east1`（台灣）**，之後無法更改
 3. 選「**以正式版模式啟動**（production mode）」→ 建立
-4. 建立好之後，切到「**規則（Rules）**」分頁，把內容**全部換成**下面這段 → 按「**發布（Publish）**」：
+4. 建立好之後，切到「**規則（Rules）**」分頁，把內容**全部換成**專案裡 [`firestore.rules`](../firestore.rules) 的內容 → 按「**發布（Publish）**」
 
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // 每個人只能讀寫自己的資料（users/自己的 uid/ 底下）
-    match /users/{uid}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
-    }
-  }
-}
-```
-
-> 這段規則也存在專案的 `firestore.rules` 檔案裡。
+> 規則限制兩件事：**每個人只能讀寫自己的資料**，而且只能寫網站用到的路徑和欄位格式（見 [decisions #80](decisions.md)）。
+> ⚠ **規則不會跟著 git push 更新。** 每次修改 `firestore.rules`，都要再到這裡貼上並發布一次。
 
 ## 完成！
 

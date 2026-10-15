@@ -70,7 +70,9 @@ def word(w, i, **extra):
             'llm': None, 'srs': None, 'createdAt': i, 'updatedAt': 1000 + i, **extra}
 
 def device(browser, name, words=None, own_log_reviews=0, mobile=False):
-    ctx = browser.new_context(viewport={'width': 390, 'height': 844} if mobile else {'width': 1000, 'height': 1000})
+    # bypass_csp：網站的 CSP 只允許正式的 Firebase 網址，本機模擬器（http://127.0.0.1）會被擋；
+    # 正式網址在 CSP 下能不能用，由 tests/test_security.py 檢查
+    ctx = browser.new_context(viewport={'width': 390, 'height': 844} if mobile else {'width': 1000, 'height': 1000}, bypass_csp=True)
     existing_user(ctx)
     ctx.add_init_script(CFG)
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
@@ -267,6 +269,28 @@ with sync_playwright() as p:
     }""", uid)
     check(res == {'read': 'permission-denied', 'write': 'permission-denied'}, f'安全規則：別人不能讀、也不能寫我的資料 {res}')
 
+    # ---- 安全規則：自己的資料也只能寫網站用到的路徑和格式（不能拿來當免費雲端硬碟）----
+    res = C.evaluate("""async (uidC) => {
+      const fs = await import('https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js');
+      const { getApp } = await import('https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js');
+      const db = fs.getFirestore(getApp());
+      const tryWrite = async (path, data) => { try { await fs.setDoc(fs.doc(db, ...path), data); return 'ALLOWED'; } catch (e) { return e.code; } };
+      const okWord = { word: 'test', updatedAt: 1, deleted: false, data: { word: 'test' }, syncedAt: fs.serverTimestamp() };
+      return {
+        ok: await tryWrite(['users', uidC, 'words', 'test'], okWord),
+        otherFolder: await tryWrite(['users', uidC, 'files', 'big'], { blob: 'x' }),
+        userDoc: await tryWrite(['users', uidC], { anything: 1 }),
+        extraField: await tryWrite(['users', uidC, 'words', 'test2'], { ...okWord, blob: 'x' }),
+        wrongType: await tryWrite(['users', uidC, 'words', 'test3'], { ...okWord, updatedAt: 'soon' }),
+        fakeTime: await tryWrite(['users', uidC, 'words', 'test4'], { ...okWord, syncedAt: 1 }),
+        unknownMeta: await tryWrite(['users', uidC, 'meta', 'evil'], { value: {}, updatedAt: 1 }),
+        logExtra: await tryWrite(['users', uidC, 'logs', 'dev'], { log: {}, updatedAt: 1, blob: 'x' }),
+      };
+    }""", state(C)['user']['uid'])
+    denied = {k: v for k, v in res.items() if k != 'ok'}
+    check(res['ok'] == 'ALLOWED' and all(v == 'permission-denied' for v in denied.values()),
+          f'安全規則：只允許網站用到的路徑和欄位格式 {res}')
+
     # ---- iPhone 主畫面 App：在 Safari 開連結沒用 → 貼上連結登入 ----
     ctxS, S = device(browser, 'Safari', mobile=True)
     S.click('.link-login > summary')
@@ -310,7 +334,7 @@ with sync_playwright() as p:
         ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : realMM(q);"""
     def iphone(name, standalone):
         c = browser.new_context(viewport={'width': 390, 'height': 844}, user_agent=IPHONE_UA, is_mobile=True, has_touch=True,
-                                permissions=['clipboard-read', 'clipboard-write'])
+                                permissions=['clipboard-read', 'clipboard-write'], bypass_csp=True)
         existing_user(c)
         c.add_init_script(CFG + (STANDALONE if standalone else ''))
         c.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
