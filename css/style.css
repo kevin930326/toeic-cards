@@ -302,7 +302,8 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 }
 .brand-text { font-weight: 700; letter-spacing: 0.04em; }
 
-.nav { display: flex; gap: 2px; }
+.nav { display: flex; align-items: center; gap: 2px; }
+.nav > a, .nav .review-nav > a { display: inline-flex; align-items: center; justify-content: center; line-height: 1.5; }
 .nav a {
   white-space: nowrap;      /* 導覽文字不換行 */
   padding: 6px 12px;

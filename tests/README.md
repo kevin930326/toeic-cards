@@ -46,6 +46,7 @@ python tests/test_swipe_isolation.py # 滑卡邊緣保留、觸控中斷、捲�
 python tests/test_card_lookup_mode.py # 手機翻面／點字模式、換卡重設、資料保護與離線
 python tests/test_batch_add_responsiveness.py # 1000張既有卡下建立新集再批次新增100字
 python tests/test_unknown_words.py # 未收錄字原樣收藏、手動字義與查詢草稿保留
+python tests/test_nav_alignment.py # 複習文字與其他導覽在各寬度及徽章位數下對齊
 python tests/test_security.py   # 資安：CSP 沒有誤擋、注入的程式不會執行（不需要 Firebase）
 ```
 
