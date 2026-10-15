@@ -98,7 +98,7 @@ export const MASTERY_LEVELS = [
   { key: 'new', label: '新字', desc: '還沒複習過' },
   { key: 'learning', label: '學習中', desc: `間隔少於 ${FAMILIAR_DAYS} 天` },
   { key: 'familiar', label: '熟悉中', desc: `間隔 ${FAMILIAR_DAYS}–${MASTERED_DAYS - 1} 天` },
-  { key: 'mastered', label: '已熟', desc: `間隔 ${MASTERED_DAYS} 天以上` },
+  { key: 'mastered', label: '長期熟記', desc: `複習間隔 ≥ ${MASTERED_DAYS} 天` },
 ];
 
 export function masteryLevel(word) {

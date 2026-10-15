@@ -52,7 +52,7 @@ def tip_text(page):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 1000})
-    ctx.add_init_script('if (window.speechSynthesis) speechSynthesis.speak = () => {};')
+    ctx.add_init_script('window.__toeicFirebaseConfig=null; if (window.speechSynthesis) speechSynthesis.speak = () => {};')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     page = ctx.new_page()
     page.on('console', lambda m: m.type == 'error' and 'Failed to load resource' not in m.text and errors.append('console: ' + m.text))
@@ -80,11 +80,13 @@ with sync_playwright() as p:
     check('打卡成功' in hero and '最長 5 天' in hero and '今日 15 / 3 題' in hero.replace('\n', ' '), f'今日已打卡、最長紀錄 5 天：{hero!r}')
     check(page.locator('#kpiWords').inner_text() == '7', '單字總數 7')
     check('不熟 2 個' in page.locator('.kpi').nth(1).inner_text(), '不熟 2 個')
-    check(page.locator('#kpiMastered').inner_text() == '2' and '佔 29%' in page.locator('.kpi').nth(2).inner_text(), '已熟 2 個（29%）')
+    check(page.locator('#kpiLearning').inner_text() == '2', '學習中只計算已複習且間隔少於7天的2字，不包含新字或熟悉中字')
+    mastered=page.locator('.kpi:has(#kpiMastered)').inner_text()
+    check(page.locator('#kpiMastered').inner_text() == '2' and '佔 29%' in mastered and '長期熟記' in mastered and '複習間隔 ≥ 21 天' in mastered, '長期熟記2字並明示21天門檻（29%）')
     check(page.locator('#kpiReviews').inner_text() == '42', f"近 30 天複習 42 次（不含 40 天前的 50 次）：{page.locator('#kpiReviews').inner_text()}")
-    check('新學 15 個・學習 9 天' in page.locator('.kpi').nth(3).inner_text(), '近 30 天新學 15 個、學習 9 天')
+    check('新學 15 個・學習 9 天' in page.locator('.kpi:has(#kpiReviews)').inner_text(), '近 30 天新學 15 個、學習 9 天')
     acc = page.locator('#kpiAccuracy').inner_text().replace('\n', '')
-    check(acc == '64%' and '共 14 題，答對 9 題' in page.locator('.kpi').nth(4).inner_text(), f'測驗正確率 9/14 = 64%（{acc}）')
+    check(acc == '64%' and '共 14 題，答對 9 題' in page.locator('.kpi:has(#kpiAccuracy)').inner_text(), f'測驗正確率 9/14 = 64%（{acc}）')
 
     # ---- 熟練度 ----
     legend = {li.get_attribute('data-level'): li.locator('.ml-count').inner_text() for li in page.locator('.mastery-legend li').all()}
@@ -127,6 +129,7 @@ with sync_playwright() as p:
     page.click('.seg:has(input[name=period][value="7"])')
     check(page.locator('#chartReviews .chart-col').count() == 7 and page.locator('#chartQuiz .chart-col').count() == 7, '切到 7 天：兩張圖都變 7 根')
     check(page.locator('#kpiReviews').inner_text() == '27', f"近 7 天複習 27 次（{page.locator('#kpiReviews').inner_text()}）")
+    check(page.locator('#kpiLearning').inner_text()=='2' and page.locator('#kpiMastered').inner_text()=='2', '期間切換不影響目前熟練度人數')
     check(json.loads(page.evaluate("localStorage.getItem('toeic-cards:settings')"))['statsDays'] == 7, '期間設定會儲存')
     # 鍵盤：7 根時柱子可以用 Tab 聚焦並顯示提示框
     page.locator('#chartQuiz .chart-hit').last.focus()
@@ -170,13 +173,18 @@ with sync_playwright() as p:
     bar = m.evaluate("(() => { const n = document.querySelector('.topbar'); return n.scrollWidth - n.clientWidth; })()")
     check(sw <= 375 and bar <= 0, f'手機無橫向捲動（頁面 {sw}、導覽列 {bar}）')
     # 導覽文字不能折成兩行（例如「字／卡」）：每個項目的高度要和單行文字一樣
-    heights = m.evaluate("[...document.querySelectorAll('.nav a')].map((a) => Math.round(a.getBoundingClientRect().height))")
-    check(max(heights) <= 34, f'手機導覽文字不換行（高度 {heights}）')
+    single_line = m.evaluate("""[...document.querySelectorAll('.nav a')].every(a=>{
+      const s=getComputedStyle(a);
+      return a.getBoundingClientRect().height<=parseFloat(s.lineHeight)+parseFloat(s.paddingTop)+parseFloat(s.paddingBottom)+2;
+    })""")
+    check(single_line, '手機導覽文字不換行（依實際字高與內距檢查）')
     ticks = m.locator('#chartForecast .chart-tick').all_text_contents()
     check('明天' in ticks, f'手機上未來圖的 X 軸也有「明天」（{ticks}）')
     svg_w = m.evaluate("document.querySelector('#chartReviews svg').getBoundingClientRect().right")
     check(svg_w <= 375, f'圖表不超出畫面（{svg_w:.0f}）')
     m.screenshot(path=os.path.join(OUT, 's7_mobile.png'), full_page=True)
+    m.set_viewport_size({'width':320,'height':812})
+    check(m.evaluate('document.documentElement.scrollWidth<=innerWidth'), '320px統計卡片及門檻說明無橫向溢出')
 
     browser.close()
 

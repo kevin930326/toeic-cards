@@ -1007,14 +1007,16 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 /* ===== 統計頁 ===== */
 .filter-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
 
-.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 16px; }
 .kpi {
+  grid-column: span 2;
   padding: 14px 16px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   min-width: 0;
 }
+.kpi-period { grid-column: span 3; }
 .kpi-hero { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; grid-template-areas: "label label" "value sub"; align-items: end; column-gap: 16px; }
 .kpi-hero .kpi-label { grid-area: label; }
 .kpi-hero .kpi-value { grid-area: value; font-size: 56px; line-height: 1; }
@@ -1088,6 +1090,8 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 
 @media (max-width: 560px) {
   .kpi-row { grid-template-columns: 1fr 1fr; }
+  .kpi { grid-column: span 1; }
+  .kpi-hero, .kpi-total { grid-column: 1 / -1; }
   .kpi-value { font-size: 26px; }
   .mastery-legend { grid-template-columns: 1fr; }
   .topbar { gap: 6px; }

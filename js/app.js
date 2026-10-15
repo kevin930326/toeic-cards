@@ -3,7 +3,7 @@ import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js?v=inline-lookup-1';
 import { renderCards } from './views/cards.js?v=inline-lookup-1';
 import { renderQuiz } from './views/quiz.js';
-import { renderStats } from './views/stats.js';
+import { renderStats } from './views/stats.js?v=stats-progress-1';
 import { pruneMistakes } from './mistakes.js';
 import { onLogChange, todayProgress, getLog, currentGoal } from './log.js';
 import { streak } from './stats.js';
