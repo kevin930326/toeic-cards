@@ -171,6 +171,7 @@ export function startTour(topic = 'start') {
     layer.querySelector('#tourCount').textContent = `${tour.title} · ${index + 1} / ${tour.steps.length}`;
     layer.querySelector('#tourTitle').textContent = s.title;
     layer.querySelector('#tourText').textContent = s.text;
+    layer.querySelector('.tour-copy').scrollTop = 0;
     next.textContent = index === tour.steps.length - 1 ? '完成導覽' : s.action ? '先略過' : '下一步';
     // 只導向正常頁面；視窗與分頁必須由使用者自己點開。
     if (location.hash.split('?')[0] !== `#/${s.route}`) location.hash = `/${s.route}`;

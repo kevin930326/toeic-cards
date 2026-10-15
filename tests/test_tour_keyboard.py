@@ -73,7 +73,9 @@ with sync_playwright() as p:
         pg.screenshot(path=doc_shot('39-tour-keyboard-expanded.png'))
         print('PASS 狹小可見畫面下完整說明可捲動，下一步／結束固定可見',flush=True)
         pg.evaluate("document.querySelector('#guidedTour').style.transform='';viewportMock={};visualViewport.dispatchEvent(new Event('resize'))")
-        pg.click('#tourNext');pg.click('[data-tool=batch]');wait_frame(pg)
+        pg.click('#tourNext');wait_frame(pg)
+        assert pg.locator('.tour-copy').evaluate('e=>e.scrollTop')==0
+        pg.click('[data-tool=batch]');wait_frame(pg)
         expect(pg.locator('#tourTitle')).to_have_text('確認預覽後才加入')
         assert not pg.evaluate("document.activeElement.matches('input,textarea')")
         pg.locator('#batchInput').tap();pg.fill('#batchInput','invoice, budget')
