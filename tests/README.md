@@ -58,6 +58,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 可以用環境變數 `BASE_URL` 指定網址。測試截圖會存在 `tests/screenshots/`，這個資料夾不會上傳到 git。
 
+要放進開發紀錄的截圖用 `shots.doc_shot('檔名.png')` 取得路徑：平常跑測試存在 `tests/screenshots/`，**不會蓋掉 `docs/images/` 裡的圖**；真的要更新開發紀錄的截圖時，加上 `UPDATE_DOC_IMAGES=1` 再跑那個測試（例如 `UPDATE_DOC_IMAGES=1 python tests/test_nav_alignment.py`），檢查畫面後再 commit。
+
 `test_word_packs.py` 的離線檢查會等待包含版本參數的 JS 檔完成快取，並在真正離線重新整理後驗證逐字查詢視窗仍可開啟。
 
 `test_step7.py` 另外驗證「學習中」排除新字與熟悉中字、「長期熟記」的 21 天說明、期間切換不影響目前熟練度，以及 320／375px 版面。

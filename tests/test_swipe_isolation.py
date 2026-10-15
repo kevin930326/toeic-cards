@@ -2,9 +2,9 @@
 import json
 import os
 import re
-from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from shots import doc_shot
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 WORDS = [dict(id=w, word=w, zh='發票' if w == 'invoice' else '預算', pos='n.',
@@ -40,7 +40,7 @@ with sync_playwright() as p:
         page.set_viewport_size({'width':width,'height':844})
         expect(page.locator('.swipe-tip')).to_be_visible()
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-    page.screenshot(path=str(Path('docs/images/24-swipe-isolation.png')), full_page=True)
+    page.screenshot(path=doc_shot('24-swipe-isolation.png'), full_page=True)
     print('PASS 320／375／390px 手勢提示無橫向溢出')
     cdp = context.new_cdp_session(page)
 

@@ -31,7 +31,7 @@ python tests/test_step1.py      # 其他見 tests/README.md
 ```
 
 - 外部 API（Free Dictionary、Gemini）在測試裡一律用 `page.route` 假造回應。真的 Free Dictionary API 常常掛掉（HTTP 522）
-- 新功能要寫新的測試檔或加進對應的 `tests/test_*.py`；截圖存 `tests/screenshots/`（不進 git），要放進 dev-log 的截圖存 `docs/images/`
+- 新功能要寫新的測試檔或加進對應的 `tests/test_*.py`；截圖存 `tests/screenshots/`（不進 git）。要放進 dev-log 的截圖，測試裡用 `from shots import doc_shot` 的 `doc_shot('檔名.png')`，**不要直接寫 `docs/images/`**（否則每次跑測試都會蓋掉作品集的圖）；要更新時用 `UPDATE_DOC_IMAGES=1` 跑那個測試
 
 ## 同步功能的測試（Firebase 模擬器）
 

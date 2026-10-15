@@ -2,6 +2,7 @@
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from shots import doc_shot
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 DICT = '/js/dictionary.js?v=dictionary-scale-1'
@@ -24,7 +25,7 @@ with sync_playwright() as p:
     page.click('#openLookup');page.fill('#lookupInput','discussed');page.locator('#lookupForm button').click()
     expect(page.locator('.lookup-meaning')).to_contain_text('討論')
     expect(page.locator('.lookup-form-note')).to_contain_text('discuss')
-    page.screenshot(path='docs/images/30-expanded-dictionary.png')
+    page.screenshot(path=doc_shot('30-expanded-dictionary.png'))
     page.click('#lookupSave')
     assert page.evaluate("async()=>{const s=await import('/js/store.js');return s.getWords().some(w=>w.word==='discussed'&&w.zh.includes('討論'))}")
     # 常用字只查原小字典，擴充字同片並行只送一次。

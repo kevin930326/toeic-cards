@@ -2,6 +2,7 @@
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from shots import doc_shot
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 with sync_playwright() as p:
@@ -34,7 +35,7 @@ with sync_playwright() as p:
     page.fill('#lookupInput','ac')
     expect(page.get_by_role('option',name='act',exact=True)).to_be_visible()
     expect(page.get_by_role('option',name='actcustom 已收藏')).to_be_visible()
-    page.screenshot(path='docs/images/31-lookup-suggestions.png')
+    page.screenshot(path=doc_shot('31-lookup-suggestions.png'))
     options=page.locator('[role=option]').all_text_contents()
     position=next(i for i,text in enumerate(options) if text=='act')
     for _ in range(position+1):page.press('#lookupInput','ArrowDown')

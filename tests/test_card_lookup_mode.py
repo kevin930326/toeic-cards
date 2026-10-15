@@ -2,12 +2,11 @@
 import json
 import os
 import re
-from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from shots import doc_shot
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
-OUT = Path('docs/images')
 WORDS = [dict(id=w, word=w, zh='測試中文', pos='n.', en='a document for a meeting',
               phonetic='', examples=[{'en':'The manager has a meeting.', 'zh':'經理有會議。'}],
               collocations=[], forms=[], synonyms=[], unfamiliar=False, src={},
@@ -62,9 +61,9 @@ with sync_playwright() as p:
             page.set_viewport_size({'width':width,'height':950})
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
             assert toggle.bounding_box()['height']>=44
-        page.screenshot(path=str(OUT/f'25-lookup-mode-{route}.png'),full_page=True,animations='disabled')
+        page.screenshot(path=doc_shot(f'25-lookup-mode-{route}.png'),full_page=True,animations='disabled')
         page.emulate_media(color_scheme='dark')
-        page.screenshot(path=str(OUT/f'25-lookup-mode-{route}-dark.png'),full_page=True,animations='disabled')
+        page.screenshot(path=doc_shot(f'25-lookup-mode-{route}-dark.png'),full_page=True,animations='disabled')
         print('PASS '+route+' 開啟後顯示背面，空白不翻面、例句發音與窄螢幕／深色正常')
 
         page.locator('.back-en [data-lookup-word=document]').tap()

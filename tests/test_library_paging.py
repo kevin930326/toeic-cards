@@ -3,6 +3,7 @@ import json
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from shots import doc_shot
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 
@@ -62,7 +63,7 @@ with sync_playwright() as p:
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
     page.set_viewport_size({'width':375,'height':850})
     page.locator('.library-pages').scroll_into_view_if_needed()
-    page.screenshot(path='docs/images/29-library-pages.png')
+    page.screenshot(path=doc_shot('29-library-pages.png'))
     print('PASS 完整搜尋、搜尋重設頁碼、背景局部更新保留其他列與焦點、窄螢幕', flush=True)
 
     # 101 字的第二頁只有一列，刪除後自動退回第一頁。

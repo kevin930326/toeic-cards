@@ -2,6 +2,7 @@
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from shots import doc_shot
 
 URL=os.environ.get('BASE_URL','http://127.0.0.1:8123/')
 with sync_playwright() as p:
@@ -27,6 +28,6 @@ with sync_playwright() as p:
     pg.set_viewport_size({'width':390,'height':900})
     pg.locator('#reviewBadge').evaluate("el=>{el.hidden=false;el.textContent='16';}")
     pg.locator('#reviewMenuToggle').evaluate('el=>el.blur()')
-    pg.locator('.topbar').screenshot(path='docs/images/28-nav-alignment.png',animations='disabled')
+    pg.locator('.topbar').screenshot(path=doc_shot('28-nav-alignment.png'),animations='disabled')
     b.close()
 print('ALL PASSED')
