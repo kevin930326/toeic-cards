@@ -48,6 +48,7 @@ python tests/test_batch_add_responsiveness.py # 1000張既有卡下建立新集�
 python tests/test_unknown_words.py # 未收錄字原樣收藏、手動字義與查詢草稿保留
 python tests/test_nav_alignment.py # 複習文字與其他導覽在各寬度及徽章位數下對齊
 python tests/test_security.py   # 資安：CSP 沒有誤擋、注入的程式不會執行（不需要 Firebase）
+python tests/test_forms_quiz.py # 詞性變化題：內建題庫、Gemini 補充、錯題本（不需要 Firebase）
 ```
 
 改完 JS 之後，可以先用 Node 檢查所有檔案的語法（很快，能抓到打錯字造成整個網站打不開的問題）：
@@ -102,6 +103,7 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `test_ai_speed.py` | 思考設定（2.5 用 budget 0、3 以後 minimal → low → 不帶）、不支援時自動換並記住、第一批 5 個字、失敗時用字典補、測試 AI 按鈕、請求耗時顯示 |
 | `test_step11.py` | 跨裝置同步（Firebase 模擬器）：Google 與 Email 連結登入、多台裝置雙向同步、每日紀錄加總、刪除、設定、錯題本、自動同步、離線補傳、安全規則、iPhone 貼上連結、登出 |
 | `test_security.py` | 資安：CSP 存在且不允許內嵌程式、正常使用（各頁、Gemini、Firebase SDK、Google 登入腳本與 iframe、Service Worker）沒有違規、注入的 onerror／外部腳本不會執行且資料送不出去 |
+| `test_forms_quiz.py` | 詞性變化題：單字包的字不用金鑰就能考（題目來自內建題庫）、A–D 作答與翻譯解析、錯題本與不熟標記、自己的字沒有金鑰時停用、有金鑰時 Gemini 出題並存起來重用、混進別的字的 AI 題目被丟掉、手機版面 |
 | `test_word_sets.py` | 自訂單字集：建立／改名／刪除、同字多集、批次加入／移出、既有單字歸類、限定複習／測驗／自由瀏覽、共用進度、備份版本相容、改拼字、HTML 注入、手機深色與離線操作 |
 | `test_word_packs.py` | 單字包：按需載入、主檔及內容檔失敗重試、十組與全部加入、預覽與去重、同名／現有集、舊卡補空白且保留自訂內容與進度、特殊拼字、完整內容不呼叫 Gemini（含重連、生成缺項及批次重試）、備份、直接展開連結、手機深色與真正離線重新整理後加入全部 1,000 張完整字卡 |
 | `unit/word-packs.test.mjs` | 單字包資料：1,000 字唯一性與來源修正、十組順序、預製內容完整性與錯誤格式拒絕、預覽計數、本機中文覆蓋、重音正規化、來源／內容版本／不自動生成標記的備份與同步、補空白保護手動欄位 |
