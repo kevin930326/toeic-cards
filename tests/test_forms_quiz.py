@@ -8,11 +8,13 @@
 用法（先在專案根目錄執行 python -m http.server 8123 --bind 127.0.0.1）：
   python tests/test_forms_quiz.py
 """
+import io
 import json
 import os
 import sys
 from pathlib import Path
 
+from PIL import Image
 from playwright.sync_api import sync_playwright
 
 from onboarding_helpers import existing_user
@@ -57,6 +59,23 @@ def gemini(route):
                   body=json.dumps({'candidates': [{'content': {'parts': [{'text': text}]}, 'finishReason': 'STOP'}]}))
 
 
+def badge_offset(pg, sel):
+    """徽章框的中心，和旁邊文字筆畫中心的差距（px，負數＝徽章偏上）。用 3 倍解析度截圖找出有筆畫的列"""
+    bb = pg.locator(sel).first.bounding_box()
+    tb = pg.evaluate("""(sel) => { const b = document.querySelector(sel);
+      let n = b.nextSibling; while (n && !(n.nodeType === 3 && n.textContent.trim())) n = n.nextSibling;
+      if (!n) { n = b.previousSibling; while (n && !(n.nodeType === 3 && n.textContent.trim())) n = n.previousSibling; }
+      const r = document.createRange(); r.selectNodeContents(n);
+      const t = [...r.getClientRects()].find((x) => x.height); return { x: t.x, y: t.y, width: Math.min(t.width, 120), height: t.height }; }""", sel)
+    top = min(bb['y'], tb['y']) - 4
+    bottom = max(bb['y'] + bb['height'], tb['y'] + tb['height']) + 4
+    img = Image.open(io.BytesIO(pg.screenshot(clip={'x': tb['x'], 'y': top, 'width': tb['width'], 'height': bottom - top}))).convert('L')
+    px, (w, h) = img.load(), img.size
+    rows = [y for y in range(h) if any(abs(px[x, y] - px[0, 0]) > 60 for x in range(w))]
+    scale = h / (bottom - top)
+    return round(bb['y'] + bb['height'] / 2 - (top + (rows[0] + rows[-1]) / 2 / scale), 2)
+
+
 def store(pg, expr):
     return pg.evaluate(f"import('/js/store.js').then((s) => {{ {expr} }})")
 
@@ -81,7 +100,7 @@ def start_forms(pg):
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
-    ctx = browser.new_context(viewport={'width': 1000, 'height': 900})
+    ctx = browser.new_context(viewport={'width': 1000, 'height': 900}, device_scale_factor=3)   # 3 倍解析度：量標示位置用
     existing_user(ctx)
     ctx.add_init_script("window.__spoken = []; if (window.speechSynthesis) speechSynthesis.speak = (u) => window.__spoken.push(u.text);")
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
@@ -107,16 +126,10 @@ with sync_playwright() as p:
           f'測驗模式的 AI 標示一致：{badges}')
     check('AI' in pg.locator('.reading-entry .badge').inner_text() and pg.locator('.ai-legend').count() == 1,
           '短文閱讀也標 AI，首頁有標示說明')
-    # 徽章和旁邊文字的垂直中心差距不超過 1px（使用者回報過說明列的徽章偏上）
-    offsets = pg.evaluate("""() => [...document.querySelectorAll('.ai-legend .badge, .mode-title .badge, .reading-entry .badge')].map((b) => {
-      let node = b.nextSibling;
-      while (node && !(node.nodeType === 3 && node.textContent.trim())) node = node.nextSibling;
-      if (!node) { node = b.previousSibling; while (node && !(node.nodeType === 3 && node.textContent.trim())) node = node.previousSibling; }
-      const range = document.createRange(); range.selectNodeContents(node);
-      const t = [...range.getClientRects()].find((x) => x.height), r = b.getBoundingClientRect();
-      return Math.abs((r.top + r.height / 2) - (t.top + t.height / 2));
-    })""")
-    check(offsets and max(offsets) <= 1, f'AI 標示和旁邊的文字垂直置中（差距 {[round(o, 1) for o in offsets]} px）')
+    # AI 標示和旁邊文字看起來置中（使用者回報過偏上／偏下）：量「實際畫出來的筆畫」，不是行框
+    offsets = [badge_offset(pg, sel) for sel in ['.ai-legend .badge', '.mode-card[data-mode=part5] .mode-title .badge',
+                                                 '.mode-card[data-mode=forms] .mode-title .badge', '.reading-entry .badge']]
+    check(max(abs(o) for o in offsets) <= 0.6, f'AI 標示和旁邊的文字垂直置中（差距 {offsets} px）')
     start_forms(pg)
     pg.wait_for_selector('.q-forms .q-sentence')
     total = int(pg.locator('.quiz-progress').inner_text().split('/')[1])
