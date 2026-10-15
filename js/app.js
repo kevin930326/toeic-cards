@@ -107,6 +107,6 @@ initPWA({
   onBackOnline: () => {
     toast('已重新連上網路');
     lookupMissing();
-    if (hasApiKey() && getSettings().autoGenerate) generateMissing();
+    if (hasApiKey() && getSettings().autoGenerate) generateMissing({ automatic: true });
   },
 });

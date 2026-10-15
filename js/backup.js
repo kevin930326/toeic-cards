@@ -87,6 +87,7 @@ export function sanitizeWord(raw) {
   return {
     id: str(raw.id, 80) || `imp-${word}`,
     word,
+    ...(raw.autoGenerate === false ? { autoGenerate: false } : {}),
     phonetic: str(raw.phonetic, 80),
     pos: str(raw.pos, 60),
     zh: str(raw.zh, 400),

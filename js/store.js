@@ -104,7 +104,7 @@ export function hasWord(word) {
 }
 
 // 回傳 { added, skipped }；skipped 是重複或已存在的字
-export function addWords(list) {
+export function addWords(list, { autoGenerate = true } = {}) {
   const added = [];
   const skipped = [];
   const seen = new Set(words.map((w) => w.word));
@@ -120,6 +120,7 @@ export function addWords(list) {
     seen.add(n);
     clearTombstone(n);   // 刪掉後又加回來
     const w = createWord(n);
+    if (!autoGenerate) w.autoGenerate = false;
     w.createdAt = w.updatedAt = base + added.length;
     words.unshift(w);
     added.push(w);

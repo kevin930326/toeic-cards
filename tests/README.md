@@ -33,6 +33,7 @@ python tests/test_step9.py   # 可加 LAN_URL=http://你的區網IP:8000/ 測試
 python tests/test_ai_speed.py
 python tests/test_step11.py   # 需要先啟動 Firebase 模擬器（見檔案開頭說明，需要 Java）
 python tests/test_word_sets.py # 自訂單字集（不需要 Firebase）
+python tests/test_word_packs.py # 內建多益單字包（不需要 Firebase）
 ```
 
 改完 JS 之後，可以先用 Node 檢查所有檔案的語法（很快，能抓到打錯字造成整個網站打不開的問題）：
@@ -59,6 +60,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `test_ai_speed.py` | 思考設定（2.5 用 budget 0、3 以後 minimal → low → 不帶）、不支援時自動換並記住、第一批 5 個字、失敗時用字典補、測試 AI 按鈕、請求耗時顯示 |
 | `test_step11.py` | 跨裝置同步（Firebase 模擬器）：Google 與 Email 連結登入、多台裝置雙向同步、每日紀錄加總、刪除、設定、錯題本、自動同步、離線補傳、安全規則、iPhone 貼上連結、登出 |
 | `test_word_sets.py` | 自訂單字集：建立／改名／刪除、同字多集、批次加入／移出、既有單字歸類、限定複習／測驗／自由瀏覽、共用進度、備份版本相容、改拼字、HTML 注入、手機深色與離線操作 |
+| `test_word_packs.py` | 單字包：按需載入、失敗重試、十組與全部加入、預覽與去重、同名／現有集、已有字內容與進度保留、特殊拼字、本機中文、AI 預設不生成與重新連線、明確勾選與手動生成、備份、手機深色與真正離線重新整理 |
+| `unit/word-packs.test.mjs` | 單字包資料：1,000 字唯一性與來源修正、十組順序、格式驗證、預覽計數、本機中文覆蓋、重音正規化、不自動生成標記的備份與同步 |
 | `unit/word-sets.test.mjs` | 單字集純邏輯：範圍篩選、個別成員的時間合併、移出與刪除紀錄、同時修改的結果一致、格式清理、備份往返與合併 |
 | `unit/srs.test.mjs` | 間隔重複演算法：間隔計算、答錯重設、ease 下限、早上 4 點換日、複習清單排序 |
 | `unit/parse.test.mjs` | 批次輸入解析：分隔符號、中文與編號、片語、去重 |

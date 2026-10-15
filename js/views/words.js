@@ -13,6 +13,7 @@ import { getSetRecords, scopedWords, activeSetId, assignWordSet } from '../store
 import { setsForWord } from '../word-sets.js';
 import { setScopeHTML, bindSetScope, refreshSetScope, setOptions } from '../set-ui.js';
 import { renderSetsPanel } from './sets-panel.js';
+import { renderWordPackPanel } from './word-pack-panel.js';
 
 const state = { query: '', batchOpen: false, batchText: '' };
 const PREVIEW_LIMIT = 80;
@@ -35,6 +36,7 @@ export function renderWords(root) {
   root.innerHTML = `
     <section class="page">
       <h1 class="page-title">單字庫</h1>
+      <div id="wordPackPanel"></div>
       <div id="setsPanel"></div>
       <label class="set-scope add-set-scope"><span>新增時加入</span><select id="addToSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId())}</select></label>
       <form class="add-form panel" id="addForm" autocomplete="off">
@@ -80,6 +82,7 @@ export function renderWords(root) {
   const listEl = root.querySelector('#list');
   const countEl = root.querySelector('#count');
   const refreshPanel = renderSetsPanel(root.querySelector('#setsPanel'));
+  const packPanel = renderWordPackPanel(root.querySelector('#wordPackPanel'));
   bindSetScope(root);
   root.querySelector('#setScope').addEventListener('change', () => {
     root.querySelector('#addToSet').value = activeSetId() === 'unfiled' ? '' : activeSetId();
@@ -328,6 +331,7 @@ export function renderWords(root) {
   drawAi();
   const unsub = subscribe(() => {
     refreshPanel(); refreshSetScope(root);
+    packPanel.refresh();
     for (const id of ['addToSet', 'bulkSet']) {
       const el = root.querySelector(`#${id}`);
       el.innerHTML = setOptions(el.value);
@@ -343,5 +347,5 @@ export function renderWords(root) {
     if (key !== lastKey) drawList();
     lastKey = key;
   });
-  return () => { unsub(); unsubLookup(); unsubGen(); };
+  return () => { unsub(); unsubLookup(); unsubGen(); packPanel.cleanup(); };
 }

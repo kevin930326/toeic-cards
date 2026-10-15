@@ -8,7 +8,7 @@
 
 // 單字一律用小寫、去頭尾空白、多個空白合成一個，再比較是否重複
 export function normalizeWord(w) {
-  return String(w || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  return String(w || '').normalize('NFC').trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
 const PARTICLES = new Set([

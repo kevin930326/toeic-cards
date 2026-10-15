@@ -4,6 +4,7 @@
 // LLM 生成的多益版解釋會在第 4 步覆蓋這裡的英文解釋。
 import { getWord, getWords, updateWord, updateWords, normalizeWord } from './store.js';
 import { hasApiKey } from './llm.js';
+import { EXTRA_ENTRIES } from './dictionary-extra.js';
 
 const chunks = new Map(); // 字母 → Promise<{ word: entry }>
 
@@ -30,7 +31,7 @@ export async function lookupLocal(word) {
   const w = normalizeWord(word);
   if (!w) return null;
   const chunk = await loadChunk(chunkKey(w));
-  const e = chunk[w];
+  const e = EXTRA_ENTRIES[w] || chunk[w];
   if (!e) return null;
   return { phonetic: e.p || '', pos: e.s || '', zh: e.t || '' };
 }
@@ -129,7 +130,7 @@ async function fillEnglish(id) {
   let enDone = !!w.lookup?.enDone;
   let usedNetwork = false;
   // 有 Gemini 金鑰時，英文解釋交給 AI 生成（比較貼近多益）；AI 失敗的字才用字典補
-  const llmWillWrite = hasApiKey() && w.llm?.status !== 'failed';
+  const llmWillWrite = hasApiKey() && w.autoGenerate !== false && w.llm?.status !== 'failed';
   if (canFill(w, 'en') && !enDone && !llmWillWrite) {
     usedNetwork = true;
     const eng = await lookupEnglish(w.word, w.pos);

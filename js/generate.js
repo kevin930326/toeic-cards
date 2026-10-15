@@ -211,8 +211,8 @@ export function enqueueGenerate(ids) {
 }
 
 // 生成所有還沒生成的字
-export function generateMissing() {
-  enqueueGenerate(getWords().filter(needsGeneration).map((w) => w.id));
+export function generateMissing({ automatic = false } = {}) {
+  enqueueGenerate(getWords().filter((w) => needsGeneration(w) && (!automatic || w.autoGenerate !== false)).map((w) => w.id));
 }
 
 // 重試失敗的字（可以傳 id 只重試一個）
