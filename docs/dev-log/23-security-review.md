@@ -53,8 +53,12 @@
 - **單元測試**：新增 4 項（id 格式、雲端設定、雲端每日紀錄、雲端錯題本），合計 103 項通過。
 - 全部端對端測試重跑通過。
 
-## 需要使用者自己做的
+## 後台設定（使用者在主控台完成，2026-10-15）
 
-- 到 Firebase 主控台 › Firestore › 規則，貼上新的 `firestore.rules` 並發布（規則不會跟著 git push 更新）。
-- Google Cloud Console 限制 Firebase API 金鑰只能從 `kevin930326.github.io` 和 `localhost` 使用。
-- 確認 Authentication 的「電子郵件列舉保護」有開；維持免費的 Spark 方案。
+程式碼改不到的部分，由使用者照步驟在 Firebase／Google Cloud 主控台設定，每一步都實際測過同步和 Google 登入：
+
+- ✅ **發布新的 Firestore 規則**：規則不會跟著 git push 更新，要到主控台貼上並發布；發布後按「立即同步」成功。
+- ✅ **限制 Firebase API 金鑰**：只接受 `kevin930326.github.io`、`toeic-cards.firebaseapp.com`（Google 登入的彈出視窗從這裡執行，漏掉會讓登入失敗）、`localhost`、`127.0.0.1` 發出的請求；API 限制維持 Firebase 自動建立的設定。設定後同步與 Google 登入都正常。網站來源可以被程式偽造，所以這只是多一層保險，主要防線仍是 Firestore 規則。
+- ✅ **電子郵件列舉保護**：原本就已開啟。網站沒有用到開啟後會停用的「查詢 Email 的登入方式」，錯誤訊息 `auth/invalid-credential` 也已有中文說明。
+- ✅ **維持 Spark 免費方案**：主控台顯示每月 $0；第 80 條提到的大量寫入最多只會用完當天額度，不會產生費用。
+- 檢查 Authentication 的使用者清單，3 個帳號都是使用者本人和朋友，沒有不明帳號。
