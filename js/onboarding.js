@@ -1,6 +1,7 @@
 import { getWords, getSetRecords } from './store.js';
 import { getLog } from './log.js';
 import { onboardingPrompt } from './onboarding-state.js';
+import { startTour } from './tour.js?v=guided-tour-1';
 
 const KEY = 'toeic-cards:onboarding';
 let memory = null;
@@ -9,7 +10,7 @@ export function readOnboarding() {
   catch { return memory; }
 }
 export function saveOnboarding(status) {
-  memory = { version: 1, status, updatedAt: Date.now() };
+  memory = { version: 2, status, updatedAt: Date.now() };
   try { localStorage.setItem(KEY, JSON.stringify(memory)); return true; }
   catch { return false; } // 儲存被封鎖時仍可完成教學與使用網站。
 }
@@ -17,7 +18,7 @@ export function initOnboarding() {
   if (location.hash.split('?')[0] === '#/help') return;
   const kind = onboardingPrompt(readOnboarding(), !!(getWords().length || getSetRecords().length || Object.keys(getLog()).length));
   if (kind === 'none') return;
-  function start() { saveOnboarding('started'); location.hash = '/help?tour=1'; }
+  function start() { startTour(); }
   if (kind === 'banner') {
     const banner = document.createElement('aside');
     banner.id = 'tutorialBanner'; banner.className = 'tutorial-banner'; banner.setAttribute('aria-label', '使用教學提示');
@@ -29,9 +30,9 @@ export function initOnboarding() {
   }
   const dialog = document.createElement('dialog');
   dialog.id = 'welcomeDialog'; dialog.className = 'dialog tutorial-welcome'; dialog.setAttribute('aria-labelledby', 'welcomeTitle');
-  dialog.innerHTML = '<p class="eyebrow">WELCOME TO TOEIC CARDS</p><h2 id="welcomeTitle">從第一張單字卡開始</h2><p>不用先設定 API 金鑰。花一點時間認識加入單字、選擇學習方式與翻卡操作。</p><p class="hint-text">教學使用練習資料，不會影響你的字卡與學習進度。</p><div class="tutorial-actions"><button class="btn btn-primary" id="startWelcome" type="button">帶我開始</button><button class="btn btn-ghost" id="skipWelcome" type="button">先自己逛逛</button></div>';
+  dialog.innerHTML = '<p class="eyebrow">WELCOME TO TOEIC CARDS</p><h2 id="welcomeTitle">從第一張單字卡開始</h2><p>不用先設定 API 金鑰。花一點時間認識加入單字、選擇學習方式與翻卡操作。</p><p class="hint-text">教學會在真正的頁面引導。只有你親自按加入或評分時，才會儲存單字與進度。隨時能結束，再從設定重看。</p><div class="tutorial-actions"><button class="btn btn-primary" id="startWelcome" type="button">帶我開始</button><button class="btn btn-ghost" id="skipWelcome" type="button">先自己逛逛</button></div>';
   document.body.append(dialog);
-  dialog.querySelector('#startWelcome').addEventListener('click', () => { start(); dialog.close(); });
+  dialog.querySelector('#startWelcome').addEventListener('click', () => { dialog.close(); start(); });
   dialog.querySelector('#skipWelcome').addEventListener('click', () => { saveOnboarding('skipped'); dialog.close(); });
   dialog.addEventListener('cancel', () => saveOnboarding('skipped'));
   dialog.addEventListener('close', () => dialog.remove(), { once: true });

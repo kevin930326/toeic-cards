@@ -48,7 +48,7 @@ export function renderSettings(root) {
     <section class="page">
       <h1 class="page-title">設定</h1>
 
-      <div class="panel"><h2 class="panel-title">使用教學</h2><p class="panel-desc">認識加入單字、三種學習方式與翻卡操作；練習不會改動真實進度。</p><div class="tutorial-actions"><a class="btn btn-outline" href="#/help">查看使用教學</a><a class="btn btn-ghost" href="#/help?tour=1">重新觀看導覽</a></div></div>
+      <div class="panel"><h2 class="panel-title">使用教學</h2><p class="panel-desc">在實際頁面跟著亮起的按鈕操作；可重看完整導覽，或挑選查字、測驗、備份等主題。</p><div class="tutorial-actions"><a class="btn btn-outline" href="#/help">查看使用教學</a><a class="btn btn-ghost" href="#/help?tour=1">重新觀看導覽</a></div></div>
 
       <div class="panel" id="syncPanel"></div>
 

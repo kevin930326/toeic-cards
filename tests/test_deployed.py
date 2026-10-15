@@ -69,6 +69,15 @@ with sync_playwright() as p:
           and 'discuss' in page.locator('.lookup-form-note').inner_text(), '擴充雜湊分片與詞形提示在正式子路徑正常')
     page.locator('#lookupDialog [data-close]').click()
 
+    page.goto(URL + '#/help')
+    page.click('[data-tour=library]')
+    page.wait_for_selector('#guidedTour')
+    page.click('#openAddWords')
+    page.wait_for_selector('#addWordsDialog #guidedTour')
+    check(page.locator('#tourTitle').inner_text() == '一個字也能開始', '正式子路徑的導覽可開啟真正新增視窗')
+    page.click('#tourExit')
+    page.locator('#addWordsDialog [data-close]').click()
+
     # Service Worker 的範圍是 /toeic-cards/，而且會接手
     page.evaluate('navigator.serviceWorker.ready')
     scope = page.evaluate('navigator.serviceWorker.ready.then((r) => r.scope)')
@@ -103,6 +112,11 @@ with sync_playwright() as p:
     check('討論' in page.locator('.lookup-meaning').inner_text(), '正式網站離線重整後仍能讀取擴充中文字典')
     page.locator('#lookupDialog [data-close]').click()
     page.screenshot(path=os.path.join(OUT, 'deployed_offline.png'))
+    page.goto(URL + '#/help')
+    page.click('[data-tour=review]')
+    page.wait_for_selector('#guidedTour')
+    check(page.locator('#tourTitle').inner_text() == '先回想，再點卡片翻面', '正式網站離線重整後仍可使用實際頁面導覽')
+    page.click('#tourExit')
     ctx.set_offline(False)
 
     # 設定頁：HTTPS 下不會出現「離線功能無法使用」

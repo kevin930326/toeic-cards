@@ -180,9 +180,12 @@ with sync_playwright() as p:
     expect(pg.locator('#freePosition')).to_have_text('1 / 1000')
     check(pg.locator('#card').is_visible(), '真正離線重新整理後仍可自由翻閱1000張字卡')
     pg.goto(URL+'#/help');pg.reload()
-    pg.click('#tutorialStart');pg.click('#tutorialNext');pg.click('#tutorialNext')
-    pg.click('#demoCard');pg.click('#demoGood')
-    check(pg.locator('#demoFeedback').is_visible(), '真正離線重新整理後仍可完成教學練習')
+    pg.click('[data-tour=review]')
+    expect(pg.locator('#tourTitle')).to_have_text('先回想，再點卡片翻面')
+    pg.locator('#card').click(position={'x':90,'y':90})
+    expect(pg.locator('#card')).to_have_class(re.compile('is-flipped'))
+    pg.click('#tourExit')
+    check(pg.locator('#guidedTour').count()==0, '真正離線重新整理後仍可在實際字卡使用導覽並結束')
     ctx.close()
 
     # 即使已有個人金鑰，全包不會重新生成；重連與手動生成缺項也不會重送。
