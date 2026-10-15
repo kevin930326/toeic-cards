@@ -53,7 +53,7 @@ with sync_playwright() as p:
     pg.click('#createSetForm button')
     check('同名' in pg.locator('#setError').inner_text(), '同名單字集會提示，不重複建立')
     pg.click('[aria-label="關閉管理單字集"]')
-    pg.locator('#bulkTools > summary').click()
+    pg.click('#toggleBulk')
 
     pg.select_option('#setScope', '')
     for w in ['budget', 'invoice', 'agenda', 'salary']:

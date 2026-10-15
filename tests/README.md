@@ -52,6 +52,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 `test_step7.py` 另外驗證「學習中」排除新字與熟悉中字、「長期熟記」的 21 天說明、期間切換不影響目前熟練度，以及 320／375px 版面。
 
+`test_library_interactions.py` 也涵蓋批次勾選框預設隱藏、三步驟工具、全選目前搜尋結果、取消選取、結束模式後清空選取、整理與編輯模式互斥，以及 320／375px 批次工具排版；分類實際加入／移出由 `test_word_sets.py` 與 `test_library_ui.py` 回歸。
+
 | 檔案 | 測試內容 |
 |---|---|
 | `test_library_interactions.py` | 1000 字進頁／星星處理時間、保留原列節點與焦點、本機儲存及 SRS、編輯／刪除預設隱藏、開啟及完成編輯、切頁恢復關閉、搜尋完整範圍與手機排版；時間只記錄，不用固定門檻判定 |

@@ -263,9 +263,9 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 @media (max-width: 600px) {
   .set-create { flex-wrap: wrap; }
   .set-create .field { flex-basis: 100%; }
-  .word-row:has(.word-select) { flex-wrap: wrap; }
-  .word-row:has(.word-select) .word-info { flex-basis: calc(100% - 92px); }
-  .word-row:has(.word-select) .row-actions { width: 100%; justify-content: flex-end; }
+  .word-list.is-editing .word-row { flex-wrap: wrap; }
+  .word-list.is-editing .word-info { flex-basis: calc(100% - 60px); }
+  .word-list.is-editing .row-actions { width: 100%; justify-content: flex-end; }
 }
 
 /* ===== 頂部列 ===== */
@@ -416,6 +416,17 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 
 .word-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 .library-edit-tools { display: flex; align-items: center; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+.word-list:not(.is-selecting) .word-select { display: none; }
+.word-list.is-selecting .word-row:has(.word-select:checked) { background: var(--surface-2); }
+.library-bulk { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 20px; margin-bottom: 16px; }
+.bulk-step:last-child { grid-column: 1 / -1; }
+.bulk-step h2, .bulk-step .field > span { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+.bulk-selection, .bulk-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.bulk-selection .check-row { margin: 0; }
+.bulk-step [role="status"] { margin: 6px 0 0; font-size: 13px; color: var(--accent); }
+.bulk-step .hint-text { margin: 8px 0 0; }
+.bulk-step select { width: 100%; min-width: 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+@media (max-width: 520px) { .library-bulk { grid-template-columns: 1fr; } }
 .word-list:not(.is-editing) [data-act="edit"], .word-list:not(.is-editing) [data-act="delete"] { display: none; }
 /* 畫面外的列延後排版，仍保留搜尋、全選、鍵盤及完整清單。 */
 .word-list .word-row { content-visibility: auto; contain-intrinsic-size: auto 92px; }

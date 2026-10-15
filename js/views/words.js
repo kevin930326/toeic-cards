@@ -35,6 +35,7 @@ function chipList(words, cls = '') {
 export function renderWords(root) {
   const selected = new Set();
   let editMode = false;
+  let bulkMode = false;
   let markingId = null;
   root.innerHTML = `
     <section class="page">
@@ -73,16 +74,12 @@ export function renderWords(root) {
         <span class="count" id="count"></span>
       </div>
       <div class="library-scope">${setScopeHTML()}<button class="btn btn-ghost btn-sm" id="openManageSets" type="button">管理單字集</button></div>
-      <details class="library-bulk" id="bulkTools"><summary>批次整理<span class="summary-hint">選取、加入或移出單字集</span></summary>
-      <div class="set-bulk panel">
-        <label class="check-row"><input id="selectShown" type="checkbox"><span>選取目前顯示的單字</span></label>
-        <span id="selectedCount" role="status"></span>
-        <label class="set-bulk-target"><span class="sr-only">批次歸類的單字集</span><select id="bulkSet">${setOptions()}</select></label>
-        <button class="btn btn-outline btn-sm" id="bulkAssign" type="button">加入單字集</button>
-        <button class="btn btn-ghost btn-sm" id="bulkRemove" type="button">移出單字集</button>
-      </div>
-      </details>
-      <div class="library-edit-tools"><button class="btn btn-outline btn-sm" id="toggleLibraryEdit" type="button" aria-pressed="false" aria-controls="list">編輯模式</button><span class="hint-text" id="libraryEditHint">開啟編輯模式後，可修改或刪除字卡。</span></div>
+      <div class="library-edit-tools"><button class="btn btn-outline btn-sm" id="toggleBulk" type="button" aria-expanded="false" aria-controls="bulkTools">批次整理</button><button class="btn btn-outline btn-sm" id="toggleLibraryEdit" type="button" aria-pressed="false" aria-controls="list">編輯模式</button><span class="hint-text" id="libraryEditHint">整理分類用「批次整理」；修改內容用「編輯模式」。</span></div>
+      <section class="library-bulk panel" id="bulkTools" aria-label="批次整理單字" hidden>
+        <div class="bulk-step"><h2>1. 勾選下方單字</h2><div class="bulk-selection"><label class="check-row"><input id="selectShown" type="checkbox"><span id="selectShownLabel">全選目前結果</span></label><button class="btn btn-ghost btn-sm" id="clearSelected" type="button">取消選取</button></div><p id="selectedCount" role="status"></p></div>
+        <div class="bulk-step"><label class="field"><span>2. 選擇要整理的單字集</span><select id="bulkSet">${setOptions()}</select></label></div>
+        <div class="bulk-step"><h2>3. 套用分類變更</h2><div class="bulk-actions"><button class="btn btn-primary btn-sm" id="bulkAssign" type="button">加入單字集</button><button class="btn btn-outline btn-sm" id="bulkRemove" type="button">移出單字集</button></div><p class="hint-text">加入可讓同一字屬於多個集；移出只移除分類，保留字卡與學習進度。</p></div>
+      </section>
       <ul class="word-list" id="list"></ul>
       <details class="library-ai" id="aiTools"><summary>AI 內容工具<span class="summary-hint">生成缺項、查看狀態</span></summary><div id="aiToolsBody"></div></details>
       <dialog class="dialog word-tools-dialog" id="addWordsDialog" aria-labelledby="addWordsTitle">
@@ -120,12 +117,26 @@ export function renderWords(root) {
 
   const listEl = root.querySelector('#list');
   const countEl = root.querySelector('#count');
+  function setBulkMode(enabled) {
+    bulkMode = enabled;
+    root.querySelector('#bulkTools').hidden = !enabled;
+    listEl.classList.toggle('is-selecting', enabled);
+    const button = root.querySelector('#toggleBulk');
+    button.setAttribute('aria-expanded', String(enabled));
+    button.textContent = enabled ? '完成整理' : '批次整理';
+    if (!enabled) { selected.clear(); drawSelected(); }
+  }
+  root.querySelector('#toggleBulk').addEventListener('click', () => {
+    if (!bulkMode && editMode) root.querySelector('#toggleLibraryEdit').click();
+    setBulkMode(!bulkMode);
+  });
   root.querySelector('#toggleLibraryEdit').addEventListener('click', (event) => {
+    if (!editMode && bulkMode) setBulkMode(false);
     editMode = !editMode;
     listEl.classList.toggle('is-editing', editMode);
     event.currentTarget.setAttribute('aria-pressed', String(editMode));
     event.currentTarget.textContent = editMode ? '完成編輯' : '編輯模式';
-    root.querySelector('#libraryEditHint').textContent = editMode ? '選擇字卡旁的編輯或刪除；完成後可收起操作。' : '開啟編輯模式後，可修改或刪除字卡。';
+    root.querySelector('#libraryEditHint').textContent = editMode ? '選擇字卡旁的編輯或刪除；完成後可收起操作。' : '整理分類用「批次整理」；修改內容用「編輯模式」。';
   });
   const refreshPanel = renderSetsPanel(root.querySelector('#setsPanel'));
   const packPanel = renderWordPackPanel(root.querySelector('#wordPackPanel'));
@@ -151,13 +162,17 @@ export function renderWords(root) {
     all.indeterminate = selected.size > 0 && selected.size < shown.length;
     all.disabled = !shown.length;
     root.querySelector('#selectedCount').textContent = `已選 ${selected.size} 個字`;
+    root.querySelector('#selectShownLabel').textContent = `全選目前結果（${shown.length} 字）`;
+    root.querySelector('#clearSelected').disabled = !selected.size;
+    for (const checkbox of listEl.querySelectorAll('.word-select')) checkbox.checked = selected.has(checkbox.closest('.word-row').dataset.id);
     for (const id of ['bulkAssign', 'bulkRemove']) root.querySelector(`#${id}`).disabled = !selected.size || !root.querySelector('#bulkSet').value;
   }
 
   root.querySelector('#selectShown').addEventListener('change', (e) => {
     for (const w of shownWords()) { if (e.target.checked) selected.add(w.id); else selected.delete(w.id); }
-    drawList();
+    drawSelected();
   });
+  root.querySelector('#clearSelected').addEventListener('click', () => { selected.clear(); drawSelected(); });
   root.querySelector('#bulkSet').addEventListener('change', drawSelected);
   for (const [id, present] of [['bulkAssign', true], ['bulkRemove', false]]) {
     root.querySelector(`#${id}`).addEventListener('click', () => {
