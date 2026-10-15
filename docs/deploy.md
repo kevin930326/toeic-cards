@@ -22,7 +22,7 @@
 
 改完程式、commit、`git push`，GitHub Pages 大約 1 分鐘內就會自動更新。
 
-- **不需要改版本號**：Service Worker 對網站檔案採「先連網、斷線才用快取」，使用者下次打開網站就會拿到新版（見 [decisions #43](decisions.md)）
+- Service Worker 對網站檔案採「先連網、斷線才用快取」。若修改帶版本參數的入口、樣式或模組，需更新相關引用的版本，避免 HTTP 快取造成新舊程式混用；此次入口與統計為 `stats-progress-1`，點字查詢模組為 `inline-lookup-1`（見 [decisions #72](decisions.md)）。首次更新需重新整理已開啟的頁面。
 - **例外：重新產生字典時**（執行 `tools/build_dict.py` 之後），要把 `sw.js` 裡的 `DICT_CACHE` 版本號加 1（例如 `toeic-dict-v1` → `toeic-dict-v2`），否則已經下載過字典的使用者會繼續用舊的
 
 ## 上傳前的安全檢查
