@@ -21,3 +21,16 @@ node --test tests/unit/dictionary-data.test.mjs
 更新常用檔須同步調整 `js/pwa.js`／`sw.js` 的常用快取版本。擴充檔重產發布時應改用新的資料目錄版本，並更新查詢路徑及 Service Worker 的擴充快取名稱與保留清單。使用相同 CSV 和 OpenCC 設定可重建；產生器不含時間戳。
 
 詞形只使用 ECDICT `exchange` 中的原形與型別，不以規則猜測去尾碼，也不做自動拼字修正。精確字條優先；收藏的單字不會被原形取代。
+
+## 輸入候選索引
+
+`suggestions-v1/index.json` 是約 99.4 KiB 的前綴路由，短開頭直接保存前八個候選；較大的開頭分割成 4,193 份葉片，每份最多 32 KiB。葉片只存預先排序的拼字，不複製中文釋義。字表合計約 10.3 MiB，瀏覽器按需取得，並非開站就下載。
+
+```bash
+python tools/build_suggestions.py data/raw/ecdict.csv data/dict
+node --test tests/unit/dictionary-suggestions.test.mjs
+```
+
+來源仍是上方 ECDICT。排序先常用字、再取 frq／bnc 的較小有效排名，再按長度及拼字；無詞頻者排後。單字母另選常見入門候選，方便初學者辨認（a → apple 等），不是 AI 生成或拼字修正。精確拼字及最多三個收藏字由前端合併。
+
+索引重產發布時應更換 `suggestions-v1` 目錄、前端路徑及 Service Worker 快取版本。候選葉片的離線快取最多 32 片；路由索引放在常用字典快取中，避免葉片淘汰後無法再定位已快取的其他開頭。

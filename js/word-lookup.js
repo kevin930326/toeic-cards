@@ -5,6 +5,7 @@ import { lookupLocalResult, lookupEnglish } from './dictionary.js?v=dictionary-s
 import { esc, toast, zhLines } from './ui.js';
 import { setOptions } from './set-ui.js?v=dictionary-scale-1';
 import { speak, canSpeak, speakerIcon } from './speech.js';
+import { lookupSuggestions } from './dictionary-suggestions.js';
 
 export function initWordLookup() {
   const dialog = document.createElement('dialog');
@@ -14,12 +15,21 @@ export function initWordLookup() {
   dialog.innerHTML = `<div class="tool-heading"><div><p class="eyebrow">隨手查，不中斷學習</p><h2 id="lookupTitle">查單字</h2></div>
     <button class="icon-btn" type="button" data-close aria-label="關閉查單字">✕</button></div>
     <form id="lookupForm" class="lookup-form"><label class="field grow"><span class="sr-only">想查的英文單字</span>
-      <input id="lookupInput" type="search" maxlength="80" placeholder="輸入英文單字，例如 invoice" autocomplete="off" spellcheck="false" autocapitalize="off" required></label>
+      <input id="lookupInput" type="search" maxlength="80" placeholder="輸入英文單字，例如 invoice" autocomplete="off" spellcheck="false" autocapitalize="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lookupSuggestions" required></label>
       <button class="btn btn-primary" type="submit">查詢</button></form>
+    <ul id="lookupSuggestions" class="lookup-suggestions" role="listbox" aria-label="候選單字" hidden></ul>
+    <p id="lookupSuggestionStatus" class="hint-text" role="status" hidden></p>
     <div id="lookupResult" aria-live="polite"><p class="tool-empty">知道怎麼拼，卻想不起意思？<br><span>查中文、聽發音，也能順手收藏。</span></p></div>`;
   document.body.append(dialog);
   const result = dialog.querySelector('#lookupResult');
   const input = dialog.querySelector('#lookupInput');
+  const suggestions = dialog.querySelector('#lookupSuggestions');
+  const suggestionStatus = dialog.querySelector('#lookupSuggestionStatus');
+  let suggestionSequence = 0;
+  let suggestionTimer;
+  let candidates = [];
+  let activeCandidate = -1;
+  let composing = false;
   let sequence = 0;
   let controller;
   let current = null;
@@ -27,10 +37,80 @@ export function initWordLookup() {
   let manual = { pos: '', zh: '', en: '' };
   let returnTrigger = null;
   const saved = (word) => getWords().find((w) => w.word === word);
+  function clearSuggestions() {
+    suggestionSequence++;
+    clearTimeout(suggestionTimer);
+    candidates = []; activeCandidate = -1;
+    suggestions.hidden = true; suggestions.replaceChildren();
+    suggestionStatus.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+    input.removeAttribute('aria-activedescendant');
+  }
+  function highlightCandidate(index) {
+    activeCandidate = index;
+    for (const [i, option] of [...suggestions.children].entries()) option.setAttribute('aria-selected', String(i === index));
+    if (index < 0) input.removeAttribute('aria-activedescendant');
+    else {
+      input.setAttribute('aria-activedescendant', `lookupSuggestion-${index}`);
+      suggestions.children[index]?.scrollIntoView({ block: 'nearest' });
+    }
+  }
+  function scheduleSuggestions() {
+    clearSuggestions();
+    const prefix = normalizeWord(input.value);
+    if (!prefix || composing) return;
+    const token = suggestionSequence;
+    suggestionTimer = setTimeout(async () => {
+      suggestionStatus.hidden = false;
+      suggestionStatus.textContent = '尋找候選單字…';
+      const response = await lookupSuggestions(prefix, getWords().map((word) => word.word));
+      if (token !== suggestionSequence || !dialog.open || normalizeWord(input.value) !== prefix) return;
+      candidates = response.words;
+      suggestions.innerHTML = candidates.map((item, index) => `<li id="lookupSuggestion-${index}" role="option" tabindex="-1" aria-selected="false" data-candidate="${index}"><span lang="en">${esc(item.word)}</span>${item.owned ? '<small>已收藏</small>' : ''}</li>`).join('');
+      suggestions.hidden = !candidates.length;
+      input.setAttribute('aria-expanded', String(!!candidates.length));
+      suggestionStatus.textContent = response.status === 'unavailable'
+        ? '部分候選索引尚未快取，連網後可補齊；仍可直接查詢。'
+        : candidates.length ? '可點選單字，或用上下鍵選擇、Enter 查詢。'
+        : response.status === 'invalid' ? '' : '沒有符合的候選字，仍可直接查詢原拼字。';
+      suggestionStatus.hidden = !suggestionStatus.textContent;
+    }, 150);
+  }
+  input.addEventListener('input', (event) => {
+    stop(); current = null;
+    result.innerHTML = '<p class="tool-empty">選擇候選單字，或輸入完整拼字後按「查詢」。</p>';
+    if (!event.isComposing) scheduleSuggestions();
+  });
+  input.addEventListener('compositionstart', () => { composing = true; clearSuggestions(); });
+  input.addEventListener('compositionend', () => { composing = false; scheduleSuggestions(); });
+  input.addEventListener('keydown', (event) => {
+    if (event.isComposing || composing) return;
+    if (['ArrowDown', 'ArrowUp'].includes(event.key) && candidates.length) {
+      event.preventDefault(); event.stopPropagation();
+      const step = event.key === 'ArrowDown' ? 1 : -1;
+      highlightCandidate(activeCandidate < 0 ? (step > 0 ? 0 : candidates.length - 1) : (activeCandidate + step + candidates.length) % candidates.length);
+    } else if (event.key === 'Enter' && activeCandidate >= 0) {
+      event.preventDefault(); event.stopPropagation();
+      const word = candidates[activeCandidate].word;
+      input.value = word; query(word);
+    }
+  });
+  suggestions.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse') event.preventDefault();
+  });
+  suggestions.addEventListener('click', (event) => {
+    const option = event.target.closest('[data-candidate]');
+    const item = option && candidates[Number(option.dataset.candidate)];
+    if (item) { input.value = item.word; input.focus({ preventScroll: true }); query(item.word); }
+  });
+  dialog.addEventListener('focusout', (event) => {
+    if (event.target === input && event.relatedTarget && !suggestions.contains(event.relatedTarget)) clearSuggestions();
+  });
   function stop() { sequence++; controller?.abort(); }
   function open(word = '', trigger = null) {
     if (document.querySelector('dialog[open]')) return;
     returnTrigger = trigger;
+    clearSuggestions();
     dialog.showModal();
     input.focus(); input.select();
     if (word) { input.value = word; query(word); }
@@ -116,6 +196,7 @@ export function initWordLookup() {
     }
   }
   async function query(value) {
+    clearSuggestions();
     stop();
     const token = sequence;
     const word = normalizeWord(value);
@@ -137,9 +218,15 @@ export function initWordLookup() {
   dialog.querySelector('#lookupForm').addEventListener('submit', (event) => { event.preventDefault(); query(input.value); });
   dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
   dialog.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); dialog.close(); }
+    if (event.isComposing || composing) return;
+    if (event.key === 'Escape') {
+      event.preventDefault(); event.stopPropagation();
+      if (!suggestions.hidden || !suggestionStatus.hidden) clearSuggestions();
+      else dialog.close();
+    }
   });
   dialog.addEventListener('close', () => {
+    clearSuggestions();
     stop();
     if (!returnTrigger) return;
     const trigger = returnTrigger.isConnected ? returnTrigger : [...document.querySelectorAll('[data-lookup-word]')].find((el) => el.dataset.lookupWord === returnTrigger.dataset.lookupWord);

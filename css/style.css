@@ -134,6 +134,10 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .lookup-dialog { width: min(600px, calc(100vw - 24px)); padding: 28px; }
 .lookup-form { display: flex; align-items: center; gap: 10px; }
 .lookup-form .field { margin: 0; min-width: 0; }
+.lookup-suggestions { list-style: none; padding: 4px; margin: 10px 0 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); max-height: 280px; overflow-y: auto; }
+.lookup-suggestions [role="option"] { min-height: 44px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; border-radius: 8px; overflow-wrap: anywhere; }
+.lookup-suggestions [aria-selected="true"], .lookup-suggestions [role="option"]:hover { background: var(--surface-2); }
+.lookup-suggestions small { flex-shrink: 0; color: var(--ink-soft); font-size: 12px; }
 .tool-empty { padding: 35px 0; text-align: center; font-size: 16px; }
 .tool-empty span { color: var(--ink-soft); font-size: 13px; }
 .lookup-card { padding-top: 26px; overflow-wrap: anywhere; }

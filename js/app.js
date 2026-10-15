@@ -20,7 +20,7 @@ import { initOnboarding } from './onboarding.js';
 import { lookupMissing } from './dictionary.js?v=dictionary-scale-1';
 import { onRateWait } from './llm.js';
 import { setWaiting, generateMissing } from './generate.js?v=dictionary-scale-1';
-import { initWordLookup } from './word-lookup.js?v=dictionary-scale-1';
+import { initWordLookup } from './word-lookup.js?v=autocomplete-1';
 
 const routes = {
   review: renderReview,

@@ -75,6 +75,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `test_onboarding.py` | 歡迎視窗、略過／Escape／完成後不再提示、舊字卡或僅紀錄的提示列、三步前後切換與練習翻面／評分、正式資料完全不變、無外部API、設定重看、直接連結與不疊窗、儲存被封鎖及320／375px／深色畫面 |
 | `unit/onboarding-state.test.mjs` | 空白／舊資料分流、三種教學狀態、清空學習資料後仍不重複提示、錯誤格式紀錄 |
 | `test_free_cards.py` | 複習選單開關／Escape／外側關閉／焦點與按鍵隔離、完成畫面入口、未到期字卡全覽、翻面、換字、隨機、中英切換、單字集與空範圍、不熟篩選、點字與發音、真實觸控滑動、SRS／紀錄不變及320／375px；離線1000字由 `test_word_packs.py` 覆蓋 |
+| `test_lookup_suggestions.py` | a／ac 候選、觸控與滑鼠、鍵盤與 Escape、輸入法組字、回應競態、收藏標記、直接查原拼字、離線重整／重試、候選快取32片上限與窄螢幕；不呼叫外部 API |
+| `unit/dictionary-suggestions.test.mjs` | 完整字表與前綴路由、葉片32KiB上限、候選排序／去重／收藏合併、同片請求合併、失敗重試、無效輸入、物件原型與重音字 |
 | `test_dictionary_scale.py` | 擴充字與明確詞形、原拼字收藏、同片請求合併、真正離線重整、連線恢復重試、載入 130 片後只保留 128 片且保留常用字典 |
 | `unit/dictionary-data.test.mjs` | 全部 672,241 筆分片雜湊與字義核對、詞形優先及錯字不更正、LRU 淘汰／合併請求／失敗重試 |
 | `test_library_paging.py` | 3,000 字與 CPU 4 倍慢速模擬、DOM 上限、跨頁勾選、完整結果全選分類、頁外搜尋、局部更新焦點、最後頁刪除及窄螢幕；時間只記錄 |

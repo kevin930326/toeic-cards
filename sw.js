@@ -11,10 +11,11 @@
 const SHELL_CACHE = 'toeic-shell-v1';
 const DICT_CACHE = 'toeic-dict-v1';
 const EXTENDED_CACHE = 'toeic-dict-extended-v1';
+const SUGGESTIONS_CACHE = 'toeic-suggestions-v1';
 const FONT_CACHE = 'toeic-fonts-v1';
 const LIB_CACHE = 'toeic-lib-v1';   // Firebase SDK（網址帶版本號，內容不會變）
-const KEEP = [SHELL_CACHE, DICT_CACHE, EXTENDED_CACHE, FONT_CACHE, LIB_CACHE];
-let extendedWrites = Promise.resolve();
+const KEEP = [SHELL_CACHE, DICT_CACHE, EXTENDED_CACHE, SUGGESTIONS_CACHE, FONT_CACHE, LIB_CACHE];
+let limitedWrites = Promise.resolve();
 const NETWORK_TIMEOUT = 4000;
 
 // 安裝時先存好首頁；其他檔案在網頁載入後由頁面告訴我們要存哪些（見 js/pwa.js）
@@ -76,7 +77,10 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin === self.location.origin) {
-    if (url.pathname.includes('/data/dict/extended-v1/')) event.respondWith(cacheFirst(req, EXTENDED_CACHE, 128));
+    if (url.pathname.includes('/data/dict/suggestions-v1/')) {
+      // 小型路由索引保留；候選詞分片最多 32 片，離線仍可找已快取的開頭。
+      event.respondWith(cacheFirst(req, url.pathname.endsWith('/index.json') ? DICT_CACHE : SUGGESTIONS_CACHE, url.pathname.endsWith('/index.json') ? 0 : 32));
+    } else if (url.pathname.includes('/data/dict/extended-v1/')) event.respondWith(cacheFirst(req, EXTENDED_CACHE, 128));
     else if (url.pathname.includes('/data/dict/')) event.respondWith(cacheFirst(req, DICT_CACHE));
     else event.respondWith(networkFirst(req));
   } else if (isFont(url)) {
@@ -101,8 +105,8 @@ async function cacheFirst(req, cacheName, limit = 0) {
         for (const key of keys.slice(0, Math.max(0, keys.length - limit))) await cache.delete(key);
       }
     };
-    // 擴充檔最多保留 128 片（FIFO）；串行寫入避免並行下載超過上限。
-    if (limit) { extendedWrites = extendedWrites.then(save).catch(() => {}); await extendedWrites; }
+    // 限量快取採 FIFO；串行寫入避免並行下載超過各自上限。
+    if (limit) { limitedWrites = limitedWrites.then(save).catch(() => {}); await limitedWrites; }
     else await save().catch(() => {});
   }
   return res;
