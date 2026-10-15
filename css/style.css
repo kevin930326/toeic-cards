@@ -748,6 +748,14 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 }
 
 /* ===== 滑卡 ===== */
+.swipe-tip { display: none; }
+@media (pointer: coarse), (max-width: 560px) {
+  .swipe-tip { display: block; text-align: center; font-size: 13px; }
+}
+#freeSwipe, .swipe-wrap { overscroll-behavior-x: contain; }
+#freeSwipe { user-select: none; -webkit-user-select: none; transition: transform 0.25s ease; }
+#freeSwipe.is-dragging { transition: none; }
+#freeSwipe.is-flying { transition: transform 0.22s ease-in; }
 .swipe-wrap {
   position: relative;
   perspective: 1400px;          /* 翻卡的 3D 效果要放在卡片的直接外層 */
@@ -827,7 +835,7 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
   .grade-btn { min-height: 56px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .swipe-wrap, .swipe-wrap.is-flying { transition: none; }
+  .swipe-wrap, .swipe-wrap.is-flying, #freeSwipe, #freeSwipe.is-flying { transition: none; }
 }
 
 /* ===== 測驗：首頁 ===== */

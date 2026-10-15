@@ -1,7 +1,7 @@
 // 主程式：依網址的 #/xxx 切換頁面
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
-import { renderReview, reviewBadgeCount } from './views/review.js?v=free-cards-1';
-import { renderFreeCards } from './views/free-cards.js?v=free-cards-1';
+import { renderReview, reviewBadgeCount } from './views/review.js?v=swipe-isolation-1';
+import { renderFreeCards } from './views/free-cards.js?v=swipe-isolation-1';
 import { renderCards } from './views/cards.js?v=inline-lookup-1';
 import { renderQuiz } from './views/quiz.js';
 import { renderStats } from './views/stats.js?v=stats-progress-1';

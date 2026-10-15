@@ -42,6 +42,7 @@ python tests/test_inline_lookup.py # 解釋與例句點字查詢、收藏及複�
 python tests/test_library_interactions.py # 1000字互動、星星局部更新與編輯模式
 python tests/test_free_cards.py # 複習選單、自由翻卡與排程／紀錄隔離
 python tests/test_onboarding.py # 真正首次體驗、舊資料提示、三步教學、重看及資料隔離
+python tests/test_swipe_isolation.py # 滑卡邊緣保留、觸控中斷、捲動與評分隔離
 python tests/test_security.py   # 資安：CSP 沒有誤擋、注入的程式不會執行（不需要 Firebase）
 ```
 
@@ -63,6 +64,7 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 | 檔案 | 測試內容 |
 |---|---|
+| `test_swipe_isolation.py` | 左右邊緣起點不拖卡、卡片內水平觸控取消預設動作、真正垂直捲動、第二指／touchCancel／視窗失焦歸位、飛出途中切頁不評分、點字與發音及320／375／390px；不模擬 iPhone 系統導覽動畫，Safari／主畫面 App 仍需真機驗證 |
 | `test_onboarding.py` | 歡迎視窗、略過／Escape／完成後不再提示、舊字卡或僅紀錄的提示列、三步前後切換與練習翻面／評分、正式資料完全不變、無外部API、設定重看、直接連結與不疊窗、儲存被封鎖及320／375px／深色畫面 |
 | `unit/onboarding-state.test.mjs` | 空白／舊資料分流、三種教學狀態、清空學習資料後仍不重複提示、錯誤格式紀錄 |
 | `test_free_cards.py` | 複習選單開關／Escape／外側關閉／焦點與按鍵隔離、完成畫面入口、未到期字卡全覽、翻面、換字、隨機、中英切換、單字集與空範圍、不熟篩選、點字與發音、真實觸控滑動、SRS／紀錄不變及320／375px；離線1000字由 `test_word_packs.py` 覆蓋 |

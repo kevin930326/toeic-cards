@@ -4,7 +4,7 @@ import { flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=i
 import { setScopeHTML, bindSetScope } from '../set-ui.js';
 import { speak } from '../speech.js';
 import { shuffle } from '../quiz.js';
-import { attachSwipe } from '../swipe.js?v=inline-lookup-1';
+import { attachSwipe } from '../swipe.js?v=swipe-isolation-1';
 import { onLookupStatus } from '../dictionary.js';
 import { onGenerateStatus } from '../generate.js';
 
@@ -47,6 +47,7 @@ export function renderFreeCards(root) {
         <div class="free-actions"><button class="btn btn-outline" id="freePrev" type="button" ${words.length < 2 ? 'disabled' : ''}>← 上一張</button>
         <button class="btn btn-ghost" id="freeMark" type="button" aria-pressed="${w.unfamiliar}">${w.unfamiliar ? '★ 已標記不熟' : '☆ 標記不熟'}</button>
         <button class="btn btn-outline" id="freeNext" type="button" ${words.length < 2 ? 'disabled' : ''}>下一張 →</button></div>
+        <p class="swipe-tip hint-text">從卡片中央左右滑動；螢幕邊緣保留給上一頁／下一頁。</p>
         <p class="kbd-hint">空白鍵翻面・←／→ 換字・P 發音。星星只修改不熟標記。</p>`
       : `<div class="empty-state"><h2 class="empty-title">${filter === 'unfamiliar' && scopedWords().length ? '沒有標記為不熟的字' : '目前單字集還沒有字卡'}</h2><p>可切換單字集、取消篩選，或先到單字庫加入單字。</p><a class="btn btn-primary" href="#/words">前往單字庫</a></div>`}
       <p class="free-links"><a href="#/review">今日複習</a><a href="#/cards">探索單字</a></p>

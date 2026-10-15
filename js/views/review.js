@@ -5,7 +5,7 @@ import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../
 import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
 import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=inline-lookup-1';
-import { attachSwipe, flyOut } from '../swipe.js?v=inline-lookup-1';
+import { attachSwipe, flyOut } from '../swipe.js?v=swipe-isolation-1';
 import {
   grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
 } from '../srs.js';
@@ -47,6 +47,7 @@ export function renderReview(root) {
     startSession();
   }
   let busy = false;   // 飛出動畫進行中，避免連按
+  let detachSwipe;
 
   function current() {
     // 單字被刪掉的話直接略過
@@ -55,6 +56,7 @@ export function renderReview(root) {
   }
 
   function draw() {
+    detachSwipe?.();
     const nextScope = scopeKey();
     if (session.scope !== nextScope) {
       const [oldSet, oldIds] = JSON.parse(session.scope);
@@ -104,6 +106,7 @@ export function renderReview(root) {
             <span>✓ 會</span><small>${formatInterval(iv.good)}後</small>
           </button>
         </div>
+        <p class="swipe-tip hint-text">從卡片中央左右滑動；螢幕邊緣保留給上一頁／下一頁。</p>
         <div class="review-tools">
           <button class="btn btn-ghost btn-sm" id="undo" type="button" ${session.history.length ? '' : 'disabled'}>↶ 復原</button>
           <button class="btn btn-ghost btn-sm" id="edit" type="button">編輯</button>
@@ -119,7 +122,7 @@ export function renderReview(root) {
     // 滑鼠／觸控的點擊由 attachSwipe 的 onTap 處理；這裡處理鍵盤觸發的 click
     const tap = (target) => handleCardTap(target, w, flip);
     card.addEventListener('click', (e) => { e.stopPropagation(); tap(e.target); });
-    attachSwipe(wrap, {
+    detachSwipe = attachSwipe(wrap, {
       onTap: tap,
       onSwipe: (dir) => answer(dir === 'right' ? 'good' : 'again', { animated: true }),
       onDrag: (dx) => {
@@ -254,7 +257,7 @@ export function renderReview(root) {
     if (k !== genKey) { genKey = k; if (!busy) draw(); }
   });
   document.addEventListener('keydown', onKey);
-  return () => { unsub(); unsubLookup(); unsubGen(); document.removeEventListener('keydown', onKey); };
+  return () => { detachSwipe?.(); unsub(); unsubLookup(); unsubGen(); document.removeEventListener('keydown', onKey); };
 }
 
 // 導覽列上的待複習數字
