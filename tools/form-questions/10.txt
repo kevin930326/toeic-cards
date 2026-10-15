@@ -1,0 +1,25 @@
+# 第 10 組（901～1000）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+provisional | The new schedule has been ___ approved, pending the CEO's signature. | provisionally | provisional / provision / provisions | 新的時程已經暫時核准，還要等執行長簽名。 | 夾在 has been 和過去分詞 approved 中間修飾動詞，要用副詞。
+insightful | Thank you for your ___ comments on the report. | insightful | insight / insights / insightfully | 謝謝您對報告提出有見地的意見。 | 所有格 your 後面、名詞 comments 前面要用形容詞。
+pharmaceutical | Mr. Ng works for a large ___ company in Basel. | pharmaceutical | pharmacist / pharmacies / pharmaceutically | 吳先生在巴塞爾一家大型製藥公司工作。 | 冠詞 a＋形容詞 large 後面、名詞 company 前面要用形容詞。
+accomplished | Opening a second store was a major ___ for the family. | accomplishment | accomplish / accomplished / accomplishing | 開第二家店對這個家庭來說是一大成就。 | 冠詞 a＋形容詞 major 後面要接名詞。
+exempt | Small businesses may apply for a tax ___. | exemption | exempt / exempted / exempting | 小型企業可以申請免稅。 | 冠詞 a＋tax 後面要接名詞。
+fluctuate | Oil prices have ___ widely over the past year. | fluctuated | fluctuate / fluctuation / fluctuating | 過去一年油價大幅波動。 | have＋過去分詞是現在完成式。
+coordinate | Ms. Kim will ___ the event with the hotel staff. | coordinate | coordinator / coordination / coordinated | 金小姐會和飯店人員協調這場活動。 | 助動詞 will 後面接原形動詞。
+disclose | Employees must not ___ confidential information to anyone. | disclose | disclosure / disclosed / disclosing | 員工不得向任何人透露機密資訊。 | must not 後面接原形動詞。
+perceive | Customer ___ of our brand has improved this year. | perception | perceive / perceived / perceptive | 今年顧客對我們品牌的觀感變好了。 | Customer 後面接名詞當主詞，後面有 of our brand。
+assess | The storm damage will be ___ by an insurance agent. | assessed | assess / assessment / assessor | 暴風雨造成的損害會由保險業務員評估。 | will be＋過去分詞＋by，是被動語態。
+attain | This year's sales goal is challenging but ___. | attainable | attain / attainment / attained | 今年的業績目標有挑戰性，但可以達成。 | 和形容詞 challenging 並列，要用形容詞。
+regulate | All food companies must follow strict government ___. | regulations | regulate / regulatory / regulated | 所有食品公司都必須遵守嚴格的政府法規。 | 形容詞 strict＋government 後面接名詞，當 follow 的受詞。
+restructure | The company is planning a major ___ of its sales department. | restructuring | restructure / restructured / restructures | 公司正計畫大幅重整業務部門。 | 冠詞 a＋形容詞 major 後面要接名詞；restructuring 是「重整」。
+compile | The sales data was ___ from several different sources. | compiled | compile / compilation / compiling | 這些銷售數據是從好幾個不同來源彙整的。 | was＋過去分詞，是被動語態。
+utilize | We must ___ our resources more efficiently. | utilize | utilization / utilized / utilizing | 我們必須更有效率地運用資源。 | 助動詞 must 後面接原形動詞。
+consolidate | The ___ of the two branch offices will save money. | consolidation | consolidate / consolidated / consolidating | 兩個分公司合併將能節省經費。 | 冠詞 The 後面、of 前面要用名詞。
+mediate | A professional ___ was hired to settle the dispute. | mediator | mediate / mediation / mediated | 公司請了一位專業調解人來解決糾紛。 | 冠詞 A＋形容詞 professional 後面接名詞當主詞，was hired 的是人。
+succeed | The product launch was very ___. | successful | succeed / success / successfully | 產品發表會非常成功。 | very 後面接形容詞當補語。
+illustrate | The travel guide is ___ with color photographs. | illustrated | illustrate / illustration / illustrator | 這本旅遊指南附有彩色照片插圖。 | is＋過去分詞，是被動語態。
+endorse | The new cookware received an ___ from a famous chef. | endorsement | endorse / endorsed / endorsing | 新廚具獲得一位知名主廚的推薦。 | 冠詞 an 後面接名詞，當 received 的受詞。
+terminate | The ___ of the lease takes effect on June 30. | termination | terminate / terminated / terminating | 租約將在六月三十日終止。 | 冠詞 The 後面、of 前面要用名詞。
+subsidize | Employee meals are ___ by the company. | subsidized | subsidize / subsidy / subsidies | 員工餐由公司補貼。 | are＋過去分詞＋by，是被動語態。
+optimize | Our website has been ___ for mobile users. | optimized | optimize / optimization / optimal | 我們的網站已經針對手機使用者最佳化。 | has been＋過去分詞，是被動語態。
+designate | Smoking is allowed only in ___ areas. | designated | designate / designation / designating | 只有在指定區域才可以吸菸。 | 空格修飾名詞 areas，表示「被指定的」，要用過去分詞。

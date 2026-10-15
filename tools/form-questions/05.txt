@@ -1,0 +1,67 @@
+# 第 5 組（401～500）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+valid | Please ___ your parking ticket at the front desk before you leave. | validate | valid / validity / validated | 離開前請到櫃台驗證停車券。 | Please 開頭的祈使句，要用原形動詞。
+medical | Ms. Hsu took two weeks of ___ leave after her surgery. | medical | medically / medicine / medication | 許小姐手術後請了兩週病假。 | 空格修飾名詞 leave，medical leave 是「病假」，要用形容詞。
+accessible | Our website is designed to be easily ___ to all users. | accessible | access / accessed / accessibility | 我們的網站設計成讓所有使用者都能輕鬆使用。 | to be＋副詞後面接形容詞，be accessible to 是「……可以使用」。
+additional | ___ charges may apply for express delivery. | Additional | Add / Addition / Additionally | 快遞可能會收取額外費用。 | 空格修飾名詞 charges，要用形容詞。
+reasonable | The rooms at this hotel are ___ priced. | reasonably | reason / reasonable / reasoning | 這家飯店的房價很合理。 | 修飾過去分詞 priced，要用副詞。
+appropriate | Employees are expected to behave ___ at all times. | appropriately | appropriate / appropriateness / appropriated | 員工在任何時候都應舉止得宜。 | 修飾動詞 behave，要用副詞。
+extensive | The library has an ___ collection of business books. | extensive | extend / extension / extensively | 圖書館收藏了大量商業書籍。 | 冠詞 an 後面、名詞 collection 前面要用形容詞。
+potential | This small mistake could ___ cost us the contract. | potentially | potential / potentials / potentiality | 這個小錯誤可能會讓我們失去這份合約。 | 夾在 could 和原形動詞 cost 中間修飾動詞，要用副詞。
+technical | The software was ___ advanced for its time. | technically | technical / technician / technique | 這套軟體在當時技術上很先進。 | 修飾形容詞 advanced，要用副詞。
+essential | It is ___ that all staff attend the safety training. | essential | essentially / essence / essentials | 所有員工務必參加安全訓練。 | It is＋形容詞＋that 子句，要用形容詞。
+professional | All customer complaints should be handled ___. | professionally | profession / professional / professionalism | 所有客訴都應該專業地處理。 | 句子已經完整，空格修飾動詞 should be handled，要用副詞。
+commercial | The product was well designed but not ___ successful. | commercially | commerce / commercial / commercialize | 這項產品設計得很好，但在商業上並不成功。 | 修飾形容詞 successful，要用副詞。
+moderate | The new restaurant downtown is ___ priced. | moderately | moderate / moderation / moderator | 市中心那家新餐廳價格適中。 | 修飾過去分詞 priced，要用副詞。
+approximately | The bus trip to the airport takes ___ forty minutes. | approximately | approximate / approximation / approximated | 搭公車到機場大約要四十分鐘。 | 修飾數字 forty minutes，要用副詞。
+concentrate | The construction noise made it difficult to ___ on my work. | concentrate | concentration / concentrated / concentrating | 施工的噪音讓我很難專心工作。 | to 後面接原形動詞（不定詞）。
+postpone | The board meeting has been ___ until next Tuesday. | postponed | postpone / postponement / postponing | 董事會延到下週二舉行。 | has been＋過去分詞，是被動語態。
+reschedule | Would it be possible to ___ our appointment to Thursday? | reschedule | rescheduled / rescheduling / reschedules | 我們的約可以改到星期四嗎？ | to 後面接原形動詞（不定詞）。
+predict | Our sales have been very ___ over the past five years. | predictable | predict / prediction / predicted | 過去五年我們的銷售一直很穩定、好預測。 | very 後面接形容詞當補語。
+enroll | ___ in the evening program is limited to thirty students. | Enrollment | Enroll / Enrolled / Enrolling | 夜間課程的報名人數上限是三十人。 | 空格是句子的主詞，後面接 in，要用名詞。
+commute | It takes Mr. Park about an hour to ___ to work. | commute | commuter / commuted / commuting | 朴先生通勤上班大約要一小時。 | to 後面接原形動詞（不定詞）。
+involve | Thank you for your ___ in this year's charity run. | involvement | involve / involved / involving | 謝謝您參與今年的慈善路跑。 | 所有格 your 後面要接名詞。
+hesitate | Please do not ___ to contact us if you have any questions. | hesitate | hesitation / hesitant / hesitantly | 如果有任何問題，請隨時和我們聯絡。 | do not 後面接原形動詞。
+donate | Dozens of employees ___ blood at last month's health fair. | donated | donate / donation / donor | 上個月的健康博覽會上，有數十位員工捐了血。 | 句子有 last month，動詞要用過去式。
+achieve | This year's sales target is ___ if everyone works together. | achievable | achieve / achievement / achieving | 只要大家一起努力，今年的業績目標是可以達成的。 | be 動詞 is 後面接形容詞當補語。
+contribute | Ms. Park made a significant ___ to the success of the project. | contribution | contribute / contributor / contributed | 朴小姐對專案的成功有重大貢獻。 | 冠詞 a＋形容詞 significant 後面接名詞；make a contribution 是「做出貢獻」。
+extend | The store has ___ its opening hours for the holiday season. | extended | extend / extension / extensive | 這家店在假期延長了營業時間。 | has＋過去分詞是現在完成式。
+interact | The science museum offers many ___ exhibits for children. | interactive | interact / interaction / interactively | 科學博物館為兒童提供許多互動式展覽。 | 空格修飾名詞 exhibits，要用形容詞。
+indicate | As ___ on the map, the emergency exit is on the left. | indicated | indicate / indication / indicator | 如地圖所示，緊急出口在左邊。 | As indicated 是「如……所示」，用過去分詞。
+occur | The power outage ___ shortly after midnight. | occurred | occur / occurs / occurrence | 停電發生在午夜過後不久。 | 描述已經發生的事，要用過去式。
+persuade | Mr. Lee presented a very ___ argument for the new plan. | persuasive | persuade / persuasion / persuasively | 李先生為新計畫提出了非常有說服力的論點。 | very 後面接形容詞修飾名詞 argument。
+convince | The marketing team argued ___ for a larger budget. | convincingly | convince / convinced / convinces | 行銷團隊有說服力地爭取更多預算。 | 修飾動詞 argued，要用副詞。
+operate | The new factory will be fully ___ by May. | operational | operate / operation / operator | 新工廠將在五月前全面運作。 | will be＋副詞 fully 後面接形容詞當補語。
+alter | Please let us know if you need any ___ to the design. | alterations | alter / altered / altering | 如果設計需要任何修改，請告訴我們。 | any 後面接名詞；可數名詞 alteration 在這裡用複數。
+maintain | It is important to ___ good relationships with our clients. | maintain | maintenance / maintained / maintaining | 和客戶維持良好關係很重要。 | to 後面接原形動詞（不定詞）。
+employ | Mr. Ruiz has been ___ by the company for ten years. | employed | employ / employment / employer | 魯伊斯先生在這家公司工作十年了。 | has been＋過去分詞＋by，是被動語態。
+assemble | The workers ___ the new machine in just two days last week. | assembled | assemble / assembles / assembly | 工人上週只花兩天就組裝好新機器。 | 句尾有 last week，動詞要用過去式。
+assign | Please complete the writing ___ by Friday. | assignment | assign / assigned / assigning | 請在星期五前完成寫作作業。 | 冠詞 the＋writing 後面要接名詞，當 complete 的受詞。
+approve | All travel expenses must be ___ by the finance director. | approved | approve / approval / approving | 所有差旅費用都必須經過財務長核准。 | must be＋過去分詞＋by，是被動語態。
+suggest | Thank you for your helpful ___ about the new layout. | suggestion | suggest / suggested / suggesting | 謝謝您對新配置提出有用的建議。 | 所有格 your＋形容詞 helpful 後面要接名詞。
+conclude | In ___, the product launch was a great success. | conclusion | conclude / concluded / conclusive | 總結來說，產品發表會非常成功。 | 介系詞 In 後面接名詞，In conclusion 是「總之」。
+motivate | The new bonus system is designed to ___ employees. | motivate | motivation / motivated / motivational | 新的獎金制度是為了激勵員工而設計的。 | to 後面接原形動詞（不定詞）。
+submit | The deadline for ___ of the research papers is May 5. | submission | submit / submitted / submits | 研究論文的繳交截止日是五月五日。 | 介系詞 for 後面、of 前面要用名詞。
+activate | Your new account will be ___ within 24 hours. | activated | activate / activation / activating | 您的新帳號會在 24 小時內啟用。 | will be＋過去分詞，是被動語態。
+adjust | Please make any necessary ___ before printing the final copy. | adjustments | adjust / adjustable / adjusted | 印出最終版本前，請做必要的調整。 | any necessary 後面接名詞；make adjustments 是「做調整」。
+promote | Mr. Chen was ___ to sales manager last month. | promoted | promote / promotion / promotional | 陳先生上個月升為業務經理。 | was＋過去分詞是被動語態（被升職）。
+adapt | Successful employees are highly ___ to change. | adaptable | adapt / adaptation / adaptability | 成功的員工很能適應變化。 | be 動詞＋副詞 highly 後面接形容詞當補語。
+revise | Please send me the ___ version of the contract. | revised | revise / revision / revising | 請把修改後的合約寄給我。 | 空格修飾名詞 version，表示「被修改過的」，要用過去分詞。
+invest | Our company is ___ heavily in solar power. | investing | invest / investment / investor | 我們公司正大舉投資太陽能。 | is＋現在分詞是進行式，invest in 是「投資」。
+locate | The hotel is conveniently ___ near the main train station. | located | locate / location / locating | 飯店位置便利，就在火車總站附近。 | be located 是「位於」，用過去分詞。
+demonstrate | The sales team will give a product ___ tomorrow morning. | demonstration | demonstrate / demonstrated / demonstrating | 業務團隊明天早上會做產品示範。 | 冠詞 a＋product 後面要接名詞，當 give 的受詞。
+dominate | The company holds a ___ position in the domestic market. | dominant | dominate / dominance / dominated | 這家公司在國內市場占有主導地位。 | 冠詞 a 後面、名詞 position 前面要用形容詞。
+eliminate | The new system will ___ the need for paper forms. | eliminate | elimination / eliminated / eliminating | 新系統將不再需要紙本表格。 | 助動詞 will 後面接原形動詞。
+anticipate | The ___ demand for the new phone is extremely high. | anticipated | anticipate / anticipation / anticipating | 預期中新手機的需求非常高。 | 空格修飾名詞 demand，表示「被預期的」，要用過去分詞。
+exceed | Sales have ___ our expectations this year. | exceeded | exceed / excess / excessive | 今年的銷售超出我們的預期。 | have＋過去分詞是現在完成式。
+appoint | Ms. Wong has been ___ as the new marketing director. | appointed | appoint / appointment / appointing | 黃小姐被任命為新的行銷總監。 | has been＋過去分詞，是被動語態。
+customize | All of our software can be ___ to meet your needs. | customized | customize / customizes / customizing | 我們所有的軟體都可以依您的需求客製化。 | can be＋過去分詞，是被動語態。
+commit | We are ___ to providing excellent customer service. | committed | commit / commitment / committing | 我們致力於提供優質的顧客服務。 | be committed to 是「致力於」，用過去分詞。
+sustain | The company is focused on long-term ___ growth. | sustainable | sustain / sustainability / sustainably | 公司專注於長期的永續成長。 | 空格修飾名詞 growth，要用形容詞。
+occupy | Please wait until the meeting room is no longer ___. | occupied | occupy / occupation / occupational | 請等會議室沒人使用時再進去。 | be 動詞 is no longer 後面接過去分詞（被占用的）。
+nominate | Ms. Choi was ___ for the Employee of the Year award. | nominated | nominate / nomination / nominee | 崔小姐被提名為年度最佳員工。 | was＋過去分詞是被動語態（被提名）。
+convert | The ___ of the old warehouse into offices took a year. | conversion | convert / converted / convertible | 把舊倉庫改建成辦公室花了一年。 | 冠詞 The 後面、of 前面要用名詞。
+merge | The ___ between the two banks was announced yesterday. | merger | merge / merged / merging | 兩家銀行合併的消息昨天宣布了。 | 冠詞 The 後面接名詞當主詞。
+function | The new printer is now fully ___. | functional | function / functionality / functionally | 新的印表機現在可以正常運作了。 | be 動詞＋副詞 fully 後面接形容詞當補語。
+purchase | Items ___ online can be returned to any of our stores. | purchased | purchase / purchases / purchasing | 線上購買的商品可以到我們任何一家門市退貨。 | 修飾 Items，表示「被購買的」，要用過去分詞。
+register | All visitors must ___ at the front desk upon arrival. | register | registration / registered / registering | 所有訪客抵達時都必須在櫃台登記。 | 助動詞 must 後面接原形動詞。
+sponsor | The city marathon is ___ by a local bank. | sponsored | sponsor / sponsorship / sponsoring | 城市馬拉松由一家本地銀行贊助。 | is＋過去分詞＋by，是被動語態。

@@ -1,0 +1,43 @@
+# 第 6 組（501～600）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+commitment | Thank you for your ___ to the company over the past ten years. | commitment | commit / committed / committing | 感謝您過去十年對公司的投入。 | 所有格 your 後面要接名詞。
+exposure | Avoid direct ___ to sunlight when storing this product. | exposure | expose / exposed / exposing | 存放本產品時請避免陽光直射。 | 形容詞 direct 後面接名詞，當 Avoid 的受詞。
+distribution | Free brochures were ___ to all visitors at the fair. | distributed | distribute / distribution / distributor | 免費手冊發給了所有參觀展覽的人。 | were＋過去分詞，是被動語態。
+foundation | The trading company was ___ in 1985 by two brothers. | founded | found / foundation / founder | 這家貿易公司是兩兄弟在 1985 年創立的。 | was＋過去分詞＋by，是被動語態。
+representative | Mr. Ali will ___ our company at the trade fair in Berlin. | represent | representative / represented / representation | 阿里先生將代表我們公司參加柏林的商展。 | 助動詞 will 後面接原形動詞。
+publicity | The company will ___ the charity event on social media. | publicize | publicity / public / publicly | 公司會在社群媒體上宣傳這場慈善活動。 | 助動詞 will 後面接原形動詞。
+defect | Please return any ___ products for a full refund. | defective | defect / defects / defectively | 有瑕疵的產品請退回，可全額退款。 | 空格修飾名詞 products，要用形容詞。
+coverage | Does your insurance plan include dental ___? | coverage | cover / covered / covering | 您的保險方案有包含牙科給付嗎？ | dental 後面要接名詞，當 include 的受詞。
+orientation | All new hires must attend a two-day ___. | orientation | orient / oriented / orienting | 所有新進員工都必須參加兩天的新人訓練。 | 冠詞 a＋two-day 後面要接名詞。
+resolution | The billing problem was ___ within an hour. | resolved | resolve / resolution / resolving | 帳單問題在一小時內就解決了。 | was＋過去分詞，是被動語態。
+compensation | Passengers will be ___ for the long delay. | compensated | compensate / compensation / compensating | 旅客將因長時間延誤而獲得補償。 | will be＋過去分詞，是被動語態。
+prospect | We will interview ___ candidates next week. | prospective | prospect / prospects / prospectively | 我們下週會面試有望錄取的應徵者。 | 空格修飾名詞 candidates，要用形容詞。
+controversy | The new parking policy was highly ___ among employees. | controversial | controversy / controversies / controversially | 新的停車政策在員工之間非常有爭議。 | be 動詞＋副詞 highly 後面接形容詞當補語。
+reference | Ms. Kim was ___ to our firm by a former client. | referred | refer / reference / referral | 金小姐是一位老客戶介紹到我們公司的。 | was＋過去分詞＋by，是被動語態。
+emphasis | In her speech yesterday, the CEO ___ the importance of safety. | emphasized | emphasize / emphasis / emphatic | 執行長昨天在演講中強調了安全的重要性。 | 句中有 yesterday，動詞要用過去式。
+inspection | The factory is ___ twice a year by government officials. | inspected | inspect / inspection / inspector | 工廠每年由政府官員檢查兩次。 | is＋過去分詞＋by，是被動語態。
+operation | The new coffee machine is very easy to ___. | operate | operation / operational / operator | 新的咖啡機非常容易操作。 | easy to 後面接原形動詞。
+strategy | The new café is ___ located near the subway exit. | strategically | strategy / strategic / strategize | 新咖啡店的位置選在地鐵出口附近，很有策略。 | 修飾過去分詞 located，要用副詞。
+consumption | Customers usually ___ more hot drinks in winter. | consume | consumption / consumer / consumable | 顧客通常在冬天喝比較多熱飲。 | 主詞 Customers 後面要接動詞；複數主詞、現在式用原形。
+efficiency | The new software helps our staff work more ___. | efficiently | efficient / efficiency / efficiencies | 新軟體幫助員工工作更有效率。 | 修飾動詞 work，要用副詞（比較級 more efficiently）。
+analysis | Our research team will ___ the survey results this week. | analyze | analysis / analyst / analytical | 我們的研究團隊這週會分析調查結果。 | 助動詞 will 後面接原形動詞。
+innovation | The company is known for its ___ products. | innovative | innovate / innovation / innovator | 這家公司以創新的產品聞名。 | 所有格 its 後面、名詞 products 前面要用形容詞。
+withdrawal | You can make a cash ___ at any of our ATMs. | withdrawal | withdraw / withdrawn / withdrew | 您可以在我們任何一台提款機提領現金。 | 冠詞 a＋cash 後面要接名詞，make a withdrawal 是「提款」。
+distinction | The brand is easy to recognize because of its ___ logo. | distinctive | distinction / distinctly / distinguish | 這個品牌因為獨特的商標而容易辨認。 | 所有格 its 後面、名詞 logo 前面要用形容詞。
+revision | The training manual needs a final ___ before it is published. | revision | revise / revised / revises | 訓練手冊出版前需要最後一次修訂。 | 冠詞 a＋形容詞 final 後面要接名詞。
+hazard | Workers must wear gloves when handling ___ materials. | hazardous | hazard / hazards / hazardously | 處理危險物品時，工人必須戴手套。 | 空格修飾名詞 materials，要用形容詞。
+founder | The company's ___, Ms. Ho, will speak at the anniversary dinner. | founder | found / founded / founding | 公司創辦人何小姐將在週年晚宴上致詞。 | 所有格 The company's 後面接名詞，而且和 Ms. Ho 是同一個人。
+authority | Only ___ personnel may enter the server room. | authorized | authority / authorize / authorization | 只有經授權的人員可以進入伺服器機房。 | 空格修飾名詞 personnel，表示「被授權的」，要用過去分詞。
+expansion | The company plans to ___ into Southeast Asia next year. | expand | expansion / expansive / expanded | 公司計畫明年擴展到東南亞。 | plans to 後面接原形動詞。
+investigation | The cause of the fire is still under ___. | investigation | investigate / investigated / investigator | 火災原因仍在調查中。 | 介系詞 under 後面接名詞，under investigation 是「調查中」。
+renovation | The hotel was completely ___ last year. | renovated | renovate / renovation / renovating | 這家飯店去年全面翻修過。 | was＋過去分詞，是被動語態。
+procedure | Please follow the safety ___ carefully. | procedures | proceed / procedural / proceeded | 請仔細遵守安全程序。 | 冠詞 the＋safety 後面接名詞，當 follow 的受詞。
+publication | The annual report will be ___ next month. | published | publish / publication / publisher | 年度報告將於下個月發布。 | will be＋過去分詞，是被動語態。
+consequence | The flight was delayed; ___, we missed our connecting flight. | consequently | consequence / consequent / consequences | 班機延誤了，因此我們錯過了轉機。 | 分號後面、逗號前面，要用副詞連接兩句。
+invoice | Clients are ___ at the end of each month. | invoiced | invoice / invoices / invoicing | 客戶在每個月底會收到請款單。 | are＋過去分詞，是被動語態。
+contribution | All employees are encouraged to ___ ideas at the meeting. | contribute | contribution / contributor / contributed | 鼓勵所有員工在會議上提出想法。 | to 後面接原形動詞（不定詞）。
+installation | A technician will ___ the new air conditioner tomorrow. | install | installation / installed / installing | 技術人員明天會來安裝新冷氣。 | 助動詞 will 後面接原形動詞。
+inconvenience | We apologize for any ___ the road work may cause. | inconvenience | inconvenient / inconveniently / inconvenienced | 道路施工若造成任何不便，我們深感抱歉。 | 介系詞 for＋any 後面接名詞。
+amendment | The contract was ___ to include a new payment clause. | amended | amend / amendment / amending | 合約經過修改，加入了一條新的付款條款。 | was＋過去分詞，是被動語態。
+alternative | ___, you can pay for your order by bank transfer. | Alternatively | Alternate / Alternative / Alternatives | 或者，您也可以用銀行轉帳支付訂單。 | 句首、逗號前面修飾整句，要用副詞。
+characteristic | The region is ___ by its mild climate and sandy beaches. | characterized | character / characteristic / characteristically | 這個地區的特色是氣候溫和、沙灘綿延。 | is＋過去分詞＋by，是被動語態。
+measure | Please take accurate ___ of the room before ordering furniture. | measurements | measure / measurable / measured | 訂購家具前，請準確丈量房間的尺寸。 | 形容詞 accurate 後面接名詞，當 take 的受詞。

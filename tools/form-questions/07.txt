@@ -1,0 +1,50 @@
+# 第 7 組（601～700）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+remarkable | Online sales have grown ___ quickly this year. | remarkably | remark / remarkable / remarked | 今年線上銷售成長得非常快。 | 修飾副詞 quickly，要用副詞。
+critical | At yesterday's meeting, the director ___ the report for its many errors. | criticized | criticize / critical / criticism | 在昨天的會議上，主管批評這份報告錯誤很多。 | 句子有 yesterday，動詞要用過去式。
+efficient | The new heating system is much more ___ than the old one. | efficient | efficiency / efficiently / efficiencies | 新的暖氣系統比舊的有效率得多。 | more 後面接形容詞（比較級），當主詞補語。
+defective | The ___ in the product was found during final testing. | defect | defective / defects / defectively | 產品的瑕疵在最後測試時被發現。 | 冠詞 The 後面接名詞；動詞是單數 was，所以用單數 defect。
+reliable | You can ___ on our team to finish the work on time. | rely | reliable / reliably / reliability | 您可以信賴我們的團隊準時完成工作。 | 助動詞 can 後面接原形動詞，rely on 是「依靠」。
+intensive | This week-long training course is very ___. | intensive | intensity / intensively / intensify | 這個為期一週的訓練課程非常密集。 | very 後面接形容詞當補語。
+ambitious | Ms. Lin is an ___ young manager with big plans. | ambitious | ambition / ambitions / ambitiously | 林小姐是一位懷抱遠大計畫、很有企圖心的年輕主管。 | 冠詞 an 後面、名詞 manager 前面要用形容詞。
+intense | Competition in the smartphone market is very ___. | intense | intensity / intensely / intensify | 智慧型手機市場的競爭非常激烈。 | very 後面接形容詞當補語。
+exclusive | This special discount is available ___ to club members. | exclusively | exclude / exclusive / exclusion | 這個特別折扣只提供給俱樂部會員。 | 修飾 to club members，要用副詞。
+enthusiastic | The audience responded ___ to the speech. | enthusiastically | enthusiasm / enthusiastic / enthusiast | 觀眾對演講反應熱烈。 | 修飾動詞 responded，要用副詞。
+significant | Profits rose ___ in the third quarter. | significantly | signify / significant / significance | 第三季的利潤大幅上升。 | 修飾動詞 rose，要用副詞。
+dedicated | We thank Mr. Ota for his ___ to the company. | dedication | dedicate / dedicated / dedicating | 我們感謝太田先生對公司的奉獻。 | 所有格 his 後面要接名詞。
+consistent | Our sales team has ___ exceeded its monthly targets. | consistently | consist / consistent / consistency | 我們的業務團隊一直都超越每月目標。 | 夾在 has 和過去分詞 exceeded 中間修飾動詞，要用副詞。
+authentic | Please ___ your account using the code we sent you. | authenticate | authentic / authenticity / authentically | 請用我們寄給您的驗證碼驗證帳號。 | Please 開頭的祈使句，要用原形動詞。
+confidential | All personal information will be kept strictly ___. | confidential | confide / confidentially / confidentiality | 所有個人資料都將嚴格保密。 | keep＋受詞＋形容詞，這裡是被動 will be kept＋形容詞。
+financial | The research project is ___ supported by the government. | financially | finance / financial / financed | 這項研究計畫由政府提供資金支持。 | 修飾過去分詞 supported，要用副詞。
+duplicate | Please do not ___ this document without permission. | duplicate | duplication / duplicated / duplicates | 未經許可，請勿複製本文件。 | do not 後面接原形動詞。
+acquire | The ___ of the smaller firm was completed in May. | acquisition | acquire / acquired / acquiring | 對那家小公司的收購在五月完成。 | 冠詞 The 後面、of 前面要用名詞。
+explore | We are always open to ___ new business opportunities. | exploring | explore / exploration / explored | 我們隨時願意探索新的商機。 | be open to 的 to 是介系詞，後面接動名詞，而且還有受詞 opportunities。
+qualify | Only ___ applicants will be contacted for an interview. | qualified | qualify / qualification / qualifies | 只有符合資格的應徵者會被通知面試。 | 空格修飾名詞 applicants，qualified 是「符合資格的」。
+emerge | The company is investing heavily in ___ markets. | emerging | emerge / emergence / emerges | 這家公司大舉投資新興市場。 | 空格修飾名詞 markets，emerging markets 是「新興市場」。
+specialize | Our law firm ___ in international tax law. | specializes | specialize / specialist / specialized | 我們律師事務所專精國際稅法。 | 主詞 Our law firm 是第三人稱單數，現在式動詞要加 s。
+establish | The family business was ___ more than a century ago. | established | establish / establishment / establishing | 這家家族企業是一百多年前創立的。 | was＋過去分詞，是被動語態。
+recruit | We need to ___ more part-time staff for the holiday season. | recruit | recruitment / recruiter / recruited | 我們需要為假期招募更多兼職人員。 | need to 後面接原形動詞。
+retain | Employee ___ has improved since we raised salaries. | retention | retain / retained / retaining | 調薪之後，員工留任率提高了。 | Employee 後面接名詞當主詞，動詞是單數 has。
+consume | Many ___ now prefer to shop on their phones. | consumers | consume / consumption / consumed | 現在很多消費者比較喜歡用手機購物。 | Many 後面接可數名詞的複數，指「人」。
+generate | The new advertisement ___ a lot of interest last month. | generated | generate / generation / generator | 新廣告上個月引起很多關注。 | 句尾有 last month，動詞要用過去式。
+supervise | Ms. Lam will ___ the new interns this summer. | supervise | supervisor / supervision / supervised | 林小姐今年夏天會督導新來的實習生。 | 助動詞 will 後面接原形動詞。
+restrict | Access to the tenth floor is ___ to staff only. | restricted | restrict / restriction / restrictive | 十樓僅限員工進出。 | is＋過去分詞是被動語態，be restricted to 是「僅限於」。
+clarify | Please contact us if you need any ___ about the contract. | clarification | clarify / clarified / clarifies | 如果您需要我們進一步說明合約內容，請和我們聯絡。 | any 後面接名詞。
+resign | Mr. Wu submitted his ___ last Friday. | resignation | resign / resigned / resigning | 吳先生上週五遞出辭呈。 | 所有格 his 後面要接名詞。
+compensate | The company will ___ employees for their travel costs. | compensate | compensation / compensated / compensating | 公司會補償員工的交通費用。 | 助動詞 will 後面接原形動詞。
+fulfill | Order ___ usually takes two business days. | fulfillment | fulfill / fulfilled / fulfilling | 訂單處理通常需要兩個工作天。 | Order 後面接名詞當主詞，動詞是單數 takes。
+implement | The ___ of the new payroll system will begin in May. | implementation | implement / implemented / implementing | 新薪資系統將在五月開始導入。 | 冠詞 The 後面、of 前面要用名詞。
+resolve | We are working to ___ the issue as quickly as possible. | resolve | resolution / resolved / resolving | 我們正努力盡快解決這個問題。 | to 後面接原形動詞（不定詞）。
+evaluate | All employees receive a performance ___ once a year. | evaluation | evaluate / evaluated / evaluating | 所有員工每年接受一次績效評估。 | 冠詞 a＋performance 後面要接名詞。
+specify | Unless otherwise ___, all prices include sales tax. | specified | specify / specific / specification | 除非另有註明，所有價格都含營業稅。 | Unless otherwise specified 是「除非另有說明」，用過去分詞。
+collaborate | The design and marketing teams worked ___ on the campaign. | collaboratively | collaborate / collaboration / collaborative | 設計團隊和行銷團隊合力完成這次活動。 | 修飾動詞 worked，要用副詞。
+analyze | Ms. Ito works as a financial ___ at a large bank. | analyst | analyze / analytical / analyzed | 伊藤小姐在一家大銀行擔任財務分析師。 | works as a＋financial 後面接指「人」的名詞（職業）。
+suspend | Train service has been ___ because of the typhoon. | suspended | suspend / suspension / suspending | 因為颱風，火車停駛了。 | has been＋過去分詞，是被動語態。
+justify | Please provide a written ___ for the additional cost. | justification | justify / justified / justifiable | 請為額外的費用提供書面理由。 | 冠詞 a＋形容詞 written 後面要接名詞。
+detect | Smoke ___ are installed in every hotel room. | detectors | detect / detection / detected | 每間客房都裝有煙霧偵測器。 | Smoke 後面接名詞當主詞；動詞是複數 are，要用複數名詞。
+restore | The ___ of the old theater took three years. | restoration | restore / restored / restoring | 老劇院的修復工程花了三年。 | 冠詞 The 後面、of 前面要用名詞。
+transform | The old factory has been ___ into a shopping mall. | transformed | transform / transformation / transforming | 舊工廠已經改建成購物中心。 | has been＋過去分詞，是被動語態。
+deduct | Income taxes are ___ from your salary every month. | deducted | deduct / deduction / deductible | 所得稅每個月從您的薪水中扣除。 | are＋過去分詞，是被動語態。
+redeem | Gift vouchers can be ___ at any of our stores. | redeemed | redeem / redemption / redeeming | 禮券可以在我們任何一家門市兌換。 | can be＋過去分詞，是被動語態。
+expose | Workers who are ___ to loud noise must wear ear protection. | exposed | expose / exposure / exposing | 暴露在噪音環境的工人必須戴耳罩。 | are＋過去分詞是被動語態，be exposed to 是「暴露於」。
+determine | Mr. Diaz is ___ to finish the project before the deadline. | determined | determine / determination / determining | 迪亞茲先生決心在截止日前完成專案。 | be determined to 是「下定決心」，用過去分詞。
+enforce | The new parking rules will be strictly ___. | enforced | enforce / enforcement / enforceable | 新的停車規定將會嚴格執行。 | will be＋副詞 strictly 後面接過去分詞，表示被動。

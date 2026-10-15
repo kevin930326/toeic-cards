@@ -1,0 +1,63 @@
+# 第 3 組（201～300）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+remain | The ___ tickets will be sold at the door on the night of the concert. | remaining | remain / remains / remainder | 剩下的票會在音樂會當晚於門口販售。 | 空格修飾名詞 tickets，remaining 是「剩下的」。
+hire | The company is ___ ten new software engineers this year. | hiring | hire / hires / hired | 公司今年要招募十位新的軟體工程師。 | is＋現在分詞是進行式，後面有受詞 engineers。
+expect | This quarter's sales were much higher than ___. | expected | expect / expects / expectation | 這一季的銷售比預期高出許多。 | than expected 是「比預期」的固定用法，用過去分詞。
+advertise | We spent half of our marketing budget on online ___. | advertising | advertise / advertised / advertiser | 我們把一半的行銷預算花在網路廣告上。 | 介系詞 on 後面接名詞；advertising（廣告業務）是不可數名詞，不用冠詞。
+arrange | Please make travel ___ for the visiting clients. | arrangements | arrange / arranged / arranging | 請為來訪的客戶安排行程。 | make 的受詞要用名詞，make arrangements 是「做安排」。
+represent | A sales ___ will contact you within 24 hours. | representative | represent / represented / representation | 業務代表會在 24 小時內和您聯絡。 | 冠詞 A＋sales 後面要用指「人」的名詞，當句子主詞。
+intend | This training course is ___ for newly promoted managers. | intended | intend / intends / intention | 這門訓練課程是為新升任的主管設計的。 | be intended for 是「為……而設計」，用過去分詞。
+recommend | Ms. Cho wrote a letter of ___ for her former assistant. | recommendation | recommend / recommended / recommending | 曹小姐為她以前的助理寫了一封推薦信。 | 介系詞 of 後面接名詞，a letter of recommendation 是「推薦信」。
+participate | All ___ in the workshop will receive a certificate. | participants | participate / participated / participation | 所有參加工作坊的人都會拿到證書。 | All 後面接可數名詞的複數，指「參加者」。
+require | A college degree is ___ for this position. | required | require / requires / requirement | 這個職位要求大學學歷。 | is＋過去分詞是被動語態（被要求）。
+subscribe | You can cancel your ___ at any time without a fee. | subscription | subscribe / subscriber / subscribed | 您可以隨時取消訂閱，不收任何費用。 | 所有格 your 後面要接名詞，指「訂閱」這件事。
+replace | We will send you a ___ free of charge. | replacement | replace / replaced / replaceable | 我們會免費寄給您替換品。 | 冠詞 a 後面要接名詞。
+perform | Employees receive a bonus based on their ___. | performance | perform / performed / performer | 員工依照工作表現領取獎金。 | 所有格 their 後面要接名詞；performer 是人，要用複數。
+introduce | New members receive an ___ discount of twenty percent. | introductory | introduce / introduction / introduced | 新會員可享八折的入會優惠。 | 空格修飾名詞 discount，要用形容詞。
+prevent | Regular maintenance helps ___ costly breakdowns. | prevent | prevention / preventive / prevented | 定期保養有助於避免昂貴的故障。 | help 後面接原形動詞。
+consider | Shipping costs have increased ___ since last year. | considerably | consider / considerable / consideration | 運費從去年以來大幅上漲。 | 修飾動詞 have increased，要用副詞。
+retire | Mr. Ito will celebrate his ___ at the end of next month. | retirement | retire / retired / retiring | 伊藤先生將在下個月底慶祝退休。 | 所有格 his 後面要接名詞。
+attach | Please see the ___ file for the full price list. | attached | attach / attaches / attachment | 完整價目表請見附件檔案。 | 空格修飾名詞 file，表示「被附上的」，要用過去分詞。
+interrupt | We apologize for the ___ in our service this morning. | interruption | interrupt / interrupted / interrupting | 對於今天早上的服務中斷，我們深感抱歉。 | 冠詞 the 後面接名詞。
+depart | The express train will ___ from platform three at nine o'clock. | depart | departure / departed / departing | 特快車將於九點從第三月台出發。 | 助動詞 will 後面接原形動詞。
+disturb | Please do not ___ other guests after ten p.m. | disturb | disturbance / disturbed / disturbing | 晚上十點後請不要打擾其他房客。 | do not 後面接原形動詞。
+propose | The ___ budget will be reviewed at next week's meeting. | proposed | propose / proposal / proposing | 提議的預算會在下週的會議上審查。 | 空格修飾名詞 budget，表示「被提議的」，要用過去分詞。
+identify | Please bring a valid form of ___ to the front desk. | identification | identify / identified / identifiable | 請攜帶有效的身分證明到櫃台。 | 介系詞 of 後面接名詞。
+increase | Online shopping is becoming ___ popular among older adults. | increasingly | increase / increased / increases | 網路購物在年長者之間越來越流行。 | 修飾形容詞 popular，要用副詞。
+interview | Each candidate will be ___ by two department managers. | interviewed | interview / interviews / interviewer | 每位應徵者會由兩位部門主管面試。 | will be＋過去分詞＋by，是被動語態。
+repair | The damaged roof was finally ___ last month. | repaired | repair / repairs / repairing | 受損的屋頂上個月終於修好了。 | was＋過去分詞，是被動語態。
+update | Please make sure you are using the most ___ version of the software. | updated | update / updates / updating | 請確定您使用的是最新版的軟體。 | the most 後面接形容詞，修飾名詞 version。
+reserve | All of the front-row seats have been ___ for special guests. | reserved | reserve / reserves / reservation | 前排座位都已經保留給特別來賓。 | have been＋過去分詞，是被動語態。
+support | Our manager has been very ___ of the new marketing idea. | supportive | support / supporter / supported | 我們的經理非常支持新的行銷點子。 | very 後面接形容詞，be supportive of 是「支持」。
+permit | You will need a parking ___ to use this lot. | permit | permitted / permitting / permissible | 使用這個停車場需要停車證。 | 冠詞 a＋parking 後面要接名詞（許可證）。
+benefit | Regular exercise is ___ to both body and mind. | beneficial | benefit / benefits / benefited | 規律運動對身心都有益。 | be 動詞 is 後面接形容詞，be beneficial to 是「對……有益」。
+supply | The company will ___ uniforms to all new staff. | supply | supplier / supplied / supplying | 公司會提供制服給所有新進員工。 | 助動詞 will 後面接原形動詞。
+damage | Please return any ___ items within seven days of delivery. | damaged | damage / damages / damaging | 有損壞的商品請在到貨七天內退回。 | 空格修飾名詞 items，表示「被損壞的」，要用過去分詞。
+transfer | Concert tickets are not ___ to other people. | transferable | transfer / transfers / transferring | 音樂會門票不能轉讓給他人。 | be 動詞 are not 後面接形容詞當補語。
+launch | The company ___ its newest smartphone last week. | launched | launch / launches / launching | 公司上週推出了最新的智慧型手機。 | 句尾有 last week，動詞要用過去式。
+advance | This writing course is for ___ learners only. | advanced | advance / advances / advancement | 這門寫作課只開放給程度較高的學習者。 | 空格修飾名詞 learners，advanced 是「高級的、進階的」。
+select | Please ___ a seat from the map below. | select | selection / selected / selective | 請從下方的座位圖選擇座位。 | Please 開頭的祈使句，要用原形動詞。
+separate | Each item in your order will be shipped ___. | separately | separate / separation / separated | 您訂單中的每件商品會分開寄送。 | 修飾動詞 will be shipped，要用副詞。
+construction | Thank you for your ___ feedback on our proposal. | constructive | construct / construction / constructed | 謝謝您對我們提案提供有建設性的意見。 | 空格修飾名詞 feedback，要用形容詞。
+competitor | We offer ___ salaries and excellent benefits. | competitive | compete / competitor / competition | 我們提供有競爭力的薪資和優渥的福利。 | 空格修飾名詞 salaries，要用形容詞。
+certificate | Only ___ technicians are allowed to repair this equipment. | certified | certify / certificate / certification | 只有合格的技術人員可以修理這台設備。 | 空格修飾名詞 technicians，表示「被認證的」，要用過去分詞。
+summary | The report ___ the results of the customer survey. | summarizes | summary / summarize / summarizing | 這份報告總結了顧客調查的結果。 | 主詞 The report 是第三人稱單數，現在式動詞要加 s。
+accountant | Ms. Gomez works as an ___ at a large law firm. | accountant | accounting / accounted / accountable | 戈麥斯小姐在一家大型律師事務所當會計師。 | works as an 後面接指「人」的名詞（職業）。
+assignment | Each new employee is ___ a mentor during the first month. | assigned | assign / assignment / assigning | 每位新進員工在第一個月都會被分配一位導師。 | is＋過去分詞是被動語態（被分配）。
+industry | The city has a large ___ zone near the harbor. | industrial | industry / industries / industrially | 這座城市在港口附近有一大片工業區。 | 空格修飾名詞 zone，要用形容詞。
+instructor | Our yoga ___ has more than ten years of experience. | instructor | instruct / instructed / instructive | 我們的瑜伽老師有十年以上的經驗。 | 所有格 Our＋yoga 後面要接名詞當主詞，只有 instructor 是名詞。
+donation | The new library was built with ___ from local businesses. | donations | donate / donated / donating | 新圖書館是用本地企業的捐款蓋的。 | 介系詞 with 後面接名詞；可數名詞不加冠詞時要用複數。
+interest | Anyone ___ in the position should contact the HR department. | interested | interest / interests / interesting | 對這個職位有興趣的人請聯絡人資部。 | be interested in 是「對……有興趣」，修飾人要用 interested。
+conclusion | Yesterday's meeting ___ with a short speech by the CEO. | concluded | conclude / concludes / conclusion | 昨天的會議以執行長的簡短致詞作結。 | 主詞是 Yesterday's meeting，要用過去式。
+category | Please ___ the documents by date before filing them. | categorize | category / categories / categorized | 歸檔前請把文件依日期分類。 | Please 開頭的祈使句，要用原形動詞。
+application | Please submit your ___ before the first of March. | application | apply / applied / applicant | 請在三月一日前繳交申請書。 | 所有格 your 後面接名詞；submit 的是申請書，不是應徵者。
+registration | ___ for the leadership workshop closes this Friday. | Registration | Register / Registered / Registers | 領導力工作坊的報名在這個星期五截止。 | 空格是句子的主詞，後面接 for，要用名詞。
+transportation | Public ___ in this city is cheap and reliable. | transportation | transported / transporting / transportable | 這座城市的大眾運輸便宜又可靠。 | 形容詞 Public 後面、當主詞，要用名詞。
+promotion | We are running a ___ campaign throughout December. | promotional | promote / promotion / promoted | 我們整個十二月都在舉辦促銷活動。 | 空格修飾名詞 campaign，要用形容詞。
+extension | The hotel lobby was ___ renovated last year. | extensively | extend / extension / extensive | 飯店大廳去年大規模整修過。 | 夾在 was 和過去分詞 renovated 中間修飾動詞，要用副詞。
+assembly | This desk must be ___ by the customer. | assembled | assemble / assembly / assembling | 這張桌子必須由顧客自行組裝。 | must be＋過去分詞＋by，是被動語態。
+expense | The new office chairs were more ___ than we expected. | expensive | expense / expenses / expensively | 新的辦公椅比我們預期的貴。 | more 後面接形容詞（比較級），說明主詞。
+division | The profits will be ___ equally among the three partners. | divided | divide / division / divisional | 利潤會由三位合夥人平分。 | will be＋過去分詞，是被動語態。
+employment | The new factory provides ___ for over five hundred local residents. | employment | employ / employer / employed | 新工廠為五百多位當地居民提供工作機會。 | provides 的受詞要用名詞；employer 是可數名詞，需要冠詞。
+investment | The company plans to ___ heavily in renewable energy. | invest | investment / investor / invested | 公司計畫大舉投資再生能源。 | plans to 後面接原形動詞。
+maintenance | The gym will be closed for ___ this weekend. | maintenance | maintain / maintained / maintaining | 健身房這個週末因維修關閉。 | 介系詞 for 後面接名詞。
+proposal | The board approved the ___ to open a branch in Osaka. | proposal | propose / proposed / proposing | 董事會通過了在大阪開分店的提案。 | 冠詞 the 後面接名詞，當 approved 的受詞。

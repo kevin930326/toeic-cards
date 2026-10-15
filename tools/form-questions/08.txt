@@ -1,0 +1,41 @@
+# 第 8 組（701～800）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+acknowledge | Please ___ receipt of this email by replying to it. | acknowledge | acknowledgment / acknowledged / acknowledging | 請回覆這封信，確認您已收到。 | Please 開頭的祈使句，要用原形動詞。
+adopt | The ___ of the new accounting software took several months. | adoption | adopt / adopted / adopting | 導入新的會計軟體花了好幾個月。 | 冠詞 The 後面、of 前面要用名詞。
+consult | We hired a marketing ___ to help with the product launch. | consultant | consult / consulted / consulting | 我們請了一位行銷顧問協助產品上市。 | 冠詞 a＋marketing 後面要接名詞（指人），當 hired 的受詞。
+emphasize | The safety guide places strong ___ on wearing protective gear. | emphasis | emphasize / emphatic / emphasized | 安全手冊特別強調要穿戴防護裝備。 | 形容詞 strong 後面接名詞，place emphasis on 是「強調」。
+enhance | The new features will greatly ___ the user experience. | enhance | enhancement / enhanced / enhancing | 新功能將大幅提升使用者體驗。 | 助動詞 will＋副詞 greatly 後面接原形動詞。
+obtain | A visitor pass can be ___ at the security desk. | obtained | obtain / obtainable / obtaining | 訪客證可以在警衛室領取。 | can be＋過去分詞，是被動語態。
+accommodate | The hotel offers comfortable ___ for business travelers. | accommodations | accommodate / accommodated / accommodating | 這家飯店為商務旅客提供舒適的住宿。 | 形容詞 comfortable 後面接名詞，當 offers 的受詞。
+dedicate | This year's award is ___ to all of our volunteers. | dedicated | dedicate / dedication / dedicating | 今年的獎項獻給我們所有的志工。 | is＋過去分詞是被動語態，be dedicated to 是「獻給」。
+accompany | Children under twelve must be ___ by an adult. | accompanied | accompany / accompaniment / accompanying | 十二歲以下的兒童必須由大人陪同。 | must be＋過去分詞＋by，是被動語態。
+imply | The ___ of the new tax law are still unclear. | implications | imply / implied / implying | 新稅法的影響目前還不清楚。 | 冠詞 The 後面、of 前面要用名詞；動詞是複數 are，要用複數名詞。
+prioritize | Customer safety is our top ___. | priority | prioritize / prioritized / prioritizing | 顧客安全是我們的首要考量。 | 所有格 our＋形容詞 top 後面要接名詞。
+evolve | The ___ of mobile technology has changed the way we shop. | evolution | evolve / evolved / evolving | 行動科技的演進改變了我們購物的方式。 | 冠詞 The 後面、of 前面要用名詞。
+relocate | Our head office will ___ to Taichung next year. | relocate | relocation / relocated / relocating | 我們的總公司明年會搬到台中。 | 助動詞 will 後面接原形動詞。
+investigate | The police will ___ the cause of the accident. | investigate | investigation / investigator / investigated | 警方將調查這起意外的原因。 | 助動詞 will 後面接原形動詞。
+pursue | Ms. Ho left the company to ___ a career in law. | pursue | pursuit / pursued / pursuing | 何小姐離開公司去追求法律方面的職涯。 | to 後面接原形動詞（表示目的的不定詞）。
+distribute | Our products are sold through a network of ___. | distributors | distribute / distribution / distributed | 我們的產品透過經銷商網絡銷售。 | 介系詞 of 後面接名詞；a network of 後面用可數名詞複數，指經銷商。
+engage | The keynote speaker gave a very ___ presentation. | engaging | engage / engagement / engaged | 主講人做了一場非常吸引人的演講。 | very 後面接形容詞修飾 presentation；engaging 是「引人入勝的」。
+modify | The product design was ___ to reduce manufacturing costs. | modified | modify / modification / modifying | 產品設計經過修改，以降低製造成本。 | was＋過去分詞，是被動語態。
+renew | Your magazine subscription is due for ___ next month. | renewal | renew / renewed / renewable | 您的雜誌訂閱下個月到期，需要續訂。 | 介系詞 for 後面接名詞，be due for renewal 是「該續約了」。
+notify | You will be ___ by email when your order ships. | notified | notify / notification / notifying | 訂單出貨時，我們會用電子郵件通知您。 | will be＋過去分詞＋by，是被動語態。
+prescribe | This medicine is only available with a doctor's ___. | prescription | prescribe / prescribed / prescribing | 這種藥只憑醫師處方才能取得。 | 所有格 a doctor's 後面要接名詞。
+disrupt | The typhoon caused major ___ to domestic flights. | disruption | disrupt / disruptive / disrupted | 颱風對國內航班造成嚴重影響。 | 形容詞 major 後面接名詞，當 caused 的受詞。
+allocate | The budget ___ for marketing has been increased this year. | allocation | allocate / allocated / allocating | 今年分配給行銷的預算增加了。 | The budget 後面接名詞當主詞，動詞是單數 has been。
+assume | The sales plan is based on the ___ that demand will grow. | assumption | assume / assumed / assuming | 這份銷售計畫是以需求會成長為前提。 | 冠詞 the 後面接名詞，後面的 that 子句說明它的內容。
+manufacture | The company is a leading ___ of office furniture. | manufacturer | manufacture / manufactured / manufacturing | 這家公司是辦公家具的主要製造商。 | 冠詞 a＋形容詞 leading 後面接名詞（指公司），當主詞補語。
+estimate | The ___ cost of the new building is two million dollars. | estimated | estimate / estimation / estimating | 新大樓的預估成本是兩百萬美元。 | 空格修飾名詞 cost，表示「被估計的」，要用過去分詞。
+remark | The new assistant has been ___ efficient since her first day. | remarkably | remark / remarkable / remarked | 新來的助理從第一天起就非常有效率。 | 修飾形容詞 efficient，要用副詞。
+delegate | Good managers know how to ___ tasks to their team members. | delegate | delegation / delegated / delegating | 好的主管知道如何把工作分派給團隊成員。 | how to 後面接原形動詞。
+entrepreneur | The program supports young ___ who want to start a business. | entrepreneurs | entrepreneur / entrepreneurial / entrepreneurship | 這個計畫支持想創業的年輕創業家。 | who 後面的動詞是複數 want，前面要用複數名詞。
+inflation | Rising ___ has increased the cost of living. | inflation | inflate / inflated / inflationary | 不斷上升的通貨膨脹讓生活成本增加。 | Rising 後面接名詞當主詞，動詞是單數 has。
+deduction | Business travel expenses are tax ___. | deductible | deduct / deduction / deducts | 商務差旅費用可以抵稅。 | be 動詞 are 後面接形容詞，tax deductible 是「可抵稅的」。
+emission | The new law aims to reduce carbon ___ from factories. | emissions | emit / emitted / emitting | 新法律旨在減少工廠的碳排放。 | carbon 後面接名詞，當 reduce 的受詞。
+correspondence | Please keep copies of all ___ with the client. | correspondence | correspond / correspondent / corresponding | 請保留與客戶往來的所有信件副本。 | all 後面接名詞；correspondence 是「往來信件」，不可數。
+compliance | All products must ___ with national safety standards. | comply | compliance / compliant / complied | 所有產品都必須符合國家安全標準。 | 助動詞 must 後面接原形動詞，comply with 是「遵守」。
+connectivity | Please check your internet ___ before the video call. | connection | connect / connected / connecting | 視訊會議前請檢查網路連線。 | 所有格 your＋internet 後面要接名詞。
+profitability | The new product line has been highly ___. | profitable | profit / profitability / profitably | 新產品線的獲利非常好。 | has been＋副詞 highly 後面接形容詞當補語。
+inquiry | Thank you for your ___ about our consulting services. | inquiry | inquire / inquired / inquiring | 感謝您詢問我們的顧問服務。 | 所有格 your 後面要接名詞。
+initiative | The company ___ a recycling program last year. | initiated | initiate / initiative / initiation | 公司去年發起了一項回收計畫。 | 句尾有 last year，動詞要用過去式。
+affiliation | The hospital is ___ with a local medical university. | affiliated | affiliate / affiliation / affiliates | 這家醫院隸屬於本地一所醫學大學。 | is＋過去分詞，be affiliated with 是「隸屬於」。
+vision | The new sign is clearly ___ from the street. | visible | vision / visibly / visibility | 新招牌從街上就能清楚看到。 | be 動詞＋副詞 clearly 後面接形容詞當補語。

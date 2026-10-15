@@ -1,0 +1,26 @@
+# 第 9 組（801～900）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+allegation | The former manager ___ took money from the company. | allegedly | allege / allegation / alleged | 據稱那位前經理挪用了公司的錢。 | 放在主詞和動詞 took 中間修飾動詞，要用副詞。
+accumulation | Over the years, the company has ___ large debts. | accumulated | accumulate / accumulation / accumulating | 這些年來，公司累積了大筆債務。 | has＋過去分詞是現在完成式。
+acquisition | The company plans to ___ two smaller firms this year. | acquire | acquisition / acquired / acquiring | 公司計畫今年收購兩家小公司。 | plans to 後面接原形動詞。
+appraisal | The office building was ___ at five million dollars. | appraised | appraise / appraisal / appraiser | 這棟辦公大樓估價為五百萬美元。 | was＋過去分詞，是被動語態。
+provision | The company will ___ laptops to all new employees. | provide | provision / provider / provided | 公司會提供筆電給所有新進員工。 | 助動詞 will 後面接原形動詞。
+audit | The company's accounts are ___ every year by an outside firm. | audited | audit / audits / auditor | 公司的帳目每年由外部事務所查核。 | are＋過去分詞＋by，是被動語態。
+expenditure | Government ___ on public transportation rose last year. | expenditure | expend / expensive / expended | 去年政府在大眾運輸上的支出增加了。 | Government 後面接名詞當主詞，on 說明花在哪裡。
+globalization | Our products are now sold ___. | globally | global / globalize / globalization | 我們的產品現在銷售到全世界。 | 句子已經完整，空格修飾動詞 are sold，要用副詞。
+procurement | The ___ department handles all purchasing for the company. | procurement | procure / procured / procuring | 採購部負責公司所有的採購業務。 | 冠詞 The 後面接名詞，procurement department 是「採購部」。
+legislation | New ___ will require companies to report their emissions. | legislation | legislate / legislative / legislator | 新的法律將要求企業申報排放量。 | 形容詞 New 後面接名詞當主詞；legislator 是可數名詞，單數需要冠詞。
+sustainability | The company is deeply committed to ___. | sustainability | sustain / sustainable / sustainably | 公司非常致力於永續發展。 | be committed to 的 to 是介系詞，後面接名詞。
+entitlement | Full-time employees are ___ to fifteen days of paid leave. | entitled | entitle / entitles / entitlement | 全職員工享有十五天的有薪假。 | are＋過去分詞，be entitled to 是「有權享有」。
+reimbursement | Approved travel expenses will be ___ within two weeks. | reimbursed | reimburse / reimbursement / reimbursable | 核准的差旅費會在兩週內報銷。 | will be＋過去分詞，是被動語態。
+respect | Please treat all customers ___. | respectfully | respect / respectful / respected | 請以尊重的態度對待所有顧客。 | 句子已經完整，空格修飾動詞 treat，要用副詞。
+accountable | Department heads are held ___ for their team's results. | accountable | accountability / accounted / accounting | 部門主管要為團隊的成果負責。 | hold＋受詞＋形容詞，這裡是被動 are held＋形容詞；be held accountable for 是「被究責」。
+prompt | Please respond ___ to all customer emails. | promptly | prompt / prompted / promptness | 請迅速回覆所有顧客的電子郵件。 | 修飾動詞 respond，要用副詞。
+considerable | The renovation will take a ___ amount of time. | considerable | consider / considerably / consideration | 整修將花費相當多的時間。 | 冠詞 a 後面、名詞 amount 前面要用形容詞。
+substantial | Rents have increased ___ since last year. | substantially | substance / substantial / substantiate | 租金從去年以來大幅上漲。 | 修飾動詞 have increased，要用副詞。
+complementary | The two products ___ each other very well. | complement | complementary / complemented / complementing | 這兩項產品非常互補。 | 主詞 The two products 後面接動詞；複數主詞、現在式用原形。
+prevalent | Online shopping is becoming more ___ among seniors. | prevalent | prevail / prevalence / prevailed | 網路購物在長者之間越來越普遍。 | becoming more 後面接形容詞（比較級）。
+comprehensive | The new manual covers every safety topic ___. | comprehensively | comprehend / comprehensive / comprehension | 新手冊全面涵蓋了所有安全主題。 | 句子已經完整，空格修飾動詞 covers，要用副詞。
+exceptional | The hotel staff were ___ helpful during our stay. | exceptionally | except / exception / exceptional | 住宿期間，飯店員工格外熱心幫忙。 | 修飾形容詞 helpful，要用副詞。
+managerial | The new booking system is very easy to ___. | manage | managerial / management / manager | 新的訂位系統非常容易管理。 | easy to 後面接原形動詞。
+definitive | We will ___ confirm the date of the meeting by Friday. | definitely | define / definition / definitive | 我們星期五前一定會確認會議日期。 | 夾在 will 和原形動詞 confirm 中間修飾動詞，要用副詞。
+negligent | The accident was caused by the driver's ___. | negligence | neglect / negligent / negligently | 這起意外是駕駛的疏忽造成的。 | 所有格 the driver's 後面要接名詞。

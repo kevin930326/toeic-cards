@@ -1,0 +1,44 @@
+# 第 4 組（301～400）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+structure | The old warehouse suffered serious ___ damage in the storm. | structural | structure / structures / structurally | 舊倉庫在暴風雨中結構嚴重受損。 | 空格修飾名詞 damage，要用形容詞。
+obligation | Attending the safety briefing is ___ for all factory workers. | obligatory | oblige / obligation / obligated | 所有工廠員工都必須參加安全說明會。 | be 動詞 is 後面接形容詞當補語。
+evidence | It was ___ that the project would not finish on time. | evident | evidence / evidently / evidenced | 很明顯這個專案無法準時完成。 | It was＋形容詞＋that 子句，要用形容詞。
+editor | Ms. Lee is the chief ___ of a popular business magazine. | editor | edit / edited / editorial | 李小姐是一本熱門商業雜誌的總編輯。 | the chief 後面接指「人」的名詞，當主詞補語。
+consumer | The new refrigerator reduces energy ___ by thirty percent. | consumption | consume / consumer / consumed | 新冰箱可以減少三成的耗電量。 | reduces 的受詞要用名詞，energy consumption 是「能源消耗」。
+resource | Our office manager is very ___ and solves problems quickly. | resourceful | resource / resources / resourcefully | 我們的辦公室經理足智多謀，總能快速解決問題。 | very 後面接形容詞當補語。
+shipment | Your order will be ___ within two business days. | shipped | ship / shipment / shipping | 您的訂單會在兩個工作天內出貨。 | will be＋過去分詞，是被動語態。
+applicant | Each ___ must provide a copy of their passport. | applicant | apply / applied / applying | 每位申請人都必須提供護照影本。 | Each 後面接單數可數名詞當主詞。
+administration | Mr. Shah has worked as an ___ assistant for five years. | administrative | administer / administration / administrator | 沙先生做行政助理已經五年了。 | 空格修飾名詞 assistant，要用形容詞。
+supervisor | All new workers must be ___ during their first week. | supervised | supervise / supervisor / supervision | 所有新進員工第一週都必須有人監督。 | must be＋過去分詞，是被動語態。
+improvement | There has been a significant ___ in customer satisfaction. | improvement | improve / improved / improving | 顧客滿意度有了顯著的改善。 | 冠詞 a＋形容詞 significant 後面要接名詞。
+presentation | Mr. Kim gave an excellent ___ on recent market trends. | presentation | presenter / presented / presenting | 金先生針對近期市場趨勢做了一場很精彩的簡報。 | 冠詞 an＋形容詞 excellent 後面接名詞；gave 的是簡報，不是人。
+reception | A cocktail ___ will be held after the awards ceremony. | reception | receive / received / receptive | 頒獎典禮之後會舉行雞尾酒會。 | 冠詞 A＋cocktail 後面要接名詞當主詞。
+priority | Managers must learn to ___ tasks based on their deadlines. | prioritize | priority / priorities / prioritized | 主管必須學會依照截止日安排工作的優先順序。 | to 後面接原形動詞（不定詞）。
+economy | The hybrid car is more ___ than the old model because it uses less fuel. | economical | economy / economically / economize | 油電車比舊款更省油，因為它用的燃料比較少。 | more 後面接形容詞；economical 是「省錢的、經濟實惠的」。
+appreciation | We would ___ a reply by the end of the week. | appreciate | appreciation / appreciative / appreciated | 如果您能在這週結束前回覆，我們將不勝感激。 | 助動詞 would 後面接原形動詞。
+motivation | Highly ___ employees tend to be more productive. | motivated | motivate / motivation / motivates | 積極主動的員工往往生產力比較高。 | 副詞 Highly 後面接形容詞修飾 employees；motivated 是「有動力的」。
+technician | If you have any ___ problems, please call the help desk. | technical | technician / technically / technique | 如果有任何技術問題，請打電話給服務台。 | 空格修飾名詞 problems，要用形容詞。
+statement | As ___ in the contract, payment is due within thirty days. | stated | state / statement / stating | 如合約所述，款項須在三十天內付清。 | As stated 是「如……所述」，用過去分詞。
+responsibility | Ms. Diaz is ___ for training all new sales staff. | responsible | responsibility / responsibly / responsibilities | 迪亞茲小姐負責訓練所有新進業務人員。 | be 動詞 is 後面接形容詞，be responsible for 是「負責」。
+commuter | Many ___ take the express train to the city center. | commuters | commute / commuted / commuting | 很多通勤族搭特快車到市中心。 | Many 後面接可數名詞的複數。
+quarter | The company publishes its sales figures ___. | quarterly | quarter / quarters / quartered | 公司每季公布銷售數字。 | 句子已經完整，空格修飾動詞 publishes，要用副詞。
+proportion | Bonuses are distributed ___ to each employee's sales. | proportionally | proportion / proportional / proportions | 獎金依每位員工的業績按比例發放。 | 修飾動詞 are distributed，要用副詞。
+reputation | We only work with ___ suppliers that meet our quality standards. | reputable | reputation / repute / reputably | 我們只和符合品質標準、信譽良好的供應商合作。 | 空格修飾名詞 suppliers，要用形容詞。
+statistics | The difference between the two groups is not ___ significant. | statistically | statistic / statistical / statistician | 兩組之間的差異在統計上並不顯著。 | 修飾形容詞 significant，要用副詞。
+individual | Each scholarship application is reviewed ___. | individually | individual / individuals / individuality | 每份獎學金申請都會個別審查。 | 句子已經完整，空格修飾動詞 is reviewed，要用副詞。
+reward | Many people find teaching to be a very ___ career. | rewarding | reward / rewards / rewarded | 很多人覺得教書是很有成就感的職業。 | very 後面接形容詞修飾 career；rewarding 是「有回報的、值得的」。
+influence | Ms. Ito is one of the most ___ leaders in the fashion industry. | influential | influence / influenced / influences | 伊藤小姐是時尚業最有影響力的領導人之一。 | the most 後面接形容詞（最高級），修飾名詞 leaders。
+contract | The company hired a ___ to renovate the lobby. | contractor | contract / contractual / contracted | 公司雇了一位承包商來整修大廳。 | 冠詞 a 後面接指「人」的名詞，當 hired 的受詞。
+profit | The new branch became ___ in its first year. | profitable | profit / profits / profitably | 新分店第一年就開始獲利。 | became 後面接形容詞當補語。
+access | The new library is fully ___ to wheelchair users. | accessible | access / accessed / accessibility | 新圖書館完全方便輪椅使用者進出。 | be 動詞 is＋副詞 fully 後面接形容詞，be accessible to 是「……可以使用」。
+current | We are ___ looking for an experienced receptionist. | currently | current / currents / currency | 我們目前正在找一位有經驗的接待員。 | 夾在 are 和 looking 中間修飾動詞，要用副詞。
+specific | Please ___ the size and color when you place your order. | specify | specific / specifically / specification | 下訂單時請註明尺寸和顏色。 | Please 開頭的祈使句，要用原形動詞。
+flexible | This job offers a high degree of ___. | flexibility | flexible / flexibly / flex | 這份工作提供很大的彈性。 | 介系詞 of 後面接名詞。
+effective | The new dress code will take ___ on the first of June. | effect | effective / effectively / effectiveness | 新的服裝規定將在六月一日生效。 | take effect 是「生效」的固定用法，要用名詞 effect。
+diverse | The company plans to ___ its product line next year. | diversify | diverse / diversity / diversely | 公司計畫明年讓產品線更多元。 | plans to 後面接原形動詞。
+economic | The ___ outlook for the coming year is quite positive. | economic | economy / economically / economize | 明年的經濟前景相當樂觀。 | 冠詞 The 後面、名詞 outlook 前面要用形容詞。
+domestic | All of our furniture is made ___. | domestically | domestic / domesticate / domesticated | 我們所有的家具都是國內製造的。 | 句子已經完整，空格修飾動詞 is made，要用副詞。
+complimentary | Breakfast is ___ for all hotel guests. | complimentary | compliment / complimented / compliments | 所有飯店房客都享有免費早餐。 | be 動詞 is 後面接形容詞；complimentary 是「免費贈送的」。
+verbal | The agreement was made ___ rather than in writing. | verbally | verbal / verbs / verbalize | 這份協議是口頭達成的，不是書面的。 | 修飾動詞 was made，和 in writing 對照，要用副詞。
+spacious | The new office is bright and ___. | spacious | space / spaciously / spaciousness | 新辦公室明亮又寬敞。 | 和形容詞 bright 並列，要用形容詞。
+cautious | Drivers should proceed ___ during heavy rain. | cautiously | cautious / caution / cautioned | 大雨時駕駛人應小心行駛。 | 句子已經完整，空格修飾動詞 proceed，要用副詞。
+internal | The complaint will be handled ___ by the HR department. | internally | internal / internalize / internalized | 這起申訴將由人資部內部處理。 | 修飾動詞 will be handled，要用副詞。
