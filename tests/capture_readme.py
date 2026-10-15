@@ -8,6 +8,7 @@ README 裡的圖片才會一樣大。截完再執行 tools/make_readme_images.py
   python tests/capture_readme.py
   python tools/make_readme_images.py
 """
+import json
 import os
 
 from playwright.sync_api import sync_playwright
@@ -62,6 +63,40 @@ def shot(page, name, **kw):
     print('saved', name)
 
 
+# 詞性變化題庫：用來找出每題的正確答案（截圖要拍「答對」的畫面）
+BANK = json.load(open(os.path.join(ROOT, 'data', 'packs', 'toeic-1000-forms.json'), encoding='utf-8'))
+ANSWER_BY_SENTENCE = {q['sentence']: q['answer'] for q in BANK['questions']}
+
+# 短文閱讀的示範 AI 回應：一封用到單字包第 1 組 6 個字的 Email
+READING_WORDS = ['appointment', 'reservation', 'receipt', 'payment', 'department', 'flight']
+READING = {
+    'title': 'Your Business Trip to Osaka',
+    'paragraphs': [
+        'Dear Mr. Chen, thank you for booking your business trip through our travel department. '
+        'Your flight to Osaka departs at 9:15 a.m. on May 12, and your hotel reservation has been confirmed for three nights.',
+        'Full payment for the trip was received yesterday. A copy of your receipt is attached to this email. '
+        'Please keep it for your expense report.',
+        'If you need to change your appointment with our client in Osaka, please let us know by Friday so that we can update your schedule.',
+    ],
+    'translation': [
+        '陳先生您好：感謝您透過我們的差旅部門預訂這次出差。您飛往大阪的班機在 5 月 12 日上午 9:15 起飛，飯店也已確認訂好三晚。',
+        '這趟行程的全額款項已於昨天收到。收據副本附在這封信裡，請保留以便申報費用。',
+        '如果需要更改和大阪客戶的會面，請在星期五前告訴我們，以便更新您的行程。',
+    ],
+    'targets': READING_WORDS,
+    'questions': [
+        {'question': 'What is the main purpose of the email?', 'options': ['To confirm travel arrangements', 'To cancel a hotel booking', 'To request a payment', 'To announce a new office'], 'answer': 0, 'explanation': '第一段說明班機和飯店都已確認，整封信在確認出差安排。'},
+        {'question': 'What is attached to the email?', 'options': ['A flight ticket', 'A receipt', 'A map of Osaka', 'An expense report'], 'answer': 1, 'explanation': '第二段：A copy of your receipt is attached。'},
+        {'question': 'By when should Mr. Chen report a change to his appointment?', 'options': ['May 12', 'Tomorrow', 'Friday', 'After the trip'], 'answer': 2, 'explanation': '第三段：please let us know by Friday。'},
+    ],
+}
+
+
+def gemini(route):
+    body = {'candidates': [{'content': {'parts': [{'text': json.dumps(READING)}]}, 'finishReason': 'STOP'}]}
+    route.fulfill(status=200, content_type='application/json', body=json.dumps(body))
+
+
 def go(page, route):
     page.goto(URL + '#/' + route)
     page.wait_for_load_state('networkidle')
@@ -86,6 +121,15 @@ with sync_playwright() as p:
     page.wait_for_timeout(1500)
     page.click('[aria-label="關閉加入單字"]')
     page.evaluate(SEED)
+    # 考試在 45 天後；示範用的金鑰（Gemini 用上面的假回應）
+    page.evaluate("""async () => {
+      const { dayKey, dayStart } = await import('/js/srs.js');
+      const d = new Date(dayStart(Date.now())); d.setDate(d.getDate() + 45);
+      const s = JSON.parse(localStorage.getItem('toeic-cards:settings') || '{}');
+      localStorage.setItem('toeic-cards:settings', JSON.stringify({ ...s, examDate: dayKey(d.getTime() + 60000), newPerDay: 20 }));
+      localStorage.setItem('toeic-cards:gemini-key', 'demo-key-for-screenshot');
+    }""")
+    ctx.route('https://generativelanguage.googleapis.com/**', gemini)
     page.reload()
     page.wait_for_load_state('networkidle')
 
@@ -121,7 +165,38 @@ with sync_playwright() as p:
         page.locator('.option').nth(1).click()
     shot(page, 'quiz.png')
 
-    # ---- 統計 ----
+    # ---- 詞性變化：答對的畫面（先結束上一段的測驗；暫時拿掉金鑰，題目全部來自內建題庫）----
+    page.click('#quit')
+    page.click('#home')
+    page.evaluate("localStorage.removeItem('toeic-cards:gemini-key')")
+    go(page, 'quiz')
+    page.reload()
+    page.wait_for_selector('.mode-btn[data-mode=forms]')
+    page.click('.mode-btn[data-mode=forms]')
+    page.wait_for_selector('.q-forms .q-sentence')
+    sentence = page.locator('.q-sentence').inner_text().replace('_______', '_____')
+    opts = page.locator('.option .option-text').all_inner_texts()
+    page.locator('.option').nth(opts.index(ANSWER_BY_SENTENCE[sentence])).click()
+    page.wait_for_selector('.feedback.ok')
+    shot(page, 'forms.png')
+    page.click('#quit')
+    page.evaluate("localStorage.setItem('toeic-cards:gemini-key', 'demo-key-for-screenshot')")
+
+    # ---- 短文閱讀：用 6 個「不熟」的字產生，答完第一題 ----
+    page.evaluate("""async (wanted) => {
+      const s = await import('/js/store.js');
+      for (const w of s.getWords()) s.toggleUnfamiliar(w.id, wanted.includes(w.word));
+    }""", READING_WORDS)
+    go(page, 'reading')
+    page.select_option('#readingType', 'email')
+    page.click('#generate')
+    page.wait_for_selector('.reading-passage')
+    page.locator('.reading-q[data-q="0"] .option[data-o="0"]').click()
+    page.wait_for_timeout(300)
+    page.evaluate('window.scrollTo(0, 0)')
+    shot(page, 'reading.png')
+
+    # ---- 統計（最上面是考試倒數）----
     go(page, 'stats')
     shot(page, 'stats.png')
 

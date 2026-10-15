@@ -56,7 +56,7 @@
 <p align="center">
   <img src="docs/images/readme/phones.png" alt="手機畫面：滑卡複習、單字探索、學習統計（深色模式）" width="100%">
 </p>
-<p align="center"><sub>手機：滑卡複習 ／ 單字探索 ／ 學習統計（深色模式）</sub></p>
+<p align="center"><sub>手機：滑卡複習（含考試倒數）／ 單字探索 ／ 學習統計（深色模式）</sub></p>
 
 <table>
   <tr>
@@ -68,19 +68,27 @@
     <td align="center"><sub>點解釋或例句裡的字就能查，還能收藏</sub></td>
   </tr>
   <tr>
+    <td width="50%"><img src="docs/images/readme/forms.png" alt="詞性變化題"></td>
+    <td width="50%"><img src="docs/images/readme/reading.png" alt="多益短文閱讀"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>詞性變化：Part 5 最常考，單字包的字有內建題目</sub></td>
+    <td align="center"><sub>短文閱讀：AI 用你的字寫 Email、公告，附 Part 7 題目</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/readme/stats.png" alt="學習統計與考試倒數"></td>
     <td width="50%"><img src="docs/images/readme/library.png" alt="單字庫與單字集"></td>
-    <td width="50%"><img src="docs/images/readme/quiz.png" alt="看中文選英文測驗"></td>
   </tr>
   <tr>
+    <td align="center"><sub>考試倒數與讀書計畫：建議每天學幾個新字</sub></td>
     <td align="center"><sub>單字庫：用單字集分類，搜尋英文或中文</sub></td>
-    <td align="center"><sub>多益風格測驗：答錯會說明，並加入錯題本</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/images/readme/stats.png" alt="學習統計"></td>
+    <td width="50%"><img src="docs/images/readme/quiz.png" alt="看中文選英文測驗"></td>
     <td width="50%"><img src="docs/images/readme/dark.png" alt="深色模式的自由翻卡"></td>
   </tr>
   <tr>
-    <td align="center"><sub>學習統計：連續打卡、學習中、長期熟記</sub></td>
+    <td align="center"><sub>多益風格測驗：答錯會說明，並加入錯題本</sub></td>
     <td align="center"><sub>自由翻卡（深色模式）</sub></td>
   </tr>
 </table>
