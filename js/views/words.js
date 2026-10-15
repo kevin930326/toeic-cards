@@ -3,6 +3,7 @@ import { getWords, getSettings, addWords, deleteWord, toggleUnfamiliar, subscrib
 import * as store from '../store.js';
 import { esc, toast, openEditor, zhLines } from '../ui.js';
 import { confirmWordDeletion } from '../delete-confirm.js';
+import { focusEntryInput } from '../input-focus.js';
 import { enqueueLookup, isLookingUp, onLookupStatus, lookupStatus } from '../dictionary.js?v=dictionary-scale-1';
 import { analyzeInput } from '../parse.js';
 import { hasApiKey, lastRequestStats } from '../llm.js';
@@ -124,8 +125,8 @@ export function renderWords(root) {
     for (const name of ['single', 'batch', 'pack']) root.querySelector(`#${name}Tool`).hidden = name !== tool;
     addScope.hidden = tool === 'pack';
     for (const button of addDialog.querySelectorAll('[data-tool]')) button.setAttribute('aria-pressed', String(button.dataset.tool === tool));
-    if (tool === 'single') root.querySelector('#addInput').focus();
-    if (tool === 'batch') { root.querySelector('#batch').open = true; root.querySelector('#batchInput').focus(); }
+    if (tool === 'single') focusEntryInput(root.querySelector('#addInput'));
+    if (tool === 'batch') { root.querySelector('#batch').open = true; focusEntryInput(root.querySelector('#batchInput')); }
     if (tool === 'pack') root.querySelector('#wordPack').open = true;
   }
   for (const button of addDialog.querySelectorAll('[data-tool]')) button.addEventListener('click', () => chooseTool(button.dataset.tool));
@@ -351,7 +352,7 @@ export function renderWords(root) {
 
   batchEl.addEventListener('toggle', () => {
     state.batchOpen = batchEl.open;
-    if (batchEl.open) batchInput.focus();
+    if (batchEl.open && document.activeElement !== batchInput) focusEntryInput(batchInput);
   });
   batchInput.addEventListener('input', () => {
     state.batchText = batchInput.value;

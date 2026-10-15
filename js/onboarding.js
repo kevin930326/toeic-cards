@@ -1,7 +1,7 @@
 import { getWords, getSetRecords } from './store.js';
 import { getLog } from './log.js';
 import { onboardingPrompt } from './onboarding-state.js';
-import { startTour } from './tour.js?v=bulk-delete-1';
+import { startTour } from './tour.js?v=tour-keyboard-1';
 
 const KEY = 'toeic-cards:onboarding';
 let memory = null;

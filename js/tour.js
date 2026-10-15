@@ -1,5 +1,5 @@
 // 導覽只描述／觀察真正的控制項，不代按新增、評分或 AI 按鈕。
-import { saveOnboarding } from './onboarding.js?v=bulk-delete-1';
+import { saveOnboarding } from './onboarding.js?v=tour-keyboard-1';
 
 const step = (route, target, title, text, action = '') => ({ route, target, title, text, action });
 const library = [
@@ -68,19 +68,28 @@ export function startTour(topic = 'start') {
   const previousFocus = document.activeElement;
   const layer = document.createElement('div');
   layer.id = 'guidedTour'; layer.className = 'guided-tour'; layer.setAttribute('popover', 'manual');
-  layer.innerHTML = `<div class="tour-ring" aria-hidden="true"></div><section class="tour-tip" role="dialog" aria-modal="false" aria-labelledby="tourTitle" aria-describedby="tourText" tabindex="-1"><p class="eyebrow" id="tourCount"></p><h2 id="tourTitle"></h2><p id="tourText"></p><p class="hint-text" id="tourInstruction"></p><div class="tour-buttons"><button type="button" class="btn btn-ghost btn-sm" id="tourExit">結束導覽</button><button type="button" class="btn btn-primary btn-sm" id="tourNext">下一步</button></div><a href="#/help" class="tour-help">查看全部教學</a></section>`;
+  layer.innerHTML = `<span class="tour-origin" aria-hidden="true"></span><div class="tour-ring" aria-hidden="true"></div><section class="tour-tip" role="dialog" aria-modal="false" aria-labelledby="tourTitle" aria-describedby="tourText" tabindex="-1"><div class="tour-copy"><p class="eyebrow" id="tourCount"></p><h2 id="tourTitle"></h2><p id="tourText"></p><p class="hint-text" id="tourInstruction"></p></div><div class="tour-footer"><button type="button" class="btn btn-outline btn-sm" id="tourKeyboard" hidden>收起鍵盤，看完整說明</button><div class="tour-buttons"><button type="button" class="btn btn-ghost btn-sm" id="tourExit">結束導覽</button><button type="button" class="btn btn-primary btn-sm" id="tourNext">下一步</button></div><a href="#/help" class="tour-help">查看全部教學</a></div></section>`;
   const tip = layer.querySelector('.tour-tip'), ring = layer.querySelector('.tour-ring');
   const next = layer.querySelector('#tourNext');
+  const origin = layer.querySelector('.tour-origin');
+  const keyboardButton = layer.querySelector('#tourKeyboard');
+  const viewport = window.visualViewport;
+  let watchedTarget = null;
+  const sizes = new ResizeObserver(schedule);
   function stop(completed = false) {
     if (stopped) return;
     stopped = true;
-    observer.disconnect(); cancelAnimationFrame(frame);
+    observer.disconnect(); sizes.disconnect(); cancelAnimationFrame(frame);
     document.removeEventListener('click', onClick, true);
     document.removeEventListener('keydown', onKey, true);
     window.removeEventListener('hashchange', onRoute);
     window.removeEventListener('resize', schedule);
     document.removeEventListener('scroll', schedule, true);
-    window.visualViewport?.removeEventListener('resize', schedule);
+    viewport?.removeEventListener('resize', schedule);
+    viewport?.removeEventListener('scroll', schedule);
+    viewport?.removeEventListener('scrollend', schedule);
+    document.removeEventListener('focusin', schedule);
+    document.removeEventListener('focusout', schedule);
     layer.remove(); running = null;
     saveOnboarding(completed ? 'completed' : 'skipped');
     if (previousFocus?.isConnected && !document.querySelector('dialog[open]')) previousFocus.focus({ preventScroll: true });
@@ -105,25 +114,50 @@ export function startTour(topic = 'start') {
     }
     if (typeof layer.showPopover === 'function' && !layer.matches(':popover-open')) layer.showPopover();
     target = visible(s.target);
-    if (entering) target?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
-    // 關閉視窗、走到其他操作或無字卡時，仍可繼續，不留下失去目標的教學。
+    if (target !== watchedTarget) {
+      sizes.disconnect();
+      if (target) sizes.observe(target);
+      watchedTarget = target;
+    }
+    const touch = matchMedia('(hover: none)').matches;
+    const editing = touch && document.activeElement?.matches('input, textarea, select, [contenteditable="true"]');
+    // 輸入期間不搶捲動或焦點，只留下能收起鍵盤的小提示。
+    tip.classList.toggle('is-editing', !!editing);
+    keyboardButton.hidden = !editing;
+    if (entering && !editing) target?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
     const usable = target && (!dialog || dialog.contains(target));
-    ring.hidden = !usable;
     layer.querySelector('#tourInstruction').textContent = s.action && usable ? '請點亮起的實際按鈕，或按「先略過」繼續。' : usable ? '可以直接操作畫面；看完後按下一步。' : '目前沒有這個控制項，或已切換操作。可先略過，之後從使用教學重看。';
-    const width = window.visualViewport?.width || innerWidth;
-    const height = window.visualViewport?.height || innerHeight;
-    const offsetY = window.visualViewport?.offsetTop || 0;
+    const width = viewport?.width || innerWidth;
+    const height = viewport?.height || innerHeight;
+    const x = viewport?.offsetLeft || 0, y = viewport?.offsetTop || 0;
+    // 與 target 一樣用 client 座標，再扣除固定定位原點，避免 Safari 的固定層位移被加算兩次。
+    const base = origin.getBoundingClientRect();
     const r = usable ? target.getBoundingClientRect() : null;
-    if (r) Object.assign(ring.style, { left: `${Math.max(4, r.left - 5)}px`, top: `${r.top - 5}px`, width: `${Math.min(width - 8, r.width + 10)}px`, height: `${r.height + 10}px` });
+    const clipped = r && {
+      left: Math.max(x + 4, r.left - 5), top: Math.max(y + 4, r.top - 5),
+      right: Math.min(x + width - 4, r.right + 5), bottom: Math.min(y + height - 4, r.bottom + 5),
+    };
+    ring.hidden = !clipped || clipped.right <= clipped.left || clipped.bottom <= clipped.top;
+    if (!ring.hidden) Object.assign(ring.style, {
+      left: `${clipped.left - base.left}px`, top: `${clipped.top - base.top}px`,
+      width: `${clipped.right - clipped.left}px`, height: `${clipped.bottom - clipped.top}px`,
+    });
     const tw = Math.min(360, width - 24);
-    tip.style.width = `${tw}px`; tip.style.maxHeight = `${Math.max(130, height * .48)}px`;
+    tip.style.width = `${tw}px`;
+    tip.style.maxHeight = `${Math.max(1, height - 24)}px`;
     const th = tip.getBoundingClientRect().height;
-    const below = r ? r.bottom + 16 : offsetY + (height - th) / 2;
-    let top = below;
-    if (r && below + th > offsetY + height - 12) top = r.top - th - 16;
-    top = Math.max(offsetY + 12, Math.min(top, offsetY + height - th - 12));
-    const left = Math.max(12, Math.min(r ? r.left : (width - tw) / 2, width - tw - 12));
-    Object.assign(tip.style, { left: `${left}px`, top: `${top}px` });
+    let top;
+    if (editing) {
+      // 小提示放在離輸入欄較遠的一側，輸入時不顯示整段教學蓋住欄位。
+      const upper = r ? r.top - y : 0, lower = r ? y + height - r.bottom : height;
+      top = upper > lower ? y + 12 : y + height - th - 12;
+    } else {
+      const below = r ? r.bottom + 16 : y + (height - th) / 2;
+      top = r && below + th > y + height - 12 ? r.top - th - 16 : below;
+    }
+    top = Math.max(y + 12, Math.min(top, y + height - th - 12));
+    const left = Math.max(x + 12, Math.min(r ? r.left : x + (width - tw) / 2, x + width - tw - 12));
+    Object.assign(tip.style, { left: `${left - base.left}px`, top: `${top - base.top}px` });
     if (entering) {
       entering = false;
       // 原生視窗會先聚焦輸入框；使用者已開始輸入時，不搶焦點關掉候選字。
@@ -169,7 +203,16 @@ export function startTour(topic = 'start') {
   window.addEventListener('hashchange', onRoute);
   window.addEventListener('resize', schedule);
   document.addEventListener('scroll', schedule, true);
-  window.visualViewport?.addEventListener('resize', schedule);
+  viewport?.addEventListener('resize', schedule);
+  viewport?.addEventListener('scroll', schedule);
+  viewport?.addEventListener('scrollend', schedule);
+  document.addEventListener('focusin', schedule);
+  document.addEventListener('focusout', schedule);
+  keyboardButton.addEventListener('click', () => {
+    const active = document.activeElement;
+    if (active?.matches('input, textarea, select, [contenteditable="true"]')) active.blur();
+    tip.focus({ preventScroll: true }); schedule();
+  });
   layer.querySelector('#tourExit').addEventListener('click', () => stop(false));
   layer.querySelector('.tour-help').addEventListener('click', () => stop(false));
   next.addEventListener('click', advance);

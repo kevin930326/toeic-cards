@@ -6,6 +6,7 @@ import { esc, toast, zhLines } from './ui.js';
 import { setOptions } from './set-ui.js?v=dictionary-scale-1';
 import { speak, canSpeak, speakerIcon } from './speech.js';
 import { lookupSuggestions } from './dictionary-suggestions.js';
+import { focusEntryInput } from './input-focus.js';
 
 export function initWordLookup() {
   const dialog = document.createElement('dialog');
@@ -112,7 +113,7 @@ export function initWordLookup() {
     returnTrigger = trigger;
     clearSuggestions();
     dialog.showModal();
-    input.focus(); input.select();
+    focusEntryInput(input, { select: true });
     if (word) { input.value = word; query(word); }
   }
   function render() {

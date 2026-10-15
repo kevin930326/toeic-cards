@@ -14,14 +14,14 @@ import { toast } from './ui.js';
 import { initPWA } from './pwa.js';
 import { initSync } from './sync.js';
 import { hasApiKey } from './llm.js';
-import { renderWords } from './views/words.js?v=bulk-delete-1';
-import { renderSettings } from './views/settings.js?v=bulk-delete-1';
-import { renderHelp } from './views/help.js?v=bulk-delete-1';
-import { initOnboarding } from './onboarding.js?v=bulk-delete-1';
+import { renderWords } from './views/words.js?v=tour-keyboard-1';
+import { renderSettings } from './views/settings.js?v=tour-keyboard-1';
+import { renderHelp } from './views/help.js?v=tour-keyboard-1';
+import { initOnboarding } from './onboarding.js?v=tour-keyboard-1';
 import { lookupMissing } from './dictionary.js?v=dictionary-scale-1';
 import { onRateWait } from './llm.js';
 import { setWaiting, generateMissing } from './generate.js?v=dictionary-scale-1';
-import { initWordLookup } from './word-lookup.js?v=autocomplete-1';
+import { initWordLookup } from './word-lookup.js?v=tour-keyboard-1';
 
 const routes = {
   review: renderReview,

@@ -1,4 +1,4 @@
-import { startTour, tourTopics } from '../tour.js?v=bulk-delete-1';
+import { startTour, tourTopics } from '../tour.js?v=tour-keyboard-1';
 
 export function renderHelp(root) {
   document.getElementById('tutorialBanner')?.remove();

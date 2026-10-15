@@ -25,6 +25,10 @@ def setup(b, seed=None, route='#/review', width=1100, script=None):
     return c, pg
 def title(pg, text): expect(pg.locator('#tourTitle')).to_have_text(text)
 def next_step(pg):
+    pg.evaluate("() => new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
+    if pg.locator('#tourKeyboard').is_visible():
+        pg.click('#tourKeyboard')
+        expect(pg.locator('#tourKeyboard')).not_to_be_visible()
     old=pg.locator('#tourCount').inner_text()
     pg.click('#tourNext')
     if pg.locator('#guidedTour').count(): expect(pg.locator('#tourCount')).not_to_have_text(old)
