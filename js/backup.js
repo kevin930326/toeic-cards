@@ -22,6 +22,9 @@ const LOG_FIELDS = ['reviews', 'again', 'good', 'learned', 'quiz', 'quizCorrect'
 const SRC_FIELDS = ['pos', 'zh', 'en', 'examples', 'collocations', 'forms', 'synonyms'];
 const SRC_VALUES = ['dict', 'freedict', 'llm', 'user', 'pack'];
 const QUIZ_MODES = ['zh2en', 'en2word', 'listen', 'part5'];
+// 單字的 id 會放進網頁屬性和選取器裡，只接受英數字、- 和 _（和單字集 id 同一套規則），
+// 避免被改過的備份檔用 id 夾帶 HTML 或程式碼
+const ID_RE = /^[A-Za-z0-9_-]{1,80}$/;
 
 // ---- 小工具 ----
 const isObj = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -85,7 +88,7 @@ export function sanitizeWord(raw) {
     ? { status: raw.llm.status, at: num(raw.llm.at), ...(raw.llm.error ? { error: str(raw.llm.error, 200) } : {}) }
     : null;
   return {
-    id: str(raw.id, 80) || `imp-${word}`,
+    id: typeof raw.id === 'string' && ID_RE.test(raw.id) ? raw.id : `imp-${word.replace(/[^a-z0-9]+/g, '-')}`.slice(0, 80),
     word,
     ...(raw.autoGenerate === false ? { autoGenerate: false } : {}),
     ...(raw.pack?.id === 'toeic-1000' && raw.pack.version === 1 ? { pack: { id: 'toeic-1000', version: 1 } } : {}),

@@ -209,7 +209,7 @@ export function renderWords(root) {
         ? `${first.pos || w.pos ? `<em>${esc(first.pos || w.pos)}</em> ` : ''}${esc(first.text)}`
         : (isLookingUp(w.id) ? '<span class="muted">查字典中…</span>' : '<span class="muted">（尚無中文）</span>');
       return `
-      <li class="word-row ${w.unfamiliar ? 'is-unfamiliar' : ''}" data-id="${w.id}">
+      <li class="word-row ${w.unfamiliar ? 'is-unfamiliar' : ''}" data-id="${esc(w.id)}">
         <input class="word-select" type="checkbox" aria-label="選取 ${esc(w.word)}" ${selected.has(w.id) ? 'checked' : ''}>
         <button class="star" type="button" data-act="mark" aria-pressed="${w.unfamiliar}"
           title="${w.unfamiliar ? '取消不熟' : '標記不熟'}" aria-label="${w.unfamiliar ? '取消不熟' : '標記不熟'}：${esc(w.word)}">${w.unfamiliar ? '★' : '☆'}</button>

@@ -139,3 +139,13 @@ test('sanitizeSettings 與檔名', () => {
   assert.deepEqual(sanitizeSettings(null, DEFAULTS), {});
   assert.equal(backupFileName(new Date(2026, 9, 15, 10).getTime()), 'toeic-cards-backup-2026-10-15.json');
 });
+
+test('匯入：id 只接受英數字、- 和 _，夾帶 HTML 的 id 換成安全的 id', () => {
+  assert.equal(sanitizeWord(w('approve', { id: 'abc-123_XY' })).id, 'abc-123_XY');
+  assert.equal(sanitizeWord(w('approve', { id: '3f2a9c1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f' })).id, '3f2a9c1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f');
+  assert.equal(sanitizeWord(w('approve', { id: 'x"><img src=x onerror="alert(1)">' })).id, 'imp-approve');
+  assert.equal(sanitizeWord(w('take over', { id: 'a b' })).id, 'imp-take-over');
+  assert.equal(sanitizeWord(w('résumé', { id: 123 })).id, 'imp-r-sum-');
+  assert.equal(sanitizeWord(w('approve', { id: 'x'.repeat(81) })).id, 'imp-approve');
+  for (const id of ['', '<', '"', "'", 'a&b', 'a/b']) assert.match(sanitizeWord(w('approve', { id })).id, /^[A-Za-z0-9_-]+$/);
+});

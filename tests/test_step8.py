@@ -157,6 +157,8 @@ with sync_playwright() as p:
     # 被竄改的備份：含有 HTML 的字不會被執行
     evil = json.loads(raw)
     evil['data']['words'].append({**WORDS_A[0], 'id': 'evil', 'word': 'xss', 'zh': '<img src=x onerror="window.__pwned=1">'})
+    # id 也可能被竄改：id 會放進網頁屬性裡（資安審查找到的漏洞，修正前這裡會執行）
+    evil['data']['words'].append({**WORDS_A[0], 'id': 'x"><img src=x onerror="window.__pwnedId=1">', 'word': 'idinject', 'zh': 'n. 測試'})
     fp = os.path.join(TMP, 'evil.json')
     open(fp, 'w', encoding='utf-8').write(json.dumps(evil))
     import_file(b, fp)
@@ -164,6 +166,9 @@ with sync_playwright() as p:
     b.goto(URL + '#/words')
     b.wait_for_timeout(300)
     check(b.evaluate('window.__pwned') is None and '<img' in b.locator('.word-row', has_text='xss').inner_text(), '備份裡的 HTML 只會當文字顯示')
+    ids = [w['id'] for w in store(b, 'words') if w['word'] == 'idinject']
+    check(b.evaluate('window.__pwnedId') is None and b.locator('.word-row img').count() == 0
+          and ids == ['imp-idinject'], f'備份裡夾帶 HTML 的 id 會被換成安全的 id，不會執行：{ids}')
 
     # ======== 手機版 ========
     m = ctxB.new_page()
