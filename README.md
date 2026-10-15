@@ -148,7 +148,7 @@ flowchart LR
 | 離線 | Service Worker：網站檔案先連網、斷線用快取；字典與字型有快取就用快取 |
 | 測試 | Playwright 端對端測試（字典與 AI 使用假回應、Firebase 使用本機模擬器）、Node 單元測試 96 項；測試範圍見 [tests/README.md](tests/README.md) |
 
-重要的技術選擇與取捨（共 71 條）都記錄在 **[docs/decisions.md](docs/decisions.md)**，例如：
+重要的技術選擇與取捨（共 72 條）都記錄在 **[docs/decisions.md](docs/decisions.md)**，例如：
 - [為什麼讓使用者自己填金鑰](docs/decisions.md#2-讓使用者自己填-api-金鑰網站維持純前端)
 - [批次生成：每個請求放 20 個字](docs/decisions.md#14-每個請求放-20-個字用-json-schema-規定輸出格式)
 - [一個偶發的競態 bug 是怎麼找到的](docs/decisions.md#31-檢查和寫入之間不能有等待避免非同步的競態)
@@ -208,7 +208,7 @@ docs/                   開發紀錄、技術決策、截圖
 這個專案也是作品集，所以留下了完整的開發過程：
 
 - **[docs/dev-log/](docs/dev-log/)**：每個功能一份紀錄，包括目標、做法、遇到的問題與解法、測試結果和截圖
-- **[docs/decisions.md](docs/decisions.md)**：71 條技術決策，記錄選擇的理由與取捨
+- **[docs/decisions.md](docs/decisions.md)**：72 條技術決策，記錄選擇的理由與取捨
 - **Git commit 歷史**：每完成一個小功能就 commit 一次，bug 修正都另外獨立成 commit
 
 ## 資料來源與授權

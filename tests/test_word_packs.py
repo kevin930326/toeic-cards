@@ -46,7 +46,7 @@ def setup(browser, key=False, worker=True):
         for _ in range(60):
             shell_ready = pg.evaluate("""async () => {
               const cache=await caches.open('toeic-shell-v1');
-              const required=performance.getEntriesByType('resource').map(e=>e.name).filter(u=>u.startsWith(location.origin)&&u.endsWith('.js'));
+              const required=performance.getEntriesByType('resource').map(e=>e.name).filter(u=>u.startsWith(location.origin)&&new URL(u).pathname.endsWith('.js'));
               return (await Promise.all(required.map(u=>cache.match(u)))).every(Boolean);
             }""")
             if shell_ready: break
@@ -166,6 +166,13 @@ with sync_playwright() as p:
     open_pack(pg)
     check(pg.locator('#packWordList li').count() == 100, '真正離線重新整理後仍可載入單字包')
     check('1000 / 1000' in pg.locator('#packOwned').inner_text(), '離線預覽仍能計算目前已有單字')
+    pg.click('[aria-label="關閉加入單字"]')
+    pg.goto(URL+'#/cards')
+    token=pg.locator('.back-en [data-lookup-word]').first
+    word=token.get_attribute('data-lookup-word')
+    token.click()
+    expect(pg.locator('#lookupInput')).to_have_value(word)
+    check(pg.locator('#lookupDialog').is_visible(), '真正離線重新整理後仍載入新版逐字查詢介面')
     ctx.close()
 
     # 即使已有個人金鑰，全包不會重新生成；重連與手動生成缺項也不會重送。

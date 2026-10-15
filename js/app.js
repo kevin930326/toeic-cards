@@ -1,7 +1,7 @@
 // 主程式：依網址的 #/xxx 切換頁面
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
-import { renderReview, reviewBadgeCount } from './views/review.js';
-import { renderCards } from './views/cards.js';
+import { renderReview, reviewBadgeCount } from './views/review.js?v=inline-lookup-1';
+import { renderCards } from './views/cards.js?v=inline-lookup-1';
 import { renderQuiz } from './views/quiz.js';
 import { renderStats } from './views/stats.js';
 import { pruneMistakes } from './mistakes.js';
@@ -17,7 +17,7 @@ import { renderSettings } from './views/settings.js';
 import { lookupMissing } from './dictionary.js';
 import { onRateWait } from './llm.js';
 import { setWaiting, generateMissing } from './generate.js';
-import { initWordLookup } from './word-lookup.js';
+import { initWordLookup } from './word-lookup.js?v=inline-lookup-1';
 
 const routes = {
   review: renderReview,

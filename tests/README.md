@@ -47,6 +47,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 可以用環境變數 `BASE_URL` 指定網址。測試截圖會存在 `tests/screenshots/`，這個資料夾不會上傳到 git。
 
+`test_word_packs.py` 的離線檢查會等待包含版本參數的 JS 檔完成快取，並在真正離線重新整理後驗證逐字查詢視窗仍可開啟。
+
 | 檔案 | 測試內容 |
 |---|---|
 | `test_inline_lookup.py` | 解釋／例句點字查中文、桌面／手機／鍵盤、收藏到指定集、去重、關閉後焦點與原卡翻面／剩餘張數／SRS／每日紀錄保留、探索選字保留、HTML 安全顯示、不呼叫外部 API |

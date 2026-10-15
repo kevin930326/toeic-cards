@@ -4,8 +4,8 @@
 import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
-import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js';
-import { attachSwipe, flyOut } from '../swipe.js';
+import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=inline-lookup-1';
+import { attachSwipe, flyOut } from '../swipe.js?v=inline-lookup-1';
 import {
   grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
 } from '../srs.js';

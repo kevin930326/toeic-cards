@@ -4,7 +4,7 @@ import { esc, openEditor, zhLines } from '../ui.js';
 import { speak, canSpeak, speakerIcon } from '../speech.js';
 import { onLookupStatus } from '../dictionary.js';
 import { onGenerateStatus } from '../generate.js';
-import { backHTML } from '../cardview.js';
+import { backHTML } from '../cardview.js?v=inline-lookup-1';
 import { setScopeHTML, bindSetScope, refreshSetScope } from '../set-ui.js';
 import { exploreWords, selectedExploreWord, stepExploreWord } from '../explore.js';
 

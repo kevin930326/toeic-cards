@@ -47,7 +47,8 @@ async function cacheUrls(urls) {
       const url = new URL(u, self.location.href);
       if (url.origin === self.location.origin) {
         if (url.pathname.includes('/data/dict/')) return;   // 字典檔另外處理
-        if (!(await shell.match(url.href, { ignoreSearch: true }))) await shell.add(url.href);
+        // 程式版本由查詢參數區分，不能拿舊版檔案視為已快取新版。
+        if (!(await shell.match(url.href))) await shell.add(url.href);
       } else if (isFont(url)) {
         // 字型的 CSS（fonts.googleapis.com）是用 <link> 跨網站載入的「不透明」回應，要用 no-cors 抓；
         // 字型檔本身（fonts.gstatic.com）瀏覽器是用 CORS 方式要的，存的也必須是 CORS 回應，否則會被拒絕
@@ -106,7 +107,7 @@ async function networkFirst(req) {
       new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), NETWORK_TIMEOUT)),
     ]);
   } catch (e) {
-    const hit = await cache.match(req, { ignoreSearch: true });
+    const hit = await cache.match(req);
     if (hit) return hit;
     if (req.mode === 'navigate') {
       const home = await cache.match('./index.html') || await cache.match('./');
