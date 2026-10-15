@@ -1,0 +1,12 @@
+{
+  "source": "https://github.com/skywind3000/ECDICT",
+  "license": "MIT",
+  "converted": "OpenCC s2twp",
+  "source_sha256": "1a6947e04785db63613a92e14903cdae7954f7e84860b10e68e5c7cbb3f9c3cf",
+  "words": 672241,
+  "generated_forms": 541,
+  "shards": 1024,
+  "algorithm": "fnv1a-32-mod-1024",
+  "bytes": 42061381,
+  "max_shard_bytes": 47730
+}

@@ -1,39 +1,50 @@
 // 字典查詢：
-//   1. 中文意思＋詞性＋音標 → 本機的 ECDICT 子集（data/dict/a.json ~ z.json，按首字母分檔、用到才載入）
+//   1. 中文意思＋詞性＋音標 → 常用 ECDICT 子集，再查雜湊分片的完整擴充字典
 //   2. 英文解釋（備援）     → Free Dictionary API（免費、免金鑰）
 // LLM 生成的多益版解釋會在第 4 步覆蓋這裡的英文解釋。
 import { getWord, getWords, updateWord, updateWords, normalizeWord } from './store.js';
 import { hasApiKey } from './llm.js';
 import { EXTRA_ENTRIES } from './dictionary-extra.js';
+import { createJsonCache, dictionaryShard, FORM_LABELS } from './dictionary-data.js';
 
-const chunks = new Map(); // 字母 → Promise<{ word: entry }>
+async function fetchJson(path) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  try {
+    const response = await fetch(path, { signal: controller.signal });
+    if (!response.ok) return null;
+    return await response.json();
+  } catch { return null; }
+  finally { clearTimeout(timer); }
+}
+const loadChunk = createJsonCache((key) => fetchJson(`data/dict/${key}.json`), 26);
+const loadExtended = createJsonCache((key) => fetchJson(`data/dict/extended-v1/${key}.json`), 16);
 
 function chunkKey(word) {
   const c = word[0];
   return c >= 'a' && c <= 'z' ? c : '_';
 }
 
-function loadChunk(key) {
-  if (!chunks.has(key)) {
-    const p = fetch(`data/dict/${key}.json`)
-      .then((r) => (r.ok ? r.json() : {}))
-      .catch(() => {
-        chunks.delete(key); // 網路失敗下次可重試
-        return {};
-      });
-    chunks.set(key, p);
-  }
-  return chunks.get(key);
-}
-
 // 回傳 { phonetic, pos, zh } 或 null
 export async function lookupLocal(word) {
+  return (await lookupLocalResult(word)).entry;
+}
+
+// 額外提供未收錄／無法載入的區別，避免離線時誤稱「字典沒有」。
+export async function lookupLocalResult(word) {
   const w = normalizeWord(word);
-  if (!w) return null;
-  const chunk = await loadChunk(chunkKey(w));
-  const e = EXTRA_ENTRIES[w] || chunk[w];
-  if (!e) return null;
-  return { phonetic: e.p || '', pos: e.s || '', zh: e.t || '' };
+  if (!w) return { entry: null, status: 'notfound' };
+  let e = Object.hasOwn(EXTRA_ENTRIES, w) ? EXTRA_ENTRIES[w] : null;
+  const chunk = e ? null : await loadChunk(chunkKey(w));
+  if (!e && chunk && Object.hasOwn(chunk, w)) e = chunk[w];
+  let extended;
+  if (!e) {
+    extended = await loadExtended(dictionaryShard(w));
+    if (extended && Object.hasOwn(extended, w)) e = extended[w];
+  }
+  if (!e) return { entry: null, status: !chunk || !extended ? 'unavailable' : 'notfound' };
+  return { status: 'ok', entry: { phonetic: e.p || '', pos: e.s || '', zh: e.t || '',
+    lemma: e.l || '', form: (e.f || []).map((kind) => FORM_LABELS[kind]).filter(Boolean).join('／') } };
 }
 
 // Free Dictionary API：回傳
@@ -97,12 +108,18 @@ export function isLookingUp(id) {
 async function fillLocal(ids) {
   // 1. 先把需要的字典資料都查好（會等待下載）
   const found = new Map();
-  for (const id of ids) {
-    const w = getWord(id);
-    if (!w || (w.zh && w.phonetic)) continue;
-    const local = await lookupLocal(w.word);
-    if (local) found.set(id, local);
-  }
+  const byId = new Map(getWords().map((w) => [w.id, w]));
+  let cursor = 0;
+  // 最多四個工作者，避免大量罕見字同時下載數百個檔案。
+  await Promise.all(Array.from({ length: Math.min(4, ids.length) }, async () => {
+    while (cursor < ids.length) {
+      const id = ids[cursor++];
+      const w = byId.get(id);
+      if (!w || (w.zh && w.phonetic)) continue;
+      const local = await lookupLocal(w.word);
+      if (local) found.set(id, local);
+    }
+  }));
   // 2. 再「一口氣」檢查並寫入，中間沒有任何等待：
   //    等待下載時 AI 可能已經寫好內容，這時要看最新的資料，才不會用字典蓋掉 AI 的結果
   const patches = [];

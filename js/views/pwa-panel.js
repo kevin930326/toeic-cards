@@ -43,9 +43,9 @@ export function renderPwaPanel(container) {
       ${insecure}
       <div class="pwa-offline" ${st.sw ? '' : 'hidden'}>
         <h3 class="sub-title">離線字典</h3>
-        <p class="panel-desc">離線時新增單字也能查到中文。完整字典約 2.8MB，只需要下載一次。</p>
+        <p class="panel-desc">常用字典約 2.8MB，下載後離線新增單字也能查中文。擴充字典按需載入，最近快取的分片可離線使用（最多 128 片）；這個按鈕只下載常用字典。</p>
         <p class="dict-status" id="dictStatus">檢查中…</p>
-        <button class="btn btn-outline" type="button" id="dictBtn">下載完整字典</button>
+        <button class="btn btn-outline" type="button" id="dictBtn">下載常用字典</button>
       </div>
       <p class="hint-text" id="persistStatus"></p>`;
 

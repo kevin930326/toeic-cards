@@ -21,7 +21,7 @@ with sync_playwright() as p:
         pg.fill('#lookupInput',word);pg.locator('#lookupForm button').click()
         expect(pg.locator('#lookupResult h3')).to_have_text(word)
 
-    query('discussed')
+    query('zzdiscussed')
     expect(pg.locator('.lookup-manual')).to_be_visible()
     pg.locator('.lookup-manual summary').tap()
     pg.fill('#lookupManualZh','討論（discuss 的過去式／過去分詞）')
@@ -30,15 +30,15 @@ with sync_playwright() as p:
     expect(pg.locator('#lookupEnglishStatus')).to_contain_text('仍可新增字卡')
     expect(pg.locator('#lookupManualZh')).to_have_value('討論（discuss 的過去式／過去分詞）')
     assert pg.evaluate('document.documentElement.scrollWidth<=innerWidth')
-    pg.screenshot(path='docs/images/27-custom-word.png',full_page=True)
+    pg.screenshot(path='tests/screenshots/custom-word-expanded.png',full_page=True)
     pg.locator('#lookupSave').tap()
     expect(pg.locator('.lookup-meaning')).to_contain_text('過去式')
-    expect(pg.locator('#lookupResult h3')).to_have_text('discussed')
-    saved=pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).find(w=>w.word==='discussed')")
+    expect(pg.locator('#lookupResult h3')).to_have_text('zzdiscussed')
+    saved=pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).find(w=>w.word==='zzdiscussed')")
     assert saved['src']['zh']=='user' and saved['src']['pos']=='user' and saved['autoGenerate'] is False
     assert not pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).some(w=>w.word==='discuss')")
     assert before==pg.evaluate("[localStorage.getItem('toeic-cards:log'),localStorage.getItem('toeic-cards:settings')]")
-    print('PASS discussed 原樣建卡與手動意思保留；查英文失敗不清草稿、不改學習進度',flush=True)
+    print('PASS 未收錄測試字 zzdiscussed 原樣建卡與手動意思保留；查英文失敗不清草稿、不改學習進度',flush=True)
 
     # 成功查英文也會重畫；不得清掉已輸入的手動中文。
     c.route('https://api.dictionaryapi.dev/**',lambda r:r.fulfill(status=200,content_type='application/json',body='[{"meanings":[{"partOfSpeech":"verb","definitions":[{"definition":"past tense of discuss"}]}]}]'))
@@ -59,7 +59,7 @@ with sync_playwright() as p:
     assert pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).some(w=>w.word==='disscussed')")
     print('PASS 不自動改寫拼字，未填意思仍可新增並清楚提示補內容',flush=True)
     pg.locator('#lookupDialog [data-close]').tap();pg.reload();pg.wait_for_load_state('networkidle')
-    query('discussed')
+    query('zzdiscussed')
     expect(pg.locator('.lookup-meaning')).to_contain_text('過去式')
     assert pg.locator('.lookup-manual').count()==0
     print('PASS 重新整理仍保留自訂字義，既有卡不出現覆寫欄位',flush=True)

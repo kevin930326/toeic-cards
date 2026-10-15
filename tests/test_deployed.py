@@ -23,6 +23,9 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 900}, service_workers='allow')
     existing_user(ctx)
+    ctx.add_init_script('window.__toeicFirebaseConfig = null;')
+    ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
+    ctx.route('https://generativelanguage.googleapis.com/**', lambda r: r.fulfill(status=403, body='{}'))
     ctx.add_init_script('if (window.speechSynthesis) speechSynthesis.speak = () => {};')
     page = ctx.new_page()
     failed = []
@@ -52,6 +55,13 @@ with sync_playwright() as p:
     page.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words') || '[]').find((w) => w.word === 'approve')?.zh", timeout=15000)
     zh = page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'approve').zh")
     check('核准' in zh, f'字典在子路徑下可以查：{zh!r}')
+    page.click('#openLookup')
+    page.fill('#lookupInput', 'discussed')
+    page.locator('#lookupForm button').click()
+    page.wait_for_selector('.lookup-form-note')
+    check('討論' in page.locator('.lookup-meaning').inner_text()
+          and 'discuss' in page.locator('.lookup-form-note').inner_text(), '擴充雜湊分片與詞形提示在正式子路徑正常')
+    page.locator('#lookupDialog [data-close]').click()
 
     # Service Worker 的範圍是 /toeic-cards/，而且會接手
     page.evaluate('navigator.serviceWorker.ready')
@@ -60,10 +70,13 @@ with sync_playwright() as p:
     page.reload()
     page.wait_for_load_state('networkidle')
     check(page.evaluate('!!navigator.serviceWorker.controller'), 'Service Worker 接手網頁')
-    page.wait_for_function("""async () => {
-      const c = await caches.open('toeic-shell-v1');
-      return !!(await c.match(new URL('js/views/quiz.js', location.href).href));
-    }""", timeout=20000)
+    for _ in range(100):
+        if page.evaluate("""async () => {
+          const c = await caches.open('toeic-shell-v1');
+          return !!(await c.match(new URL('js/views/quiz.js', location.href).href));
+        }"""): break
+        page.wait_for_timeout(200)
+    else: raise AssertionError('測驗模組未完成離線快取')
 
     # 真正離線：重新整理仍然可以使用
     ctx.set_offline(True)
@@ -72,6 +85,12 @@ with sync_playwright() as p:
     page.wait_for_selector('.card-front .headword', timeout=15000)
     check(page.locator('.card-front .headword').inner_text() == 'approve', '離線時重新整理，網站照常開啟並可以複習')
     check(page.locator('#offlineBar').is_visible(), '離線提示列')
+    page.click('#openLookup')
+    page.fill('#lookupInput', 'discussed')
+    page.locator('#lookupForm button').click()
+    page.wait_for_selector('.lookup-meaning')
+    check('討論' in page.locator('.lookup-meaning').inner_text(), '正式網站離線重整後仍能讀取擴充中文字典')
+    page.locator('#lookupDialog [data-close]').click()
     page.screenshot(path=os.path.join(OUT, 'deployed_offline.png'))
     ctx.set_offline(False)
 

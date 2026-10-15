@@ -1,9 +1,9 @@
 // 全站查字典：不切換頁面、不使用 Gemini，也不影響學習紀錄。
 import { getWords, addWords, assignWordSet, activeSetId, subscribe } from './store.js';
 import { normalizeWord } from './parse.js';
-import { lookupLocal, lookupEnglish } from './dictionary.js?v=custom-words-1';
+import { lookupLocalResult, lookupEnglish } from './dictionary.js?v=dictionary-scale-1';
 import { esc, toast, zhLines } from './ui.js';
-import { setOptions } from './set-ui.js';
+import { setOptions } from './set-ui.js?v=dictionary-scale-1';
 import { speak, canSpeak, speakerIcon } from './speech.js';
 
 export function initWordLookup() {
@@ -45,7 +45,8 @@ export function initWordLookup() {
     result.innerHTML = `<article class="lookup-card"><div class="lookup-word"><div><p class="eyebrow">${viewingCard && own ? '我的字卡' : own ? '已在我的單字庫' : '字典查詢'}</p>
       <h3 lang="en">${esc(item.word)}</h3>${item.phonetic ? `<p class="phonetic">${esc(item.phonetic)}</p>` : ''}</div>
       ${canSpeak() ? `<button class="icon-btn" type="button" id="lookupSpeak" aria-label="播放單字發音">${speakerIcon}</button>` : ''}</div>
-      ${item.zh ? `<p class="lookup-meaning">${!lines.some((line) => line.pos) && item.pos ? `<span class="lookup-pos">${esc(item.pos)}</span>` : ''}${meaning}</p>` : '<p class="hint-text">本機字典沒有這個字的中文。</p>'}
+      ${item.zh ? `<p class="lookup-meaning">${!lines.some((line) => line.pos) && item.pos ? `<span class="lookup-pos">${esc(item.pos)}</span>` : ''}${meaning}</p>` : `<p class="hint-text">${current.loadStatus === 'unavailable' ? '暫時沒有可用的中文字義。' : '本機字典沒有這個字的中文。'}</p>`}
+      ${!viewingCard && current.lemma ? `<p class="hint-text lookup-form-note">${esc(current.word)} 是 ${esc(current.lemma)} 的${esc(current.form)}；收藏時保留 ${esc(current.word)}。</p>` : ''}
       ${item.en ? `<p class="lookup-en" lang="en">${esc(item.en)}</p>` : ''}
       ${examples.length ? `<div class="lookup-example"><p lang="en">${esc(examples[0].en)}</p><p>${esc(examples[0].zh)}</p></div>` : ''}
       <p class="hint-text">${esc(viewingCard && own ? '來自你已收藏的字卡' : current.source)}</p>
@@ -124,9 +125,12 @@ export function initWordLookup() {
     }
     const own = saved(word);
     result.innerHTML = '<p class="tool-empty" role="status">正在查詢…</p>';
-    const local = await lookupLocal(word);
+    const response = await lookupLocalResult(word);
+    const local = response.entry;
     if (token !== sequence || !dialog.open) return;
-    current = { word, ...(local || {}), source: local ? '中文：本機 ECDICT 字典' : '本機字典未收錄此字，可連線查英文解釋。' };
+    current = { word, ...(local || {}), loadStatus: response.status, source: local ? '中文：ECDICT 字典（常用＋擴充，按需載入）'
+      : response.status === 'unavailable' ? '目前無法載入所需字典檔，請連網後重試；仍可保留原拼字收藏。'
+      : '字典未收錄此字，可查英文解釋或手動補上意思。' };
     if (!local && own) { current = { ...own, source: '來自你已收藏的字卡' }; viewingCard = true; }
     render();
   }

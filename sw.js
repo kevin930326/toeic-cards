@@ -10,9 +10,11 @@
 // 字典重新產生時，把 DICT_CACHE 的版本號 +1，舊的字典快取就會被清掉。
 const SHELL_CACHE = 'toeic-shell-v1';
 const DICT_CACHE = 'toeic-dict-v1';
+const EXTENDED_CACHE = 'toeic-dict-extended-v1';
 const FONT_CACHE = 'toeic-fonts-v1';
 const LIB_CACHE = 'toeic-lib-v1';   // Firebase SDK（網址帶版本號，內容不會變）
-const KEEP = [SHELL_CACHE, DICT_CACHE, FONT_CACHE, LIB_CACHE];
+const KEEP = [SHELL_CACHE, DICT_CACHE, EXTENDED_CACHE, FONT_CACHE, LIB_CACHE];
+let extendedWrites = Promise.resolve();
 const NETWORK_TIMEOUT = 4000;
 
 // 安裝時先存好首頁；其他檔案在網頁載入後由頁面告訴我們要存哪些（見 js/pwa.js）
@@ -74,7 +76,8 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin === self.location.origin) {
-    if (url.pathname.includes('/data/dict/')) event.respondWith(cacheFirst(req, DICT_CACHE));
+    if (url.pathname.includes('/data/dict/extended-v1/')) event.respondWith(cacheFirst(req, EXTENDED_CACHE, 128));
+    else if (url.pathname.includes('/data/dict/')) event.respondWith(cacheFirst(req, DICT_CACHE));
     else event.respondWith(networkFirst(req));
   } else if (isFont(url)) {
     event.respondWith(cacheFirst(req, FONT_CACHE));
@@ -84,12 +87,24 @@ self.addEventListener('fetch', (event) => {
   // 其他（Gemini、Free Dictionary、Firebase 的資料連線）不處理，照常連網
 });
 
-async function cacheFirst(req, cacheName) {
+async function cacheFirst(req, cacheName, limit = 0) {
   const cache = await caches.open(cacheName);
   const hit = await cache.match(req);
   if (hit) return hit;
   const res = await fetch(req);
-  if (res.ok || res.type === 'opaque') cache.put(req, res.clone());
+  if (res.ok || res.type === 'opaque') {
+    const copy = res.clone();
+    const save = async () => {
+      await cache.put(req, copy);
+      if (limit) {
+        const keys = await cache.keys();
+        for (const key of keys.slice(0, Math.max(0, keys.length - limit))) await cache.delete(key);
+      }
+    };
+    // 擴充檔最多保留 128 片（FIFO）；串行寫入避免並行下載超過上限。
+    if (limit) { extendedWrites = extendedWrites.then(save).catch(() => {}); await extendedWrites; }
+    else await save().catch(() => {});
+  }
   return res;
 }
 
