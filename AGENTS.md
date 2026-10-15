@@ -30,6 +30,7 @@ node --test "tests/unit/*.test.mjs"
 python tests/test_step1.py      # 其他見 tests/README.md
 ```
 
+- 字卡存檔會延後約 50 毫秒（decisions #99）：測試要直接讀寫 `localStorage` 的字卡前，先呼叫 `tests/storage_helpers.py` 的 `flush(page)`；網站程式只透過 `js/store.js` 讀寫字卡，不要直接碰 `localStorage`
 - 外部 API（Free Dictionary、Gemini）在測試裡一律用 `page.route` 假造回應。真的 Free Dictionary API 常常掛掉（HTTP 522）
 - 新功能要寫新的測試檔或加進對應的 `tests/test_*.py`；截圖存 `tests/screenshots/`（不進 git）。要放進 dev-log 的截圖，測試裡用 `from shots import doc_shot` 的 `doc_shot('檔名.png')`，**不要直接寫 `docs/images/`**（否則每次跑測試都會蓋掉作品集的圖）；要更新時用 `UPDATE_DOC_IMAGES=1` 跑那個測試
 
