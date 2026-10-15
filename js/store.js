@@ -104,7 +104,7 @@ export function hasWord(word) {
 }
 
 // 回傳 { added, skipped }；skipped 是重複或已存在的字
-export function addWords(list, { autoGenerate = true } = {}) {
+export function addWords(list, { autoGenerate = true, initialData = new Map() } = {}) {
   const added = [];
   const skipped = [];
   const seen = new Set(words.map((w) => w.word));
@@ -120,6 +120,11 @@ export function addWords(list, { autoGenerate = true } = {}) {
     seen.add(n);
     clearTombstone(n);   // 刪掉後又加回來
     const w = createWord(n);
+    const prepared = initialData.get(n);
+    // 只允許預填內容欄位，id、建立時間與學習進度仍由儲存模組管理。
+    if (prepared) for (const key of ['phonetic', 'pos', 'zh', 'en', 'examples', 'collocations', 'forms', 'synonyms', 'src', 'lookup', 'pack']) {
+      if (Object.hasOwn(prepared, key)) w[key] = structuredClone(prepared[key]);
+    }
     if (!autoGenerate) w.autoGenerate = false;
     w.createdAt = w.updatedAt = base + added.length;
     words.unshift(w);

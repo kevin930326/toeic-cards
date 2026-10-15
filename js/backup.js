@@ -20,7 +20,7 @@ const MAX_MISTAKES = 300;
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
 const LOG_FIELDS = ['reviews', 'again', 'good', 'learned', 'quiz', 'quizCorrect', 'goal'];
 const SRC_FIELDS = ['pos', 'zh', 'en', 'examples', 'collocations', 'forms', 'synonyms'];
-const SRC_VALUES = ['dict', 'freedict', 'llm', 'user'];
+const SRC_VALUES = ['dict', 'freedict', 'llm', 'user', 'pack'];
 const QUIZ_MODES = ['zh2en', 'en2word', 'listen', 'part5'];
 
 // ---- 小工具 ----
@@ -88,6 +88,7 @@ export function sanitizeWord(raw) {
     id: str(raw.id, 80) || `imp-${word}`,
     word,
     ...(raw.autoGenerate === false ? { autoGenerate: false } : {}),
+    ...(raw.pack?.id === 'toeic-1000' && raw.pack.version === 1 ? { pack: { id: 'toeic-1000', version: 1 } } : {}),
     phonetic: str(raw.phonetic, 80),
     pos: str(raw.pos, 60),
     zh: str(raw.zh, 400),

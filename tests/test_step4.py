@@ -139,7 +139,7 @@ with sync_playwright() as p:
     check(a['llm']['status'] == 'done' and a['en'] == 'simple meaning of approve', 'approve 生成完成')
     check(a['zh'].startswith('v. approve的多益意思') and a['src']['zh'] == 'llm', 'AI 中文覆蓋字典中文')
     check(len(a['examples']) == 2 and a['collocations'] and a['forms'] == ['approveal (n.)'], '例句、搭配詞、詞性變化都有存')
-    check('全部 1 個字都已經有 AI 內容' in page.locator('#aiBox').inner_text(), '顯示全部完成')
+    check('全部 1 個字已有學習內容' in page.locator('#aiBox').inner_text(), '顯示全部完成')
     check(page.locator('.word-row .badge-ai').count() == 1, '列表顯示 AI 標記')
 
     # 4. 批次 45 個字（自動生成），其中 zzfail 會被漏掉

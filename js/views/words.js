@@ -20,6 +20,7 @@ const PREVIEW_LIMIT = 80;
 
 function badge(w) {
   if (isGenerating(w.id)) return '<span class="badge badge-busy">AI 生成中</span>';
+  if (w.pack) return '<span class="badge badge-ai" title="含多益1000單字包的內建內容">內建</span>';
   if (w.llm?.status === 'done') return '<span class="badge badge-ai" title="已用 AI 生成多益內容">AI</span>';
   if (w.llm?.status === 'failed') return '<span class="badge badge-fail">AI 失敗</span>';
   return '';
@@ -284,12 +285,16 @@ export function renderWords(root) {
   function drawAi(st = generateStatus()) {
     if (!getWords().length) { aiBox.hidden = true; return; }
     aiBox.hidden = false;
+    const c = countByState();
+    if (!c.missing && !c.failed && !st.running) {
+      aiBox.innerHTML = `<p class="ai-line ok">✓ 全部 ${c.done} 個字已有學習內容，可以開始複習。</p>`;
+      return;
+    }
     if (!hasApiKey()) {
       aiBox.innerHTML = `<p class="ai-line">✨ 設定 Gemini 金鑰後，可以自動生成<strong>多益情境</strong>的解釋、例句和搭配詞。
         <a href="#/settings">前往設定</a></p>`;
       return;
     }
-    const c = countByState();
     let html = '';
     if (st.running) {
       const pct = st.total ? Math.round(((st.done + st.failed) / st.total) * 100) : 0;
@@ -317,7 +322,6 @@ export function renderWords(root) {
         html += `<div class="ai-head"><p class="ai-line">${c.failed} 個字生成失敗</p>
           <button class="btn btn-outline btn-sm" type="button" id="aiRetry">重試失敗的字</button></div>`;
       }
-      if (!c.missing && !c.failed) html += `<p class="ai-line ok">✓ 全部 ${c.done} 個字都已經有 AI 內容</p>`;
     }
     aiBox.innerHTML = html;
     aiBox.querySelector('#aiStop')?.addEventListener('click', stopGenerating);

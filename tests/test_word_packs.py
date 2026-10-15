@@ -1,4 +1,4 @@
-"""內建單字包：預覽、分組與全部加入、去重、內容保留、AI 選擇與離線快取。
+"""內建單字包：預覽、分組與全部加入、預製內容、補空白與離線快取。
 使用隔離瀏覽器與假的 Gemini／Free Dictionary 回應，不連 Firebase。
 """
 import json, os, re, sys
@@ -64,11 +64,21 @@ with sync_playwright() as p:
     pg.wait_for_selector('#packGroup')
     check(True, '載入失敗後可重試，不會永久卡在失敗狀態')
     fail_ctx.close()
+    partial_ctx, partial = setup(browser, worker=False)
+    partial.route('**/data/packs/toeic-1000/05.json', lambda r: r.fulfill(status=503, body='unavailable'))
+    partial.locator('#wordPack > summary').click()
+    expect(partial.locator('#packRetry')).to_be_visible()
+    check(store(partial, 'return s.getWords().length') == 0 and partial.locator('#packAdd').count() == 0, '任一組內容下載失敗時禁止加入殘缺單字包')
+    partial.unroute('**/data/packs/toeic-1000/05.json')
+    partial.click('#packRetry')
+    partial.wait_for_selector('#packGroup')
+    check(True, '內容檔下載失敗後可重新載入整包')
+    partial_ctx.close()
     ctx, pg = setup(browser)
     open_pack(pg)
     check(pg.locator('#packGroup option').count() == 11 and pg.locator('#packWordList li').count() == 100, '可選十組或全部，預設預覽第一組100字')
     check('【刷刷鍋】' in pg.locator('.pack-source').inner_text() and '不代表難度' in pg.locator('#packBody').inner_text(), '標示選字來源與分組方式')
-    check(pg.locator('#packAI').is_disabled() and not pg.locator('#packAI').is_checked(), '沒有金鑰也能使用，AI 選項停用且不勾選')
+    check(pg.locator('#packAI').count()==0 and '免 API 金鑰' in pg.locator('#wordPack > summary').inner_text(), '內建完整內容，不需生成或金鑰選項')
 
     saved = store(pg, '''s.addWords(['company','zebra']);
       const w = s.getWords().find(w=>w.word==='company');
@@ -95,7 +105,7 @@ with sync_playwright() as p:
     expect(pg.locator('#setScope')).to_have_value(target)
     check(pg.locator('.word-row').count() == 100, '加入後自動切換到指定單字集')
     pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word!=='zebra').every(w=>w.zh)")
-    check(True, '不用金鑰，第一組所有單字都補上本機中文')
+    check(store(pg, "return s.getWords().filter(w=>w.pack).every(w=>w.en && w.examples.length && w.collocations.length && w.src.en==='pack');"), '第一組新字立即有英文解釋、中英例句、搭配詞與來源標記')
     check(store(pg, 'return s.getWords().find(w=>w.word==="company");') == saved['word'], '既有單字的內容、來源標記與複習排程完全保留')
     check(pg.locator('#packAdd').is_disabled(), '重複加入同組不重複建立字卡或單字集')
 
@@ -106,14 +116,14 @@ with sync_playwright() as p:
     check(pg.locator('#packWordList li').filter(has_text='résumé').count() == 1, '預覽保留重音拼字 résumé')
     pg.click('#packAdd')
     pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find(w=>w.word==='résumé')?.zh")
-    check(store(pg, "return s.getWords().find(w=>w.word==='résumé').zh;") == 'n. 履歷', 'résumé 直接加入且有正確本機詞義，不經貼上拆字')
+    check(store(pg, "return s.getWords().find(w=>w.word==='résumé').zh;") == '履歷', 'résumé 直接加入且有正確內建詞義，不經貼上拆字')
     pg.select_option('#packGroup','all')
     check(pg.locator('#packWordList li').count() == 1000, '可以預覽全部1000字')
     pg.click('#packAdd')
     pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).length===1001")
     pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word!=='zebra').every(w=>w.zh)", timeout=30000)
     check(pg.locator('.word-row').count() == 1000, '全部加入後集內剛好1000字，原有其他單字保留')
-    check(store(pg, 'return s.getWords().filter(w=>w.autoGenerate===false).length;') == 999 and not requests, '999個新字預設不啟動 AI，選擇存在字卡內')
+    check(store(pg, 'return s.getWords().filter(w=>w.pack && w.autoGenerate===false).length;') == 999 and not requests, '999個新字直接帶入預製內容，沒有呼叫 Gemini')
     check(pg.locator('#packAdd').is_disabled(), '再次加入全部時停用按鈕，沒有重複資料')
 
     pg.select_option('#packTarget',saved['other'])
@@ -142,34 +152,56 @@ with sync_playwright() as p:
     check('1000 / 1000' in pg.locator('#packOwned').inner_text(), '離線預覽仍能計算目前已有單字')
     ctx.close()
 
-    # 已有金鑰與全站自動生成開啟，也必須尊重單字包「先不生成」的選擇。
+    # 即使已有個人金鑰，全包不會重新生成；重連與手動生成缺項也不會重送。
     ai_ctx, ai = setup(browser, key=True)
-    store(ai, '''const x=s.createWordSet('多益 1000 單'); s.addWords(['company']);
-      const w=s.getWords()[0]; s.updateWord(w.id,{zh:'保留的中文',en:'Keep this',phonetic:'/c/',src:{zh:'user'},lookup:{dictAt:1,enDone:true}});''')
     open_pack(ai)
-    check(not ai.locator('#packAI').is_checked() and not ai.locator('#packAI').is_disabled(), '有金鑰也預設不勾選 AI')
-    ai.click('#packAdd')
+    # 先等十份內容確實寫入快取，再從全新的離線頁面加入。
+    for _ in range(40):
+        ready = ai.evaluate(r"async () => { const c=await caches.open('toeic-shell-v1'); return (await c.keys()).filter(r=>/data\/packs\/toeic-1000\/\d+\.json/.test(r.url)).length===10; }")
+        if ready: break
+        ai.wait_for_timeout(100)
+    check(ready, '十份完整內容均已快取')
     ai_ctx.set_offline(True)
+    ai.reload()
+    open_pack(ai)
+    ai.select_option('#packGroup','all')
+    ai.click('#packAdd')
+    check(store(ai, 'return s.getWords().length===1000 && s.getWords().every(w=>w.examples.length && w.en);'), '真正離線重新整理後仍能一次加入1000張完整字卡')
     ai_ctx.set_offline(False)
     ai.evaluate("window.dispatchEvent(new Event('online'))")
     ai.wait_for_timeout(800)
-    # 原本就有的 company 是一般字卡，允許既有的自動生成；單字包新加的99字都不可自動送出。
-    check(set(requests).issubset({'company'}), '重新連線不會自動生成剛加入的99個單字包字卡')
-    ai.evaluate("import('/js/generate.js').then(m=>m.stopGenerating())")
-    requests.clear()
-    ai.select_option('#packGroup','1')
-    ai.check('#packAI')
-    check('100 個新字' in ai.locator('#packAIHint').inner_text(), '勾選前後清楚顯示將生成的新字數')
-    ai.click('#packAdd')
-    ai.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word!=='company' && w.autoGenerate!==false && w.llm?.status==='done').length===100", timeout=30000)
-    check(set(requests)==set(pack_data['words'][100:200]), '明確勾選後只生成這組100個新字，已有字與未勾選的組不送出')
-    ai.evaluate("import('/js/generate.js').then(m=>m.stopGenerating())")
-    # 手動生成仍可用，與自動生成的排除規則分開。
-    requests.clear()
     ai.evaluate("import('/js/generate.js').then(m=>m.generateMissing())")
-    ai.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).every(w=>w.llm?.status==='done')", timeout=30000)
-    check(set(pack_data['words'][1:100]).issubset(set(requests)), '未勾選 AI 的字之後仍可手動生成')
+    ai.wait_for_timeout(300)
+    check(not requests, '已有金鑰時加入全包、重新連線與生成缺項，均不呼叫 Gemini')
+    check('已有學習內容' in ai.locator('#aiBox').inner_text(), '完整內建字卡不再顯示需要生成1000字的提示')
+    check(ai.locator('.badge', has_text='內建').count()==1000, '以內建標籤區別個人即時生成')
+    ai.goto(URL+'#/cards')
+    ai.click('#card')
+    check(ai.locator('.ex-en').count()==1 and ai.locator('.ex-zh').count()==1, '字卡可直接翻面查看中英例句')
+    ai.goto(URL+'#/quiz')
+    check(ai.locator('.mode-btn[data-mode=en2word]').is_enabled(), '未使用個人額度也能做英文解釋測驗')
     ai_ctx.close()
+
+    # 舊版已加入的空白卡片可明確選擇補齊，不覆蓋自訂內容或進度。
+    old_ctx, old = setup(browser)
+    original = store(old, '''s.addWords(['company']); const w=s.getWords()[0];
+      s.updateWord(w.id,{zh:'我自訂的意思',src:{zh:'user',forms:'user'},forms:[],srs:{interval:20,reps:3,ease:2.5,lapses:0,due:9999999999999,last:1}});
+      const set=s.createWordSet('多益 1000 單');s.assignWordSet([w.id],set.id);return w;''')
+    open_pack(old)
+    old.select_option('#packGroup','0')
+    old.check('#packFillExisting')
+    old.click('#packAdd')
+    filled = store(old,'return s.getWords().find(w=>w.word==="company");')
+    check(filled['zh']==original['zh'] and filled['srs']==original['srs'] and filled['forms']==[], '補空白保留使用者自訂詞義、刻意清空欄位與學習進度')
+    check(filled['en'] and filled['examples'] and filled['src']['en']=='pack', '舊字卡可補齊空白英文解釋與例句')
+    store(old, "s.updateWord(s.getWords().find(w=>w.word==='company').id,{llm:{status:'failed',at:1}});")
+    old.evaluate("import('/js/generate.js').then(m=>{m.retryFailed(); return m.countByState();})")
+    check(store(old, "return s.getWords().find(w=>w.word==='company').llm.status;")=='failed' and not requests, '補齊後的完整字卡即使留有舊失敗標記，也不會被批次重試')
+    old.reload()
+    old.goto(URL+'#/words?pack=toeic-1000')
+    old.wait_for_selector('#packGroup')
+    check(old.locator('#wordPack').get_attribute('open') is not None, '直接連結會展開多益1000單字包入口')
+    old_ctx.close()
     browser.close()
 
 print('\nERRORS:' if errors else '\nALL PASSED', *errors, sep='\n')

@@ -1,0 +1,1001 @@
+# AI 撰寫；例句與翻譯為本專案原創，非來源 PDF 的例句。
+company|n|公司|a business that sells goods or services|Our company opened a branch in Taipei.|我們公司在台北開設了分公司。|join a company
+passenger|n|乘客|a person traveling in a vehicle|Passengers must show their tickets.|乘客必須出示車票。|airline passenger
+subject|n|主題|the topic being discussed|Safety is the subject of today's meeting.|安全是今天會議的主題。|discussion subject
+area|n|區域|a particular place or part of a place|Please keep the reception area clean.|請保持接待區清潔。|reception area
+cashier|n|收銀員|a person who receives payments in a store|The cashier printed my receipt.|收銀員印出了我的收據。|ask the cashier
+amount|n|金額；數量|how much of something there is|Check the amount before making payment.|付款前請確認金額。|total amount
+clinic|n|診所|a place providing medical care|The clinic accepts appointments online.|這間診所接受線上預約。|dental clinic
+fee|n|費用|money charged for a service|The registration fee includes lunch.|報名費包含午餐。|registration fee
+appointment|n|預約|an arrangement to meet at a certain time|My appointment with the manager is tomorrow.|我和經理約在明天見面。|make an appointment
+reservation|n|預訂|an arrangement to keep a room or seat|Please confirm our hotel reservation.|請確認我們的飯店訂房。|make a reservation
+employee|n|員工|a person paid to work for an organization|Each employee receives a security badge.|每位員工都會拿到識別證。|full-time employee
+task|n|任務|a piece of work to complete|Your first task is to check inventory.|你的第一項任務是清點庫存。|complete a task
+label|n|標籤|a small piece showing information about something|Read the label before using the cleaner.|使用清潔劑前請閱讀標籤。|shipping label
+lobby|n|大廳|the entrance area of a large building|We will meet in the lobby.|我們將在大廳見面。|hotel lobby
+option|n|選項|one of several possible choices|Delivery is another option for customers.|宅配是顧客的另一個選項。|payment option
+receipt|n|收據|a document proving that payment was made|Keep your receipt for reimbursement.|請保留收據以便報銷。|keep a receipt
+printer|n|印表機|a machine that prints documents|The printer needs more paper.|印表機需要補充紙張。|color printer
+pharmacy|n|藥局|a place that prepares and sells medicine|The pharmacy is beside the station.|藥局就在車站旁。|local pharmacy
+destination|n|目的地|the place someone is traveling to|Our final destination is Osaka.|我們最後的目的地是大阪。|final destination
+goal|n|目標|something you want to achieve|Our goal is to improve customer service.|我們的目標是改善顧客服務。|achieve a goal
+author|n|作者|a person who writes a book or article|The author will sign books after lunch.|作者將在午餐後簽書。|book author
+description|n|描述；說明|words explaining what something is like|The job description lists the required skills.|職務說明列出了所需技能。|job description
+reminder|n|提醒|a message helping someone remember something|The system sends a payment reminder.|系統會寄送繳費提醒。|friendly reminder
+goods|n|商品；貨物|things produced for sale|The goods arrived without any damage.|這批貨物抵達時毫無損傷。|consumer goods
+flight|n|航班|a journey by airplane|Our flight leaves at noon.|我們的航班中午起飛。|book a flight
+brand|n|品牌|a product name identifying its maker|This brand is popular with commuters.|這個品牌很受通勤族歡迎。|brand recognition
+vehicle|n|車輛|a machine used to transport people or goods|Company vehicles require regular inspections.|公司車輛需要定期檢查。|company vehicle
+site|n|地點；工地|a place where an activity happens|Visitors must wear helmets at the site.|訪客在工地必須戴安全帽。|construction site
+occupation|n|職業|a person's usual job|Please state your occupation on the form.|請在表格上填寫你的職業。|current occupation
+payment|n|付款；款項|money paid for goods or services|Payment is due within thirty days.|款項須在三十天內支付。|make a payment
+account|n|帳戶|an arrangement for keeping money at a bank|She opened a business account.|她開立了企業帳戶。|bank account
+region|n|地區|a large area of a country or world|Sales increased in the northern region.|北部地區的銷售額增加了。|sales region
+receptionist|n|接待人員|a person who welcomes visitors|Ask the receptionist for a visitor pass.|請向接待人員索取訪客證。|front-desk receptionist
+volume|n|數量；音量|the amount of something produced or handled|Order volume usually rises in December.|訂單量通常在十二月上升。|sales volume
+item|n|品項；項目|one thing in a group or list|This item is temporarily out of stock.|這個品項暫時缺貨。|agenda item
+department|n|部門|a division of a company or organization|Contact the accounting department for assistance.|需要協助請聯絡會計部門。|marketing department
+situation|n|情況|the conditions at a particular time|The manager explained the current situation.|經理解釋了目前的情況。|current situation
+audience|n|觀眾；聽眾|people watching or listening to an event|The speaker invited questions from the audience.|講者邀請聽眾提問。|target audience
+client|n|客戶|a person or business using professional services|Our client requested a revised proposal.|我們的客戶要求修改提案。|meet a client
+fare|n|車資；票價|the price of travel on public transportation|The train fare includes a reserved seat.|火車票價包含劃位座席。|bus fare
+staff|n|員工；全體人員|the people working for an organization|All staff must complete safety training.|全體員工必須完成安全訓練。|staff meeting
+permission|n|許可|approval allowing someone to do something|You need permission to enter this room.|進入這個房間需要許可。|ask for permission
+income|n|收入|money earned from work or investments|Rental income helped cover maintenance costs.|租金收入有助於支付維護費用。|annual income
+period|n|期間|a length of time|The trial period lasts two weeks.|試用期間為兩週。|trial period
+equipment|n|設備|tools and machines needed for an activity|New equipment will arrive on Friday.|新設備將在星期五送達。|office equipment
+attendance|n|出席；出席人數|being present at an event|Attendance at the workshop is optional.|這場工作坊可自由選擇是否參加。|attendance record
+software|n|軟體|programs used by a computer|Please update your accounting software.|請更新你的會計軟體。|install software
+material|n|材料|a substance used to make something|We purchase recycled packaging material.|我們採購回收包裝材料。|raw material
+route|n|路線|a way from one place to another|The driver chose a shorter route.|司機選了較短的路線。|delivery route
+response|n|回覆；反應|an answer or reaction to something|We received a response this morning.|我們今天早上收到了回覆。|prompt response
+sum|n|總額；金額|an amount of money|A large sum was spent on renovations.|整修花費了一大筆錢。|a substantial sum
+wage|n|工資|money paid to workers for their work|The company increased the hourly wage.|公司提高了時薪。|minimum wage
+fuel|n|燃料|a substance used to produce energy|Higher fuel prices increased delivery costs.|燃料價格上漲提高了配送成本。|fuel efficiency
+decision|n|決定|a choice made after considering something|The board will announce its decision tomorrow.|董事會明天將公布決定。|make a decision
+energy|n|能源；精力|power used for work or heat|The building uses solar energy.|這棟建築使用太陽能。|renewable energy
+section|n|部分；區域|one part of a larger whole|Read the final section of the report.|請閱讀報告的最後一部分。|report section
+purpose|n|目的|the reason for doing something|The purpose of this visit is training.|這次拜訪的目的是接受訓練。|main purpose
+selection|n|選擇；精選品|a range of things available to choose from|The store offers a wide selection of bags.|這家店提供多種包款選擇。|wide selection
+opportunity|n|機會|a chance to do something|The seminar offers an opportunity to network.|這場研討會提供了拓展人脈的機會。|career opportunity
+sample|n|樣品|a small example of a product|Please send a fabric sample first.|請先寄送一份布料樣品。|free sample
+quantity|n|數量|how many or how much of something|Check the quantity before signing the receipt.|簽收前請確認數量。|order quantity
+method|n|方法|a way of doing something|This method reduces processing time.|這個方法能縮短處理時間。|payment method
+data|n|資料；數據|information collected for study or use|The team checked the sales data.|團隊檢查了銷售數據。|collect data
+pollution|n|污染|harmful substances in the environment|The factory reduced air pollution.|這間工廠減少了空氣污染。|air pollution
+article|n|文章|a piece of writing in a publication|She wrote an article about remote work.|她寫了一篇關於遠距工作的文章。|newspaper article
+theme|n|主題|the main idea of an event or work|Innovation is the theme of this year's conference.|創新是今年會議的主題。|conference theme
+condition|n|狀況；條件|the state that something is in|The equipment is in excellent condition.|設備的狀況極佳。|working condition
+departure|n|出發；離境|the act or time of leaving|Please arrive an hour before departure.|請在出發前一小時抵達。|departure time
+emergency|n|緊急事件|a serious situation requiring quick action|Use this exit only in an emergency.|只有發生緊急事件時才能使用這個出口。|emergency exit
+figure|n|數字；數據|a number showing an amount|The latest sales figure exceeded expectations.|最新的銷售數字超出預期。|sales figure
+solution|n|解決方法|a way to solve a problem|We need a solution to the storage problem.|我們需要解決儲存問題的方法。|practical solution
+device|n|裝置|a tool or machine for a specific purpose|Connect the device to your computer.|請將裝置連接到電腦。|mobile device
+confidence|n|信心|belief that someone or something is reliable|The results increased investor confidence.|這些成果提升了投資人的信心。|consumer confidence
+district|n|地區；行政區|a defined part of a city or country|The office is in the financial district.|辦公室位於金融區。|business district
+status|n|狀態|the current position or condition of something|You can check your order status online.|你可以在線上查看訂單狀態。|application status
+source|n|來源|the place something comes from|The report identifies each data source.|報告列出了每個資料來源。|reliable source
+career|n|職涯|a person's working life and development|Training can help advance your career.|訓練有助於推進你的職涯。|career development
+instruction|n|指示；操作說明|information explaining how to do something|Follow each instruction before starting the machine.|啟動機器前請遵循每項指示。|follow instructions
+insurance|n|保險|protection against financial loss|Travel insurance covers certain medical expenses.|旅遊保險涵蓋某些醫療費用。|health insurance
+growth|n|成長|an increase in size or amount|Online orders contributed to business growth.|網路訂單促進了業務成長。|economic growth
+charity|n|慈善機構；慈善|an organization helping people in need|The company donated computers to a charity.|公司捐贈電腦給慈善機構。|local charity
+property|n|財產；房地產|something owned by a person or organization|Please respect company property.|請愛惜公司財產。|commercial property
+variety|n|多樣；各種不同事物|a number of different types|The menu offers a variety of vegetarian dishes.|菜單提供各式素食餐點。|a variety of
+accommodation|n|住宿|a place to stay while traveling|The organizer arranged accommodation for guests.|主辦單位為賓客安排了住宿。|hotel accommodation
+admission|n|入場；入場費|permission or payment to enter a place|Admission to the exhibition is free.|這場展覽可免費入場。|admission fee
+customs|n|海關|the authority checking goods entering a country|The shipment is awaiting customs clearance.|這批貨物正在等候通關。|customs clearance
+beverage|n|飲料|a drink other than plain water|A hot beverage is included with breakfast.|早餐附有一杯熱飲。|complimentary beverage
+anniversary|n|週年紀念日|the yearly date of an earlier event|We are celebrating the store's tenth anniversary.|我們正在慶祝商店成立十週年。|wedding anniversary
+expert|n|專家|a person with special knowledge or skill|An expert will inspect the damaged equipment.|專家將檢查受損設備。|industry expert
+sequence|n|順序|the order in which things happen|Follow the steps in the correct sequence.|請依正確順序操作各步驟。|logical sequence
+colleague|n|同事|a person you work with|A colleague helped prepare the presentation.|一位同事協助準備了簡報。|former colleague
+spreadsheet|n|試算表|a computer document arranged in rows and columns|Enter the expenses in the spreadsheet.|請將費用輸入試算表。|update a spreadsheet
+advantage|n|優勢；好處|something that gives a benefit|Flexible hours are an advantage of this job.|彈性工時是這份工作的優點。|competitive advantage
+currency|n|貨幣|the money used in a country|Please pay in the local currency.|請使用當地貨幣付款。|foreign currency
+facility|n|設施|a building or service designed for an activity|The new facility includes meeting rooms.|新設施內有會議室。|manufacturing facility
+complaint|n|客訴；抱怨|a statement that something is wrong|We resolved the customer's complaint quickly.|我們迅速處理了顧客的客訴。|file a complaint
+venue|n|活動場地|the place where an event is held|The venue can accommodate two hundred guests.|這個場地可容納兩百位賓客。|conference venue
+supplier|n|供應商|a business providing goods or materials|Our supplier offers next-day delivery.|我們的供應商提供隔日配送。|reliable supplier
+announcement|n|公告|a public statement giving information|The announcement appeared on the company website.|這則公告刊登在公司網站上。|official announcement
+terminal|n|航廈；車站大樓|a building where passengers begin or end journeys|The shuttle stops at the international terminal.|接駁車會停靠國際航廈。|airport terminal
+warehouse|n|倉庫|a building used to store goods|The boxes are stored in our warehouse.|這些箱子存放在我們的倉庫。|warehouse space
+standard|n|標準|an expected level of quality|All products meet our safety standard.|所有產品都符合我們的安全標準。|quality standard
+minimum|n|最低限度|the smallest amount allowed or required|A minimum of ten orders is required.|至少需要十筆訂單。|a minimum of
+budget|n|預算|money planned for a particular purpose|Our budget covers the necessary repairs.|我們的預算足以支付必要的修繕。|annual budget
+manual|n|手冊|a book explaining how to use something|Consult the manual before installing the software.|安裝軟體前請查閱手冊。|user manual
+result|n|結果|something caused by an action or event|We will publish the survey results tomorrow.|我們明天將公布調查結果。|survey result
+experience|n|經驗|knowledge gained by doing something|She has experience in customer service.|她具有顧客服務的經驗。|work experience
+form|n|表格|a document with spaces for information|Please complete this application form.|請填妥這份申請表。|application form
+tour|n|參觀；遊覽|a planned visit around a place|The factory tour starts at ten.|工廠參觀活動十點開始。|guided tour
+award|n|獎項|a prize given for achievement|Our team received an innovation award.|我們團隊獲得了創新獎。|win an award
+tax|n|稅|money paid to the government|The price does not include sales tax.|這個價格不含營業稅。|income tax
+discount|n|折扣|a reduction in the usual price|Members receive a ten percent discount.|會員享有九折優惠。|bulk discount
+target|n|目標|a result that someone aims to achieve|We reached our monthly sales target.|我們達成了本月銷售目標。|sales target
+request|n|請求|an act of asking for something|Your request for leave was approved.|你的請假申請已獲核准。|special request
+aim|n|目的；目標|the result you hope to achieve|The aim is to reduce waiting times.|目的是縮短等候時間。|main aim
+trade|n|貿易|the buying and selling of goods|International trade supports the local economy.|國際貿易支持了當地經濟。|international trade
+display|n|展示|an arrangement of things for people to see|The window display features new products.|櫥窗展示了新產品。|product display
+power|n|電力|energy used to operate machines|A storm interrupted the power supply.|暴風雨造成電力供應中斷。|power supply
+aid|n|援助|help given to someone in need|The fund provides aid to small businesses.|這項基金援助小型企業。|financial aid
+refund|n|退款|money returned after a purchase|We issued a refund for the damaged item.|我們已為受損商品辦理退款。|full refund
+lack|n|缺乏|not having enough of something|A lack of space delayed the expansion.|空間不足延誤了擴建。|lack of experience
+process|n|流程|a series of actions leading to a result|The application process takes three days.|申請流程需要三天。|approval process
+loan|n|貸款|money borrowed and paid back later|The bank approved our business loan.|銀行核准了我們的企業貸款。|apply for a loan
+demand|n|需求|the amount people want to buy|Demand for electric vehicles is growing.|電動車的需求正在成長。|consumer demand
+progress|n|進展|movement toward completing or improving something|The project is making steady progress.|這項專案正穩定推進。|make progress
+network|n|網絡；網路|a connected group of people or systems|Our distribution network covers the entire island.|我們的配送網絡遍及全島。|distribution network
+survey|n|調查|a set of questions used to collect information|Customers can complete a short survey.|顧客可以填寫一份簡短問卷。|customer survey
+range|n|系列；範圍|a group of related products or values|We offer a wide range of services.|我們提供廣泛的服務。|product range
+experiment|n|實驗|a test used to learn or prove something|The experiment tested a new packaging material.|這項實驗測試了一種新包裝材料。|conduct an experiment
+bargain|n|划算的商品|something bought at a good price|This refurbished laptop is a real bargain.|這台整修過的筆電真的很划算。|a good bargain
+draft|n|草稿|an early version of a document|Please review the first draft.|請審閱初稿。|first draft
+research|n|研究|careful study to discover information|Market research helps us understand customers.|市場研究有助於我們了解顧客。|market research
+raise|n|加薪|an increase in pay|She received a raise after her review.|她在考核後獲得加薪。|pay raise
+project|n|專案|a planned piece of work|The project must finish by June.|這項專案必須在六月前完成。|manage a project
+private|adj|私人的；非公開的|not open or available to everyone|The discussion will take place in private.|這場討論將私下進行。|private meeting
+personal|adj|個人的|belonging or relating to one person|Do not share your personal password.|請勿分享你的個人密碼。|personal information
+common|adj|常見的；共同的|happening often or shared by several people|Payment delays are a common problem.|付款延遲是常見的問題。|common practice
+regular|adj|定期的|happening at usual or repeated times|Regular maintenance prevents unexpected breakdowns.|定期維護能預防意外故障。|regular maintenance
+major|adj|主要的；重大的|important or large in effect|The new office is near a major station.|新辦公室靠近主要車站。|major change
+available|adj|可取得的；有空的|ready for use or free to meet|A meeting room is available this afternoon.|今天下午有會議室可用。|available space
+negative|adj|負面的|expressing an unfavorable opinion or result|We responded to the negative feedback.|我們回應了負面意見。|negative feedback
+temporary|adj|暫時的|lasting for a limited time|We hired temporary staff for the festival.|我們為節慶活動聘用了臨時人員。|temporary position
+primary|adj|主要的|most important or coming first|Safety is our primary concern.|安全是我們最主要的考量。|primary responsibility
+typical|adj|典型的；通常的|usual for a particular type|A typical delivery takes two days.|一般配送需要兩天。|typical customer
+limited|adj|有限的|small in amount or availability|Parking spaces are limited near the office.|辦公室附近的停車位有限。|limited availability
+physical|adj|身體的；實體的|relating to the body or real objects|The job requires some physical strength.|這份工作需要一定的體力。|physical activity
+annual|adj|每年的|happening once every year|Our annual meeting is in September.|我們的年度會議在九月舉行。|annual report
+frequent|adj|頻繁的|happening many times|Frequent checks help prevent mistakes.|頻繁檢查有助於預防錯誤。|frequent traveler
+various|adj|各種的|of several different types|We considered various payment options.|我們考慮了各種付款方式。|various options
+suitable|adj|合適的|right for a particular purpose|This room is suitable for small meetings.|這個房間適合小型會議。|suitable candidate
+practical|adj|實用的；可行的|useful and suited to real situations|The workshop provides practical advice.|這場工作坊提供實用建議。|practical experience
+due|adj|到期的；預定的|expected or required at a certain time|The final payment is due Friday.|尾款須在星期五支付。|payment due
+legal|adj|合法的；法律的|allowed by law or relating to law|Please seek legal advice before signing.|簽署前請先尋求法律建議。|legal requirement
+traditional|adj|傳統的|following customs used for a long time|The restaurant serves traditional Taiwanese dishes.|這家餐廳供應傳統台灣料理。|traditional method
+portable|adj|可攜帶的|easy to carry or move|We need a portable projector.|我們需要一台可攜式投影機。|portable device
+harmful|adj|有害的|likely to cause damage or injury|The chemical may be harmful to plants.|這種化學物質可能對植物有害。|harmful effects
+entire|adj|整個的|including every part|The entire team attended the briefing.|整個團隊都參加了簡報會。|entire process
+stable|adj|穩定的|not changing suddenly or unexpectedly|Prices have remained stable this month.|本月價格維持穩定。|stable income
+optimistic|adj|樂觀的|expecting good things to happen|Investors are optimistic about future growth.|投資人對未來成長抱持樂觀態度。|optimistic outlook
+capable|adj|有能力的|able to do something well|She is capable of managing the project.|她有能力管理這項專案。|capable of
+unlikely|adj|不太可能的|not expected to happen|A further delay is unlikely.|不太可能再延誤。|unlikely to happen
+detailed|adj|詳細的|giving many facts or explanations|Please provide a detailed cost estimate.|請提供詳細的費用估算。|detailed report
+obvious|adj|明顯的|easy to notice or understand|The benefits of the upgrade are obvious.|這次升級的好處很明顯。|obvious advantage
+aware|adj|知道的；察覺的|knowing that something exists or happens|Are you aware of the new policy?|你知道這項新政策嗎？|aware of
+local|adj|當地的|relating to a nearby area|We buy vegetables from local farmers.|我們向當地農民購買蔬菜。|local business
+original|adj|原始的；原創的|existing first or created independently|Please keep the original receipt.|請保留原始收據。|original document
+spare|adj|備用的；多餘的|kept for use when needed|A spare key is at reception.|接待處有一把備用鑰匙。|spare parts
+present|adj|在場的；目前的|being at a place or existing now|All department heads were present.|所有部門主管都出席了。|present situation
+secure|adj|安全的|protected against danger or unauthorized access|Keep customer records in a secure location.|請將顧客紀錄存放在安全的地方。|secure connection
+initial|adj|最初的|happening at the beginning|The initial inspection found no damage.|初步檢查沒有發現損壞。|initial stage
+immediately|adv|立即|without waiting or delay|Report any equipment damage immediately.|設備若有損壞請立即通報。|respond immediately
+nearly|adv|幾乎|almost but not completely|The renovation is nearly complete.|整修工程幾乎完成了。|nearly finished
+save|v|節省；儲存|to keep something for later or avoid waste|This software will save us time.|這套軟體能幫我們節省時間。|save time
+invite|v|邀請|to ask someone to attend or join|We invited the supplier to lunch.|我們邀請供應商共進午餐。|invite guests
+download|v|下載|to copy online data to a device|Download the application from our website.|請從我們的網站下載應用程式。|download a file
+attend|v|參加；出席|to be present at an event|All supervisors should attend the training.|所有主管都應參加訓練。|attend a meeting
+cancel|v|取消|to decide that something will not happen|We had to cancel the outdoor event.|我們不得不取消戶外活動。|cancel a reservation
+remind|v|提醒|to help someone remember something|Please remind me to send the invoice.|請提醒我寄送發票。|remind someone to
+compare|v|比較|to examine similarities and differences|Compare the prices before ordering.|訂購前請比較價格。|compare prices
+deliver|v|配送；交付|to take something to a person or place|We deliver orders within three days.|我們會在三天內配送訂單。|deliver goods
+apologize|v|道歉|to say you are sorry|We apologize for the delivery delay.|我們為配送延遲致歉。|apologize for
+remove|v|移除|to take something away|Remove the old label before shipping.|出貨前請移除舊標籤。|remove a label
+organize|v|籌辦；整理|to plan an activity or arrange things|Our team will organize the conference.|我們團隊將籌辦這場會議。|organize an event
+create|v|創造；建立|to make something new|The expansion will create new jobs.|這次擴建將創造新工作機會。|create opportunities
+recognize|v|認出；肯定|to identify someone or acknowledge value|The award recognizes outstanding customer service.|這個獎項肯定傑出的顧客服務。|recognize achievement
+book|v|預訂|to arrange to use something in advance|Book your seat before Friday.|請在星期五前預訂座位。|book a room
+respond|v|回應|to answer or react|We respond to inquiries within one day.|我們會在一天內回覆詢問。|respond to inquiries
+mention|v|提到|to speak or write briefly about something|She mentioned the deadline during lunch.|她在午餐時提到了截止日期。|mention a problem
+calculate|v|計算|to find an amount using numbers|Calculate the total cost before ordering.|訂購前請計算總費用。|calculate expenses
+install|v|安裝|to put equipment or software into use|A technician will install the new printer.|技術人員將安裝新印表機。|install software
+contain|v|包含|to have something inside|The package contains two replacement parts.|包裹內有兩個替換零件。|contain information
+match|v|相符；搭配|to be the same or go well together|The invoice must match the purchase order.|發票必須與採購單相符。|match the description
+afford|v|負擔得起|to have enough money or time|We cannot afford another production delay.|我們無法再承受一次生產延誤。|afford to buy
+assist|v|協助|to help someone do something|Our staff can assist with registration.|我們的人員可以協助辦理報名。|assist customers
+attract|v|吸引|to make someone interested in something|The discount should attract new customers.|這項折扣應能吸引新顧客。|attract investment
+develop|v|開發；發展|to create or improve something over time|We plan to develop a mobile application.|我們計畫開發行動應用程式。|develop a product
+confirm|v|確認|to check or state that something is certain|Please confirm your attendance by email.|請以電子郵件確認是否出席。|confirm a booking
+apply|v|申請；適用|to ask formally or put something into use|You can apply for the position online.|你可以在線上應徵這個職缺。|apply for a job
+reduce|v|減少|to make something smaller or lower|The new process will reduce waste.|新流程將減少浪費。|reduce costs
+reject|v|拒絕|to refuse to accept something|The client rejected the first proposal.|客戶拒絕了第一份提案。|reject an offer
+upload|v|上傳|to send a file to an online system|Upload your receipt to the expense portal.|請將收據上傳到費用申報平台。|upload a document
+remain|v|保持；仍然是|to stay in the same state or place|The office will remain closed tomorrow.|辦公室明天仍將關閉。|remain open
+hire|v|聘用|to employ someone for work|We need to hire another designer.|我們需要再聘用一位設計師。|hire employees
+expect|v|預期；期待|to think something will happen|We expect the shipment on Monday.|我們預計星期一收到貨物。|expect an increase
+advertise|v|刊登廣告|to promote something publicly|We advertise our vacancies online.|我們在線上刊登徵才廣告。|advertise a product
+arrange|v|安排|to plan or organize something|I will arrange transportation for our guests.|我會為賓客安排交通。|arrange a meeting
+represent|v|代表|to act or speak for someone|Ms. Lin will represent our department.|林女士將代表我們部門。|represent a company
+intend|v|打算|to plan to do something|We intend to expand our delivery service.|我們打算擴大配送服務。|intend to do
+recommend|v|推薦；建議|to suggest something as a good choice|The consultant recommended a simpler process.|顧問建議採用更簡單的流程。|recommend a solution
+participate|v|參與|to take part in an activity|All branches can participate in the program.|所有分公司都能參與這項計畫。|participate in
+require|v|需要；要求|to need something or make it necessary|This position requires excellent communication skills.|這個職位需要優秀的溝通能力。|require approval
+subscribe|v|訂閱|to arrange to receive something regularly|Subscribe to our newsletter for updates.|請訂閱電子報以取得最新消息。|subscribe to a service
+replace|v|替換|to put something new in place of another|We will replace the damaged chairs.|我們將更換受損的椅子。|replace equipment
+perform|v|執行；表現|to carry out work or an activity|A specialist will perform the inspection.|專家將執行這項檢查。|perform a task
+introduce|v|介紹；推出|to present someone or something new|The company introduced a new payment system.|公司推出了新的付款系統。|introduce a product
+prevent|v|預防；防止|to stop something from happening|Regular checks prevent expensive repairs.|定期檢查能避免昂貴的維修。|prevent damage
+reach|v|達到；聯絡上|to arrive at a place or level|We reached an agreement after lunch.|我們在午餐後達成協議。|reach an agreement
+consider|v|考慮|to think carefully about something|Please consider the long-term costs.|請考慮長期成本。|consider an option
+retire|v|退休|to stop working after a career|Our director will retire next spring.|我們的主管明年春天將退休。|retire from work
+attach|v|附上；貼附|to connect or include something|Attach your résumé to the email.|請在電子郵件中附上履歷。|attach a file
+interrupt|v|打斷|to stop an activity for a short time|Please do not interrupt the presentation.|請勿打斷簡報。|interrupt a meeting
+seek|v|尋求|to try to find or obtain something|We are seeking an experienced accountant.|我們正在尋找有經驗的會計人員。|seek advice
+depart|v|出發；離開|to leave a place|The last bus departs at eleven.|末班公車十一點發車。|depart from
+disturb|v|打擾|to interrupt someone's work or rest|Please avoid disturbing guests after ten.|十點後請避免打擾房客。|do not disturb
+propose|v|提議|to suggest a plan for consideration|I propose moving the meeting online.|我提議將會議改為線上進行。|propose a plan
+identify|v|辨識；找出|to recognize or discover something|The audit identified several accounting errors.|稽核找出了幾項會計錯誤。|identify a problem
+offer|v|提供|to make something available|We offer free delivery on large orders.|大量訂單可享免費配送。|offer assistance
+rise|v|上升|to move to a higher level|Shipping costs continue to rise.|運費持續上升。|rise sharply
+rent|v|租用；出租|to pay for temporary use|We rented a larger meeting room.|我們租用了較大的會議室。|rent an office
+increase|v|增加|to become or make something greater|The promotion increased weekend sales.|這次促銷提高了週末銷售額。|increase productivity
+contact|v|聯絡|to communicate with someone|Contact our support team for assistance.|需要協助請聯絡客服團隊。|contact a supplier
+interview|v|面試；訪談|to ask someone questions formally|We will interview three candidates tomorrow.|我們明天將面試三位應徵者。|interview a candidate
+repair|v|修理|to fix something damaged|A technician repaired the air conditioner.|技術人員修好了冷氣。|repair equipment
+update|v|更新|to add the latest information or improvements|Please update your contact details.|請更新你的聯絡資料。|update a record
+reserve|v|預留；預訂|to keep something for future use|We reserved a table for six.|我們預訂了六人座位。|reserve a seat
+support|v|支持；支援|to help someone or something succeed|The new software supports remote access.|新軟體支援遠端存取。|support a proposal
+permit|v|允許|to allow something to happen|The rules do not permit smoking.|規定不允許吸菸。|permit access
+benefit|v|使受益|to help or improve something|The new route will benefit commuters.|新路線將使通勤者受益。|benefit from
+supply|v|供應|to provide things that are needed|This firm supplies parts to local factories.|這家公司供應零件給當地工廠。|supply materials
+cause|v|造成|to make something happen|Heavy rain caused several delivery delays.|大雨造成數次配送延誤。|cause a delay
+praise|v|讚揚|to express approval or admiration|The manager praised her careful work.|經理讚揚她工作細心。|praise an employee
+ban|v|禁止|to officially forbid something|The hotel bans smoking in all rooms.|這家飯店禁止在所有客房吸菸。|ban smoking
+damage|v|損壞|to harm or break something|The leak damaged several office computers.|漏水損壞了幾台辦公室電腦。|damage equipment
+transfer|v|轉移；調動|to move something to another place|Please transfer the funds before noon.|請在中午前轉帳。|transfer funds
+launch|v|推出；啟動|to introduce a product or start a project|We will launch the service next month.|我們將在下個月推出這項服務。|launch a product
+command|v|指揮；掌握|to give orders or exercise control|She commands a large emergency response team.|她指揮一支大型緊急應變團隊。|command respect
+advance|v|推進；進步|to move forward or improve|The training will advance your technical skills.|這項訓練將提升你的技術能力。|advance a career
+fit|v|合適；裝得下|to be the right size or suitable|The desk will fit beside the window.|這張書桌放得進窗邊的空間。|fit the requirements
+select|v|選擇|to choose from several possibilities|Please select your preferred delivery date.|請選擇你偏好的配送日期。|select a candidate
+separate|v|分開|to divide things into different groups|Separate damaged products from usable stock.|請將受損產品與可用庫存分開。|separate from
+regarding|prep|關於|about a particular subject|Contact us regarding your order.|有關訂單事宜請聯絡我們。|regarding payment
+construction|n|建造；施工|the work of building something|Construction will begin after the holiday.|工程將在假期後開始。|construction work
+appliance|n|家電|a machine used for household tasks|The warranty covers this kitchen appliance.|保固涵蓋這台廚房家電。|electrical appliance
+subscription|n|訂閱|an arrangement to receive a service regularly|Your subscription expires next week.|你的訂閱將在下週到期。|annual subscription
+ingredient|n|原料；食材|one of the materials in a mixture|All ingredients are listed on the package.|所有成分都列在包裝上。|fresh ingredients
+competitor|n|競爭者|a business competing with another|Our competitor lowered its delivery fees.|我們的競爭對手調降了運費。|major competitor
+certificate|n|證書|an official document proving a fact|Participants receive a certificate of completion.|參加者將獲得結業證書。|training certificate
+trend|n|趨勢|a general direction of change|The report explains recent market trends.|這份報告說明了近期市場趨勢。|market trend
+balance|n|餘額；平衡|the money remaining in an account|Please check your account balance.|請確認你的帳戶餘額。|outstanding balance
+summary|n|摘要|a short statement of the main points|The report begins with a brief summary.|這份報告以簡短摘要開頭。|executive summary
+deadline|n|截止日期|the latest time something must be finished|The application deadline is next Tuesday.|申請截止日是下週二。|meet a deadline
+accountant|n|會計人員|a person who manages financial records|The accountant reviewed our travel expenses.|會計人員審核了我們的差旅費。|certified accountant
+conference|n|會議；研討會|a formal event for discussion|The conference attracts international speakers.|這場研討會吸引了國際講者。|annual conference
+performance|n|表現；績效|how well a person or system works|Sales performance improved this quarter.|本季的銷售績效有所改善。|performance review
+assignment|n|指派的工作|a task given to someone|My first assignment involves market research.|我的第一項任務與市場研究有關。|complete an assignment
+briefcase|n|公事包|a bag used to carry work documents|He left his briefcase in the taxi.|他把公事包留在計程車上。|leather briefcase
+industry|n|產業|businesses producing similar goods or services|She works in the tourism industry.|她在觀光產業工作。|manufacturing industry
+instructor|n|講師；教練|a person who teaches a skill|The instructor demonstrated the safety procedure.|講師示範了安全操作程序。|training instructor
+donation|n|捐款；捐贈|money or goods given to help others|Your donation supports local schools.|你的捐款能支持當地學校。|charitable donation
+identification|n|身分證明|a document showing who someone is|Visitors must present valid identification.|訪客必須出示有效的身分證明。|photo identification
+interest|n|利息；興趣|money charged for borrowing or earned on savings|The account earns interest every month.|這個帳戶每月產生利息。|interest rate
+community|n|社區；群體|people living in an area or sharing interests|The company supports community events.|公司支持社區活動。|local community
+conclusion|n|結論|a judgment reached after considering information|The findings support our earlier conclusion.|研究結果支持了我們先前的結論。|reach a conclusion
+ceremony|n|典禮|a formal event marking an occasion|The award ceremony starts at seven.|頒獎典禮七點開始。|opening ceremony
+category|n|類別|a group of similar things|Choose the appropriate expense category.|請選擇合適的費用類別。|product category
+fault|n|故障；過失|a problem or responsibility for a mistake|A wiring fault caused the outage.|線路故障造成了停電。|technical fault
+application|n|申請；應用程式|a formal request for something|Your application is under review.|你的申請正在審核中。|job application
+photocopier|n|影印機|a machine that copies documents|The photocopier is near the entrance.|影印機在入口附近。|office photocopier
+registration|n|報名；登記|the act of officially recording information|Online registration closes on Thursday.|線上報名將在星期四截止。|registration form
+transportation|n|運輸；交通|the movement of people or goods|Public transportation is convenient here.|這裡的大眾運輸很方便。|public transportation
+promotion|n|升遷；促銷|a move to a higher job or a sales campaign|Her promotion became effective this month.|她的升遷在本月生效。|sales promotion
+pension|n|退休金|regular money paid after retirement|The company offers a pension plan.|公司提供退休金計畫。|pension fund
+majority|n|大多數|more than half of a group|The majority of staff approved the change.|大多數員工贊成這項變更。|a large majority
+extension|n|延長；分機|extra time or an additional part|We requested an extension of the deadline.|我們申請延長截止期限。|deadline extension
+assembly|n|組裝；集會|the process of putting parts together|Assembly takes about thirty minutes.|組裝大約需要三十分鐘。|assembly line
+degree|n|學位；程度|a qualification awarded by a university|The position requires a university degree.|這個職位要求大學學位。|bachelor's degree
+expense|n|費用|money spent on something|Travel expenses must be approved in advance.|差旅費必須事先核准。|business expense
+division|n|事業部；部門|a separate part of an organization|She manages the electronics division.|她負責管理電子事業部。|regional division
+policy|n|政策；規定|an official plan or rule|Our return policy allows thirty days.|我們的退貨規定允許三十天內退貨。|company policy
+employment|n|就業；雇用|paid work or the act of hiring|The new factory will increase local employment.|新工廠將增加當地就業機會。|employment contract
+investment|n|投資|money used to gain future returns|The equipment is a long-term investment.|這套設備是一項長期投資。|foreign investment
+résumé|n|履歷|a summary of education and work experience|Please send your résumé as a PDF.|請以 PDF 格式寄送履歷。|submit a résumé
+maintenance|n|維護；保養|work that keeps something in good condition|The elevator is closed for maintenance.|電梯因保養而暫停使用。|routine maintenance
+outcome|n|結果|the final result of an activity|We are pleased with the negotiation outcome.|我們對談判結果感到滿意。|positive outcome
+proposal|n|提案|a suggested plan for consideration|The committee will review our proposal.|委員會將審查我們的提案。|submit a proposal
+labor|n|勞動；勞工|work or the people who do it|Labor costs increased this year.|今年的勞動成本增加了。|labor costs
+sector|n|產業部門|a particular part of the economy|Investment in the technology sector is growing.|科技產業的投資正在增加。|private sector
+term|n|條款；期間|a condition in an agreement or a set period|Please read every term of the agreement.|請閱讀協議中的每一項條款。|contract term
+committee|n|委員會|a group chosen to make decisions|The committee meets every month.|委員會每月開會。|planning committee
+plant|n|工廠|a building where goods are manufactured|The plant produces electronic components.|這座工廠生產電子零組件。|manufacturing plant
+outlet|n|零售據點|a store selling a company's products|A new outlet opened near the station.|車站附近開了一家新門市。|retail outlet
+duration|n|期間；持續時間|the time something lasts|The contract specifies the project duration.|合約明訂專案期間。|duration of a contract
+database|n|資料庫|an organized collection of electronic information|Update the customer database weekly.|請每週更新顧客資料庫。|customer database
+literacy|n|讀寫能力；素養|the ability to read or use a skill|The course improves digital literacy.|這門課程能提升數位素養。|computer literacy
+structure|n|結構|the way parts are arranged|The report explains our organizational structure.|報告說明了我們的組織結構。|organizational structure
+firm|n|公司|a business providing goods or services|The firm specializes in legal services.|這家公司專門提供法律服務。|consulting firm
+superior|n|上司|a person with a higher position|Ask your superior before approving the expense.|核准費用前請先詢問上司。|immediate superior
+obligation|n|義務|something you are required to do|The contract outlines each party's obligations.|合約列出了各方的義務。|legal obligation
+unemployment|n|失業|the state of being without paid work|Unemployment fell during the summer.|夏季的失業情況有所改善。|unemployment rate
+evidence|n|證據|information showing that something is true|We need evidence of purchase.|我們需要購買證明。|supporting evidence
+dashboard|n|儀表板|a display showing important information|The dashboard shows daily sales totals.|儀表板顯示每日銷售總額。|sales dashboard
+principle|n|原則|a basic belief or rule|Fairness is a guiding principle here.|公平是這裡的指導原則。|basic principle
+editor|n|編輯|a person who prepares writing for publication|The editor corrected several spelling errors.|編輯修正了幾處拼字錯誤。|managing editor
+consumer|n|消費者|a person who buys goods or services|Consumers are choosing reusable packaging.|消費者正選擇可重複使用的包裝。|consumer behavior
+resource|n|資源|something useful for achieving a goal|The library is a valuable research resource.|圖書館是珍貴的研究資源。|human resources
+candidate|n|候選人；應徵者|a person being considered for a position|The candidate has strong technical skills.|這位應徵者具備扎實的技術能力。|suitable candidate
+shipment|n|一批貨物；出貨|goods sent together to a destination|Your shipment will arrive tomorrow.|你的貨物明天會抵達。|track a shipment
+applicant|n|申請人|a person who formally requests a position|Each applicant must provide two references.|每位應徵者必須提供兩位推薦人。|job applicant
+administration|n|行政；管理|the work of managing an organization|She is responsible for office administration.|她負責辦公室行政工作。|business administration
+supervisor|n|主管|a person overseeing other workers|Your supervisor will explain the procedure.|你的主管會說明程序。|shift supervisor
+session|n|一場活動；時段|a period devoted to a particular activity|The training session lasts one hour.|這場訓練為時一小時。|training session
+improvement|n|改善|a change that makes something better|We noticed an improvement in response times.|我們注意到回應速度有所改善。|continuous improvement
+presentation|n|簡報|a talk explaining something to an audience|Her presentation focused on customer needs.|她的簡報聚焦於顧客需求。|give a presentation
+hardware|n|硬體|the physical parts of computer equipment|The upgrade requires new hardware.|這次升級需要新的硬體。|computer hardware
+excursion|n|短途旅行|a short trip for enjoyment|An afternoon excursion is available for guests.|賓客可參加下午的短途旅行。|day excursion
+reception|n|接待處；招待會|a welcome area or a formal social event|The reception will follow the opening speech.|開幕致詞後將舉行招待會。|welcome reception
+priority|n|優先事項|something considered more important than others|Customer safety is our top priority.|顧客安全是我們最優先的事項。|give priority to
+trial|n|試用；試驗|a test before making a final decision|The software includes a free trial.|這套軟體提供免費試用。|trial period
+economy|n|經濟|the system of production and spending|Tourism supports the regional economy.|觀光業支持了區域經濟。|local economy
+accounting|n|會計|the work of recording financial information|She completed a course in accounting.|她完成了一門會計課程。|accounting department
+appreciation|n|感謝；賞識|recognition of someone's value or help|We sent a gift in appreciation.|我們送了一份禮物表達感謝。|show appreciation
+merchandise|n|商品|goods offered for sale|Damaged merchandise can be returned.|受損商品可以退貨。|display merchandise
+motivation|n|動機；積極性|the reason or desire to do something|Clear goals can improve employee motivation.|明確的目標能提高員工積極性。|employee motivation
+technician|n|技術人員|a worker trained to fix technical equipment|A technician checked the network connection.|技術人員檢查了網路連線。|service technician
+memo|n|備忘錄|a short written message at work|The memo explains the new schedule.|備忘錄說明了新時程。|internal memo
+transit|n|運送；運輸途中|the movement of people or goods|The goods were damaged in transit.|貨物在運送途中受損。|in transit
+layout|n|配置；版面|the arrangement of parts in a space|The new layout creates more storage space.|新的配置增加了收納空間。|office layout
+statement|n|聲明；對帳單|a written declaration or financial record|Check your monthly bank statement.|請查看每月的銀行對帳單。|financial statement
+position|n|職位|a particular job in an organization|The position includes health insurance.|這個職位提供健康保險。|vacant position
+tenant|n|承租人|a person or business renting a property|The tenant requested additional parking spaces.|承租人要求增加停車位。|commercial tenant
+feedback|n|回饋意見|comments used to evaluate or improve something|We welcome feedback about our service.|我們歡迎對服務提出意見。|customer feedback
+courier|n|快遞人員；快遞業者|a person or service delivering packages|The courier collected the signed documents.|快遞人員取走了簽好的文件。|courier service
+responsibility|n|責任|a duty to take care of something|Safety is everyone's responsibility.|安全是每個人的責任。|take responsibility
+commuter|n|通勤者|a person traveling regularly to work|Commuters can buy discounted monthly passes.|通勤者可以購買優惠月票。|daily commuter
+quarter|n|季度|one of four three-month periods in a year|Profits increased in the second quarter.|第二季的獲利增加了。|first quarter
+stock|n|庫存；股票|goods available for sale or company shares|This item is currently in stock.|這個品項目前有庫存。|stock levels
+utilities|n|水電等公共服務|basic services such as water and electricity|The rent does not include utilities.|租金不含水電等費用。|utility costs
+layover|n|轉機停留|a short stop between parts of a journey|We have a two-hour layover in Seoul.|我們在首爾轉機停留兩小時。|long layover
+agenda|n|議程|a list of topics for a meeting|Please add this issue to the agenda.|請把這個議題加入議程。|meeting agenda
+transcript|n|逐字稿；成績單|a written record of speech or academic results|A transcript of the interview is available.|這場訪談有逐字稿可供查閱。|academic transcript
+proportion|n|比例|a part considered in relation to the whole|A large proportion of orders come online.|很大比例的訂單來自網路。|a high proportion
+reputation|n|聲譽|the opinion people have about someone|The hotel has a reputation for excellent service.|這家飯店以優良服務聞名。|good reputation
+itinerary|n|行程表|a plan listing travel arrangements|Please review the updated travel itinerary.|請查看更新後的旅行行程表。|travel itinerary
+consent|n|同意|permission given after understanding something|Written consent is required before publication.|刊登前需要取得書面同意。|written consent
+milestone|n|重要里程碑|an important stage in development|Completing the prototype was a major milestone.|完成原型是一項重要里程碑。|project milestone
+interface|n|介面|the part through which users operate a system|The interface is easy to navigate.|這個介面很容易操作。|user interface
+certification|n|認證|official proof of meeting a standard|The supplier obtained environmental certification.|供應商取得了環境認證。|professional certification
+statistics|n|統計數據|numbers describing a situation or group|The statistics show rising demand.|統計數據顯示需求上升。|sales statistics
+individual|n|個人|one person considered separately|Each individual must register separately.|每個人都必須個別報名。|private individual
+reward|n|獎勵|something given for effort or achievement|Employees receive rewards for innovative ideas.|員工會因創新構想獲得獎勵。|financial reward
+broadcast|n|廣播；播送節目|a program transmitted to an audience|The live broadcast begins at eight.|現場轉播八點開始。|live broadcast
+influence|n|影響力|the power to affect decisions or behavior|Online reviews have a strong influence on buyers.|網路評論對買家有很大的影響力。|market influence
+lecture|n|演講；授課|an educational talk to an audience|The lecture covers basic investment principles.|這場演講涵蓋基本投資原則。|attend a lecture
+host|n|主辦者；主持人|a person welcoming guests or presenting an event|The host introduced the guest speaker.|主持人介紹了特邀講者。|event host
+retail|n|零售|the sale of goods directly to consumers|She has ten years of experience in retail.|她有十年零售業經驗。|retail sales
+strike|n|罷工|a planned refusal to work|The strike disrupted local bus services.|罷工影響了當地公車服務。|labor strike
+credit|n|信用；貸記|an arrangement to pay later or money added to an account|The store issued a credit for the return.|商店為這次退貨提供了購物抵用額。|buy on credit
+contract|n|合約|a legally binding agreement|Both parties signed the contract.|雙方都簽署了合約。|sign a contract
+rate|n|費率；比率|a price or amount measured against another|The hotel offers a special weekend rate.|飯店提供週末優惠房價。|interest rate
+shift|n|輪班時段|a scheduled period of work|My shift starts at six.|我的班從六點開始。|night shift
+profit|n|利潤|money remaining after costs are paid|The shop earned a profit this year.|這家店今年獲利了。|net profit
+access|n|存取權；進入|the ability or right to enter or use|Employees have access to the training portal.|員工可以使用訓練平台。|internet access
+conflict|n|衝突|a serious disagreement or incompatibility|The manager helped resolve the scheduling conflict.|經理協助解決了排程衝突。|conflict of interest
+deposit|n|訂金；存款|money paid in advance or kept in a bank|A deposit is required to reserve the room.|預訂房間需要支付訂金。|security deposit
+debate|n|辯論；討論|a discussion of different opinions|The proposal led to a lengthy debate.|這份提案引發了長時間的討論。|public debate
+impact|n|影響|a strong effect on something|The delay had little impact on production.|這次延誤對生產影響不大。|environmental impact
+forecast|n|預測|a statement about expected future conditions|The sales forecast looks promising.|銷售預測相當樂觀。|weather forecast
+punctual|adj|準時的|arriving or happening at the agreed time|Applicants should be punctual for interviews.|應徵者應準時參加面試。|punctual arrival
+current|adj|目前的|existing or happening now|Please confirm your current address.|請確認你目前的地址。|current situation
+specific|adj|特定的；明確的|clearly defined or particular|The client requested a specific delivery date.|客戶指定了確切的配送日期。|specific requirement
+incredible|adj|難以置信的|extremely impressive or hard to believe|The team made incredible progress.|這個團隊取得了驚人的進展。|incredible achievement
+affordable|adj|負擔得起的|priced within someone's budget|We need affordable office space.|我們需要價格負擔得起的辦公空間。|affordable price
+flexible|adj|有彈性的|able to change or adapt easily|The company offers flexible working hours.|公司提供彈性工時。|flexible schedule
+unique|adj|獨特的|different from all others|The product has a unique design.|這項產品的設計很獨特。|unique feature
+effective|adj|有效的|producing the intended result|The new policy proved effective.|新政策證實有效。|effective solution
+diverse|adj|多元的|including many different types|Our team has diverse professional backgrounds.|我們團隊的專業背景多元。|diverse workforce
+constant|adj|持續的；不變的|continuing without interruption or change|The equipment requires constant monitoring.|這套設備需要持續監控。|constant demand
+gross|adj|總額的；未扣除費用的|total before deductions are made|Gross income increased despite higher costs.|儘管成本提高，總收入仍增加。|gross profit
+inexperienced|adj|缺乏經驗的|having little experience|Inexperienced staff receive additional training.|經驗不足的員工會接受額外訓練。|inexperienced worker
+adjacent|adj|相鄰的|next to something|Parking is available in the adjacent lot.|旁邊的停車場有車位可用。|adjacent to
+economic|adj|經濟的|relating to the economy|The report examines regional economic growth.|這份報告探討區域經濟成長。|economic development
+relevant|adj|相關的|closely connected to the matter|Please include relevant work experience.|請列入相關工作經驗。|relevant information
+domestic|adj|國內的|within a particular country|Domestic flights leave from Terminal One.|國內航班從第一航廈出發。|domestic market
+complimentary|adj|免費招待的|provided without charge|Guests receive a complimentary breakfast.|房客可享免費早餐。|complimentary ticket
+ongoing|adj|持續進行的|continuing at the present time|The delay is due to ongoing repairs.|這次延誤是因為維修仍在進行。|ongoing project
+principal|adj|主要的|most important or main|Cost is the principal reason for the change.|成本是這項變更的主要原因。|principal concern
+verbal|adj|口頭的|spoken rather than written|We received verbal approval yesterday.|我們昨天取得了口頭核准。|verbal agreement
+spacious|adj|寬敞的|having plenty of room|The apartment has a spacious living room.|這間公寓有寬敞的客廳。|spacious office
+cautious|adj|謹慎的|careful to avoid risk or mistakes|Investors remain cautious about the market.|投資人對市場仍抱持謹慎態度。|cautious approach
+internal|adj|內部的|within an organization or place|This document is for internal use only.|這份文件僅供內部使用。|internal review
+overall|adj|整體的|considering everything together|Overall sales improved this quarter.|本季的整體銷售有所改善。|overall performance
+valid|adj|有效的|officially acceptable or still usable|Your passport must remain valid during the trip.|旅途中你的護照必須保持有效。|valid identification
+fundamental|adj|基本的；根本的|forming an essential basis|Trust is fundamental to a business partnership.|信任是商業合作的根本。|fundamental principle
+medical|adj|醫療的|relating to health care|The company covers certain medical expenses.|公司負擔部分醫療費用。|medical insurance
+accessible|adj|可到達的；可使用的|easy to reach or use|The building is accessible to wheelchair users.|輪椅使用者可以進出這棟建築。|easily accessible
+additional|adj|額外的|added to what already exists|Additional chairs are available on request.|如有需要可提供額外椅子。|additional charge
+reasonable|adj|合理的|fair and sensible|The supplier offered a reasonable price.|供應商提出了合理價格。|reasonable request
+appropriate|adj|適當的|suitable for a particular situation|Wear appropriate clothing for the site visit.|實地參訪時請穿著合適的服裝。|appropriate action
+permanent|adj|永久的；長期的|intended to last indefinitely|She was offered a permanent position.|她獲得了一個長期職位。|permanent employee
+abundant|adj|充足的；豐富的|available in large amounts|The region has abundant natural resources.|這個地區擁有豐富的天然資源。|abundant supply
+anonymous|adj|匿名的|without a person's name being known|Employees can submit anonymous feedback.|員工可以匿名提供意見。|anonymous survey
+extensive|adj|廣泛的；大量的|covering a large area or subject|The role requires extensive travel.|這個職位需要經常出差。|extensive experience
+potential|adj|潛在的|possible but not yet actual|We contacted several potential buyers.|我們聯絡了幾位潛在買家。|potential customer
+technical|adj|技術的|relating to specialized practical knowledge|Contact support for technical assistance.|需要技術協助請聯絡支援人員。|technical support
+essential|adj|必要的|completely necessary|Accurate records are essential for audits.|準確的紀錄對稽核至關重要。|essential information
+professional|adj|專業的|relating to skilled work or proper conduct|The staff provided professional service.|員工提供了專業服務。|professional development
+commercial|adj|商業的|relating to buying and selling|The site is approved for commercial use.|這個地點已獲准作商業用途。|commercial property
+overseas|adj|海外的|located in another country across the sea|Our overseas office handles regional orders.|我們的海外辦公室負責區域訂單。|overseas market
+moderate|adj|適中的|neither very large nor very small|We expect moderate growth next year.|我們預期明年將溫和成長。|moderate increase
+particularly|adv|尤其；特別|more than usual or than others|This model is particularly popular with students.|這個型號特別受學生歡迎。|particularly useful
+approximately|adv|大約|close to a number but not exact|Delivery takes approximately five working days.|配送大約需要五個工作天。|approximately equal
+concentrate|v|專注|to give full attention to something|Please concentrate on the most urgent task.|請專注於最緊急的任務。|concentrate on
+scan|v|掃描；快速瀏覽|to copy digitally or look through quickly|Scan the receipt and attach it.|請掃描收據並附上檔案。|scan a document
+postpone|v|延後|to move an event to a later time|We postponed the picnic because of rain.|我們因下雨延後了野餐。|postpone a meeting
+reschedule|v|重新安排時間|to arrange an event for a different time|Please reschedule my appointment for Friday.|請將我的預約改到星期五。|reschedule a flight
+affect|v|影響|to cause a change in something|The road closure will affect deliveries.|道路封閉將影響配送。|affect performance
+predict|v|預測|to say what may happen in the future|Analysts predict higher demand this winter.|分析師預測今年冬季需求會增加。|predict growth
+enroll|v|報名；註冊|to officially join a course or program|You can enroll in the course online.|你可以在線上報名這門課程。|enroll in a course
+commute|v|通勤|to travel regularly between home and work|She commutes by train each day.|她每天搭火車通勤。|commute to work
+involve|v|涉及；包含|to include something as a necessary part|The job involves frequent customer visits.|這份工作需要經常拜訪顧客。|involve teamwork
+hesitate|v|猶豫|to pause because you are uncertain|Do not hesitate to ask for assistance.|需要協助時請別猶豫。|hesitate to ask
+donate|v|捐贈|to give money or goods for a cause|We donated unused desks to a school.|我們將閒置書桌捐給學校。|donate equipment
+forward|v|轉寄；轉送|to send something onward to another person|Forward the message to your supervisor.|請將訊息轉寄給主管。|forward an email
+achieve|v|達成|to successfully reach a goal|The team achieved its annual target.|團隊達成了年度目標。|achieve a goal
+contribute|v|貢獻；促成|to give something or help cause a result|Every department contributed to the project.|每個部門都對專案有所貢獻。|contribute to
+extend|v|延長；擴大|to make something last longer or reach further|We extended the deadline by one week.|我們將期限延長了一週。|extend a deadline
+consist|v|由……組成|to be made up of certain parts|The package consists of three training modules.|這套課程由三個訓練單元組成。|consist of
+interact|v|互動|to communicate or act with others|Participants will interact in small groups.|參與者將分成小組互動。|interact with customers
+indicate|v|指出；顯示|to show or suggest something|The results indicate strong customer interest.|結果顯示顧客很感興趣。|indicate a preference
+occur|v|發生|to happen or take place|Minor delays may occur during maintenance.|維護期間可能發生短暫延誤。|occur frequently
+assure|v|向……保證|to tell someone confidently that something is true|We assured clients that their data was safe.|我們向客戶保證資料安全。|assure someone that
+persuade|v|說服|to get someone to act through reasoning|The demonstration persuaded us to buy.|這場示範說服了我們購買。|persuade someone to
+convince|v|使相信；說服|to make someone believe something|The results convinced investors of the plan's value.|這些成果使投資人相信計畫的價值。|convince someone of
+operate|v|操作；營運|to use equipment or run a business|Only trained staff may operate this machine.|只有受過訓練的人員能操作這台機器。|operate equipment
+declare|v|申報；宣布|to state something officially|Declare any restricted goods at customs.|請向海關申報管制物品。|declare goods
+alter|v|更改|to make a change to something|We may alter the schedule if necessary.|必要時我們可能調整時程。|alter a plan
+maintain|v|維持；保養|to keep something in good condition|Regular checks maintain product quality.|定期檢查能維持產品品質。|maintain equipment
+employ|v|雇用；採用|to give someone a job or use something|The factory employs over two hundred people.|這間工廠雇用超過兩百人。|employ staff
+assemble|v|組裝；集合|to put parts together|Workers assemble the units on site.|工人在現場組裝這些組件。|assemble a product
+assign|v|指派|to give someone a task or role|The manager assigned me a new project.|經理指派我負責一項新專案。|assign a task
+approve|v|核准|to officially accept or allow something|Finance approved the equipment purchase.|財務部核准了設備採購。|approve a request
+suggest|v|建議|to offer an idea for consideration|She suggested a shorter training session.|她建議縮短訓練時段。|suggest an alternative
+conclude|v|作出結論；結束|to reach a judgment or bring to an end|The meeting concluded with a vote.|會議以投票作結。|conclude a meeting
+motivate|v|激勵|to give someone a reason to act|Clear goals motivate employees to improve.|明確的目標能激勵員工進步。|motivate a team
+shrink|v|縮小|to become smaller|The market shrank after the price increase.|價格上漲後市場萎縮了。|shrink in size
+submit|v|提交|to formally send something for review|Submit the completed form by Friday.|請在星期五前提交填好的表格。|submit an application
+draw|v|吸引；繪製|to attract attention or produce a picture|The exhibition drew many international visitors.|這場展覽吸引了許多國際訪客。|draw attention
+activate|v|啟用|to make a system or service start working|Activate your account using the link.|請透過連結啟用帳戶。|activate an account
+claim|v|聲稱；申請領取|to state something or request what is owed|Employees can claim approved travel expenses.|員工可以申請核准的差旅費。|claim expenses
+adjust|v|調整|to change something slightly to improve it|Adjust the screen brightness before use.|使用前請調整螢幕亮度。|adjust a schedule
+promote|v|推廣；升遷|to encourage sales or raise someone's position|The campaign promotes our new product line.|這項活動推廣我們的新產品系列。|promote a product
+adapt|v|適應；調整|to change to suit new conditions|We adapted the design for smaller screens.|我們調整了設計以適用較小的螢幕。|adapt to change
+settle|v|解決；結清|to resolve a problem or pay what is owed|Please settle the invoice before departure.|請在離開前結清發票款項。|settle a dispute
+revise|v|修訂|to change a document or plan|We revised the proposal after receiving feedback.|收到回饋後，我們修訂了提案。|revise a document
+invest|v|投資|to spend money expecting future benefits|The company invested in renewable energy.|公司投資了再生能源。|invest in technology
+locate|v|找出位置；設置|to find where something is|Staff located the missing package.|員工找到了遺失的包裹。|locate a file
+demonstrate|v|示範；證明|to show how something works or is true|The trainer demonstrated the new software.|講師示範了新軟體的操作。|demonstrate a product
+quote|v|報價；引用|to state a price or repeat exact words|The supplier quoted a lower price.|供應商報了較低的價格。|quote a price
+demote|v|降職|to move someone to a lower position|The manager was demoted after repeated violations.|這位經理因多次違規而遭降職。|demote an employee
+withdraw|v|提領；撤回|to take money out or remove a request|You may withdraw your application anytime.|你可以隨時撤回申請。|withdraw cash
+dominate|v|主導；占優勢|to have the greatest influence or share|Two firms dominate the regional market.|兩家公司主導了區域市場。|dominate a market
+elaborate|v|詳細說明|to explain something in more detail|Could you elaborate on the delivery plan?|你能詳細說明配送計畫嗎？|elaborate on
+eliminate|v|消除|to completely remove something|The update eliminates several common errors.|這次更新消除了幾種常見錯誤。|eliminate waste
+anticipate|v|預期；預先準備|to expect something and prepare for it|We anticipate higher demand during the holidays.|我們預期假日期間需求會增加。|anticipate demand
+exceed|v|超過|to go beyond a limit or expectation|Expenses must not exceed the approved budget.|支出不得超過核准預算。|exceed expectations
+appoint|v|任命|to officially choose someone for a role|They appointed her regional director.|他們任命她為區域主管。|appoint a manager
+customize|v|客製化|to change something for a particular user|You can customize the dashboard layout.|你可以自訂儀表板配置。|customize a product
+appeal|v|吸引；提出申訴|to be attractive or request reconsideration|The simple design appeals to many buyers.|這個簡潔設計吸引了許多買家。|appeal to customers
+commit|v|承諾；投入|to promise or devote resources|We committed funds to the renovation.|我們承諾投入整修經費。|commit to a plan
+sustain|v|維持；支撐|to keep something continuing|Repeat customers help sustain the business.|回頭客有助於維持業務。|sustain growth
+occupy|v|占用；使用|to fill or use a space|The company occupies the entire floor.|這家公司使用整層樓。|occupy office space
+nominate|v|提名|to formally suggest someone for a position|Staff nominated her for the service award.|員工提名她角逐服務獎。|nominate a candidate
+distinguish|v|區分；使突出|to recognize differences between things|Clear labels distinguish the product sizes.|清楚的標籤能區分產品尺寸。|distinguish between
+convert|v|轉換|to change something into another form|Convert the file to PDF before sending.|寄送前請將檔案轉成 PDF。|convert a file
+merge|v|合併|to combine into a single unit|The two departments will merge next month.|兩個部門將在下個月合併。|merge with
+track|v|追蹤|to follow the progress or location of something|Track your package on our website.|請在我們的網站追蹤包裹。|track an order
+charge|v|收費；充電|to ask for payment or supply electricity|The hotel charges extra for parking.|飯店另收停車費。|charge a fee
+attempt|v|嘗試|to try to do something|We attempted to contact the supplier.|我們曾嘗試聯絡供應商。|attempt to resolve
+exhibit|v|展出|to display something publicly|Local artists will exhibit their work.|當地藝術家將展出作品。|exhibit products
+file|v|提交歸檔；提出|to officially submit or store a document|Please file the expense report today.|請今天提交費用報告。|file a complaint
+concern|v|使擔憂；涉及|to worry someone or relate to something|The rising costs concern our investors.|成本上升使投資人擔憂。|concern customers
+function|v|運作|to work as intended|The backup system is functioning normally.|備援系統運作正常。|function properly
+purchase|v|購買|to buy something|We purchased new chairs for the office.|我們為辦公室買了新椅子。|purchase equipment
+guarantee|v|保證|to promise a result or quality|We guarantee delivery by Friday.|我們保證星期五前送達。|guarantee quality
+register|v|註冊；登記|to officially record information or join|Register online to reserve your place.|請在線上報名以保留名額。|register for a course
+lease|v|租賃|to rent property under an agreement|The company leases its office equipment.|公司租賃辦公設備。|lease office space
+feature|v|以……為特色；展示|to include something as an important part|The exhibition features local designers.|這場展覽以當地設計師為主角。|feature a product
+default|v|違約；未履行付款義務|to fail to make a required payment|The borrower defaulted on the loan.|借款人未履行貸款還款義務。|default on a loan
+sponsor|v|贊助|to support an activity with money or resources|Our company sponsors the local arts festival.|我們公司贊助當地藝術節。|sponsor an event
+malfunction|v|故障|to fail to work correctly|The scanner malfunctioned during registration.|掃描器在報到時故障了。|malfunction repeatedly
+commitment|n|承諾；投入|a promise or willingness to give effort|The company renewed its commitment to safety.|公司重申了對安全的承諾。|long-term commitment
+exposure|n|接觸；曝光|contact with something or public attention|The campaign increased exposure for our brand.|這次活動提高了品牌曝光。|media exposure
+segment|n|區隔；部分|a distinct part of a market or whole|This model targets a younger market segment.|這個型號鎖定較年輕的市場客群。|market segment
+factor|n|因素|something contributing to a result|Price is an important factor in purchasing.|價格是採購的重要因素。|key factor
+distribution|n|配送；分配|the process of delivering or sharing things|The warehouse handles regional distribution.|這座倉庫負責區域配送。|distribution center
+criteria|n|標準；準則|standards used to judge or choose|Applicants must meet all selection criteria.|申請人必須符合所有甄選標準。|selection criteria
+component|n|零組件；要素|one part of a larger system|A faulty component caused the shutdown.|故障零件造成了停機。|electronic component
+transaction|n|交易|an exchange of money or goods|Keep a record of each transaction.|請保留每筆交易的紀錄。|bank transaction
+foundation|n|基礎；基金會|a supporting base or charitable organization|Trust is the foundation of our partnership.|信任是我們合作的基礎。|solid foundation
+perspective|n|觀點|a way of considering something|The survey provides a customer's perspective.|這份調查提供了顧客的觀點。|different perspective
+welfare|n|福祉；福利|the health and well-being of people|Employee welfare is a company priority.|員工福祉是公司的優先事項。|employee welfare
+representative|n|代表|a person acting for an organization|A sales representative will contact you.|業務代表將聯絡你。|sales representative
+publicity|n|宣傳；媒體關注|public attention given to something|The event generated positive publicity.|這場活動獲得了正面宣傳。|generate publicity
+freelancer|n|自由工作者|a person working independently for different clients|We hired a freelancer to design the brochure.|我們聘請自由工作者設計手冊。|freelance designer
+defect|n|瑕疵|a fault in a product|The inspection revealed a minor defect.|檢查發現了一處小瑕疵。|manufacturing defect
+coverage|n|涵蓋範圍；保障|the extent included in a service or policy|Check the policy's medical coverage.|請查看保單的醫療保障範圍。|insurance coverage
+orientation|n|新進說明會；導向|an introduction to a new job or environment|New employees attend orientation on Monday.|新員工星期一參加到職說明會。|employee orientation
+resolution|n|解決；決議|a solution to a problem or formal decision|Both sides welcomed the dispute's resolution.|雙方都樂見爭議獲得解決。|conflict resolution
+compensation|n|補償；薪酬|payment for work or a loss|Passengers received compensation for the cancellation.|乘客因班次取消獲得補償。|financial compensation
+mortgage|n|房貸|a loan used to buy property|They applied for a mortgage together.|他們一起申請了房屋貸款。|mortgage payment
+merit|n|優點；功績|a good quality deserving recognition|Candidates are selected on merit.|候選人依能力與表現獲選。|merit-based promotion
+prospect|n|前景；潛在客戶|a possibility for future success|The new branch has good growth prospects.|新分公司具有良好的成長前景。|career prospects
+warranty|n|保固|a promise to repair or replace faulty goods|The printer comes with a one-year warranty.|這台印表機附有一年保固。|warranty period
+controversy|n|爭議|strong public disagreement|The proposed closure caused controversy.|提議關閉據點引發了爭議。|public controversy
+workshop|n|工作坊|a practical training session|The workshop teaches presentation skills.|這場工作坊教授簡報技巧。|attend a workshop
+reference|n|推薦人；參考資料|a person recommending an applicant or information consulted|Please provide a professional reference.|請提供一位工作上的推薦人。|reference letter
+layoff|n|裁員|the loss of a job because work is reduced|The closure resulted in several layoffs.|據點關閉導致數人遭裁員。|avoid layoffs
+scale|n|規模|the size or extent of something|We underestimated the scale of the project.|我們低估了專案規模。|large scale
+personnel|n|人事；全體人員|the people employed by an organization|Only authorized personnel may enter.|只有獲授權的人員可以進入。|personnel department
+emphasis|n|重點；強調|special attention given to something|The course places emphasis on practical skills.|課程著重實作技能。|place emphasis on
+commission|n|佣金；委託|payment based on sales or work commissioned|Agents earn commission on each sale.|代理人可從每筆銷售賺取佣金。|sales commission
+inspection|n|檢查|a careful official examination|The building passed its safety inspection.|這棟建築通過了安全檢查。|safety inspection
+precaution|n|預防措施|an action taken to avoid danger|Take precautions when handling chemicals.|處理化學品時請採取預防措施。|safety precaution
+operation|n|營運；操作|the running of a business or machine|The new branch begins operation tomorrow.|新分公司明天開始營運。|daily operations
+strategy|n|策略|a plan for achieving a goal|Our strategy focuses on customer retention.|我們的策略著重留住顧客。|marketing strategy
+consumption|n|消耗；消費|the amount of something used|The new lights reduce energy consumption.|新燈具能減少能源消耗。|fuel consumption
+efficiency|n|效率|working well without wasting resources|Automation improved processing efficiency.|自動化提高了處理效率。|operational efficiency
+capacity|n|容量；產能|the greatest amount something can hold or produce|The factory is operating at full capacity.|這間工廠正以滿載產能運作。|production capacity
+seminar|n|研討會|a meeting for learning and discussion|The seminar covers workplace communication.|這場研討會探討職場溝通。|training seminar
+amenities|n|便利設施|features that make a place comfortable|Hotel amenities include a gym and pool.|飯店設施包括健身房與游泳池。|modern amenities
+vendor|n|供應商；販售者|a person or company selling goods or services|We selected a new software vendor.|我們選定了新的軟體供應商。|approved vendor
+objective|n|目標|a specific result to be achieved|The objective is to shorten delivery times.|目標是縮短配送時間。|business objective
+installment|n|分期付款的一期|one of several scheduled payments|The first installment is due next month.|第一期款項下個月到期。|monthly installment
+analysis|n|分析|careful examination to understand something|The analysis revealed rising operating costs.|分析顯示營運成本上升。|cost analysis
+guideline|n|指引；準則|a recommendation for how to act|Follow the guidelines for expense claims.|請遵循費用申報準則。|safety guidelines
+workload|n|工作量|the amount of work assigned|We hired extra staff to reduce the workload.|我們增聘人員以減輕工作量。|heavy workload
+asset|n|資產|something valuable owned or controlled|The property is a valuable company asset.|這處房產是公司珍貴的資產。|fixed assets
+innovation|n|創新|a new idea or improved way of doing something|The award encourages innovation in design.|這個獎項鼓勵設計創新。|technological innovation
+transition|n|轉型；過渡|a change from one state to another|Training eased the transition to remote work.|訓練讓轉為遠距工作更加順利。|smooth transition
+phase|n|階段|a distinct stage in a process|The project is entering its final phase.|專案正進入最後階段。|development phase
+withdrawal|n|提款；撤回|the act of taking something out or back|The bank limits daily cash withdrawals.|銀行限制每日現金提款額。|cash withdrawal
+circumstance|n|情況；條件|a condition affecting an event or decision|We will review the circumstances of the delay.|我們將檢視造成延誤的情況。|special circumstances
+distinction|n|差異；卓越|a clear difference or special achievement|There is a clear distinction between the roles.|這些職務之間有明確差別。|make a distinction
+revision|n|修訂|a change made to improve a document|The proposal needs one final revision.|這份提案需要最後一次修訂。|budget revision
+hazard|n|危害；危險因素|something that could cause harm|Loose cables are a safety hazard.|鬆散的電線是安全隱患。|workplace hazard
+webinar|n|線上研討會|an educational seminar held online|The webinar includes a question session.|這場線上研討會設有提問時段。|register for a webinar
+intake|n|招收量；攝取量|the amount accepted or taken in|The company increased its graduate intake.|公司增加了應屆畢業生招收人數。|annual intake
+founder|n|創辦人|a person who starts an organization|The founder still advises the management team.|創辦人仍為管理團隊提供建議。|company founder
+authority|n|權限；主管機關|the power to make official decisions|She has authority to approve refunds.|她有權核准退款。|local authority
+associate|n|同事；合作夥伴|a person connected through work or business|A business associate recommended the firm.|一位商業夥伴推薦了這家公司。|business associate
+expansion|n|擴張|an increase in size or activity|The expansion will create fifty jobs.|這次擴建將創造五十個工作機會。|business expansion
+corporation|n|大型公司；法人企業|a legally established business organization|The corporation operates in twelve countries.|這家企業在十二個國家營運。|multinational corporation
+investigation|n|調查|a detailed effort to discover facts|An investigation into the incident is underway.|事件調查正在進行中。|internal investigation
+renovation|n|整修|work to repair or improve a building|The restaurant closed temporarily for renovation.|餐廳因整修而暫時歇業。|office renovation
+procedure|n|程序|an established series of steps|Please follow the emergency procedure.|請遵循緊急應變程序。|standard procedure
+publication|n|出版品；出版|a printed or digital work made public|The publication features local entrepreneurs.|這份刊物介紹了當地創業者。|trade publication
+headquarters|n|總部|the main office of an organization|The headquarters is located in Taipei.|總部設於台北。|corporate headquarters
+overview|n|概述|a brief explanation of the main points|The director provided an overview of the plan.|主管概述了這項計畫。|project overview
+cubicle|n|隔間辦公區|a small work area separated by partitions|Each cubicle has a storage cabinet.|每個辦公隔間都有收納櫃。|office cubicle
+headcount|n|人數；員工總數|the total number of people|The new department increased our headcount.|新部門使員工總數增加。|staff headcount
+consequence|n|後果；結果|a result of an action or situation|Delays may have financial consequences.|延誤可能帶來財務上的後果。|serious consequence
+load|n|負載；裝載量|the amount carried or handled|The truck cannot exceed its maximum load.|卡車不得超過最大載重。|heavy load
+agency|n|代理機構|a business providing a particular service|A travel agency arranged our flights.|旅行社安排了我們的航班。|recruitment agency
+invoice|n|發票；請款單|a document requesting payment for goods or services|The invoice lists each purchased item.|請款單列出了每個採購品項。|issue an invoice
+contribution|n|貢獻；捐款|something given to help achieve a result|Her contribution helped the project succeed.|她的貢獻促成了專案成功。|valuable contribution
+security|n|安全；保全|protection against danger or unauthorized access|Report lost badges to security.|識別證遺失請向保全通報。|data security
+catering|n|餐飲外燴服務|providing food and drinks for events|Catering is included in the conference fee.|會議費用包含餐飲服務。|catering service
+campaign|n|活動；宣傳計畫|a planned series of promotional actions|The campaign attracted many new subscribers.|這項活動吸引了許多新訂戶。|advertising campaign
+installation|n|安裝|the process of setting equipment in place|Installation will take about two hours.|安裝大約需要兩小時。|software installation
+chemical|n|化學物質|a substance used or produced through chemistry|Store each chemical in its original container.|請將每種化學物質保存在原容器中。|industrial chemical
+inconvenience|n|不便|trouble or difficulty caused to someone|We apologize for the inconvenience.|對於造成的不便，我們深感抱歉。|cause inconvenience
+ratio|n|比率|the relationship between two amounts|The ratio of staff to guests is adequate.|員工與賓客的人數比例適當。|cost-benefit ratio
+branch|n|分公司；分行|a local office of a larger organization|Our branch serves customers in southern Taiwan.|我們的分公司服務南台灣顧客。|branch office
+timeline|n|時程表|a schedule showing stages and dates|Please review the revised project timeline.|請檢視修訂後的專案時程表。|project timeline
+directory|n|名錄；通訊錄|a list of names and contact details|Her extension is in the staff directory.|她的分機號碼列在員工通訊錄中。|business directory
+downtime|n|停機時間|time when equipment or a service is unavailable|Scheduled downtime begins at midnight.|預定停機時間從午夜開始。|reduce downtime
+clause|n|合約條款|a distinct condition in a legal agreement|This clause explains the cancellation policy.|這項條款說明了取消規定。|contract clause
+inventory|n|庫存；存貨清單|goods held for sale or use|We check inventory every Friday.|我們每週五盤點庫存。|inventory control
+stance|n|立場|a stated position on an issue|The company clarified its stance on remote work.|公司釐清了對遠距工作的立場。|official stance
+amendment|n|修正案|an official change to a document|Both parties signed the contract amendment.|雙方簽署了合約修正案。|contract amendment
+revenue|n|營收|money received from business activities|Subscription revenue increased this quarter.|本季的訂閱營收增加了。|annual revenue
+alternative|n|替代方案|another available choice|We need an alternative to air freight.|我們需要空運以外的替代方案。|practical alternative
+characteristic|n|特徵|a quality typical of something|Durability is a key product characteristic.|耐用性是這項產品的重要特徵。|distinctive characteristic
+hurdle|n|障礙|a difficulty that must be overcome|Obtaining approval was the final hurdle.|取得核准是最後一道障礙。|overcome a hurdle
+poll|n|民意調查；投票|a survey of opinions|The poll showed strong support for flexible hours.|調查顯示大家大力支持彈性工時。|opinion poll
+broker|n|經紀人|a person arranging business deals for others|A broker helped us find office space.|經紀人協助我們找到辦公空間。|insurance broker
+compromise|n|妥協；折衷方案|an agreement involving concessions from both sides|Both parties accepted the compromise.|雙方接受了這項折衷方案。|reach a compromise
+approach|n|方法|a way of dealing with something|We need a different approach to recruitment.|我們需要不同的招募方法。|practical approach
+dispute|n|爭議|a disagreement between people or organizations|The payment dispute was resolved yesterday.|付款爭議已於昨天解決。|contract dispute
+measure|n|措施|an action taken to achieve a purpose|The company introduced new safety measures.|公司推出了新的安全措施。|preventive measure
+object|n|物品；物體|a thing that can be seen or touched|Do not place heavy objects on the scanner.|請勿將重物放在掃描器上。|heavy object
+span|n|一段時間；跨度|the length of time something covers|The project has a three-year time span.|這項專案的期間為三年。|time span
+outline|n|大綱|a short plan showing main points|Send me an outline of your presentation.|請寄給我你的簡報大綱。|project outline
+remarkable|adj|非凡的；顯著的|unusual and worthy of attention|The team achieved remarkable growth.|這個團隊取得了顯著成長。|remarkable progress
+external|adj|外部的|coming from outside an organization|An external consultant reviewed the plan.|外部顧問審查了這項計畫。|external audit
+mutual|adj|相互的；共同的|shared by two or more parties|The partnership is based on mutual trust.|這段合作關係建立在相互信任之上。|mutual agreement
+crucial|adj|至關重要的|extremely important to a result|Accurate scheduling is crucial to production.|準確排程對生產至關重要。|crucial factor
+critical|adj|關鍵的；嚴重的|very important or needing immediate attention|The server failure caused a critical delay.|伺服器故障造成了嚴重延誤。|critical issue
+eligible|adj|符合資格的|meeting the conditions for something|All full-time staff are eligible for the bonus.|所有全職員工都符合獎金資格。|eligible for
+efficient|adj|有效率的|working well with little waste|The new system is more efficient.|新系統更有效率。|efficient process
+compulsory|adj|強制的|required by a rule or law|Safety training is compulsory for new staff.|新進員工必須接受安全訓練。|compulsory training
+artificial|adj|人工的；人造的|made by people rather than occurring naturally|The lobby uses artificial plants.|大廳使用人造植物。|artificial lighting
+numerous|adj|許多的|existing in large numbers|We received numerous applications.|我們收到了許多申請。|numerous opportunities
+adequate|adj|足夠的；適當的|enough for a particular purpose|The room has adequate lighting.|這個房間的照明充足。|adequate resources
+overdue|adj|逾期的|not completed or paid by the required time|Your payment is now overdue.|你的款項已經逾期。|overdue invoice
+bankrupt|adj|破產的|unable to pay debts|The supplier went bankrupt last year.|這家供應商去年破產了。|go bankrupt
+defective|adj|有瑕疵的|not working correctly because of a fault|We will replace the defective unit.|我們將更換有瑕疵的組件。|defective product
+reliable|adj|可靠的|able to be trusted to work well|We need a reliable delivery service.|我們需要可靠的配送服務。|reliable supplier
+vital|adj|極重要的|necessary for success or continued activity|Communication is vital to this project.|溝通對這項專案極為重要。|vital information
+intensive|adj|密集的|involving concentrated effort over a short period|New staff receive intensive language training.|新員工接受密集語言訓練。|intensive training
+compatible|adj|相容的|able to work or exist together|This printer is compatible with our computers.|這台印表機與我們的電腦相容。|compatible with
+apparent|adj|明顯的|easy to see or understand|The cause became apparent during testing.|測試期間原因變得明顯。|apparent difference
+sufficient|adj|充足的|enough to meet a need|We have sufficient stock for the promotion.|我們有足夠的庫存供應促銷活動。|sufficient funds
+ambitious|adj|雄心勃勃的|having a strong desire for major success|The company set an ambitious sales target.|公司設定了雄心勃勃的銷售目標。|ambitious plan
+prior|adj|事先的；先前的|happening before something else|Visitors need prior approval to enter.|訪客進入前需要取得核准。|prior notice
+consecutive|adj|連續的|following one after another without a break|Sales grew for three consecutive months.|銷售連續三個月成長。|consecutive days
+blue-collar|adj|藍領的|relating to manual or industrial work|The factory offers blue-collar training programs.|工廠提供藍領職業訓練課程。|blue-collar worker
+intense|adj|強烈的|very strong or extreme|Competition in this market is intense.|這個市場的競爭非常激烈。|intense competition
+controversial|adj|有爭議的|causing strong disagreement|The proposed policy is controversial.|提議的政策具有爭議。|controversial decision
+economical|adj|節省的；經濟實惠的|using little money or resources|Rail travel is an economical option.|搭火車是經濟實惠的選擇。|economical solution
+exclusive|adj|獨家的；專屬的|limited to a particular person or group|Members receive exclusive discounts.|會員享有專屬折扣。|exclusive offer
+corporate|adj|公司的；企業的|relating to a company|Corporate policies apply to all branches.|公司政策適用於所有分公司。|corporate culture
+enthusiastic|adj|熱情的|showing strong interest or excitement|The team is enthusiastic about the launch.|團隊對新產品推出充滿熱情。|enthusiastic response
+beneficial|adj|有益的|producing a helpful effect|The training was beneficial to new managers.|這項訓練對新任經理很有幫助。|beneficial to
+significant|adj|重大的；顯著的|large or important enough to matter|The upgrade produced significant savings.|這次升級節省了大量成本。|significant improvement
+dedicated|adj|投入的；專用的|committed to a purpose or reserved for a use|A dedicated team handles urgent requests.|有專責團隊處理緊急請求。|dedicated staff
+insufficient|adj|不足的|not enough for a particular purpose|The application was rejected for insufficient information.|申請因資料不足遭到駁回。|insufficient funds
+understaffed|adj|人手不足的|having fewer workers than needed|The restaurant is understaffed tonight.|餐廳今晚人手不足。|understaffed department
+consistent|adj|一致的；穩定的|remaining similar in quality or behavior|Customers expect consistent service.|顧客期待穩定的服務品質。|consistent quality
+mandatory|adj|強制的|required by an official rule|Attendance at the briefing is mandatory.|這場簡報會必須出席。|mandatory requirement
+precise|adj|精確的|clearly and exactly stated|We need a precise delivery time.|我們需要確切的配送時間。|precise instructions
+authentic|adj|真實的；正宗的|genuine rather than copied or false|The restaurant serves authentic regional cuisine.|餐廳供應道地的地方料理。|authentic product
+accurate|adj|準確的|correct and free from mistakes|Please provide an accurate shipping address.|請提供正確的送貨地址。|accurate information
+confidential|adj|機密的|intended to remain private|Employee records are confidential.|員工紀錄屬於機密資料。|confidential document
+financial|adj|財務的|relating to money|The board reviewed the financial results.|董事會審查了財務成果。|financial statement
+concrete|adj|具體的|specific and definite rather than general|We need concrete evidence before acting.|採取行動前我們需要具體證據。|concrete plan
+durable|adj|耐用的|able to last without damage|These chairs are durable and easy to clean.|這些椅子耐用又容易清潔。|durable material
+competitive|adj|有競爭力的|able to compete successfully|We offer competitive salaries.|我們提供有競爭力的薪資。|competitive price
+diligent|adj|勤奮的；仔細的|working carefully and with effort|Her diligent research prevented a costly mistake.|她仔細的研究避免了昂貴的錯誤。|diligent employee
+tremendous|adj|極大的|very great in amount or degree|The project required tremendous effort.|這項專案需要極大的努力。|tremendous growth
+apprehensive|adj|憂慮的|worried about something that may happen|Staff felt apprehensive about the relocation.|員工對搬遷感到憂慮。|apprehensive about
+equivalent|adj|等同的|equal in value or meaning|Relevant experience may be considered equivalent.|相關經驗可能被視為同等資格。|equivalent qualification
+wholesale|adj|批發的|relating to sales in large quantities|Wholesale prices are available for large orders.|大量訂單可享批發價格。|wholesale price
+further|adj|進一步的|additional or more advanced|Please contact us for further information.|如需進一步資訊請聯絡我們。|further details
+primarily|adv|主要地|mainly or for the most part|The service is primarily for small businesses.|這項服務主要供小型企業使用。|primarily responsible
+onsite|adv|在現場|at the place where work happens|Technicians will provide support onsite.|技術人員將在現場提供支援。|work onsite
+duplicate|v|複製|to make an exact copy|Do not duplicate the confidential files.|請勿複製機密檔案。|duplicate a document
+acquire|v|取得；收購|to obtain something or buy a business|We acquired new equipment last month.|我們上個月添購了新設備。|acquire a company
+explore|v|探討；探索|to examine possible options|The team will explore alternative suppliers.|團隊將尋找其他可能的供應商。|explore opportunities
+qualify|v|符合資格|to meet the requirements for something|You may qualify for a travel allowance.|你可能符合差旅津貼資格。|qualify for
+emerge|v|出現；浮現|to become visible or known|New opportunities emerged after the merger.|合併後出現了新的機會。|emerge as
+specialize|v|專精|to focus on a particular field|Our firm specializes in commercial design.|我們公司專精於商業設計。|specialize in
+establish|v|建立|to start or set up something|We established a branch in Kaohsiung.|我們在高雄設立了分公司。|establish a business
+convey|v|傳達；運送|to communicate a message or transport something|The brochure conveys our brand values.|這本手冊傳達了我們的品牌價值。|convey information
+recruit|v|招募|to find people to join an organization|We are recruiting experienced engineers.|我們正在招募有經驗的工程師。|recruit staff
+retain|v|留住；保留|to keep something or someone|Flexible hours help retain skilled staff.|彈性工時有助於留住技術人員。|retain customers
+reinforce|v|加強|to make something stronger|The training reinforces good safety habits.|這項訓練能加強良好的安全習慣。|reinforce a message
+consume|v|消耗|to use energy or materials|The new machine consumes less electricity.|新機器耗電較少。|consume energy
+generate|v|產生|to produce something|The campaign generated many inquiries.|這次活動帶來了許多詢問。|generate revenue
+supervise|v|監督|to oversee work or workers|She supervises the evening shift.|她負責監督晚班。|supervise a team
+restrict|v|限制|to limit access or activity|The policy restricts access to customer records.|政策限制對顧客紀錄的存取。|restrict access
+clarify|v|釐清|to make something easier to understand|Please clarify the payment terms.|請釐清付款條件。|clarify an issue
+proceed|v|繼續進行|to continue after a pause or decision|We can proceed once approval arrives.|獲得核准後我們就能繼續進行。|proceed with
+resign|v|辭職|to formally leave a job|He resigned from the company last month.|他上個月辭去了公司職務。|resign from
+compensate|v|補償|to give something for a loss or work|We compensated customers for the service outage.|我們補償了因服務中斷受影響的顧客。|compensate for
+fulfill|v|履行；滿足|to carry out a promise or meet a need|The supplier fulfilled every contract requirement.|供應商履行了所有合約要求。|fulfill an obligation
+implement|v|實施|to put a plan into action|We will implement the policy next month.|我們將在下個月實施這項政策。|implement a strategy
+dismiss|v|解雇；不予考慮|to remove someone from a job or reject an idea|The manager dismissed the suggestion as impractical.|經理認為這項建議不可行而不予採納。|dismiss a proposal
+resolve|v|解決|to find an answer to a problem|We resolved the billing issue yesterday.|我們昨天解決了帳單問題。|resolve a dispute
+evaluate|v|評估|to judge quality or effectiveness|The panel will evaluate each proposal.|評審小組將評估每份提案。|evaluate performance
+specify|v|明確說明|to state details clearly|Please specify your preferred delivery time.|請明確指定你偏好的配送時間。|specify requirements
+collaborate|v|合作|to work together toward a goal|Designers collaborate with the marketing team.|設計師與行銷團隊合作。|collaborate on a project
+analyze|v|分析|to examine information carefully|We analyze customer feedback every week.|我們每週分析顧客回饋。|analyze data
+suspend|v|暫停|to stop something temporarily|The service was suspended for maintenance.|這項服務因維護而暫停。|suspend operations
+justify|v|證明合理|to give a good reason for something|The savings justify the initial investment.|節省的成本足以證明初期投資合理。|justify a decision
+detect|v|偵測；發現|to discover something not easily noticed|The system detected an unusual transaction.|系統偵測到一筆異常交易。|detect a fault
+renovate|v|整修|to repair and improve a building|We plan to renovate the reception area.|我們計畫整修接待區。|renovate an office
+reveal|v|揭露；顯示|to make something previously unknown clear|The survey revealed a need for better training.|調查顯示需要更好的訓練。|reveal findings
+restore|v|恢復；修復|to return something to a previous condition|Technicians restored the network connection.|技術人員恢復了網路連線。|restore service
+overlook|v|忽略；俯瞰|to fail to notice something|We overlooked an important contract detail.|我們忽略了一項重要合約細節。|overlook an error
+transform|v|轉變|to change something greatly|The renovation transformed the old warehouse.|整修讓舊倉庫煥然一新。|transform a business
+deduct|v|扣除|to subtract an amount|The fee will be deducted from your refund.|這筆費用將從退款中扣除。|deduct expenses
+reflect|v|反映|to show or represent something|The figures reflect stronger customer demand.|這些數字反映了更強勁的顧客需求。|reflect a change
+redeem|v|兌換|to exchange a voucher or points for something|You can redeem points for a discount.|你可以用點數兌換折扣。|redeem a voucher
+validate|v|確認有效性|to check that something is valid|Please validate your parking ticket at reception.|請在接待處驗證停車票。|validate information
+bear|v|承擔；負擔|to accept responsibility or carry a cost|The supplier will bear the shipping costs.|供應商將負擔運費。|bear responsibility
+expose|v|使接觸；揭露|to make something accessible or unprotected|The leak exposed confidential customer information.|資料外洩暴露了機密顧客資訊。|expose a risk
+determine|v|確定；決定|to establish a fact or decide a result|The inspection will determine the repair cost.|檢查將確定維修費用。|determine a price
+found|v|創立|to start a company or organization|They founded the company in 2015.|他們在二〇一五年創立了公司。|found a company
+enforce|v|執行；強制實施|to make sure a rule is obeyed|Security staff enforce the parking rules.|保全人員負責執行停車規定。|enforce a policy
+undertake|v|承接；著手進行|to accept responsibility for a task|Our team will undertake the inspection.|我們團隊將承接這項檢查工作。|undertake a project
+discard|v|丟棄|to get rid of something no longer needed|Discard damaged packaging before shipment.|出貨前請丟棄受損包材。|discard old files
+ensure|v|確保|to make certain that something happens|Check the label to ensure accurate delivery.|請核對標籤以確保配送正確。|ensure safety
+acknowledge|v|確認收到；承認|to confirm receipt or recognize something|Please acknowledge receipt of this message.|請確認收到這則訊息。|acknowledge receipt
+adopt|v|採用|to begin using a method or policy|We adopted a more flexible schedule.|我們採用了更有彈性的時程。|adopt a policy
+consult|v|諮詢；查閱|to ask for advice or refer to information|Consult your supervisor before making changes.|變更前請先諮詢主管。|consult an expert
+enable|v|使能夠|to make something possible|The update enables faster file sharing.|這次更新讓檔案分享更快速。|enable access
+emphasize|v|強調|to give special importance to something|The instructor emphasized the importance of safety.|講師強調了安全的重要性。|emphasize a point
+enhance|v|提升|to improve the quality or value of something|Better lighting enhances the shopping experience.|更好的照明能提升購物體驗。|enhance efficiency
+obtain|v|取得|to get something through effort or a request|Obtain approval before placing the order.|下單前請先取得核准。|obtain permission
+conduct|v|進行；執行|to organize and carry out an activity|We conduct customer surveys twice a year.|我們每年進行兩次顧客調查。|conduct research
+accommodate|v|容納；配合|to provide enough space or meet a need|The hall can accommodate three hundred guests.|這個大廳可容納三百位賓客。|accommodate requests
+dedicate|v|投入；奉獻|to give time or resources to a purpose|We dedicate Fridays to staff training.|我們將星期五安排為員工訓練日。|dedicate time to
+accompany|v|陪同；隨附|to go with someone or something|A guide will accompany the visitors.|導覽人員將陪同訪客。|accompany a guest
+imply|v|暗示；意味著|to suggest something without stating it directly|A lower price does not imply poor quality.|價格較低不代表品質較差。|imply that
+prioritize|v|排定優先順序|to decide what needs attention first|Please prioritize urgent customer requests.|請優先處理緊急顧客請求。|prioritize tasks
+evolve|v|逐漸發展|to develop gradually over time|Customer preferences continue to evolve.|顧客的偏好持續演變。|evolve over time
+relocate|v|搬遷|to move to a new place|The office will relocate in November.|辦公室將在十一月搬遷。|relocate an office
+investigate|v|調查|to examine something to discover facts|We are investigating the missing shipment.|我們正在調查貨物遺失事件。|investigate a complaint
+pursue|v|追求；從事|to work toward a goal|She plans to pursue a career in accounting.|她計畫從事會計工作。|pursue an opportunity
+distribute|v|分發；配送|to give or deliver to several recipients|Please distribute the agenda before the meeting.|請在會議前分發議程。|distribute materials
+engage|v|參與；吸引投入|to take part or involve someone's attention|The activities engage participants in discussion.|這些活動讓參與者投入討論。|engage in discussion
+relieve|v|減輕；接替|to reduce a burden or replace someone on duty|Extra staff will relieve the workload.|增派人員將減輕工作負擔。|relieve pressure
+modify|v|修改|to make a limited change|We modified the design after testing.|我們在測試後修改了設計。|modify a plan
+renew|v|續約；更新|to extend something's period of use|Renew your subscription before it expires.|請在訂閱到期前續訂。|renew a contract
+notify|v|通知|to officially inform someone|Notify us if your address changes.|地址若有變更請通知我們。|notify customers
+compose|v|撰寫；組成|to create written text or music|Please compose a short welcome message.|請撰寫一段簡短的歡迎訊息。|compose an email
+prescribe|v|開立處方；規定|to officially recommend treatment or set a rule|The doctor prescribed a short course of medicine.|醫師開立了短期用藥處方。|prescribe medication
+disrupt|v|干擾；中斷|to interrupt normal activity|The storm disrupted regional deliveries.|暴風雨中斷了區域配送。|disrupt operations
+allocate|v|分配|to assign resources for a purpose|We allocated more funds to training.|我們分配了更多經費給訓練。|allocate resources
+thrive|v|蓬勃發展|to grow or succeed strongly|Small businesses thrive in this district.|小型企業在這個地區蓬勃發展。|thrive in a market
+assume|v|假設；承擔|to believe without proof or take responsibility|Do not assume that delivery is free.|不要假設配送一定免費。|assume responsibility
+streamline|v|精簡|to make a process simpler and more efficient|The software streamlines expense reporting.|這套軟體能精簡費用申報流程。|streamline operations
+broaden|v|拓展|to make something wider in range|The course will broaden your knowledge.|這門課程能拓展你的知識。|broaden experience
+underperform|v|表現低於預期|to achieve less than expected|The new branch underperformed last quarter.|新分公司上一季的表現不如預期。|underperform the market
+retrieve|v|取回；檢索|to get something back or find stored information|You can retrieve old invoices online.|你可以在線上查找舊發票。|retrieve a file
+monitor|v|監控|to regularly check progress or conditions|We monitor stock levels daily.|我們每天監控庫存水準。|monitor performance
+grant|v|准予；授予|to officially give or allow something|The manager granted her request for leave.|經理准許了她的請假申請。|grant permission
+review|v|審閱；檢討|to examine something carefully|Please review the contract before signing.|簽署前請仔細閱讀合約。|review a proposal
+manufacture|v|製造|to produce goods in a factory|The plant manufactures medical devices.|這間工廠製造醫療器材。|manufacture products
+estimate|v|估算|to judge an amount approximately|We estimate the repair will take two hours.|我們估計維修需要兩小時。|estimate costs
+bid|v|投標；出價|to offer a price for a contract or item|Three companies bid for the project.|三家公司競標這項專案。|bid for a contract
+remark|v|評論；提到|to make a brief comment|She remarked that the new layout was clearer.|她評論新的版面更清楚。|remark on
+substitute|v|替代|to use one thing instead of another|You can substitute tea for coffee.|你可以用茶代替咖啡。|substitute for
+address|v|處理；致詞|to deal with a problem or speak to a group|We must address the delivery problem.|我們必須處理配送問題。|address concerns
+highlight|v|強調；標示|to draw attention to something important|The report highlights several possible risks.|報告指出了幾項可能的風險。|highlight a benefit
+decline|v|下降；婉拒|to decrease or politely refuse|Sales declined slightly in February.|二月銷售略有下降。|decline an invitation
+boost|v|提升|to increase or improve something|The campaign boosted online sales.|這次活動提升了線上銷售。|boost productivity
+release|v|發布；釋出|to make something available to the public|We will release the update tomorrow.|我們明天將發布更新。|release a product
+delegate|v|委派|to give a task or authority to another person|The manager delegated routine tasks.|經理將例行工作委派給他人。|delegate responsibility
+entrepreneur|n|創業家|a person who starts and runs a business|The event connects entrepreneurs with investors.|這場活動讓創業家與投資人交流。|young entrepreneur
+implication|n|可能的影響；含意|a possible consequence or suggested meaning|We discussed the financial implications.|我們討論了可能的財務影響。|practical implications
+benchmark|n|基準|a standard used for comparison|This result sets a new industry benchmark.|這項成果樹立了新的產業標竿。|performance benchmark
+payroll|n|薪資名冊；薪資總額|the list or total pay of employees|Please submit your hours before payroll closes.|請在薪資結算前提交工時。|payroll system
+workflow|n|工作流程|the sequence of tasks in a process|The new software improves our workflow.|新軟體改善了我們的工作流程。|streamline workflow
+inflation|n|通貨膨脹|a general rise in prices|Inflation increased our operating costs.|通貨膨脹提高了我們的營運成本。|inflation rate
+deduction|n|扣除額|an amount subtracted from a total|The deduction appears on your payslip.|這筆扣款列在你的薪資單上。|tax deduction
+workstation|n|工作站；工作區|a place equipped for an employee's work|Each workstation has two monitors.|每個工作站都有兩台螢幕。|computer workstation
+premises|n|營業場所；建物範圍|the buildings and land used by a business|Smoking is prohibited on the premises.|營業場所內禁止吸菸。|business premises
+chairperson|n|主席|a person leading a meeting or committee|The chairperson called the meeting to order.|主席宣布會議開始。|committee chairperson
+emission|n|排放物；排放|a substance released into the environment|The factory reduced carbon emissions.|這間工廠減少了碳排放。|carbon emissions
+merger|n|合併案|the combination of two organizations|The merger requires regulatory approval.|這宗合併案需要主管機關核准。|corporate merger
+attire|n|服裝|clothing suited to an occasion|Business attire is required for the reception.|參加招待會須穿著商務服裝。|formal attire
+recognition|n|肯定；辨識|acknowledgment of achievement or ability to identify|The award provides recognition for excellent service.|這個獎項表揚優良服務。|brand recognition
+enterprise|n|企業|a business or organized project|The program supports small enterprises.|這項計畫支援小型企業。|business enterprise
+correspondence|n|往來信件|written communication between people|Keep copies of all client correspondence.|請保留所有客戶往來信件的副本。|business correspondence
+contractor|n|承包商|a person or firm hired for specific work|The contractor will repair the roof.|承包商將修繕屋頂。|building contractor
+conjunction|n|結合；共同進行|the act of occurring or working together|The seminar runs in conjunction with the exhibition.|研討會與展覽同時舉行。|in conjunction with
+commodity|n|商品；原物料|a basic product traded in large quantities|Commodity prices affect manufacturing costs.|原物料價格影響製造成本。|commodity market
+deficit|n|赤字；不足額|the amount by which spending exceeds income|The organization reported a budget deficit.|這個組織公布了預算赤字。|budget deficit
+compliance|n|遵循；合規|following rules or requirements|The audit checks compliance with safety rules.|稽核檢查是否遵守安全規定。|regulatory compliance
+connectivity|n|連線能力|the ability of devices to connect|The upgrade improves network connectivity.|這次升級改善了網路連線能力。|wireless connectivity
+blueprint|n|藍圖；詳細計畫|a detailed design or plan|The proposal provides a blueprint for expansion.|這份提案提供了擴張藍圖。|strategic blueprint
+profitability|n|獲利能力|the ability to earn a profit|Lower costs improved the branch's profitability.|成本降低改善了分公司的獲利能力。|improve profitability
+inquiry|n|詢問|a request for information|We received an inquiry about group bookings.|我們收到一則團體訂位的詢問。|customer inquiry
+credentials|n|資格證明|documents or experience proving suitability|Please submit your professional credentials.|請提交你的專業資格證明。|professional credentials
+cofounder|n|共同創辦人|a person who starts a business with others|The cofounder now leads product development.|共同創辦人目前領導產品開發。|company cofounder
+code|n|代碼；規範|a set of symbols or rules|Enter the discount code at checkout.|結帳時請輸入折扣碼。|code of conduct
+consensus|n|共識|general agreement among a group|The committee reached a consensus.|委員會達成了共識。|reach consensus
+boardroom|n|董事會會議室|a room used for directors' meetings|The boardroom is on the top floor.|董事會會議室位於頂樓。|boardroom meeting
+stakeholder|n|利害關係人|a person or group affected by a project|We consulted stakeholders before making changes.|我們在變更前諮詢了利害關係人。|key stakeholder
+capital|n|資本；資金|money used to start or operate a business|The company raised additional capital.|公司籌集了額外資金。|working capital
+initiative|n|新措施；主動性|a new plan or willingness to act independently|The initiative aims to reduce packaging waste.|這項新措施旨在減少包裝廢棄物。|take the initiative
+minutes|n|會議紀錄|an official written record of a meeting|Please circulate the meeting minutes.|請傳閱會議紀錄。|take minutes
+rollout|n|正式推出|the introduction of a new product or system|The rollout will begin with two branches.|這項系統將先在兩家分公司推出。|product rollout
+portfolio|n|作品集；投資組合|a collection of work or investments|Please bring your design portfolio.|請攜帶你的設計作品集。|investment portfolio
+quota|n|配額|a fixed amount to achieve or allow|Each region has a monthly sales quota.|每個區域都有每月銷售配額。|sales quota
+justification|n|正當理由|a good reason supporting a decision|The request needs a clear justification.|這項申請需要明確的理由。|provide justification
+hierarchy|n|階層體系|a system ranking people or things|The chart explains the management hierarchy.|這張圖說明了管理階層。|organizational hierarchy
+integrity|n|誠信；完整性|honesty or the state of being complete|The auditor praised the team's integrity.|稽核人員稱讚團隊的誠信。|data integrity
+misconception|n|誤解|an incorrect belief|The guide corrects common misconceptions.|這份指南釐清了常見誤解。|common misconception
+ecosystem|n|生態系統|a network of interacting organizations or organisms|The program strengthens the local startup ecosystem.|這項計畫強化了當地新創生態系。|business ecosystem
+affiliation|n|隸屬關係；關聯|an official connection with an organization|Please state your company affiliation.|請註明你所屬的公司。|professional affiliation
+surplus|n|盈餘；剩餘|an amount beyond what is needed|The surplus will fund next year's training.|這筆盈餘將支應明年的訓練。|budget surplus
+vision|n|願景|an idea of a desired future|The founder shared her vision for growth.|創辦人分享了她的成長願景。|corporate vision
+credibility|n|可信度|the quality of being believable|Accurate reporting strengthens our credibility.|準確報導能提升我們的可信度。|establish credibility
+constraint|n|限制|something limiting what can be done|Time constraints affected the testing schedule.|時間限制影響了測試時程。|budget constraint
+logistics|n|物流；後勤|planning the movement of goods or resources|The logistics team arranged equipment delivery.|物流團隊安排了設備配送。|logistics management
+analytics|n|資料分析|the examination of data to find useful patterns|We use analytics to understand buying habits.|我們運用資料分析了解購買習慣。|business analytics
+discretion|n|自行判斷權；謹慎|freedom to decide or care in handling information|Refunds are issued at the manager's discretion.|是否退款由經理自行裁量。|exercise discretion
+incentive|n|誘因；獎勵|something encouraging a person to act|The bonus provides an incentive to improve.|這筆獎金提供了進步的誘因。|financial incentive
+allegation|n|指控|a claim of wrongdoing not yet proved|The company denied the allegation.|公司否認了這項指控。|serious allegation
+accumulation|n|累積|the gradual collection of something|The accumulation of unpaid bills caused concern.|未付帳單不斷累積，引發了擔憂。|accumulation of debt
+retention|n|留任；保留|the ability to keep people or information|Better benefits improved employee retention.|更好的福利提高了員工留任率。|customer retention
+backlog|n|積壓工作|work waiting to be completed|Extra staff helped clear the order backlog.|增派人員協助清除了積壓訂單。|order backlog
+subsidiary|n|子公司|a company controlled by another company|The subsidiary manages regional distribution.|這家子公司負責區域配送。|wholly owned subsidiary
+clientele|n|顧客群|the customers of a business|The café attracts a diverse clientele.|這間咖啡館吸引了多元顧客群。|loyal clientele
+acquisition|n|收購；取得|the purchase of a business or asset|The acquisition expanded our service network.|這次收購擴大了我們的服務網絡。|company acquisition
+dividend|n|股利|a payment to company shareholders|The board approved a quarterly dividend.|董事會核准了季度股利。|pay a dividend
+specification|n|規格|a detailed description of requirements|The product meets every specification.|這項產品符合每項規格。|technical specification
+discrepancy|n|差異；不一致|a difference between things that should match|We found a discrepancy in the invoice.|我們發現發票內容有出入。|accounting discrepancy
+equity|n|股東權益；所有權價值|the value remaining after debts are deducted|The investment increased shareholder equity.|這項投資增加了股東權益。|shareholder equity
+appraisal|n|考核；估價|a formal assessment of value or performance|Her annual appraisal was positive.|她的年度考核結果良好。|performance appraisal
+proceeds|n|所得款項|money received from a sale or event|The proceeds will support local charities.|所得款項將用於支持當地慈善機構。|sale proceeds
+onboarding|n|到職引導|the process of helping new people get started|Onboarding includes a safety briefing.|到職引導包含安全說明。|employee onboarding
+recession|n|經濟衰退|a period of reduced economic activity|The recession lowered demand for luxury goods.|經濟衰退降低了奢侈品需求。|economic recession
+provision|n|規定；供給|a condition in an agreement or the act of supplying|This provision allows early cancellation.|這項規定允許提前取消。|contract provision
+expertise|n|專業知識|specialized knowledge or skill|We need expertise in digital marketing.|我們需要數位行銷方面的專業知識。|technical expertise
+audit|n|稽核；審計|a formal examination of records or processes|The annual audit starts next week.|年度稽核下週開始。|financial audit
+functionality|n|功能性|what a system can do|The update adds useful functionality.|這次更新加入了實用功能。|improved functionality
+severance|n|資遣費；離職給付|payment or arrangements when employment ends|Affected staff will receive severance pay.|受影響的員工將獲得資遣費。|severance package
+expenditure|n|支出|money spent on a particular activity|Travel expenditure exceeded the estimate.|差旅支出超過了估算。|capital expenditure
+globalization|n|全球化|the increasing connection of international business|Globalization has changed supply chains.|全球化改變了供應鏈。|economic globalization
+infrastructure|n|基礎建設|basic systems supporting a place or organization|The city invested in transport infrastructure.|市政府投資了交通基礎建設。|digital infrastructure
+procurement|n|採購|the organized purchasing of goods or services|Procurement must approve all major purchases.|所有重大採購都必須經採購部門核准。|procurement process
+legislation|n|立法；法規|laws made by a government|New legislation affects packaging requirements.|新法規影響了包裝要求。|environmental legislation
+conglomerate|n|企業集團|a large group of different businesses|The conglomerate owns several hotel brands.|這個企業集團擁有數個飯店品牌。|industrial conglomerate
+prototype|n|原型|an early model used for testing|The prototype is ready for user testing.|原型已可進行使用者測試。|working prototype
+turnover|n|營業額；人員流動率|total sales or the rate of employee replacement|Better training helped reduce staff turnover.|更好的訓練有助於降低員工流動率。|annual turnover
+sustainability|n|永續性|the ability to continue without exhausting resources|Sustainability guides our packaging choices.|永續性是我們選擇包裝的依據。|environmental sustainability
+oversight|n|監督；疏漏|supervision or an unintentional failure to notice|The committee provides financial oversight.|委員會負責財務監督。|regulatory oversight
+entitlement|n|應有權利；給付資格|a right to receive something|The policy explains your leave entitlement.|政策說明了你可享有的休假權益。|benefit entitlement
+consignment|n|一批託運貨物|goods sent together for delivery or sale|The consignment arrived at the warehouse.|這批託運貨物抵達了倉庫。|export consignment
+cybersecurity|n|網路安全|protection of computer systems and data|All staff must complete cybersecurity training.|全體員工必須完成網路安全訓練。|cybersecurity policy
+shareholder|n|股東|a person owning shares in a company|Shareholders will vote on the merger.|股東將對合併案進行投票。|major shareholder
+liability|n|法律責任；負債|a legal responsibility or financial obligation|The agreement limits our liability.|這份協議限制了我們的責任範圍。|legal liability
+ledger|n|分類帳|a record of financial transactions|Enter each payment in the ledger.|請將每筆付款登記在分類帳。|general ledger
+auditor|n|稽核人員；審計師|a person who examines financial records or systems|The auditor requested supporting documents.|審計師要求提供佐證文件。|external auditor
+reimbursement|n|費用報銷|money paid back for an approved expense|Submit receipts to request reimbursement.|請提交收據申請報銷。|travel reimbursement
+jurisdiction|n|管轄權|the legal authority over an area or matter|This matter falls within the agency's jurisdiction.|這件事屬於該機關的管轄範圍。|legal jurisdiction
+insight|n|洞見|a clear understanding of something|Customer interviews provided valuable insights.|顧客訪談提供了寶貴見解。|market insight
+synergy|n|綜效|extra benefit produced by working together|The merger created operational synergies.|這次合併產生了營運綜效。|create synergy
+proficiency|n|熟練程度|a high level of skill|The position requires proficiency in English.|這個職位要求熟練的英語能力。|language proficiency
+executive|n|高階主管|a senior manager in an organization|The executive approved the expansion plan.|高階主管核准了擴張計畫。|chief executive
+metric|n|衡量指標|a measurement used to judge performance|Customer retention is an important metric.|顧客留存率是一項重要指標。|performance metric
+demographic|n|人口族群|a group defined by shared population characteristics|The campaign targets a younger demographic.|這次活動鎖定較年輕的族群。|target demographic
+collateral|n|擔保品|an asset offered as security for a loan|The bank requires collateral for the loan.|銀行要求這筆貸款提供擔保品。|loan collateral
+subordinate|n|部屬|a person working under another's authority|The supervisor gave clear instructions to subordinates.|主管向部屬下達了清楚的指示。|direct subordinate
+outreach|n|對外推廣；接觸服務|efforts to connect with a wider community|The team expanded its community outreach.|團隊擴大了社區服務。|community outreach
+board|n|董事會|a group directing an organization|The board approved the annual budget.|董事會核准了年度預算。|board of directors
+crash|v|當機；暴跌|to stop working suddenly or fall sharply|The computer crashed during the presentation.|電腦在簡報期間當機了。|system crash
+cease|v|停止|to stop an activity|Production will cease during maintenance.|維護期間將停止生產。|cease operations
+patent|v|取得專利|to obtain legal protection for an invention|The company patented its new design.|公司為新設計取得了專利。|patent an invention
+respect|v|尊重；遵守|to treat with consideration or follow|Please respect other guests' privacy.|請尊重其他房客的隱私。|respect a decision
+breach|v|違反；破壞|to break a rule or agreement|Sharing the files would breach confidentiality.|分享這些檔案會違反保密義務。|breach a contract
+syndicate|v|向多家媒體供稿|to distribute content to several publishers|The agency syndicates articles to regional newspapers.|這家機構向多家地方報紙提供文章。|syndicate content
+accountable|adj|應負責的|required to explain actions or results|Managers are accountable for department spending.|經理必須對部門支出負責。|accountable for
+influential|adj|有影響力的|able to affect opinions or decisions|She is an influential industry advisor.|她是業界具有影響力的顧問。|influential leader
+feasible|adj|可行的|possible and practical to achieve|The revised schedule is feasible.|修訂後的時程可行。|feasible solution
+plausible|adj|看似合理的|seeming reasonable or believable|The technician offered a plausible explanation.|技術人員提出了合理的解釋。|plausible explanation
+prompt|adj|迅速的|done without delay|Thank you for your prompt response.|感謝你迅速回覆。|prompt payment
+considerable|adj|相當大的|large enough to be important|The upgrade required considerable investment.|這次升級需要相當大的投資。|considerable savings
+white-collar|adj|白領的|relating to office or professional work|Demand for white-collar workers increased.|白領工作者的需求增加了。|white-collar position
+preliminary|adj|初步的|done before a fuller examination|The preliminary results are encouraging.|初步結果令人鼓舞。|preliminary report
+conducive|adj|有助於……的|helping a particular result happen|Quiet spaces are conducive to focused work.|安靜的空間有助於專注工作。|conducive to
+inevitable|adj|不可避免的|certain to happen|Some delays are inevitable during relocation.|搬遷期間有些延誤難以避免。|inevitable change
+viable|adj|可實行的；可存續的|able to work successfully over time|We need a viable long-term strategy.|我們需要可長期實行的策略。|commercially viable
+foreseeable|adj|可預見的|possible to predict|No major changes are planned for the foreseeable future.|可預見的未來沒有重大變更計畫。|foreseeable future
+respective|adj|各自的|belonging separately to each person or thing|Return to your respective departments.|請返回各自的部門。|respective roles
+renowned|adj|知名的|widely respected or well known|A renowned architect designed the hotel.|這家飯店由知名建築師設計。|renowned expert
+substantial|adj|大量的；重大的|large in amount or importance|The changes produced substantial savings.|這些變更節省了大量成本。|substantial investment
+drastic|adj|劇烈的|very great and often sudden|The company announced drastic cost reductions.|公司宣布大幅削減成本。|drastic change
+accessibility|n|可及性；無障礙程度|how easily people can reach or use something|The renovation improves wheelchair accessibility.|整修改善了輪椅使用者的通行便利性。|improve accessibility
+complementary|adj|互補的|combining well to improve a result|The partners have complementary skills.|這些合作夥伴的技能相互補足。|complementary services
+prevalent|adj|普遍的|common in a particular place or time|Mobile payments are prevalent in this market.|行動支付在這個市場相當普遍。|prevalent practice
+outstanding|adj|傑出的；尚未支付的|excellent or still unpaid|Please pay the outstanding balance.|請支付尚未付清的餘額。|outstanding performance
+diversified|adj|多角化的|spread across different types or areas|The firm has a diversified investment portfolio.|這家公司擁有多元化投資組合。|diversified business
+intuitive|adj|直覺易懂的|easy to understand without detailed instruction|The application has an intuitive interface.|這款應用程式的介面直覺易懂。|intuitive design
+prominent|adj|重要的；顯眼的|well known or easily noticed|Place the notice in a prominent location.|請將公告放在顯眼的位置。|prominent position
+prospective|adj|潛在的；未來可能的|likely or hoping to become something|The tour is open to prospective tenants.|這場參觀活動開放給有意承租的人。|prospective customer
+comprehensive|adj|完整的；全面的|including all important details|The course offers comprehensive safety training.|這門課程提供全面的安全訓練。|comprehensive review
+imperative|adj|極為必要的|extremely important and necessary|It is imperative to protect customer data.|保護顧客資料極為必要。|imperative to act
+dormant|adj|休眠的；未啟用的|inactive but able to become active again|The bank will review dormant accounts.|銀行將檢視久未使用的帳戶。|dormant account
+established|adj|已確立的；歷史悠久的|recognized and operating for some time|We partnered with an established supplier.|我們與一家經營已久的供應商合作。|established company
+prestigious|adj|享有盛名的|highly respected and admired|She received a prestigious industry award.|她獲得了享有盛名的業界獎項。|prestigious institution
+sophisticated|adj|精密的；先進的|technically advanced or complex|The system uses sophisticated monitoring tools.|這套系統使用先進的監控工具。|sophisticated equipment
+exceptional|adj|傑出的；例外的|unusually good or uncommon|The hotel provides exceptional service.|這家飯店提供卓越服務。|exceptional quality
+managerial|adj|管理的|relating to the work of managers|The role requires managerial experience.|這個職位需要管理經驗。|managerial skills
+legitimate|adj|合法的；正當的|lawful or reasonable|The refund request is legitimate.|這項退款要求是正當的。|legitimate business
+arbitrary|adj|任意的；無明確依據的|not based on a clear reason or rule|Employees questioned the arbitrary deadline.|員工質疑這個缺乏依據的期限。|arbitrary decision
+underlying|adj|潛在的；根本的|existing beneath the visible situation|We must identify the underlying problem.|我們必須找出根本問題。|underlying cause
+definitive|adj|最終的；權威的|providing a final or clear answer|A definitive schedule will be released tomorrow.|最終時程將於明天公布。|definitive answer
+fiscal|adj|財政的；會計年度的|relating to government finances or financial years|Our fiscal year begins in April.|我們的會計年度從四月開始。|fiscal year
+contractual|adj|合約的|required or described by a contract|Both sides fulfilled their contractual obligations.|雙方都履行了合約義務。|contractual agreement
+invaluable|adj|極有價值的|extremely useful or valuable|Her experience proved invaluable to the team.|她的經驗對團隊極有價值。|invaluable advice
+adverse|adj|不利的|harmful or unfavorable|Adverse weather delayed the shipment.|惡劣天氣延誤了貨運。|adverse effect
+deficient|adj|不足的；有缺陷的|lacking something necessary|The report is deficient in supporting evidence.|這份報告缺少佐證。|deficient in
+negligent|adj|疏忽的|failing to take proper care|The contractor was negligent in checking the wiring.|承包商疏於檢查配線。|negligent behavior
+pragmatic|adj|務實的|focused on practical results|We took a pragmatic approach to the problem.|我們以務實的方法處理問題。|pragmatic solution
+strategic|adj|策略性的|planned to achieve a long-term goal|The new location offers a strategic advantage.|新地點具有策略優勢。|strategic planning
+provisional|adj|暫定的|temporary until final confirmation|The team received provisional approval.|團隊取得了暫定核准。|provisional schedule
+insightful|adj|有洞見的|showing a deep and useful understanding|Her insightful comments improved the proposal.|她富有洞見的意見改善了提案。|insightful analysis
+preemptive|adj|預先防範的|done early to prevent a problem|We took preemptive action against supply shortages.|我們預先採取措施防止供貨短缺。|preemptive measure
+ergonomic|adj|符合人體工學的|designed for comfortable and efficient use|An ergonomic chair can improve working comfort.|符合人體工學的椅子能提升工作舒適度。|ergonomic design
+intermittent|adj|間歇的|stopping and starting at intervals|We are experiencing intermittent network problems.|我們正遇到間歇性的網路問題。|intermittent service
+unprecedented|adj|前所未有的|never known or experienced before|The sale attracted unprecedented demand.|這次特賣帶來了前所未有的需求。|unprecedented growth
+pharmaceutical|adj|製藥的；藥品的|relating to medicines and their production|The firm supplies pharmaceutical packaging.|這家公司供應藥品包裝。|pharmaceutical industry
+state-of-the-art|adj|最先進的|using the newest available technology|The facility uses state-of-the-art equipment.|這座設施使用最先進的設備。|state-of-the-art technology
+foremost|adj|最重要的；領先的|most important or leading in a field|She is one of the foremost experts.|她是頂尖專家之一。|foremost concern
+accomplished|adj|技藝精湛的|highly skilled through experience|An accomplished designer led the project.|一位經驗豐富的設計師領導了專案。|accomplished professional
+multinational|adj|跨國的|operating in several countries|The multinational firm opened a regional office.|這家跨國企業開設了區域辦公室。|multinational corporation
+offsite|adv|在場外|away from the usual workplace|The backup data is stored offsite.|備份資料儲存在異地。|meet offsite
+exempt|adj|豁免的|not required to follow a particular rule|Some purchases are exempt from this fee.|部分採購免收這筆費用。|exempt from
+accordingly|adv|相應地；因此|in a way suited to the situation|Demand increased, so we adjusted production accordingly.|需求增加，因此我們相應調整了產量。|adjust accordingly
+ultimately|adv|最終|in the end after other events|The committee ultimately approved the plan.|委員會最終核准了計畫。|ultimately decide
+respectively|adv|分別地|in the same order as previously mentioned|Orders A and B arrive Monday and Tuesday, respectively.|訂單 A 與 B 分別在星期一及星期二抵達。|listed respectively
+exclusively|adv|僅限；專門地|only for a particular person or purpose|This offer is available exclusively to members.|這項優惠僅限會員使用。|exclusively available
+unanimously|adv|一致地|with everyone in agreement|The board unanimously approved the budget.|董事會一致通過了預算。|vote unanimously
+fluctuate|v|波動|to rise and fall irregularly|Exchange rates fluctuate throughout the day.|匯率整天持續波動。|fluctuate widely
+administer|v|管理；執行|to manage a program or carry out a procedure|The department administers employee benefits.|這個部門管理員工福利。|administer a program
+initiate|v|開始；發起|to cause something to begin|We initiated a review of supplier contracts.|我們開始檢討供應商合約。|initiate a project
+coordinate|v|協調|to organize activities so they work together|She coordinates deliveries between the two sites.|她協調兩個據點之間的配送。|coordinate a schedule
+disclose|v|揭露|to make previously private information known|Applicants must disclose potential conflicts of interest.|申請人必須揭露潛在的利益衝突。|disclose information
+oversee|v|監督|to take responsibility for managing work|The director oversees regional operations.|這位主管監督區域營運。|oversee a project
+complement|v|補足；相輔相成|to add something that improves another thing|The new service complements our existing products.|新服務與我們現有產品相輔相成。|complement each other
+perceive|v|察覺；認為|to notice or understand something in a particular way|Customers perceive the brand as reliable.|顧客認為這個品牌可靠。|perceive as
+comply|v|遵守|to act according to rules or requests|All suppliers must comply with safety standards.|所有供應商都必須遵守安全標準。|comply with
+assess|v|評估|to judge condition, value, or importance|The team will assess the damage.|團隊將評估損害。|assess a risk
+deter|v|嚇阻|to discourage someone from an action|Clear warnings help deter unauthorized access.|清楚的警告有助於嚇阻未授權存取。|deter theft
+embrace|v|欣然接受|to willingly accept a new idea or change|The team embraced the new workflow.|團隊欣然接受了新工作流程。|embrace change
+attain|v|達到|to successfully reach a level or goal|She attained the required language level.|她達到了所需的語言程度。|attain a goal
+regulate|v|規範；調節|to control through rules or adjustments|The device regulates room temperature.|這個裝置調節室內溫度。|regulate an industry
+expedite|v|加快|to make a process happen more quickly|We paid extra to expedite delivery.|我們加付費用以加快配送。|expedite processing
+solicit|v|徵求|to formally ask for something|We are soliciting feedback from customers.|我們正在徵求顧客意見。|solicit proposals
+exploit|v|善用；剝削|to use something fully or unfairly|The company exploited a new market opportunity.|公司善用了新的市場機會。|exploit an opportunity
+withhold|v|保留；暫不支付|to deliberately hold back something|The client withheld payment pending repairs.|客戶在修繕完成前暫緩付款。|withhold information
+restructure|v|重組|to change how an organization is arranged|The company restructured its sales division.|公司重組了業務部門。|restructure operations
+reconcile|v|核對調節；調和|to make records or differences agree|Please reconcile the bank statements monthly.|請每月核對銀行對帳單。|reconcile accounts
+compile|v|彙整；編製|to collect information into a single work|We compiled the survey results into a report.|我們將調查結果彙整成報告。|compile a list
+entitle|v|使有權享有|to give someone a right to something|Membership entitles you to free delivery.|會員資格使你享有免費配送。|entitle someone to
+foster|v|促進；培養|to encourage something to develop|The program fosters cooperation between departments.|這項計畫促進部門間的合作。|foster innovation
+utilize|v|運用|to use something effectively|We utilize the extra space for storage.|我們將多餘空間用於儲物。|utilize resources
+consolidate|v|整合；鞏固|to combine things into a stronger whole|We consolidated several orders into one shipment.|我們將幾筆訂單整合為一批出貨。|consolidate operations
+troubleshoot|v|排除故障|to identify and solve technical problems|The technician will troubleshoot the connection issue.|技術人員將排除連線問題。|troubleshoot equipment
+economize|v|節省|to reduce spending or resource use|We need to economize on travel expenses.|我們需要節省差旅費。|economize on
+surpass|v|超越|to do better than a level or expectation|Sales surpassed last year's total.|銷售額超過了去年的總額。|surpass expectations
+mediate|v|調解|to help opposing parties reach agreement|A consultant mediated the contract dispute.|顧問調解了合約爭議。|mediate a dispute
+confiscate|v|沒收|to officially take something away|Customs officers confiscated the prohibited goods.|海關人員沒收了違禁品。|confiscate goods
+disengage|v|脫離；解除|to separate or stop being involved|Disengage the lock before opening the cover.|打開護蓋前請先解除鎖定。|disengage from
+succeed|v|成功；接任|to achieve a goal or follow someone in a role|The new campaign succeeded in attracting subscribers.|新活動成功吸引了訂戶。|succeed in
+escalate|v|升高；向上呈報|to increase in seriousness or refer upward|Escalate unresolved complaints to a supervisor.|請將未解決的客訴呈報主管。|escalate an issue
+illustrate|v|說明；圖解|to explain using examples or images|The chart illustrates monthly sales trends.|圖表說明了每月銷售趨勢。|illustrate a point
+downsize|v|縮編|to reduce the size of an organization|The firm downsized its regional office.|這家公司縮編了區域辦公室。|downsize a workforce
+reallocate|v|重新分配|to assign resources to a different purpose|We reallocated funds to urgent repairs.|我們將經費重新分配給緊急修繕。|reallocate resources
+incur|v|招致；產生費用|to become responsible for costs or losses|Late cancellations may incur a fee.|逾時取消可能產生費用。|incur expenses
+advocate|v|倡議；支持|to publicly support a policy or idea|The group advocates safer working conditions.|這個團體倡議更安全的工作環境。|advocate reform
+convene|v|召開；集合|to bring people together for a meeting|The board will convene on Monday.|董事會將在星期一開會。|convene a meeting
+encompass|v|涵蓋|to include a wide range of things|The program encompasses training and ongoing support.|這項計畫涵蓋訓練與持續支援。|encompass services
+disseminate|v|傳播；散布|to distribute information widely|The agency disseminates updates to all branches.|該機構向所有分支單位發布最新資訊。|disseminate information
+appreciate|v|感謝；增值|to value something or increase in value|We appreciate your prompt assistance.|我們感謝你的迅速協助。|appreciate support
+authorize|v|授權；核准|to give official permission|Only managers can authorize this payment.|只有經理可以核准這筆付款。|authorize a transaction
+curtail|v|縮減；限制|to reduce or limit something|The company curtailed unnecessary travel.|公司減少了不必要的差旅。|curtail spending
+exemplify|v|體現；作為典範|to serve as a clear example|Her work exemplifies our commitment to quality.|她的工作體現了我們對品質的承諾。|exemplify excellence
+depreciate|v|折舊；貶值|to lose value over time|Office equipment depreciates over several years.|辦公設備會在數年間逐漸折舊。|depreciate in value
+endorse|v|認可；背書|to publicly support or approve something|The association endorsed the training program.|協會認可了這項訓練計畫。|endorse a proposal
+accrue|v|累積|to build up gradually over time|Interest accrues on the unpaid balance.|未清償餘額會持續產生利息。|accrue interest
+mitigate|v|減輕；緩和|to make harm or risk less severe|Extra inventory helps mitigate supply disruptions.|額外庫存有助於減輕供貨中斷的影響。|mitigate risk
+deteriorate|v|惡化|to become worse|The equipment's condition deteriorated over time.|設備狀況隨時間惡化。|deteriorate rapidly
+facilitate|v|促進；使更容易|to make a process easier|The new portal facilitates online registration.|新平台讓線上報名更便利。|facilitate communication
+elicit|v|引出；誘發|to obtain a response through questions or actions|The survey elicited useful customer feedback.|調查引出了實用的顧客回饋。|elicit a response
+terminate|v|終止|to formally end something|Either party may terminate the agreement.|任一方都可以終止協議。|terminate a contract
+deploy|v|部署|to put resources or systems into use|We deployed the update to all branches.|我們將更新部署到所有分公司。|deploy software
+subsidize|v|補助|to pay part of the cost|The company subsidizes employee training.|公司補助員工訓練費用。|subsidize costs
+outsource|v|委外|to hire an outside business to do work|We outsourced the packaging design.|我們將包裝設計委外處理。|outsource services
+commence|v|開始|to begin an activity|Construction will commence next month.|工程將於下個月開始。|commence operations
+optimize|v|最佳化|to make something work as well as possible|The team optimized the delivery routes.|團隊最佳化了配送路線。|optimize performance
+deviate|v|偏離|to depart from a plan or standard|Do not deviate from the approved procedure.|請勿偏離核准的程序。|deviate from
+designate|v|指定|to officially choose a person or purpose|Please designate a contact person.|請指定一位聯絡人。|designate a representative
+navigate|v|導航；操作瀏覽|to find a way through a place or system|Users can easily navigate the new website.|使用者可以輕鬆瀏覽新網站。|navigate a system
+impede|v|阻礙|to slow down or prevent progress|Missing documents may impede approval.|文件缺漏可能妨礙核准。|impede progress
+formulate|v|制定；構思|to develop a plan carefully|We formulated a strategy for expansion.|我們制定了擴張策略。|formulate a policy
+reimburse|v|報銷；償還|to pay someone back for expenses|The company will reimburse approved travel costs.|公司會報銷核准的差旅費。|reimburse expenses
+monetize|v|變現|to turn something into a source of income|The platform helps creators monetize their work.|這個平台協助創作者將作品變現。|monetize content
+reiterate|v|重申|to say something again for emphasis|The manager reiterated the safety requirements.|經理重申了安全要求。|reiterate a commitment
+alleviate|v|減輕|to make a problem or discomfort less severe|Extra staff helped alleviate the workload.|增派人員有助於減輕工作負擔。|alleviate pressure
+liquidate|v|清算；變賣|to sell assets to obtain cash or settle debts|The company liquidated its surplus stock.|公司變賣了多餘庫存。|liquidate assets
+liaise|v|聯繫協調|to communicate between people or organizations|She liaises with suppliers about delivery dates.|她就交貨日期與供應商協調。|liaise with
+entail|v|必須包含；牽涉|to involve something as a necessary part|The position entails frequent overseas travel.|這個職位需要經常海外出差。|entail responsibility
+shortlist|v|列入決選名單|to select candidates for final consideration|We shortlisted five applicants for interviews.|我們挑選五位應徵者進入面試。|shortlist candidates
+yield|v|產生；帶來|to produce a result or return|The investment yielded a steady return.|這項投資帶來了穩定收益。|yield results
+offset|v|抵消|to balance an effect with an opposite benefit|Higher sales offset the increased costs.|較高的銷售額抵消了增加的成本。|offset expenses
+dispatch|v|派遣；發送|to send someone or something to a destination|We dispatched the replacement parts today.|我們今天寄出了替換零件。|dispatch a shipment
+surge|v|激增|to rise suddenly and strongly|Online orders surged after the campaign.|活動後網路訂單激增。|surge in demand
+franchise|v|授權加盟經營|to allow another business to use a brand|The company plans to franchise its café concept.|公司計畫開放咖啡店品牌加盟。|franchise a business
+gauge|v|衡量；估計|to judge an amount or situation|The survey will gauge customer satisfaction.|這份調查將衡量顧客滿意度。|gauge demand
+leverage|v|善用|to use an advantage to achieve a result|We leveraged our experience to enter new markets.|我們善用經驗開拓新市場。|leverage expertise
+forfeit|v|喪失|to lose a right or payment by breaking a condition|You may forfeit your deposit by canceling late.|逾時取消可能使你喪失訂金。|forfeit a deposit
+institute|v|建立；實施|to formally introduce a system or rule|The company instituted new safety checks.|公司實施了新的安全檢查。|institute a policy
+attribute|v|歸因於|to consider something the cause of a result|We attribute our success to teamwork.|我們將成功歸功於團隊合作。|attribute to
+debrief|v|事後檢討；聽取報告|to review an event after it has happened|The team will debrief after the conference.|團隊將在會議後進行檢討。|debrief a team

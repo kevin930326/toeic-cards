@@ -47,7 +47,10 @@ export function isGenerating(id) {
   return inQueue.has(id);
 }
 
+const hasPackContent = (w) => w.pack?.id === 'toeic-1000' && w.en && w.zh && w.examples?.length && w.collocations?.length;
+
 export function needsGeneration(w) {
+  if (hasPackContent(w)) return false;
   return !w.llm || (w.llm.status !== 'done' && w.llm.status !== 'failed');
 }
 
@@ -55,8 +58,8 @@ export function countByState() {
   const all = getWords();
   return {
     missing: all.filter(needsGeneration).length,
-    failed: all.filter((w) => w.llm?.status === 'failed').length,
-    done: all.filter((w) => w.llm?.status === 'done').length,
+    failed: all.filter((w) => !hasPackContent(w) && w.llm?.status === 'failed').length,
+    done: all.filter((w) => hasPackContent(w) || w.llm?.status === 'done').length,
   };
 }
 
@@ -217,7 +220,7 @@ export function generateMissing({ automatic = false } = {}) {
 
 // 重試失敗的字（可以傳 id 只重試一個）
 export function retryFailed(id) {
-  const ids = id ? [id] : getWords().filter((w) => w.llm?.status === 'failed').map((w) => w.id);
+  const ids = id ? [id] : getWords().filter((w) => !hasPackContent(w) && w.llm?.status === 'failed').map((w) => w.id);
   updateWords(ids.map((x) => [x, { llm: null }]));
   enqueueGenerate(ids);
 }
