@@ -3,6 +3,7 @@
 先執行 tests/capture_readme.py 產生 docs/images/readme/ 裡的截圖（尺寸已經統一：
 電腦 1000×760、手機 390×760），再執行這支：三張手機截圖並排成 phones.png，
 加上圓角＋透明背景（GitHub 淺色、深色主題都好看）。
+另將手機完整教學、輸入小提示與深色刪除視窗合成 phone-tools.png。
 
 用法：python tools/make_readme_images.py
 """
@@ -24,16 +25,18 @@ def rounded(im, radius=RADIUS):
     return out
 
 
-def phones():
-    shots = [Image.open(OUT / name) for name in PHONES]
+def phones(names=PHONES, output='phones.png'):
+    shots = [Image.open(OUT / name) for name in names]
     w, h = shots[0].size
     assert all(s.size == (w, h) for s in shots), '手機截圖尺寸要一致'
     sheet = Image.new('RGBA', (w * len(shots) + GAP * (len(shots) - 1), h), (0, 0, 0, 0))
     for i, s in enumerate(shots):
         sheet.alpha_composite(rounded(s), (i * (w + GAP), 0))
-    sheet.save(OUT / 'phones.png', optimize=True)
+    sheet.save(OUT / output, optimize=True)
 
 
 if __name__ == '__main__':
     phones()
+    phones(['phone-tour.png', 'phone-tour-input.png', 'phone-delete.png'], 'phone-tools.png')
     print('done: phones.png')
+    print('done: phone-tools.png')

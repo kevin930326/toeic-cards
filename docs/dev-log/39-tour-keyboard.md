@@ -28,3 +28,9 @@
 ![模擬輸入期間的小提示與對齊光圈](../images/39-tour-keyboard-compact.png)
 
 ![模擬狹小可見高度時固定操作按鈕](../images/39-tour-keyboard-expanded.png)
+
+## README 展示更新
+
+README 補上實際操作教學、批次整理／刪除的操作入口與影響範圍，使用內建多益單字包的實際內容重拍展示圖。手機展示採真正的觸控瀏覽器 context，區分完整教學、輸入時縮小提示及深色刪除；圖說明確標示不包含 iOS 系統鍵盤，避免把展示圖當成真機驗證。
+
+重拍方式：先啟動 8123 伺服器，執行 `python tests/capture_readme.py --updates-only`，再執行 `python tools/make_readme_images.py`。此選項只更新近期功能的展示圖，其他歷史畫面保留；完整重拍仍可不加參數。截圖使用隔離示範資料與模擬 API，不使用正式帳號。完成後檢查圖片尺寸、圖說與 README 的本機連結。

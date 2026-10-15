@@ -129,6 +129,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 `capture_screenshots.py` 用來產生 `docs/images/` 裡早期開發紀錄用的截圖；README 的展示圖改用 `capture_readme.py`（內建單字包的真實內容、統一尺寸），截完再執行 `python tools/make_readme_images.py` 合成手機圖。
 
+只要更新實際導覽、批次整理／刪除與手機輸入的展示圖，可執行 `python tests/capture_readme.py --updates-only`，再執行合成腳本；會保留其他展示圖。手機圖使用觸控模式，輸入狀態圖不包含 iOS 系統鍵盤。
+
 `test_step11.py` 也會驗證單字集的 Firestore 交易合併：兩台裝置同時建立、改名與成員修改互不覆蓋、離線裝置不復活已刪分類，以及其他帳號無法讀取分類。Firebase SDK 和字型快取測試需要連線取得公開檔案；帳號與資料僅寫入 `demo-toeic` 本機模擬器。
 
 `test_deployed.py` 是部署後的冒煙測試，直接測真正的 GitHub Pages 網址（子路徑、HTTPS、Service Worker、離線）：

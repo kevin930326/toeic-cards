@@ -6,12 +6,15 @@ README 裡的圖片才會一樣大。截完再執行 tools/make_readme_images.py
 
 用法（先在專案根目錄執行 python -m http.server 8123 --bind 127.0.0.1）：
   python tests/capture_readme.py
+  python tests/capture_readme.py --updates-only  # 只更新導覽、批次整理與刪除
   python tools/make_readme_images.py
 """
 import json
 import os
+import argparse
 
 from playwright.sync_api import sync_playwright
+from storage_helpers import flush
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'docs', 'images', 'readme')
@@ -19,6 +22,9 @@ URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 DESKTOP = {'width': 1000, 'height': 760}
 PHONE = {'width': 390, 'height': 760}
 os.makedirs(OUT, exist_ok=True)
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--updates-only', action='store_true', help='只拍實際導覽、批次刪除及手機輸入的新展示圖')
+args = parser.parse_args()
 
 INIT = """
 // 固定的隨機數：每次截圖抽到同樣的題目、同樣的順序，畫面沒改時截圖也不會變
@@ -106,10 +112,59 @@ def go(page, route):
     page.wait_for_timeout(600)
 
 
+def capture_updates(browser, page, context):
+    go(page, 'help')
+    page.click('[data-tour=library]')
+    page.click('#openAddWords')
+    page.wait_for_selector('#addWordsDialog #guidedTour')
+    shot(page, 'tour.png')
+    page.click('#tourExit')
+    page.click('#addWordsDialog [data-close]')
+
+    go(page, 'words')
+    page.click('#toggleBulk')
+    for i in range(3):
+        page.locator('.word-select').nth(i).check()
+    page.evaluate('scrollTo(0,0)')
+    shot(page, 'bulk.png')
+    page.click('#bulkDelete')
+    shot(page, 'delete.png')
+    page.click('#cancelWordDeletion')
+
+    # 使用同一份示範字卡，真正的手機觸控 context；不注入／截出使用者資料。
+    mobile = browser.new_context(viewport=PHONE, is_mobile=True, has_touch=True,
+                                 device_scale_factor=1, storage_state=context.storage_state(), service_workers='block')
+    mobile.add_init_script(INIT + '\nwindow.__toeicFirebaseConfig=null;')
+    mobile.route('https://api.dictionaryapi.dev/**', lambda r:r.fulfill(status=404, body='{}'))
+    m = mobile.new_page()
+    m.on('pageerror', lambda e: print('mobile page error:', str(e), flush=True))
+    go(m, 'help')
+    if not m.locator('[data-tour=library]').count():
+        m.screenshot(path=os.path.join(ROOT,'tests','screenshots','readme-mobile-debug.png'))
+        raise AssertionError('手機教學頁未完成載入：' + m.locator('#view').inner_text()[:200])
+    m.click('[data-tour=library]'); m.click('#openAddWords')
+    m.wait_for_selector('#addWordsDialog #guidedTour')
+    shot(m, 'phone-tour.png')
+    m.locator('#addInput').tap(); m.fill('#addInput', 'invoice')
+    m.wait_for_selector('.tour-tip.is-editing')
+    shot(m, 'phone-tour-input.png')
+    m.click('#tourKeyboard'); m.click('#tourExit')
+    m.click('#addWordsDialog [data-close]')
+    go(m, 'words'); m.click('#toggleBulk')
+    for i in range(3):
+        m.locator('.word-select').nth(i).check()
+    m.click('#themeToggle'); m.click('#bulkDelete')
+    shot(m, 'phone-delete.png')
+    m.click('#cancelWordDeletion')
+    mobile.close()
+    go(page, 'help')
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport=DESKTOP, device_scale_factor=1)
     ctx.add_init_script(INIT)
+    ctx.add_init_script('window.__toeicFirebaseConfig=null;')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     page = ctx.new_page()
 
@@ -119,10 +174,12 @@ with sync_playwright() as p:
     page.click('[data-tool=pack]')
     page.wait_for_selector('#packGroup')
     page.fill('#packName', '多益 1000')
-    shot(page, 'pack.png')
+    if not args.updates_only:
+        shot(page, 'pack.png')
     page.click('#packAdd')
     page.wait_for_timeout(1500)
     page.click('[aria-label="關閉加入單字"]')
+    flush(page)
     page.evaluate(SEED)
     # 考試在 45 天後；示範用的金鑰（Gemini 用上面的假回應）
     page.evaluate("""async () => {
@@ -135,6 +192,11 @@ with sync_playwright() as p:
     ctx.route('https://generativelanguage.googleapis.com/**', gemini)
     page.reload()
     page.wait_for_load_state('networkidle')
+
+    capture_updates(browser, page, ctx)
+    if args.updates_only:
+        ctx.close(); browser.close()
+        raise SystemExit(0)
 
     # ---- 單字庫 ----
     go(page, 'words')
