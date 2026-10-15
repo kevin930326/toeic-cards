@@ -39,11 +39,11 @@ export async function lookupLocal(word) {
 // Free Dictionary API：回傳
 //   { status: 'ok', en, phonetic } | { status: 'notfound' } | { status: 'error' }
 // 'error'（離線、伺服器掛掉）之後會再重試；'notfound' 就不再查
-export async function lookupEnglish(word, preferPos = '') {
+export async function lookupEnglish(word, preferPos = '', { signal } = {}) {
   const w = normalizeWord(word);
   let res;
   try {
-    res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(w)}`);
+    res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(w)}`, { signal });
   } catch (e) {
     return { status: 'error' };
   }

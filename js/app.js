@@ -17,6 +17,7 @@ import { renderSettings } from './views/settings.js';
 import { lookupMissing } from './dictionary.js';
 import { onRateWait } from './llm.js';
 import { setWaiting, generateMissing } from './generate.js';
+import { initWordLookup } from './word-lookup.js';
 
 const routes = {
   review: renderReview,
@@ -28,6 +29,7 @@ const routes = {
 };
 
 const view = document.getElementById('view');
+initWordLookup();
 let cleanup = null;
 
 function currentRoute() {

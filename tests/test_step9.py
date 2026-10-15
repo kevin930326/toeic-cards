@@ -1,3 +1,4 @@
+from library_helpers import open_add, close_add, open_ai
 """第 9 步：PWA（安裝、離線使用）端對端測試"""
 import json, os, re, sys
 from playwright.sync_api import sync_playwright
@@ -103,6 +104,12 @@ with sync_playwright() as p:
     fam = page.evaluate("getComputedStyle(document.querySelector('.headword')).fontFamily")
     font_ok = page.evaluate("document.fonts.check('600 40px Fraunces')")
     check(font_ok, f'離線時字型仍然可用（{fam}）')
+    page.click('#openLookup')
+    page.fill('#lookupInput', 'zealous')
+    page.click('#lookupForm button')
+    page.wait_for_selector('.lookup-meaning')
+    check('熱' in page.locator('.lookup-meaning').inner_text(), '離線重新整理後可用全站查字讀取已下載的本機字典')
+    page.press('#lookupInput', 'Escape')
     page.keyboard.press('ArrowRight')
     page.wait_for_timeout(400)
     check(page.locator('#remain').inner_text() == '3', '離線可以複習')
@@ -114,8 +121,11 @@ with sync_playwright() as p:
     page.click('#home')
     # 離線新增單字：字典查得到（字典已下載）
     page.goto(URL + '#/words')
+    open_add(page, 'single')
     page.fill('#addInput', 'zealous')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'zealous')?.zh", timeout=10000)
     zh = [w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words'))") if w['word'] == 'zealous'][0]['zh']
     check('熱心' in zh or '熱情' in zh or len(zh) > 0, f'離線新增單字也查得到中文：{zh!r}')
@@ -128,9 +138,13 @@ with sync_playwright() as p:
       localStorage.setItem('toeic-cards:settings', JSON.stringify({ ...s, llmRpm: 600 }));
     }""")
     page.reload()
+    open_add(page, 'single')
     page.wait_for_selector('#addInput')
+    open_add(page, 'single')
     page.fill('#addInput', 'yield')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_selector('.ai-error', timeout=10000)
     check('連不上 Gemini' in page.locator('.ai-error').inner_text(), '離線時 AI 生成顯示「連不上」')
     y = [w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words'))") if w['word'] == 'yield'][0]

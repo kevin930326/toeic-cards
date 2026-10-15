@@ -1,3 +1,4 @@
+from library_helpers import open_add, close_add, open_ai
 import json, os, sys
 from playwright.sync_api import sync_playwright
 
@@ -49,8 +50,11 @@ with sync_playwright() as p:
     page.wait_for_load_state('networkidle')
 
     for w in ['approve', 'invoice', 'zzqxv']:
+        open_add(page, 'single')
         page.fill('#addInput', w)
+        open_add(page, 'single')
         page.press('#addInput', 'Enter')
+        close_add(page)
 
     page.wait_for_function("""() => {
       const ws = JSON.parse(localStorage.getItem('toeic-cards:words') || '[]');
@@ -135,8 +139,11 @@ with sync_playwright() as p:
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=522, body='down'))
     p3.goto(URL + '#/words')
     p3.wait_for_load_state('networkidle')
+    open_add(p3, 'single')
     p3.fill('#addInput', 'schedule')
+    open_add(p3, 'single')
     p3.press('#addInput', 'Enter')
+    close_add(p3)
     p3.wait_for_function("""() => JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'schedule')?.lookup?.dictAt""", timeout=10000)
     sch = [w for w in p3.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words'))") if w['word'] == 'schedule'][0]
     check(sch['zh'] != '' and sch['en'] == '' and sch['lookup']['enDone'] is False, 'API 掛掉時：中文照樣有、英文標記待重試')

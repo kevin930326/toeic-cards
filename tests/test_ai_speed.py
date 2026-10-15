@@ -1,3 +1,4 @@
+from library_helpers import open_add, close_add, open_ai
 """AI 生成速度：降低思考（thinking）、不支援時自動改用其他設定、第一批先生成少量、失敗時用字典補、測試 AI 按鈕"""
 import json, os, re, sys
 from playwright.sync_api import sync_playwright
@@ -87,9 +88,12 @@ with sync_playwright() as p:
     # ---- 之後直接用記住的設定；第一批 5 個字 ----
     calls.clear()
     page.goto(URL + '#/words')
-    page.click('#batch summary')
+    open_add(page, 'batch')
+    open_add(page, 'batch')
     page.fill('#batchInput', '\n'.join(f'word{chr(97 + i)}{chr(97 + j)}' for i in range(3) for j in range(4)))   # 12 個字
+    open_add(page, 'batch')
     page.click('#batchAdd')
+    close_add(page)
     page.wait_for_function("() => document.querySelector('#aiBox')?.textContent.includes('全部')", timeout=15000)
     check([c[1] for c in calls] == [{'thinkingLevel': 'low'}] * 2, f'直接用記住的 low，不再先試 minimal：{[c[1] for c in calls]}')
     check([c[2] for c in calls] == [5, 7], f'第一批先 5 個字，其餘一批：{[c[2] for c in calls]}')
@@ -99,8 +103,11 @@ with sync_playwright() as p:
     settings(page, llmModel='gemini-2.5-flash')
     page.reload()
     page.wait_for_load_state('networkidle')
+    open_add(page, 'single')
     page.fill('#addInput', 'budget')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'budget')?.llm?.status === 'done'", timeout=10000)
     check(calls[0][1] == {'thinkingBudget': 0}, f'Gemini 2.5 用 thinkingBudget 0：{calls[0][1]}')
 
@@ -109,8 +116,11 @@ with sync_playwright() as p:
     settings(page, llmModel='gemini-nothink')
     page.reload()
     page.wait_for_load_state('networkidle')
+    open_add(page, 'single')
     page.fill('#addInput', 'fallback')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'fallback')?.llm?.status === 'done'", timeout=10000)
     check([c[1] for c in calls] == [{'thinkingLevel': 'minimal'}, {'thinkingLevel': 'low'}, None], f'都不支援時改成不帶思考設定：{[c[1] for c in calls]}')
 
@@ -118,9 +128,12 @@ with sync_playwright() as p:
     settings(page, llmModel='gemini-3.5-flash', llmRpm=6)   # 每 10 秒一次，方便看到「生成中」畫面
     page.reload()
     page.wait_for_load_state('networkidle')
-    page.click('#batch summary')
+    open_add(page, 'batch')
+    open_add(page, 'batch')
     page.fill('#batchInput', '\n'.join(f'slow{chr(97 + i)}' for i in range(8)))
+    open_add(page, 'batch')
     page.click('#batchAdd')
+    close_add(page)
     page.wait_for_function("() => /上次請求 [\\d.]+ 秒・輸出 \\d+ tokens/.test(document.querySelector('#aiBox')?.textContent || '')", timeout=15000)
     check(True, 'AI 面板顯示上次請求花幾秒、輸出多少 tokens')
     page.screenshot(path=os.path.join(OUT, 'ai_progress.png'))
@@ -132,8 +145,11 @@ with sync_playwright() as p:
     page.wait_for_load_state('networkidle')
     dict_calls.clear()
     mode['drop'] = {'missingword'}
+    open_add(page, 'single')
     page.fill('#addInput', 'missingword')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'missingword')?.en", timeout=10000)
     w = words(page)['missingword']
     check(w['llm']['status'] == 'failed' and w['en'] == 'dictionary meaning of missingword' and w['src']['en'] == 'freedict',

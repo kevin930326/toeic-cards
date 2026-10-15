@@ -1,3 +1,4 @@
+from library_helpers import open_add, close_add, open_ai
 import os, sys
 from playwright.sync_api import sync_playwright, expect
 
@@ -14,6 +15,7 @@ def check(cond, msg):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page(viewport={'width': 1100, 'height': 850})
+    page.add_init_script('window.__toeicFirebaseConfig = null;')
     page.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     page.on('console', lambda m: m.type == 'error' and 'Failed to load resource' not in m.text and errors.append('console: ' + m.text))
     page.on('pageerror', lambda e: errors.append('pageerror: ' + str(e)))
@@ -26,12 +28,18 @@ with sync_playwright() as p:
     # 新增單字
     page.click('text=新增單字')
     for w in ['approve', 'Deadline', 'invoice', 'approve']:
+        open_add(page, 'single')
         page.fill('#addInput', w)
+        open_add(page, 'single')
         page.press('#addInput', 'Enter')
+        close_add(page)
     check(page.locator('.word-row').count() == 3, '新增 3 個字，重複的 approve 被擋下')
     check(page.locator('.word-en', has_text='deadline').count() == 1, '大寫自動轉小寫')
+    open_add(page, 'single')
     page.fill('#addInput', '測試')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     check(page.locator('.word-row').count() == 3, '非英文輸入被擋下')
 
     # 編輯
@@ -103,6 +111,7 @@ with sync_playwright() as p:
 
     # 手機版面
     m = browser.new_page(viewport={'width': 375, 'height': 812}, is_mobile=True, has_touch=True)
+    m.add_init_script('window.__toeicFirebaseConfig = null;')
     m.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     m.goto(URL)
     m.wait_for_load_state('networkidle')

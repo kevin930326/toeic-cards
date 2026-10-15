@@ -31,7 +31,7 @@ def store(pg, expression):
     return pg.evaluate('async () => { const s = await import("/js/store.js"); ' + expression + ' }')
 
 def create(pg, name):
-    pg.locator('.sets-panel').evaluate('(el) => el.open = true')
+    if not pg.locator('#manageSetsDialog').is_visible(): pg.click('#openManageSets')
     pg.fill('#newSetName', name)
     pg.click('#createSetForm button')
     return store(pg, 'return s.getWordSets().find(x => x.name === ' + json.dumps(name) + ')?.id;')
@@ -52,6 +52,8 @@ with sync_playwright() as p:
     pg.fill('#newSetName', ' 財務 ')
     pg.click('#createSetForm button')
     check('同名' in pg.locator('#setError').inner_text(), '同名單字集會提示，不重複建立')
+    pg.click('[aria-label="關閉管理單字集"]')
+    pg.locator('#bulkTools > summary').click()
 
     pg.select_option('#setScope', '')
     for w in ['budget', 'invoice', 'agenda', 'salary']:
@@ -72,15 +74,19 @@ with sync_playwright() as p:
     pg.select_option('#bulkSet', finance)
     pg.click('#bulkRemove')
     check(pg.locator('.word-row').count() == 3 and store(pg, 'return s.getWords().length') == 5, '移出分類只改歸屬，保留卡片')
+    pg.click('#openAddWords')
     pg.select_option('#addToSet', finance)
     pg.fill('#addInput', 'budget')
     pg.press('#addInput', 'Enter')
+    pg.click('[aria-label="關閉加入單字"]')
     check(pg.locator('.word-row').count() == 4 and store(pg, 'return s.getWords().length') == 5, '新增已存在的字時可直接加入指定單字集')
 
+    pg.click('#openManageSets')
     pg.click('button[aria-label="重新命名 財務"]')
     pg.fill('.set-name-dialog input', '財務與預算')
     pg.click('.set-name-dialog button[type=submit]')
     check(store(pg, 'return s.getWordSets().find(x => x.name === "財務與預算").id') == finance, '改名保留識別碼與成員')
+    pg.click('[aria-label="關閉管理單字集"]')
     pg.reload()
     expect(pg.locator('#setScope')).to_have_value(finance)
     check(pg.locator('.word-row').count() == 4, '重新整理保留單字集與目前範圍')
@@ -139,8 +145,9 @@ with sync_playwright() as p:
 
     pg.goto(URL + '#/words')
     pg.select_option('#setScope', finance)
-    pg.locator('.sets-panel').evaluate('(el) => el.open = true')
+    pg.click('#openManageSets')
     pg.click('button[aria-label="刪除單字集 財務與預算"]')
+    pg.click('[aria-label="關閉管理單字集"]')
     expect(pg.locator('#setScope')).to_have_value('')
     check(store(pg, 'return s.getWords().length') == 5, '刪除單字集後回到全部，單字與進度保留')
     pg.select_option('#setScope', 'unfiled')
@@ -150,6 +157,7 @@ with sync_playwright() as p:
     evil = create(pg, '<img src=x onerror=alert(1)>')
     check(bool(evil) and pg.locator('#setList img').count() == 0, '自訂名稱安全顯示，不執行 HTML')
     pg.click('button[data-id="' + evil + '"][data-set-act=delete]')
+    pg.click('[aria-label="關閉管理單字集"]')
     pg.select_option('#setScope', people)
     # 改單字拼字仍是同一張卡，原有分類保留。
     store(pg, 'const w = s.getWords().find(w => w.word === "recruit"); s.updateWord(w.id, {word:"recruitment"});')

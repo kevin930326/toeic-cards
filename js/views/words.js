@@ -36,7 +36,8 @@ export function renderWords(root) {
   const selected = new Set();
   root.innerHTML = `
     <section class="page">
-      <h1 class="page-title">單字庫</h1>
+      <div class="library-heading"><div><p class="eyebrow">MY VOCABULARY</p><h1 class="page-title">單字庫</h1><p class="hint-text">整理收藏，選好這次想背的範圍。</p></div>
+        <button class="btn btn-primary" id="openAddWords" type="button">＋ 加入單字</button></div>
       <div id="wordPackPanel"></div>
       <div id="setsPanel"></div>
       <label class="set-scope add-set-scope"><span>新增時加入</span><select id="addToSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId())}</select></label>
@@ -66,10 +67,11 @@ export function renderWords(root) {
         <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
       </div>
       <div class="list-head">
-        <input class="search" id="search" type="search" placeholder="搜尋單字或中文" value="${esc(state.query)}" aria-label="搜尋">
+        <input class="search" id="search" type="search" placeholder="搜尋我的字卡（英文或中文）" value="${esc(state.query)}" aria-label="搜尋我的字卡">
         <span class="count" id="count"></span>
       </div>
-      ${setScopeHTML()}
+      <div class="library-scope">${setScopeHTML()}<button class="btn btn-ghost btn-sm" id="openManageSets" type="button">管理單字集</button></div>
+      <details class="library-bulk" id="bulkTools"><summary>批次整理<span class="summary-hint">選取、加入或移出單字集</span></summary>
       <div class="set-bulk panel">
         <label class="check-row"><input id="selectShown" type="checkbox"><span>選取目前顯示的單字</span></label>
         <span id="selectedCount" role="status"></span>
@@ -77,13 +79,48 @@ export function renderWords(root) {
         <button class="btn btn-outline btn-sm" id="bulkAssign" type="button">加入單字集</button>
         <button class="btn btn-ghost btn-sm" id="bulkRemove" type="button">移出單字集</button>
       </div>
+      </details>
       <ul class="word-list" id="list"></ul>
+      <details class="library-ai" id="aiTools"><summary>AI 內容工具<span class="summary-hint">生成缺項、查看狀態</span></summary><div id="aiToolsBody"></div></details>
+      <dialog class="dialog word-tools-dialog" id="addWordsDialog" aria-labelledby="addWordsTitle">
+        <div class="tool-heading"><div><p class="eyebrow">建立你的收藏</p><h2 id="addWordsTitle">加入單字</h2></div><button class="icon-btn" type="button" data-close aria-label="關閉加入單字">✕</button></div>
+        <div class="word-tool-tabs" role="group" aria-label="加入方式"><button class="tool-tab" type="button" data-tool="single" aria-pressed="true">輸入單字</button><button class="tool-tab" type="button" data-tool="batch" aria-pressed="false">批次貼上</button><button class="tool-tab" type="button" data-tool="pack" aria-pressed="false">內建單字包</button></div>
+        <div id="singleTool"></div><div id="batchTool" hidden></div><div id="packTool" hidden></div>
+      </dialog>
+      <dialog class="dialog word-tools-dialog" id="manageSetsDialog" aria-labelledby="manageSetsTitle">
+        <div class="tool-heading"><div><p class="eyebrow">依主題或來源分類</p><h2 id="manageSetsTitle">管理單字集</h2></div><button class="icon-btn" type="button" data-close aria-label="關閉管理單字集">✕</button></div><div id="manageSetsBody"></div>
+      </dialog>
     </section>`;
+
+  const addDialog = root.querySelector('#addWordsDialog');
+  const setsDialog = root.querySelector('#manageSetsDialog');
+  const addScope = root.querySelector('.add-set-scope');
+  root.querySelector('#singleTool').append(root.querySelector('#addForm'));
+  root.querySelector('#batchTool').append(root.querySelector('#batch'));
+  addDialog.querySelector('.word-tool-tabs').after(addScope);
+  root.querySelector('#packTool').append(root.querySelector('#wordPackPanel'));
+  root.querySelector('#manageSetsBody').append(root.querySelector('#setsPanel'));
+  // 閒置的 AI 說明收進工具，進行中／失敗時才提升到清單上方。
+  root.querySelector('#aiToolsBody').append(root.querySelector('#aiBox'));
+  root.querySelector('#openAddWords').addEventListener('click', () => { addDialog.showModal(); chooseTool('single'); });
+  root.querySelector('#openManageSets').addEventListener('click', () => setsDialog.showModal());
+  for (const dialog of [addDialog, setsDialog]) dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
+  function chooseTool(tool) {
+    for (const name of ['single', 'batch', 'pack']) root.querySelector(`#${name}Tool`).hidden = name !== tool;
+    addScope.hidden = tool === 'pack';
+    for (const button of addDialog.querySelectorAll('[data-tool]')) button.setAttribute('aria-pressed', String(button.dataset.tool === tool));
+    if (tool === 'single') root.querySelector('#addInput').focus();
+    if (tool === 'batch') { root.querySelector('#batch').open = true; root.querySelector('#batchInput').focus(); }
+    if (tool === 'pack') root.querySelector('#wordPack').open = true;
+  }
+  for (const button of addDialog.querySelectorAll('[data-tool]')) button.addEventListener('click', () => chooseTool(button.dataset.tool));
 
   const listEl = root.querySelector('#list');
   const countEl = root.querySelector('#count');
   const refreshPanel = renderSetsPanel(root.querySelector('#setsPanel'));
   const packPanel = renderWordPackPanel(root.querySelector('#wordPackPanel'));
+  root.querySelector('.sets-panel').open = true;
+  if (new URLSearchParams(location.hash.split('?')[1] || '').get('pack') === 'toeic-1000') { addDialog.showModal(); chooseTool('pack'); }
   bindSetScope(root);
   root.querySelector('#setScope').addEventListener('change', () => {
     root.querySelector('#addToSet').value = activeSetId() === 'unfiled' ? '' : activeSetId();
@@ -135,7 +172,7 @@ export function renderWords(root) {
     countEl.textContent = q || activeSetId() ? `${shown.length} / ${all.length} 個字` : `共 ${all.length} 個字`;
     drawSelected();
     if (!shown.length) {
-      listEl.innerHTML = `<li class="list-empty">${all.length ? '目前範圍沒有符合的單字，可切換單字集或新增單字。' : '還沒有單字，從上面輸入第一個吧！'}</li>`;
+      listEl.innerHTML = `<li class="list-empty">${all.length ? '目前範圍沒有符合的單字，可切換單字集或新增單字。' : '還沒有收藏的單字。點「＋ 加入單字」，或用上方「查單字」找到第一個字。'}</li>`;
       return;
     }
     listEl.innerHTML = shown.map((w) => {
@@ -286,6 +323,10 @@ export function renderWords(root) {
     if (!getWords().length) { aiBox.hidden = true; return; }
     aiBox.hidden = false;
     const c = countByState();
+    const attention = st.running || c.failed || (st.error && st.error.kind !== 'aborted' && (c.missing || c.failed));
+    const target = attention ? root.querySelector('.list-head') : root.querySelector('#aiToolsBody');
+    if (attention) target.before(aiBox); else target.append(aiBox);
+    root.querySelector('#aiTools').hidden = !!attention;
     if (!c.missing && !c.failed && !st.running) {
       aiBox.innerHTML = `<p class="ai-line ok">✓ 全部 ${c.done} 個字已有學習內容，可以開始複習。</p>`;
       return;
@@ -351,5 +392,5 @@ export function renderWords(root) {
     if (key !== lastKey) drawList();
     lastKey = key;
   });
-  return () => { unsub(); unsubLookup(); unsubGen(); packPanel.cleanup(); };
+  return () => { unsub(); unsubLookup(); unsubGen(); packPanel.cleanup(); addDialog.close(); setsDialog.close(); };
 }

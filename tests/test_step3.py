@@ -1,3 +1,4 @@
+from library_helpers import open_add, close_add, open_ai
 import json, os, sys, time
 from playwright.sync_api import sync_playwright
 
@@ -24,6 +25,7 @@ def slow_dict(route):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1100, 'height': 900})
+    ctx.add_init_script('window.__toeicFirebaseConfig = null;')
     ctx.route('https://api.dictionaryapi.dev/**', slow_dict)
     page = ctx.new_page()
     page.on('console', lambda m: m.type == 'error' and 'Failed to load resource' not in m.text and errors.append('console: ' + m.text))
@@ -48,14 +50,18 @@ with sync_playwright() as p:
     check(r == {'fresh': ['approve', 'deadline'], 'dupes': ['approve'], 'existing': ['invoice']}, f'analyzeInput {r}')
 
     # ---- 先加一個字 ----
+    open_add(page, 'single')
     page.fill('#addInput', 'invoice')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_timeout(500)
 
     # ---- 批次新增介面 ----
-    page.click('#batch summary')
+    open_add(page, 'batch')
     check(page.locator('#batchInput').is_visible(), '展開批次新增')
     check(page.locator('#batchAdd').is_disabled(), '沒輸入時「加入」按鈕停用')
+    open_add(page, 'batch')
     page.fill('#batchInput', '1. Approve 批准\n2. deadline\n3. invoice\napprove, merger refund\ntake over')
     preview = page.locator('#batchPreview').inner_text()
     check('將新增 5 個字' in preview, f'預覽新增數 ({preview[:40]!r})')
@@ -63,7 +69,9 @@ with sync_playwright() as p:
     check('重複' in preview and '1 個' in preview, '預覽顯示重複的字')
     check(page.locator('#batchAdd').inner_text() == '加入 5 個字', '按鈕顯示數量')
     page.screenshot(path=os.path.join(OUT, 's3_preview.png'), full_page=True)
+    open_add(page, 'batch')
     page.click('#batchAdd')
+    close_add(page)
     check(page.locator('#batchInput').input_value() == '', '加入後清空文字框')
     words = [w.lower() for w in page.locator('.word-en').all_inner_texts()]
     check(sorted(words) == sorted(['invoice', 'approve', 'deadline', 'merger', 'refund', 'take over']), f'列表內容 {words}')
@@ -72,9 +80,12 @@ with sync_playwright() as p:
     # ---- 大量新增：100 個字 ----
     sample = page.evaluate("async () => Object.keys(await (await fetch('/data/dict/c.json')).json()).filter(w => !w.includes(' ')).slice(200, 300)")
     api_calls.clear()
+    open_add(page, 'batch')
     page.fill('#batchInput', '\n'.join(sample))
     t0 = time.time()
+    open_add(page, 'batch')
     page.click('#batchAdd')
+    close_add(page)
     page.wait_for_selector('#lookupProgress:not([hidden])', timeout=3000)
     page.wait_for_function(f"""() => {{
       const ws = JSON.parse(localStorage.getItem('toeic-cards:words'));
@@ -94,12 +105,16 @@ with sync_playwright() as p:
     check(len(ws) == 106 and all(w['lookup'].get('dictAt') for w in ws), '106 個字全部查完')
 
     # 再貼一次同樣的字：全部略過
+    open_add(page, 'batch')
     page.fill('#batchInput', '\n'.join(sample[:10]))
     check('沒有新的字可以加入' in page.locator('#batchPreview').inner_text() and page.locator('#batchAdd').is_disabled(), '再貼一次全部被略過')
 
     # 單個輸入框也能貼多個字
+    open_add(page, 'single')
     page.fill('#addInput', 'agenda, payroll')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     check(page.locator('.word-en', has_text='payroll').count() == 1 and page.locator('.word-en', has_text='agenda').count() == 1, '單個輸入框貼多個字')
 
     # 重新整理後：批次面板不會殘留錯誤，資料都在
@@ -112,7 +127,8 @@ with sync_playwright() as p:
     m.set_viewport_size({'width': 375, 'height': 812})
     m.goto(URL + '#/words')
     m.wait_for_load_state('networkidle')
-    m.click('#batch summary')
+    open_add(m, 'batch')
+    open_add(m, 'batch')
     m.fill('#batchInput', 'approve deadline brand-new words here')
     sw = m.evaluate('document.documentElement.scrollWidth')
     check(sw <= 375, f'手機無橫向捲動 {sw}')

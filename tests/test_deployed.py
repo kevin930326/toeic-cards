@@ -1,3 +1,4 @@
+from library_helpers import open_add, close_add, open_ai
 """部署後檢查：對真正的 GitHub Pages 網址做一次冒煙測試（子路徑 /toeic-cards/、HTTPS、Service Worker、離線）
 
 用法：
@@ -41,8 +42,11 @@ with sync_playwright() as p:
 
     # 新增單字 → 本機字典查得到中文（data/dict/ 在子路徑下）
     page.goto(URL + '#/words')
+    open_add(page, 'single')
     page.fill('#addInput', 'approve')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words') || '[]').find((w) => w.word === 'approve')?.zh", timeout=15000)
     zh = page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'approve').zh")
     check('核准' in zh, f'字典在子路徑下可以查：{zh!r}')

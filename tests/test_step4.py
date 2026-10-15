@@ -1,3 +1,4 @@
+from library_helpers import open_add, close_add, open_ai
 import json, os, re, sys, time
 from playwright.sync_api import sync_playwright
 
@@ -82,9 +83,12 @@ def wait_idle(page, timeout=20000):
 def add_batch(page, words):
     page.goto(URL + '#/words')
     if not page.locator('#batch').get_attribute('open') is not None:
-        page.click('#batch summary')
+        open_add(page, 'batch')
+    open_add(page, 'batch')
     page.fill('#batchInput', '\n'.join(words))
+    open_add(page, 'batch')
     page.click('#batchAdd')
+    close_add(page)
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
@@ -98,9 +102,13 @@ with sync_playwright() as p:
     # 1. 沒有金鑰
     page.goto(URL + '#/words')
     page.wait_for_load_state('networkidle')
+    open_add(page, 'single')
     page.fill('#addInput', 'approve')
+    open_add(page, 'single')
     page.press('#addInput', 'Enter')
+    close_add(page)
     page.wait_for_timeout(400)
+    open_ai(page)
     check('前往設定' in page.locator('#aiBox').inner_text(), '沒金鑰時提示去設定')
     check(gen_requests == [], '沒金鑰時不會呼叫 Gemini')
 
@@ -131,7 +139,9 @@ with sync_playwright() as p:
     page.goto(URL + '#/words')
     page.reload()
     page.wait_for_load_state('networkidle')
+    open_ai(page)
     check('1 個字還沒有 AI 內容' in page.locator('#aiBox').inner_text(), '顯示未生成數量')
+    open_ai(page)
     page.click('#aiGen')
     wait_idle(page)
     a = words_db(page)['approve']
@@ -139,6 +149,7 @@ with sync_playwright() as p:
     check(a['llm']['status'] == 'done' and a['en'] == 'simple meaning of approve', 'approve 生成完成')
     check(a['zh'].startswith('v. approve的多益意思') and a['src']['zh'] == 'llm', 'AI 中文覆蓋字典中文')
     check(len(a['examples']) == 2 and a['collocations'] and a['forms'] == ['approveal (n.)'], '例句、搭配詞、詞性變化都有存')
+    open_ai(page)
     check('全部 1 個字已有學習內容' in page.locator('#aiBox').inner_text(), '顯示全部完成')
     check(page.locator('.word-row .badge-ai').count() == 1, '列表顯示 AI 標記')
 
@@ -153,6 +164,7 @@ with sync_playwright() as p:
     check(gen_requests == [5, 20, 20], f'第一批 5 個字（很快看到結果），之後每批最多 20 個字：{gen_requests}')
     check(sum(1 for w in batch if db[w]['llm'] and db[w]['llm']['status'] == 'done') == 44, '44 個字生成完成')
     check(db['zzfail']['llm']['status'] == 'failed', '漏掉的字標為失敗')
+    open_ai(page)
     check('1 個字生成失敗' in page.locator('#aiBox').inner_text(), '顯示失敗數量')
     check(page.locator('.word-row', has_text='zzfail').locator('.badge-fail').count() == 1, '失敗的字有標記')
     # 有金鑰時，AI 成功的字不查 Free Dictionary；只有 AI 失敗的 zzfail 會改用字典補英文解釋
@@ -178,6 +190,7 @@ with sync_playwright() as p:
     }""")
     page.reload()
     page.wait_for_load_state('networkidle')
+    open_ai(page)
     page.click('#aiGen')
     wait_idle(page)
     a = words_db(page)['approve']
@@ -204,11 +217,13 @@ with sync_playwright() as p:
     check(len(gen_requests) == 4, f'429 最多重試 3 次（共 {len(gen_requests)} 次請求）')
     check('免費額度' in page.locator('.ai-error').inner_text(), f"顯示額度錯誤：{page.locator('.ai-error').inner_text()!r}")
     check(not db['quotaone'].get('llm'), '額度用完的字不算失敗，之後可以再生成')
+    open_ai(page)
     check('2 個字還沒有 AI 內容' in page.locator('#aiBox').inner_text(), '仍顯示 2 個待生成')
     mode['always_429'] = False
 
     # 8. 金鑰被改壞 → 停下來並提示
     page.evaluate("localStorage.setItem('toeic-cards:gemini-key', 'broken')")
+    open_ai(page)
     page.click('#aiGen')
     wait_idle(page)
     check('金鑰無效' in page.locator('.ai-error').inner_text(), '金鑰錯誤時提示')
@@ -270,9 +285,12 @@ with sync_playwright() as p:
     rp.goto(URL + '#/words')
     rp.reload()
     rp.wait_for_load_state('networkidle')
-    rp.click('#batch summary')
+    open_add(rp, 'batch')
+    open_add(rp, 'batch')
     rp.fill('#batchInput', 'approve\nnegotiate')
+    open_add(rp, 'batch')
     rp.click('#batchAdd')
+    close_add(rp)
     rp.wait_for_function("""() => {
       const ws = JSON.parse(localStorage.getItem('toeic-cards:words') || '[]');
       return ws.length === 2 && ws.every((w) => w.llm && w.llm.status === 'done' && w.lookup && w.lookup.dictAt);

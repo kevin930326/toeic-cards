@@ -47,16 +47,22 @@ def setup(browser, key=False, worker=True):
         store(pg, "s.updateSettings({llmRpm:600,autoGenerate:true,llmModel:'gemini-2.5-flash'});")
     return ctx, pg
 
-def open_pack(pg):
-    pg.locator('#wordPack > summary').click()
-    pg.wait_for_selector('#packGroup')
+def open_pack(pg, wait=True):
+    if not pg.locator('#addWordsDialog').is_visible(): pg.click('#openAddWords')
+    pg.click('[data-tool=pack]')
+    if wait: pg.wait_for_selector('#packGroup')
+
+def toggle_theme(pg):
+    pg.click('[aria-label="關閉加入單字"]')
+    pg.click('#themeToggle')
+    open_pack(pg)
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     fail_ctx, pg = setup(browser, worker=False)
     check(pg.evaluate("performance.getEntriesByType('resource').every(e => !e.name.includes('data/packs/'))"), '單字包資料按需載入，未開啟時不下載')
     pg.route('**/data/packs/toeic-1000.json', lambda r: r.fulfill(status=503, body='unavailable'))
-    pg.locator('#wordPack > summary').click()
+    open_pack(pg, wait=False)
     expect(pg.locator('#packRetry')).to_be_visible()
     check(store(pg, 'return s.getWords().length') == 0, '載入失敗有提示，沒有新增任何資料')
     pg.unroute('**/data/packs/toeic-1000.json')
@@ -66,7 +72,7 @@ with sync_playwright() as p:
     fail_ctx.close()
     partial_ctx, partial = setup(browser, worker=False)
     partial.route('**/data/packs/toeic-1000/05.json', lambda r: r.fulfill(status=503, body='unavailable'))
-    partial.locator('#wordPack > summary').click()
+    open_pack(partial, wait=False)
     expect(partial.locator('#packRetry')).to_be_visible()
     check(store(partial, 'return s.getWords().length') == 0 and partial.locator('#packAdd').count() == 0, '任一組內容下載失敗時禁止加入殘缺單字包')
     partial.unroute('**/data/packs/toeic-1000/05.json')
@@ -94,10 +100,10 @@ with sync_playwright() as p:
     pg.set_viewport_size({'width':375,'height':812})
     check(pg.evaluate('document.documentElement.scrollWidth<=innerWidth'), '手機預覽沒有橫向捲動')
     pg.locator('#wordPack').screenshot(path=str(OUT / 'pack-mobile.png'), style='.topbar { visibility: hidden; }')
-    pg.click('#themeToggle')
+    toggle_theme(pg)
     check(pg.evaluate('document.documentElement.scrollWidth<=innerWidth'), '手機深色模式版面正常')
     pg.locator('#wordPack').screenshot(path=str(OUT / 'pack-dark.png'), style='.topbar { visibility: hidden; }')
-    pg.click('#themeToggle')
+    toggle_theme(pg)
     pg.set_viewport_size({'width':1100,'height':1000})
     pg.click('#packAdd')
     target = store(pg, 'return s.getWordSets().find(x=>x.name==="我的多益計畫").id;')
@@ -173,7 +179,7 @@ with sync_playwright() as p:
     ai.evaluate("import('/js/generate.js').then(m=>m.generateMissing())")
     ai.wait_for_timeout(300)
     check(not requests, '已有金鑰時加入全包、重新連線與生成缺項，均不呼叫 Gemini')
-    check('已有學習內容' in ai.locator('#aiBox').inner_text(), '完整內建字卡不再顯示需要生成1000字的提示')
+    check(not ai.locator('#aiBox').is_visible(), '完整內建字卡的閒置AI工具收合，不顯示需要生成1000字的提示')
     check(ai.locator('.badge', has_text='內建').count()==1000, '以內建標籤區別個人即時生成')
     ai.goto(URL+'#/cards')
     ai.click('#card')
