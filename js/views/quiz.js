@@ -6,7 +6,8 @@ import { speak, canSpeak, speakerIcon, resolveAccent, accentLabel } from '../spe
 import { hasApiKey, onRateWait } from '../llm.js';
 import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK, SENTENCE_MODES } from '../quiz.js?v=forms-1';
 import { preparePart5 } from '../part5.js?v=forms-1';
-import { prepareForms } from '../forms-quiz.js?v=forms-1';
+import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v=forms-1';
+import { normalizeWord } from '../parse.js';
 import { getMistakes, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
 import { recordQuiz } from '../log.js';
 import { scopedWords } from '../store.js';
@@ -20,8 +21,12 @@ const MODE_INFO = {
   forms: { title: '詞性變化', desc: '四個選項是同一個字的不同形式，看句子結構選對詞性（Part 5 最常考）', icon: '形' },
 };
 const isSentence = (mode) => SENTENCE_MODES.includes(mode);
-// 詞性變化：多益 1000 單字包的字有內建題目；自己加的字要有存過的題目或 Gemini 金鑰
-const hasFormSource = (w) => w.pack?.id === 'toeic-1000' || !!(w.formQs && w.formQs.length);
+// 詞性變化：有內建題目的字（題庫載入前先用「是不是單字包的字」估計）、或存過 AI 題目的字，不需要金鑰
+function hasFormSource(w) {
+  const bank = loadedFormsBank();
+  const builtin = bank ? bank.has(normalizeWord(w.word)) : w.pack?.id === 'toeic-1000';
+  return builtin || !!(w.formQs && w.formQs.length);
+}
 const modeTitle = (mode) => (MODE_INFO[mode] ? MODE_INFO[mode].title : '錯題重做');
 const LETTERS = ['A', 'B', 'C', 'D'];
 
@@ -65,6 +70,8 @@ export function renderQuiz(root) {
     const all = scopedWords();
     const unfamiliar = all.filter((w) => w.unfamiliar).length;
     const targets = targetsForScope();
+    // 題庫在背景載入，載入後重畫，讓「哪些字有內建題目」更準確（失敗沒關係，開始測驗時會再試）
+    if (!loadedFormsBank()) loadFormsBank().then(() => { if (state.view === 'home') draw(); }).catch(() => {});
     const ids = new Set(all.map((w) => w.id));
     const mistakes = getMistakes().filter((m) => ids.has(m.question.wordId)).length;
     const cards = Object.entries(MODE_INFO).map(([mode, info]) => {

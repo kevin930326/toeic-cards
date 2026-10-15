@@ -188,6 +188,19 @@ with sync_playwright() as p:
     check(m.evaluate('document.documentElement.scrollWidth <= innerWidth'), '手機 375px 沒有橫向捲動')
 
     ctx.close()
+
+    # ---- 單字包裡沒有內建題目的字（company、passenger）：題庫載入後就知道不能考 ----
+    ctx2 = browser.new_context(viewport={'width': 1000, 'height': 900})
+    existing_user(ctx2)
+    ctx2.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
+    pg2 = ctx2.new_page()
+    add_pack_group(pg2)
+    store(pg2, "for (const w of s.getWords()) if (!['company', 'passenger'].includes(w.word)) s.deleteWord(w.id); return true;")
+    pg2.goto(URL + '#/quiz')
+    pg2.wait_for_selector('.mode-card[data-mode=forms] .mode-reason', timeout=10000)
+    check(pg2.locator('.mode-btn[data-mode=forms]').is_disabled(),
+          '題庫載入後，範圍裡的字都沒有內建題目、也沒有金鑰：停用')
+    ctx2.close()
     browser.close()
 
 print()

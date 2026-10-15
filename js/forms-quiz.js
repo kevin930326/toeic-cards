@@ -14,6 +14,7 @@ export const FORMS_BANK_URL = new URL('../data/packs/toeic-1000-forms.json', imp
 const BATCH_SIZE = 10;
 const MAX_PER_WORD = 3;
 let bankPromise = null;
+let loadedBank = null;   // 已經載入的題庫（測驗首頁用來判斷哪些字有內建題目）
 
 const newId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
 
@@ -24,7 +25,7 @@ export function loadFormsBank() {
         if (!res.ok) throw new Error('詞性變化題庫目前讀不到，請連上網路後重試');
         return res.json();
       })
-      .then((raw) => parseFormsBank(raw, normalizeWord))
+      .then((raw) => { loadedBank = parseFormsBank(raw, normalizeWord); return loadedBank; })
       .catch((err) => {
         bankPromise = null;   // 失敗不要留在快取裡，下次再試
         if (err instanceof TypeError || err instanceof SyntaxError) throw new Error('無法讀取詞性變化題庫，請連上網路後重試');
@@ -32,6 +33,11 @@ export function loadFormsBank() {
       });
   }
   return bankPromise;
+}
+
+// 題庫還沒載入時回傳 null
+export function loadedFormsBank() {
+  return loadedBank;
 }
 
 // 一批字送一次請求；回傳成功存下題目的字 id
