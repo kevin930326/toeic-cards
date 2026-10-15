@@ -82,6 +82,12 @@ with sync_playwright() as p:
     page.click('.mode-btn[data-mode=forms]');expect(page.locator('.quiz-progress')).to_have_text('1 / 2')
     assert not ai_calls
     print('PASS 題庫恢復後可重試並重新納入免費內建題',flush=True)
+    cancelled=page.evaluate('''async()=>{const s=await import('/js/store.js');
+      const f=await import('/js/forms-quiz.js?v=review-fixes-1');const controller=new AbortController();controller.abort();
+      try{await f.prepareForms(s.getWords(),1,{signal:controller.signal});return null;}catch(error){return error.kind;}
+    }''')
+    assert cancelled=='aborted'
+    print('PASS 已取消的準備流程不會因已有題庫或已存題而重新開始',flush=True)
     context.close()
 
     context,page=setup()

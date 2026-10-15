@@ -55,4 +55,24 @@ test('計畫：考試當天、已經過了、新字都學完、沒有設定', ()
 test('計畫：建議值有上限，不會建議不可能的數字', () => {
   const p = examPlan({ examDate: '2026-10-17', words: words(1000), now: NOON });   // 明天考 1000 字
   assert.equal(p.suggested, 200);
+  assert.equal(p.requiredPerDay, 1000);
+  assert.equal(p.capped, true);
+});
+
+test('建議值被截成200時，以實際需要判斷進度，不能誤報跟得上', () => {
+  const p = examPlan({ examDate: '2026-10-17', words: words(1000), newPerDay: 200, now: NOON });
+  assert.equal(p.onTrack, false);
+  assert.equal(p.daysAtCurrent, 5);
+  const ready = examPlan({ examDate: '2026-10-17', words: words(1000), newPerDay: 1000, now: NOON });
+  assert.equal(ready.onTrack, true);
+});
+
+test('每日恰需200不超上限，超過14天時仍按扣除複習週後的天數判斷', () => {
+  const boundary = examPlan({ examDate: '2026-10-17', words: words(200), newPerDay: 200, now: NOON });
+  assert.equal(boundary.capped, false);
+  assert.equal(boundary.onTrack, true);
+  const p = examPlan({ examDate: '2026-10-31', words: words(2000), newPerDay: 200, now: NOON });
+  assert.equal(p.learnDays, 8);
+  assert.equal(p.requiredPerDay, 250);
+  assert.equal(p.onTrack, false);
 });

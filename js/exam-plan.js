@@ -8,7 +8,7 @@ import { dayKey } from './srs.js';
 
 export const REVIEW_WEEK = 7;      // 考前留幾天只複習、不學新字
 const LONG_ENOUGH = 14;            // 離考試超過幾天才保留複習週
-const MAX_SUGGESTED = 200;         // 建議值上限（字太多、時間太少時，不要建議不可能的數字）
+const MAX_SUGGESTED = 200;         // 可套用的建議上限；是否趕得上另依實際需要判斷。
 
 const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
@@ -43,7 +43,8 @@ export function examPlan({ examDate, words = [], newPerDay = 20, now = Date.now(
   if (days === 0) return { status: 'today', days, newLeft, current };
   if (!newLeft) return { status: 'allLearned', days, newLeft, current };
   const learnDays = days > LONG_ENOUGH ? days - REVIEW_WEEK : days;
-  const suggested = Math.min(MAX_SUGGESTED, Math.ceil(newLeft / learnDays));
+  const requiredPerDay = Math.ceil(newLeft / learnDays);
+  const suggested = Math.min(MAX_SUGGESTED, requiredPerDay);
   return {
     status: 'ok',
     days,
@@ -51,8 +52,10 @@ export function examPlan({ examDate, words = [], newPerDay = 20, now = Date.now(
     learnDays,
     reviewWeek: days > LONG_ENOUGH,
     suggested,
+    requiredPerDay,
+    capped: requiredPerDay > suggested,
     current,
     daysAtCurrent: Math.ceil(newLeft / current),   // 照目前的速度，幾天學完
-    onTrack: current >= suggested,
+    onTrack: current >= requiredPerDay,
   };
 }

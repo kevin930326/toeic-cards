@@ -51,6 +51,7 @@ python tests/test_security.py   # 資安：CSP 沒有誤擋、注入的程式不
 python tests/test_forms_quiz.py # 詞性變化題：內建題庫、Gemini 補充、錯題本（不需要 Firebase）
 python tests/test_reading.py    # 多益短文閱讀：AI 產生短文、點字查詢、作答與翻譯（不需要 Firebase）
 python tests/test_exam_plan.py  # 考試倒數＋讀書計畫（不需要 Firebase）
+python tests/test_review_regressions.py
 python tests/test_performance.py # 效能：單字探索分批畫、id 對照表、延後存檔、3,000 張字卡的速度上限
 ```
 
@@ -109,6 +110,7 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `test_forms_quiz.py` | 詞性變化題：單字包的字不用金鑰就能考（題目來自內建題庫）、A–D 作答與翻譯解析、錯題本與不熟標記、自己的字沒有金鑰時停用、有金鑰時 Gemini 出題並存起來重用、混進別的字的 AI 題目被丟掉、手機版面 |
 | `test_reading.py` | 多益短文閱讀：沒有金鑰時說明、一次請求產生短文且不熟的字優先、自己的字標記、點字查詢、作答解析與每日紀錄、答完才顯示翻譯、重新整理保留、不完整的回應不存、HTML 只當文字、刪除、手機版面 |
 | `test_exam_plan.py` | 考試倒數：沒設定時的入口、設定日期、建議每天新字數（保留複習週／14 天以內）、跟不上時提醒與一鍵套用、設定頁顯示自訂數字、今日複習倒數、日期已過、清除、手機版面 |
+| `test_review_regressions.py` | 題庫慢速回應不覆蓋已離開的頁面、503時重用已存題、有金鑰／出新題也不額外呼叫AI、真正離線重整、題庫恢復重試、取消與無已存題提示 |
 | `test_performance.py` | 效能：單字探索一次畫 100 個、捲到底或 Tab 到「顯示更多」再畫並保留焦點、改搜尋回到前 100 個；id 對照表在刪除／新增／整批取代後正確；存檔延後合併、關閉頁面前存完、失敗會提示；3,000 張字卡的速度上限 |
 | `test_word_sets.py` | 自訂單字集：建立／改名／刪除、同字多集、批次加入／移出、既有單字歸類、限定複習／測驗／自由瀏覽、共用進度、備份版本相容、改拼字、HTML 注入、手機深色與離線操作 |
 | `test_word_packs.py` | 單字包：按需載入、主檔及內容檔失敗重試、十組與全部加入、預覽與去重、同名／現有集、舊卡補空白且保留自訂內容與進度、特殊拼字、完整內容不呼叫 Gemini（含重連、生成缺項及批次重試）、備份、直接展開連結、手機深色與真正離線重新整理後加入全部 1,000 張完整字卡 |

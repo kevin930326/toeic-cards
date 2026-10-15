@@ -119,6 +119,25 @@ with sync_playwright() as p:
     check(m.evaluate('document.documentElement.scrollWidth <= innerWidth'), '手機 375px 統計頁沒有橫向捲動')
     m.screenshot(path=doc_shot('34-exam-plan-mobile.png'))
 
+    # ---- 建議值有上限，但不能把來不及的計畫說成跟得上 ----
+    tomorrow = date_after(pg, 1)
+    pg.evaluate('''async date=>{const s=await import('/js/store.js');
+      s.replaceWords(Array.from({length:1000},(_,i)=>({...s.createWord('examcap'+i),zh:'n. 測試字',en:'test',lookup:{dictAt:1,enDone:true}})));
+      s.updateSettings({examDate:date,newPerDay:200});
+    }''',tomorrow)
+    pg.goto(URL+'#/stats');pg.wait_for_selector('#examCard')
+    card=pg.locator('#examCard').inner_text()
+    check('每天學 1000 個' in card and '仍來不及' in card and '要 5 天才學完' in card and '跟得上' not in card,
+          '明天考1000字、每天200字：清楚提示需要1000字／天，仍跟不上')
+    check(pg.locator('#applyPlan').count()==0,'目前已是200字時不提供無效的重複套用按鈕')
+    store(pg,'s.updateSettings({newPerDay:20}); return true;')
+    pg.click('#applyPlan')
+    check(store(pg,'return s.getSettings().newPerDay;')==200 and '跟得上' not in pg.locator('#examCard').inner_text(),
+          '從20字套用上限200字後仍誠實提示來不及，不誤報達標')
+    pg.screenshot(path=doc_shot('36-exam-plan-limit.png'))
+    pg.set_viewport_size({'width':375,'height':812})
+    check(pg.evaluate('document.documentElement.scrollWidth<=innerWidth'),'超出上限的完整提示在手機不溢出')
+
     ctx.close()
     browser.close()
 

@@ -8,7 +8,7 @@ import {
   streak, longestStreak, dailySeries, totals, masteryBuckets, MASTERY_LEVELS, FAMILIAR_DAYS, forecast,
 } from '../stats.js?v=stats-progress-1';
 import { MASTERED_DAYS } from '../srs.js';
-import { examPlan } from '../exam-plan.js';
+import { examPlan } from '../exam-plan.js?v=review-fixes-1';
 
 // 目前單字集的名稱（考試計畫依這個範圍計算，和今日複習一樣）
 function scopeName() {
@@ -39,11 +39,13 @@ function examCardHTML(s) {
   return `<div class="panel exam-card" id="examCard">
     ${head}
     <p>「${esc(scopeName())}」還有 <strong>${plan.newLeft}</strong> 個新字沒學。</p>
-    <p>建議每天學 <strong id="examSuggested">${plan.suggested}</strong> 個新字${plan.reviewWeek ? '，考前一週學完，最後一週專心複習' : '，考前學完'}。</p>
+    ${plan.capped
+      ? `<p class="exam-behind">如期完成需每天學 ${plan.requiredPerDay} 個新字，超過每日建議上限 <strong id="examSuggested">${plan.suggested}</strong> 個；按上限學仍來不及，請評估縮小範圍或調整準備時間。</p>`
+      : `<p>建議每天學 <strong id="examSuggested">${plan.suggested}</strong> 個新字${plan.reviewWeek ? '，考前一週學完，最後一週專心複習' : '，考前學完'}。</p>`}
     <p class="${plan.onTrack ? 'exam-ok' : 'exam-behind'}">${plan.onTrack
       ? `目前設定每天 ${plan.current} 個，跟得上進度 ✓`
       : `目前設定每天 ${plan.current} 個，照這個速度要 ${plan.daysAtCurrent} 天才學完。`}</p>
-    ${plan.onTrack ? '' : `<button class="btn btn-primary btn-sm" type="button" id="applyPlan" data-n="${plan.suggested}">改成每天 ${plan.suggested} 個新字</button>`}
+    ${plan.onTrack || plan.suggested <= plan.current ? '' : `<button class="btn btn-primary btn-sm" type="button" id="applyPlan" data-n="${plan.suggested}">改成每天 ${plan.suggested} 個新字</button>`}
   </div>`;
 }
 

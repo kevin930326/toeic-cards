@@ -79,7 +79,9 @@ with sync_playwright() as p:
     for _ in range(100):
         if page.evaluate("""async () => {
           const c = await caches.open('toeic-shell-v1');
-          return !!(await c.match(new URL('js/views/quiz.js', location.href).href));
+          const url = performance.getEntriesByType('resource').map((r) => r.name)
+            .find((name) => new URL(name).pathname.endsWith('/js/views/quiz.js'));
+          return !!url && !!(await c.match(url));
         }"""): break
         page.wait_for_timeout(200)
     else: raise AssertionError('測驗模組未完成離線快取')
