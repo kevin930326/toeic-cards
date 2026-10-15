@@ -73,9 +73,9 @@ let wordsDirty = false;
 export function flushWords() {
   if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
   if (!wordsDirty) return;
-  wordsDirty = false;
   try {
     writeJSON(WORDS_KEY, words);
+    wordsDirty = false;   // 只有存成功才清除；暫時失敗後，離頁／切背景仍可重試。
   } catch (e) {
     window.dispatchEvent(new CustomEvent('toeic:save-error', { detail: { message: e.message } }));
   }

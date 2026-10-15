@@ -130,11 +130,16 @@ with sync_playwright() as p:
 
     # 存檔失敗會提示
     pg.evaluate("""() => { const orig = Storage.prototype.setItem;
+      window.restoreWordWrites = () => { Storage.prototype.setItem = orig; };
       Storage.prototype.setItem = function (k, v) { if (k === 'toeic-cards:words') throw new DOMException('full', 'QuotaExceededError'); return orig.call(this, k, v); }; }""")
     store(pg, "s.updateWord(s.getWords()[2].id, { unfamiliar: true }); return true;")
     pg.wait_for_selector('#toast.show')
     check('空間不足' in pg.locator('#toast').inner_text(), f'背景存檔失敗時顯示提示：{pg.locator("#toast").inner_text()!r}')
+    pg.evaluate("window.restoreWordWrites(); window.dispatchEvent(new Event('pagehide'));")
+    check(saved_words(pg)[2]['unfamiliar'] is True, '儲存恢復後，離頁會重試尚未存成功的修改')
     pg.reload()
+    pg.wait_for_load_state('networkidle')
+    check(store(pg, 'return s.getWords()[2].unfamiliar;') is True, '重試成功後重新整理仍保留修改')
 
     # ---- 3,000 張字卡的速度（寬鬆上限，不限 CPU）----
     pg.goto(URL + '#/settings')
