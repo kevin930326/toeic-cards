@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """內建單字包：預覽、分組與全部加入、預製內容、補空白與離線快取。
 使用隔離瀏覽器與假的 Gemini／Free Dictionary 回應，不連 Firebase。
 """
@@ -31,6 +32,7 @@ def gemini(route):
 
 def setup(browser, key=False, worker=True):
     ctx = browser.new_context(viewport={'width': 1100, 'height': 1000}, service_workers='allow' if worker else 'block')
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig = null;')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     ctx.route('https://generativelanguage.googleapis.com/**', gemini)
@@ -177,6 +179,10 @@ with sync_playwright() as p:
     pg.goto(URL+'#/free');pg.reload()
     expect(pg.locator('#freePosition')).to_have_text('1 / 1000')
     check(pg.locator('#card').is_visible(), '真正離線重新整理後仍可自由翻閱1000張字卡')
+    pg.goto(URL+'#/help');pg.reload()
+    pg.click('#tutorialStart');pg.click('#tutorialNext');pg.click('#tutorialNext')
+    pg.click('#demoCard');pg.click('#demoGood')
+    check(pg.locator('#demoFeedback').is_visible(), '真正離線重新整理後仍可完成教學練習')
     ctx.close()
 
     # 即使已有個人金鑰，全包不會重新生成；重連與手動生成缺項也不會重送。

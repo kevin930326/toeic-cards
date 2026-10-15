@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """發音：多益四種口音、多益混合、例句與搭配詞發音（端對端測試）"""
 import json, os, sys
 from playwright.sync_api import sync_playwright
@@ -56,6 +57,7 @@ def set_accent(page, accent):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 900})
+    existing_user(ctx)
     ctx.add_init_script(FAKE_SPEECH)
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     page = ctx.new_page()

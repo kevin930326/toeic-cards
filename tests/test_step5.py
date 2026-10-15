@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 """第 5 步：間隔重複＋滑卡手勢（端對端測試）"""
 import json, os, sys, time
@@ -87,6 +88,7 @@ def touch_drag(page, cdp, dx, dy=0):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 900})
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig = null;')
     ctx.add_init_script('if (window.speechSynthesis) speechSynthesis.speak = () => {};')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
@@ -186,6 +188,7 @@ with sync_playwright() as p:
 
     # ---- 觸控滑卡（手機）----
     m = browser.new_context(viewport={'width': 390, 'height': 800}, has_touch=True, is_mobile=True)
+    existing_user(m)
     m.add_init_script('window.__toeicFirebaseConfig = null;')
     m.add_init_script('window.__spoken = []; if (window.speechSynthesis) speechSynthesis.speak = (u) => window.__spoken.push(u.text);')
     m.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
@@ -245,6 +248,7 @@ with sync_playwright() as p:
 
     # ---- 批次加入的新字照貼上順序出現 ----
     o = browser.new_context()
+    existing_user(o)
     o.add_init_script('window.__toeicFirebaseConfig = null;')
     o.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     op_ = o.new_page()

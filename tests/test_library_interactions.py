@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """1000 字單字庫：互動效能、局部更新與編輯模式。隔離資料，不使用正式帳號。"""
 import os,sys,json
 from pathlib import Path
@@ -13,6 +14,7 @@ def check(ok,msg):
 with sync_playwright() as p:
     b=p.chromium.launch(headless=True)
     ctx=b.new_context(viewport={'width':1100,'height':900},service_workers='block')
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig=null;')
     ctx.route('https://fonts.googleapis.com/**',lambda r:r.fulfill(status=200,content_type='text/css',body=''))
     ctx.route('https://api.dictionaryapi.dev/**',lambda r:r.fulfill(status=404,body='{}'))

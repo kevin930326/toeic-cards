@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """第 6 步：測驗（簡易模式、聽力、Part 5、錯題本）端對端測試"""
 import json, os, re, sys
 from playwright.sync_api import sync_playwright
@@ -92,6 +93,7 @@ def answer_all(page, mode_name, wrong_first=False):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 900})
+    existing_user(ctx)
     ctx.add_init_script('window.__spoken = []; if (window.speechSynthesis) speechSynthesis.speak = (u) => window.__spoken.push(u.text);')
     ctx.route('https://generativelanguage.googleapis.com/**', gemini)
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))

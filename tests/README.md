@@ -8,6 +8,8 @@
 - Free Dictionary API：模擬正常回應、查無此字、伺服器掛掉（522）
 - 語音播放：攔截 `speechSynthesis.speak`，記錄唸了什麼字、用什麼口音
 
+既有功能測試透過 `onboarding_helpers.existing_user()` 在測試瀏覽器建立「已略過教學」狀態，避免首次歡迎視窗攔住原測試；這是測試初始資料，不是產品開關。真正空白／舊資料的新手體驗由 `test_onboarding.py` 獨立驗證。`test_word_packs.py` 另檢查教學在真正離線重新整理後仍能操作。
+
 ## 執行
 
 ```bash
@@ -39,6 +41,7 @@ python tests/test_explore.py    # 單字探索、直接閱讀與複習分工（�
 python tests/test_inline_lookup.py # 解釋與例句點字查詢、收藏及複習狀態保護
 python tests/test_library_interactions.py # 1000字互動、星星局部更新與編輯模式
 python tests/test_free_cards.py # 複習選單、自由翻卡與排程／紀錄隔離
+python tests/test_onboarding.py # 真正首次體驗、舊資料提示、三步教學、重看及資料隔離
 ```
 
 改完 JS 之後，可以先用 Node 檢查所有檔案的語法（很快，能抓到打錯字造成整個網站打不開的問題）：
@@ -59,6 +62,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 | 檔案 | 測試內容 |
 |---|---|
+| `test_onboarding.py` | 歡迎視窗、略過／Escape／完成後不再提示、舊字卡或僅紀錄的提示列、三步前後切換與練習翻面／評分、正式資料完全不變、無外部API、設定重看、直接連結與不疊窗、儲存被封鎖及320／375px／深色畫面 |
+| `unit/onboarding-state.test.mjs` | 空白／舊資料分流、三種教學狀態、清空學習資料後仍不重複提示、錯誤格式紀錄 |
 | `test_free_cards.py` | 複習選單開關／Escape／外側關閉／焦點與按鍵隔離、完成畫面入口、未到期字卡全覽、翻面、換字、隨機、中英切換、單字集與空範圍、不熟篩選、點字與發音、真實觸控滑動、SRS／紀錄不變及320／375px；離線1000字由 `test_word_packs.py` 覆蓋 |
 | `test_library_interactions.py` | 1000 字進頁／星星處理時間、保留原列節點與焦點、本機儲存及 SRS、編輯／刪除預設隱藏、開啟及完成編輯、切頁恢復關閉、搜尋完整範圍與手機排版；時間只記錄，不用固定門檻判定 |
 | `test_inline_lookup.py` | 解釋／例句點字查中文、桌面／手機／鍵盤、收藏到指定集、去重、關閉後焦點與原卡翻面／剩餘張數／SRS／每日紀錄保留、探索選字保留、HTML 安全顯示、不呼叫外部 API |

@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 """部署後檢查：對真正的 GitHub Pages 網址做一次冒煙測試（子路徑 /toeic-cards/、HTTPS、Service Worker、離線）
 
@@ -21,6 +22,7 @@ def check(cond, msg):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 900}, service_workers='allow')
+    existing_user(ctx)
     ctx.add_init_script('if (window.speechSynthesis) speechSynthesis.speak = () => {};')
     page = ctx.new_page()
     failed = []
@@ -81,6 +83,7 @@ with sync_playwright() as p:
     # 手機版面
     m = browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True,
                             user_agent='Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1')
+    existing_user(m)
     mp = m.new_page()
     mp.goto(URL + '#/settings')
     mp.wait_for_selector('#pwaPanel .steps')

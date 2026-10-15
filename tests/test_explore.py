@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """單字探索：直接閱讀、篩選／選字、發音／編輯、複習分工與進度保護。"""
 import os, sys
 from pathlib import Path
@@ -18,6 +19,7 @@ def store(pg,code):
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     ctx=browser.new_context(viewport={'width':1280,'height':960},service_workers='block')
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig=null;window.__spoken=[];if(window.speechSynthesis)speechSynthesis.speak=u=>window.__spoken.push(u.text);')
     ctx.route('https://api.dictionaryapi.dev/**',lambda r:r.fulfill(status=404,body='{}'))
     ctx.route('https://generativelanguage.googleapis.com/**',lambda r:r.fulfill(status=403,body='{}'))

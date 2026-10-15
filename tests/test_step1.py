@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 import os, sys
 from playwright.sync_api import sync_playwright, expect
@@ -15,6 +16,7 @@ def check(cond, msg):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page(viewport={'width': 1100, 'height': 850})
+    existing_user(page)
     page.add_init_script('window.__toeicFirebaseConfig = null;')
     page.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     page.on('console', lambda m: m.type == 'error' and 'Failed to load resource' not in m.text and errors.append('console: ' + m.text))
@@ -102,6 +104,7 @@ with sync_playwright() as p:
 
     # 手機版面
     m = browser.new_page(viewport={'width': 375, 'height': 812}, is_mobile=True, has_touch=True)
+    existing_user(m)
     m.add_init_script('window.__toeicFirebaseConfig = null;')
     m.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     m.goto(URL)

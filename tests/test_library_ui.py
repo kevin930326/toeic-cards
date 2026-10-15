@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """B 方案：全站查字、獨立加入／分類管理、清單與不中斷學習。
 所有外部字典與 AI 回應均模擬，不讀取使用者帳號或金鑰。
 """
@@ -25,6 +26,7 @@ def lookup(pg, word):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width':1200,'height':900}, service_workers='block')
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig=null;')
     ctx.route('https://fonts.googleapis.com/**', lambda r:r.fulfill(status=200,content_type='text/css',body=''))
     def dictionary(route):

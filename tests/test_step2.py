@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 import json, os, sys
 from playwright.sync_api import sync_playwright
@@ -41,6 +42,7 @@ if (window.speechSynthesis) {
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1100, 'height': 850})
+    existing_user(ctx)
     ctx.add_init_script(SPEECH_STUB)
     ctx.route('https://api.dictionaryapi.dev/**', fake_dict)
     page = ctx.new_page()

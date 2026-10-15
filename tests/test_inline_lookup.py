@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """解釋／例句點字查詢：桌面、觸控、鍵盤、收藏及複習狀態保護。"""
 import os,re,sys
 from pathlib import Path
@@ -16,6 +17,7 @@ def store(pg,code):
 
 def setup(browser,mobile=False):
     ctx=browser.new_context(viewport={'width':375,'height':812} if mobile else {'width':1100,'height':900},has_touch=mobile,is_mobile=mobile,service_workers='block')
+    existing_user(ctx)
     ctx.add_init_script("window.__toeicFirebaseConfig=null;localStorage.setItem('toeic-cards:gemini-key','fake-inline-key');")
     calls=[]
     ctx.route('https://api.dictionaryapi.dev/**',lambda r:(calls.append('dictionary'),r.fulfill(status=404,body='{}')))

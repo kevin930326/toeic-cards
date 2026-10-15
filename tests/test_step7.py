@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """第 7 步：學習統計（端對端測試）"""
 import json, os, sys
 from playwright.sync_api import sync_playwright
@@ -52,6 +53,7 @@ def tip_text(page):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 1000})
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig=null; if (window.speechSynthesis) speechSynthesis.speak = () => {};')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     page = ctx.new_page()

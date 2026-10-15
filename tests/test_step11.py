@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """第 11 步：跨裝置同步（Firebase）端對端測試
 
 使用 Firebase 官方的本機模擬器（真的 Firebase SDK，不會碰到正式專案），並套用專案的 firestore.rules：
@@ -70,6 +71,7 @@ def word(w, i, **extra):
 
 def device(browser, name, words=None, own_log_reviews=0, mobile=False):
     ctx = browser.new_context(viewport={'width': 390, 'height': 844} if mobile else {'width': 1000, 'height': 1000})
+    existing_user(ctx)
     ctx.add_init_script(CFG)
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     pg = ctx.new_page()
@@ -139,6 +141,7 @@ with sync_playwright() as p:
 
     # ---- 沒有設定 Firebase 時 ----
     plain = browser.new_context()
+    existing_user(plain)
     plain.add_init_script('window.__toeicFirebaseConfig = null;')   # 模擬「還沒設定 Firebase」
     pp = plain.new_page()
     pp.goto(URL + '#/settings')
@@ -308,6 +311,7 @@ with sync_playwright() as p:
     def iphone(name, standalone):
         c = browser.new_context(viewport={'width': 390, 'height': 844}, user_agent=IPHONE_UA, is_mobile=True, has_touch=True,
                                 permissions=['clipboard-read', 'clipboard-write'])
+        existing_user(c)
         c.add_init_script(CFG + (STANDALONE if standalone else ''))
         c.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
         pg = c.new_page()

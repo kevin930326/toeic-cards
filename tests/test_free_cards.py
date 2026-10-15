@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """自由翻卡、複習選單、觸控／點字、資料與學習進度隔離。"""
 import os,sys,re
 from pathlib import Path
@@ -12,6 +13,7 @@ def data(pg):return pg.evaluate('''async()=>{const s=await import('/js/store.js'
 with sync_playwright() as p:
     b=p.chromium.launch(headless=True)
     ctx=b.new_context(viewport={'width':1100,'height':950},service_workers='block',has_touch=True)
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig=null; window.testSpeech=[]; speechSynthesis.speak=u=>window.testSpeech.push(u.text);')
     ctx.route('https://fonts.googleapis.com/**',lambda r:r.fulfill(status=200,content_type='text/css',body=''))
     ctx.route('https://api.dictionaryapi.dev/**',lambda r:r.fulfill(status=404,body='{}'))

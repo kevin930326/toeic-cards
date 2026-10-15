@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 import json, os, re, sys, time
 from playwright.sync_api import sync_playwright
@@ -93,6 +94,7 @@ def add_batch(page, words):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1100, 'height': 900})
+    existing_user(ctx)
     ctx.route('https://generativelanguage.googleapis.com/**', gemini)
     ctx.route('https://api.dictionaryapi.dev/**', fake_dict)
     page = ctx.new_page()
@@ -265,6 +267,7 @@ with sync_playwright() as p:
     # 12. 競態（曾經發生過的 bug）：一批字的字典檔不同時下載完。
     #     舊版先算好 approve 的字典資料，等 n.json 下載時 AI 寫好了，最後才把舊的字典資料寫回去，蓋掉 AI 的中文
     rc = browser.new_context()
+    existing_user(rc)
     rc.route('https://generativelanguage.googleapis.com/**', gemini)
     rc.route('https://api.dictionaryapi.dev/**', fake_dict)
     rc.add_init_script("""

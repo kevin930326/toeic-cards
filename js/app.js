@@ -14,7 +14,9 @@ import { initPWA } from './pwa.js';
 import { initSync } from './sync.js';
 import { hasApiKey } from './llm.js';
 import { renderWords } from './views/words.js?v=library-bulk-1';
-import { renderSettings } from './views/settings.js';
+import { renderSettings } from './views/settings.js?v=onboarding-1';
+import { renderHelp } from './views/help.js';
+import { initOnboarding } from './onboarding.js';
 import { lookupMissing } from './dictionary.js';
 import { onRateWait } from './llm.js';
 import { setWaiting, generateMissing } from './generate.js';
@@ -28,6 +30,7 @@ const routes = {
   stats: renderStats,
   words: renderWords,
   settings: renderSettings,
+  help: renderHelp,
 };
 
 const view = document.getElementById('view');
@@ -127,6 +130,7 @@ window.addEventListener('hashchange', () => { render(); updateBadge(); });
 applyTheme();
 render();
 updateBadge();
+initOnboarding();
 lookupMissing();
 onRateWait(setWaiting);
 

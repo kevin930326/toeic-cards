@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 """第 9 步：PWA（安裝、離線使用）端對端測試"""
 import json, os, re, sys
@@ -42,6 +43,7 @@ def cached_paths(page, cache):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 900}, service_workers='allow')
+    existing_user(ctx)
     ctx.add_init_script('if (window.speechSynthesis) speechSynthesis.speak = () => {};')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     ctx.route('https://generativelanguage.googleapis.com/**', gemini)
@@ -179,6 +181,7 @@ with sync_playwright() as p:
 
     # ---- 已安裝（App 模式）----
     st = browser.new_context(service_workers='block')
+    existing_user(st)
     st.add_init_script("""
       const real = window.matchMedia.bind(window);
       window.matchMedia = (q) => q.includes('display-mode: standalone') ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : real(q);
@@ -193,6 +196,7 @@ with sync_playwright() as p:
     ios = browser.new_context(
         user_agent='Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1',
         viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, service_workers='block')
+    existing_user(ios)
     ip = ios.new_page()
     ip.goto(URL + '#/settings')
     ip.wait_for_selector('#pwaPanel .steps')
@@ -208,6 +212,7 @@ with sync_playwright() as p:
     # ---- 非 HTTPS 的區網網址：說明離線功能無法使用 ----
     if LAN_URL:
         lan = browser.new_context()
+        existing_user(lan)
         lp = lan.new_page()
         lp.goto(LAN_URL + '#/settings')
         lp.wait_for_selector('#pwaPanel .panel-title')

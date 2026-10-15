@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 """AI 生成速度：降低思考（thinking）、不支援時自動改用其他設定、第一批先生成少量、失敗時用字典補、測試 AI 按鈕"""
 import json, os, re, sys
@@ -60,6 +61,7 @@ def words(page):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 1000})
+    existing_user(ctx)
     ctx.route('https://generativelanguage.googleapis.com/**', gemini)
     ctx.route('https://api.dictionaryapi.dev/**', free_dict)
     page = ctx.new_page()

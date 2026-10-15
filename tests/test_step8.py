@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """第 8 步：匯出／匯入（端對端測試）"""
 import json, os, sys, tempfile
 from playwright.sync_api import sync_playwright
@@ -44,6 +45,7 @@ def store(page, k):
 
 def new_page(browser):
     ctx = browser.new_context(viewport={'width': 1000, 'height': 1000}, accept_downloads=True)
+    existing_user(ctx)
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     pg = ctx.new_page()
     pg.on('console', lambda m: m.type == 'error' and 'Failed to load resource' not in m.text and errors.append('console: ' + m.text))

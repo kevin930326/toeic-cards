@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 """自訂單字集：管理、批次歸類、範圍、共用進度、備份與手機／離線操作。
 外部服務全部攔截；不讀取使用者的瀏覽器資料或正式 Firebase。
 """
@@ -15,6 +16,7 @@ def check(ok, message):
 
 def setup(browser, mobile=False):
     ctx = browser.new_context(viewport={'width': 375, 'height': 812} if mobile else {'width': 1100, 'height': 900}, service_workers='block')
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig = null;')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     ctx.route('https://generativelanguage.googleapis.com/**', lambda r: r.fulfill(status=403, body='{}'))

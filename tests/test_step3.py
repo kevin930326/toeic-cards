@@ -1,3 +1,4 @@
+from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
 import json, os, sys, time
 from playwright.sync_api import sync_playwright
@@ -25,6 +26,7 @@ def slow_dict(route):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1100, 'height': 900})
+    existing_user(ctx)
     ctx.add_init_script('window.__toeicFirebaseConfig = null;')
     ctx.route('https://api.dictionaryapi.dev/**', slow_dict)
     page = ctx.new_page()
