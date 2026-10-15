@@ -117,9 +117,7 @@ with sync_playwright() as p:
         pg.set_viewport_size({'width':width,'height':900})
         close=pg.locator('.explore-reading .back-en').evaluate('''el=>{
           const pos=el.querySelector('.zh-pos').getBoundingClientRect();
-          const node=[...el.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());
-          const range=document.createRange();range.setStart(node,0);range.setEnd(node,Math.min(10,node.length));
-          const text=range.getClientRects()[0];
+          const text=el.querySelector('.lookup-token').getBoundingClientRect();
           return Math.abs((pos.top+pos.bottom)/2-(text.top+text.bottom)/2)<10 && text.left-pos.right<=16;
         }''')
         check(close,str(width)+'px 英文詞性與解釋在同一行且間距不超過16px')

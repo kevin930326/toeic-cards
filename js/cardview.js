@@ -3,6 +3,11 @@ import { esc, zhLines } from './ui.js';
 import { canSpeak, speakerIcon, speak } from './speech.js';
 import { isLookingUp } from './dictionary.js';
 import { isGenerating } from './generate.js';
+import { wordTokens } from './word-tokens.js';
+
+const lookupText = (text) => wordTokens(text).map((part) => part.word
+  ? `<button class="lookup-token" type="button" data-lookup-word="${esc(part.word)}" aria-label="查詢 ${esc(part.text)}">${esc(part.text)}</button>`
+  : esc(part.text)).join('');
 
 const chips = (list) => `<p class="chips">${list.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</p>`;
 
@@ -17,6 +22,11 @@ const miniSpeak = (text) => canSpeak()
 
 // 卡片被點一下時：點到發音按鈕就發音，否則翻面（「複習」和「字卡」頁共用）
 export function handleCardTap(target, word, flip) {
+  const lookup = target.closest('[data-lookup-word]');
+  if (lookup) {
+    lookup.dispatchEvent(new CustomEvent('toeic:lookup-word', { bubbles: true, detail: { word: lookup.dataset.lookupWord, trigger: lookup } }));
+    return;
+  }
   const sp = target.closest('[data-speak-text]');
   if (sp) { speak(sp.dataset.speakText); return; }
   if (target.closest('[data-speak]')) { speak(word.word); return; }
@@ -39,15 +49,15 @@ export function backHTML(w, mode) {
       : empty;
   } else {
     main = w.en
-      ? `${w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}<p class="back-en">${esc(w.en)}</p>`
+      ? `${w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}<p class="back-en">${lookupText(w.en)}</p>`
       : empty;
   }
   if (mode === 'both') main = `<div class="explore-definition"><h3>中文詞義</h3>${main}</div>
-    <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${w.pos ? `<span class="zh-pos">${esc(w.pos)}</span>` : ''}${esc(w.en)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
+    <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${w.pos ? `<span class="zh-pos">${esc(w.pos)}</span>` : ''}${lookupText(w.en)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
   const extras = [];
   if (w.examples.length) {
     extras.push(`<div class="extra"><h3>例句</h3>${w.examples.map((e) => `
-      <p class="ex-en">${esc(e.en)}${miniSpeak(e.en)}</p>${e.zh ? `<p class="ex-zh">${esc(e.zh)}</p>` : ''}`).join('')}</div>`);
+      <p class="ex-en">${lookupText(e.en)}${miniSpeak(e.en)}</p>${e.zh ? `<p class="ex-zh">${esc(e.zh)}</p>` : ''}`).join('')}</div>`);
   }
   if (w.collocations.length) extras.push(`<div class="extra"><h3>常見搭配</h3>${speakChips(w.collocations)}</div>`);
   if (w.forms.length || w.synonyms.length) {

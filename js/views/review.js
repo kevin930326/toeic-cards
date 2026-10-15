@@ -55,7 +55,15 @@ export function renderReview(root) {
   }
 
   function draw() {
-    if (session.scope !== scopeKey()) startSession();
+    const nextScope = scopeKey();
+    if (session.scope !== nextScope) {
+      const [oldSet, oldIds] = JSON.parse(session.scope);
+      const [nextSet, nextIds] = JSON.parse(nextScope);
+      const available = new Set(nextIds);
+      // 查字後收藏新字時，保留正在複習的卡片、翻面與佇列；新字留待下一輪。
+      if (session.queue.length && oldSet === nextSet && oldIds.every((id) => available.has(id))) session.scope = nextScope;
+      else startSession();
+    }
     const w = current();
     const { cardMode } = getSettings();
     if (!w) { drawDone(); return; }
@@ -100,6 +108,7 @@ export function renderReview(root) {
           <button class="btn btn-ghost btn-sm" id="undo" type="button" ${session.history.length ? '' : 'disabled'}>↶ 復原</button>
           <button class="btn btn-ghost btn-sm" id="edit" type="button">編輯</button>
         </div>
+        <p class="hint-text">英文解釋與例句可點字查意思，也能加入單字集。</p>
         <p class="kbd-hint">鍵盤：空白鍵翻面　← 不熟　→ 會　P 發音　Z 復原</p>
       </section>`;
 

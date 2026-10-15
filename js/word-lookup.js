@@ -24,12 +24,15 @@ export function initWordLookup() {
   let controller;
   let current = null;
   let viewingCard = false;
+  let returnTrigger = null;
   const saved = (word) => getWords().find((w) => w.word === word);
   function stop() { sequence++; controller?.abort(); }
-  function open() {
+  function open(word = '', trigger = null) {
     if (document.querySelector('dialog[open]')) return;
+    returnTrigger = trigger;
     dialog.showModal();
     input.focus(); input.select();
+    if (word) { input.value = word; query(word); }
   }
   function render() {
     if (!current) return;
@@ -96,10 +99,10 @@ export function initWordLookup() {
       if (button) button.disabled = false;
     }
   }
-  dialog.querySelector('#lookupForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); stop();
+  async function query(value) {
+    stop();
     const token = sequence;
-    const word = normalizeWord(input.value);
+    const word = normalizeWord(value);
     current = null; viewingCard = false;
     if (!/^[a-zà-öø-ÿ]+(?:[-' ][a-zà-öø-ÿ]+)*$/i.test(word) || word.length > 80) {
       result.innerHTML = '<p class="set-error" role="alert">請輸入一個英文單字或片語。</p>'; return;
@@ -111,13 +114,29 @@ export function initWordLookup() {
     current = { word, ...(local || {}), source: local ? '中文：本機 ECDICT 字典' : '本機字典未收錄此字，可連線查英文解釋。' };
     if (!local && own) { current = { ...own, source: '來自你已收藏的字卡' }; viewingCard = true; }
     render();
-  });
+  }
+  dialog.querySelector('#lookupForm').addEventListener('submit', (event) => { event.preventDefault(); query(input.value); });
   dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
   dialog.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); dialog.close(); }
   });
-  dialog.addEventListener('close', stop);
-  document.getElementById('openLookup').addEventListener('click', open);
+  dialog.addEventListener('close', () => {
+    stop();
+    if (!returnTrigger) return;
+    const trigger = returnTrigger.isConnected ? returnTrigger : [...document.querySelectorAll('[data-lookup-word]')].find((el) => el.dataset.lookupWord === returnTrigger.dataset.lookupWord);
+    trigger?.focus({ preventScroll: true });
+    returnTrigger = null;
+  });
+  document.getElementById('openLookup').addEventListener('click', () => open());
+  document.addEventListener('toeic:lookup-word', (event) => {
+    if (typeof event.detail?.word === 'string') open(event.detail.word, event.detail.trigger);
+  });
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-lookup-word]');
+    if (!trigger || dialog.contains(trigger)) return;
+    event.preventDefault();
+    open(trigger.dataset.lookupWord, trigger);
+  });
   document.addEventListener('keydown', (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); open(); }
   });

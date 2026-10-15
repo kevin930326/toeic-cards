@@ -30,7 +30,7 @@ export function attachSwipe(el, { onSwipe, onDrag, onTap, threshold = 90 }) {
   function down(e) {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     // 從發音按鈕上開始拖也可以滑卡：沒拖動就是普通的點擊（照常發音），拖動了就會擋掉那次點擊
-    if (e.target.closest('input, textarea, select')) return;
+    if (e.target.closest('input, textarea, select, [data-lookup-word]')) return;
     active = true;
     dragging = false;
     pointerId = e.pointerId;
@@ -90,6 +90,7 @@ export function attachSwipe(el, { onSwipe, onDrag, onTap, threshold = 90 }) {
   }
 
   function click(e) {
+    if (e.target.closest('[data-lookup-word]')) return;
     // 只擋滑鼠／觸控產生的 click（detail ≥ 1）；鍵盤觸發的 click（detail 0）一律放行
     if (Date.now() < suppressClickUntil && e.detail !== 0) {
       e.stopPropagation();

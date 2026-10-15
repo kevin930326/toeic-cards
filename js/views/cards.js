@@ -23,7 +23,7 @@ export function renderCards(root) {
       <label class="field"><span class="sr-only">搜尋探索中的收藏</span><input type="search" id="exploreSearch" placeholder="搜尋收藏的英文或中文" value="${esc(state.query)}" autocomplete="off"></label>
       <p id="exploreCount" class="hint-text" role="status"></p><ul id="exploreList" class="explore-list"></ul>
     </aside><article class="explore-detail panel" id="exploreDetail" aria-label="單字內容"></article></div>
-    <p class="hint-text explore-footnote">這裡的瀏覽與不熟標記不更動複習排程，也不計入每日學習量。</p>
+    <p class="hint-text explore-footnote">英文解釋與例句可點字查意思、加入單字集。這裡的瀏覽與不熟標記不更動複習排程，也不計入每日學習量。</p>
   </section>`;
   const listEl = root.querySelector('#exploreList');
   const detail = root.querySelector('#exploreDetail');
