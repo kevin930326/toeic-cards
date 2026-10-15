@@ -16,6 +16,13 @@ import { onLookupStatus } from '../dictionary.js?v=dictionary-scale-1';
 import { onGenerateStatus } from '../generate.js?v=dictionary-scale-1';
 import { scopedWords, activeSetId } from '../store.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
+import { daysUntilExam } from '../exam-plan.js';
+
+// 有設定考試日期時，在今日複習的說明後面加上倒數
+function examLine() {
+  const days = daysUntilExam(getSettings().examDate);
+  return days !== null && days > 0 ? `<span class="exam-countdown">距離多益還有 <strong>${days}</strong> 天</span>` : '';
+}
 
 const AGAIN_GAP = 3;   // 答「不熟」的字，在這一輪中隔 3 張後再出現
 
@@ -82,7 +89,7 @@ export function renderReview(root) {
 
     root.innerHTML = `
       <section class="page page-review">
-        <div class="review-purpose"><h1>今日複習</h1><p>先回想，再翻面確認；評分會安排下次複習時間。</p></div>
+        <div class="review-purpose"><h1>今日複習</h1><p>先回想，再翻面確認；評分會安排下次複習時間。${examLine()}</p></div>
         ${setScopeHTML()}
         <div class="review-head">
           <p class="review-count"><strong id="remain">${session.queue.length}</strong> 張待複習</p>

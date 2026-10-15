@@ -7,9 +7,21 @@ import { esc, toast } from '../ui.js';
 import { renderBackupPanel } from './backup-panel.js';
 import { renderPwaPanel } from './pwa-panel.js?v=dictionary-scale-1';
 import { renderSyncPanel } from './sync-panel.js';
+import { isValidExamDate } from '../exam-plan.js';
 
 // 模型清單只在這次開啟網站時記住（不需要存）
 let modelCache = null;
+
+// 每天新字數的選項；套用考試計畫後可能是其他數字，也要顯示出來
+function newPerDayOptions(value) {
+  const options = [10, 20, 30, 50].map((n) => [String(n), `${n} 個/天`]);
+  const n = Number(value);
+  if (Number.isInteger(n) && n > 0 && !options.some(([v]) => Number(v) === n)) {
+    options.push([String(n), `${n} 個/天（考試計畫）`]);
+    options.sort((a, b) => Number(a[0]) - Number(b[0]));
+  }
+  return options;
+}
 
 function segmented(name, value, options, label) {
   return `
@@ -104,9 +116,15 @@ export function renderSettings(root) {
         <p class="hint-text">複習一張卡或測驗答一題都算 1 題，達到目標才算「打卡」。之後改目標不會影響過去的打卡紀錄。</p>
         <div class="setting-row wrap">
           <span class="setting-label">新字</span>
-          ${segmented('newPerDay', s.newPerDay, [['10', '10 個/天'], ['20', '20 個/天'], ['30', '30 個/天'], ['50', '50 個/天']], '每天新字數')}
+          ${segmented('newPerDay', s.newPerDay, newPerDayOptions(s.newPerDay), '每天新字數')}
         </div>
         <p class="hint-text">每天最多學幾個新字。到期要複習的舊字不受限制；複習完後也可以按「再學 10 個新字」。</p>
+        <div class="setting-row wrap">
+          <label class="setting-label" for="examDate">考試</label>
+          <input type="date" id="examDate" class="exam-date-input" value="${isValidExamDate(s.examDate) ? s.examDate : ''}">
+          ${s.examDate ? '<button class="btn btn-ghost btn-sm" type="button" id="examClear">清除</button>' : ''}
+        </div>
+        <p class="hint-text">設定多益考試日期後，統計頁會顯示倒數天數，並依還沒學的字數建議每天學幾個新字。</p>
       </div>
 
       <div class="panel">
@@ -213,6 +231,11 @@ export function renderSettings(root) {
   root.querySelectorAll('input[name="dailyGoal"]').forEach((input) => {
     input.addEventListener('change', () => updateSettings({ dailyGoal: Number(input.value) }));
   });
+  root.querySelector('#examDate')?.addEventListener('change', (e) => {
+    const v = e.target.value;
+    if (!v || isValidExamDate(v)) updateSettings({ examDate: v || '' });
+  });
+  root.querySelector('#examClear')?.addEventListener('click', () => updateSettings({ examDate: '' }));
   root.querySelectorAll('input[name="newPerDay"]').forEach((input) => {
     input.addEventListener('change', () => updateSettings({ newPerDay: Number(input.value) }));
   });

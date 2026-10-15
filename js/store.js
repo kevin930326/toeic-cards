@@ -21,6 +21,7 @@ const DEFAULT_SETTINGS = {
   statsDays: 30,        // 統計頁的期間：7 | 30 | 90
   dailyGoal: 20,        // 每日目標：複習＋測驗合計題數，達標才算打卡
   activeSetId: '',      // 本機目前選的單字集：空字串全部、unfiled 未分類
+  examDate: '',         // 多益考試日期 'YYYY-MM-DD'（空字串＝沒設定），用來倒數和建議每天新字數
 };
 
 const listeners = new Set();
@@ -228,7 +229,7 @@ export function getSettings() {
 }
 
 // 會跨裝置同步的設定（要和 sync-core.js 的 SYNCED_SETTINGS 一致；這裡不 import 它，避免互相依賴）
-const SYNCED_KEYS = ['dailyGoal', 'newPerDay', 'cardMode', 'autoGenerate', 'quizScope', 'quizCount', 'part5Fresh'];
+const SYNCED_KEYS = ['dailyGoal', 'newPerDay', 'cardMode', 'autoGenerate', 'quizScope', 'quizCount', 'part5Fresh', 'examDate'];
 const SETTINGS_AT_KEY = 'toeic-cards:settingsAt';
 
 export function updateSettings(patch, { fromSync = false } = {}) {

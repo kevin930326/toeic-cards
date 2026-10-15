@@ -1,6 +1,6 @@
 // 統計頁：連續學習天數、熟練度分布、每日複習／測驗量、未來到期量
 // 期間篩選（7／30／90 天）放在最上面，套用到下面所有「期間」相關的數字和圖表
-import { getWords, getSettings, updateSettings, subscribe } from '../store.js';
+import { getWords, getSettings, updateSettings, subscribe, scopedWords, activeSetId, getWordSets } from '../store.js';
 import { esc, goalRingHTML } from '../ui.js';
 import { getLog, todayProgress, currentGoal } from '../log.js';
 import { columnChart } from '../charts.js';
@@ -8,6 +8,44 @@ import {
   streak, longestStreak, dailySeries, totals, masteryBuckets, MASTERY_LEVELS, FAMILIAR_DAYS, forecast,
 } from '../stats.js?v=stats-progress-1';
 import { MASTERED_DAYS } from '../srs.js';
+import { examPlan } from '../exam-plan.js';
+
+// 目前單字集的名稱（考試計畫依這個範圍計算，和今日複習一樣）
+function scopeName() {
+  const id = activeSetId();
+  if (!id) return '全部單字';
+  if (id === 'unfiled') return '未分類';
+  return getWordSets().find((s) => s.id === id)?.name || '全部單字';
+}
+
+const fmtExam = (d) => d.replaceAll('-', '/');
+
+// 考試倒數卡片
+function examCardHTML(s) {
+  const plan = examPlan({ examDate: s.examDate, words: scopedWords(), newPerDay: s.newPerDay });
+  if (!plan) {
+    return `<a class="panel exam-card exam-empty" href="#/settings">設定多益考試日期，看倒數天數和每天建議的新字數 ›</a>`;
+  }
+  if (plan.status === 'past') {
+    return `<div class="panel exam-card"><p>考試日期（${fmtExam(s.examDate)}）已經過了。<a href="#/settings">設定下一次的考試日期</a></p></div>`;
+  }
+  if (plan.status === 'today') {
+    return `<div class="panel exam-card"><p class="exam-days"><strong>今天</strong>就是考試日，加油！</p></div>`;
+  }
+  const head = `<p class="exam-days">距離多益還有 <strong id="examDays">${plan.days}</strong> 天<span class="exam-date">${fmtExam(s.examDate)}</span></p>`;
+  if (plan.status === 'allLearned') {
+    return `<div class="panel exam-card">${head}<p>「${esc(scopeName())}」的字都學過了，接下來專心複習 👍</p></div>`;
+  }
+  return `<div class="panel exam-card" id="examCard">
+    ${head}
+    <p>「${esc(scopeName())}」還有 <strong>${plan.newLeft}</strong> 個新字沒學。</p>
+    <p>建議每天學 <strong id="examSuggested">${plan.suggested}</strong> 個新字${plan.reviewWeek ? '，考前一週學完，最後一週專心複習' : '，考前學完'}。</p>
+    <p class="${plan.onTrack ? 'exam-ok' : 'exam-behind'}">${plan.onTrack
+      ? `目前設定每天 ${plan.current} 個，跟得上進度 ✓`
+      : `目前設定每天 ${plan.current} 個，照這個速度要 ${plan.daysAtCurrent} 天才學完。`}</p>
+    ${plan.onTrack ? '' : `<button class="btn btn-primary btn-sm" type="button" id="applyPlan" data-n="${plan.suggested}">改成每天 ${plan.suggested} 個新字</button>`}
+  </div>`;
+}
 
 const PERIODS = [7, 30, 90];
 
@@ -47,6 +85,7 @@ export function renderStats(root) {
     root.innerHTML = `
       <section class="page page-stats">
         <h1 class="page-title">統計</h1>
+        ${examCardHTML(getSettings())}
         <div class="filter-row">
           <span class="setting-label">期間</span>
           <div class="segmented" role="radiogroup" aria-label="統計期間">
@@ -129,6 +168,7 @@ export function renderStats(root) {
 
     root.querySelectorAll('input[name="period"]').forEach((i) =>
       i.addEventListener('change', () => updateSettings({ statsDays: Number(i.value) })));
+    root.querySelector('#applyPlan')?.addEventListener('click', (e) => updateSettings({ newPerDay: Number(e.currentTarget.dataset.n) }));
 
     const rows = (keys) => series.map((d) => ({
       label: d.label,

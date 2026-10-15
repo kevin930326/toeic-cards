@@ -132,3 +132,10 @@ test('同步：錯題本先清理再換 id，不合格的題目丟掉', () => {
   assert.equal(out[0].question.wordId, 'phone-id');
   assert.equal(out[0].count, 1);
 });
+
+test('同步：考試日期跟著學習設定同步，型別不對的丟掉', () => {
+  const defaults = { dailyGoal: 20, examDate: '' };
+  assert.deepEqual(remoteSettings({ examDate: '2026-12-13', theme: 'dark' }, defaults), { examDate: '2026-12-13' });
+  assert.deepEqual(remoteSettings({ examDate: 20261213 }, defaults), {});
+  assert.ok(pickSyncedSettings({ examDate: '2026-12-13' }).examDate);
+});

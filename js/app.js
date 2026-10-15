@@ -1,11 +1,11 @@
 // 主程式：依網址的 #/xxx 切換頁面
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
-import { renderReview, reviewBadgeCount } from './views/review.js?v=dictionary-scale-1';
+import { renderReview, reviewBadgeCount } from './views/review.js?v=exam-1';
 import { renderFreeCards } from './views/free-cards.js?v=dictionary-scale-1';
 import { renderCards } from './views/cards.js?v=dictionary-scale-1';
 import { renderQuiz } from './views/quiz.js?v=reading-1';
 import { renderReading } from './views/reading.js?v=reading-1';
-import { renderStats } from './views/stats.js?v=stats-progress-1';
+import { renderStats } from './views/stats.js?v=exam-1';
 import { pruneMistakes } from './mistakes.js';
 import { onLogChange, todayProgress, getLog, currentGoal } from './log.js';
 import { streak } from './stats.js?v=stats-progress-1';
@@ -15,7 +15,7 @@ import { initPWA } from './pwa.js';
 import { initSync } from './sync.js';
 import { hasApiKey } from './llm.js';
 import { renderWords } from './views/words.js?v=dictionary-scale-1';
-import { renderSettings } from './views/settings.js?v=dictionary-scale-1';
+import { renderSettings } from './views/settings.js?v=exam-1';
 import { renderHelp } from './views/help.js?v=lookup-mode-1';
 import { initOnboarding } from './onboarding.js';
 import { lookupMissing } from './dictionary.js?v=dictionary-scale-1';

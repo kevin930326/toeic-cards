@@ -15,7 +15,7 @@ import { normalizeWord } from './parse.js';
 import { mistakeKey } from './mistakes.js';
 
 // 只同步「學習相關」的設定；外觀、口音（每台裝置的語音不同）、模型、統計期間留在各自的裝置
-export const SYNCED_SETTINGS = ['dailyGoal', 'newPerDay', 'cardMode', 'autoGenerate', 'quizScope', 'quizCount', 'part5Fresh'];
+export const SYNCED_SETTINGS = ['dailyGoal', 'newPerDay', 'cardMode', 'autoGenerate', 'quizScope', 'quizCount', 'part5Fresh', 'examDate'];
 
 const LOG_SUM_FIELDS = ['reviews', 'again', 'good', 'learned', 'quiz', 'quizCorrect'];
 

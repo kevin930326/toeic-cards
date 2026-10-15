@@ -1352,3 +1352,18 @@ a.mistake-entry { color: inherit; text-decoration: none; }
 .reading-translation summary { cursor: pointer; font-weight: 700; }
 .reading-translation p { margin: 10px 0 0; line-height: 1.8; }
 .page-reading > .hint-text { margin-top: 16px; }
+
+/* ===== 考試倒數＋讀書計畫 ===== */
+.exam-card { margin-bottom: 16px; }
+.exam-card p { margin: 0 0 6px; }
+.exam-card p:last-child { margin-bottom: 0; }
+.exam-card .btn { margin-top: 6px; }
+.exam-days { font-size: 16px; }
+.exam-days strong { font-family: var(--font-en); font-size: 34px; color: var(--accent); margin: 0 4px; }
+.exam-date { margin-left: 10px; font-size: 13px; color: var(--ink-faint); }
+.exam-ok { color: #3f8a4f; font-size: 14px; }
+.exam-behind { color: var(--accent); font-size: 14px; }
+a.exam-empty { display: block; color: var(--ink-soft); text-decoration: none; font-size: 14px; }
+a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
+.exam-countdown { display: inline-block; margin-left: 8px; color: var(--accent); }
+.exam-date-input { padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
