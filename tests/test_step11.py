@@ -436,11 +436,14 @@ with sync_playwright() as p:
     R.wait_for_selector('#syncPanel .ai-error')
     check('已經註冊過' in R.locator('#syncPanel .ai-error').inner_text(), '用已註冊（Google）的 Email 建立帳號：說明要直接登入或先設定密碼')
     R.fill('#pwEmail', 'newbie@example.com')
+    # 模擬器在同一次啟動期間不會清掉寄過的信，所以比較按下前後多了幾封（重複跑測試也不會誤判）
+    def reset_mails():
+        return [c for c in http('GET', f'{AUTH}/emulator/v1/projects/{PROJECT}/oobCodes')['oobCodes']
+                if c['email'] == 'newbie@example.com' and c['requestType'] == 'PASSWORD_RESET']
+    before = len(reset_mails())
     R.click('#resetBtn')
     R.wait_for_timeout(800)
-    resets = [c for c in http('GET', f'{AUTH}/emulator/v1/projects/{PROJECT}/oobCodes')['oobCodes']
-              if c['email'] == 'newbie@example.com' and c['requestType'] == 'PASSWORD_RESET']
-    check(len(resets) == 1 and '重設密碼' in R.locator('#toast').inner_text(), '忘記密碼：寄出重設密碼的信')
+    check(len(reset_mails()) - before == 1 and '重設密碼' in R.locator('#toast').inner_text(), '忘記密碼：寄出重設密碼的信')
     msg = R.evaluate("import('/js/sync.js').then((m) => m.friendlyError({ code: 'auth/quota-exceeded' }))")
     check('每天只能寄 5 封' in msg and 'Email＋密碼' in msg, f'登入信額度用完時的說明：{msg}')
     ctxR.close()
