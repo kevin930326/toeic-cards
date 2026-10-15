@@ -2,7 +2,7 @@
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js?v=exam-1';
 import { renderFreeCards } from './views/free-cards.js?v=dictionary-scale-1';
-import { renderCards } from './views/cards.js?v=dictionary-scale-1';
+import { renderCards } from './views/cards.js?v=perf-1';
 import { renderQuiz } from './views/quiz.js?v=badge-1';
 import { renderReading } from './views/reading.js?v=badge-1';
 import { renderStats } from './views/stats.js?v=exam-1';
@@ -60,6 +60,9 @@ function render() {
   }
   closeReviewChoices();
 }
+
+// 字卡在背景存檔失敗（例如瀏覽器空間不足）時提示，不然使用者不知道資料沒存到
+window.addEventListener('toeic:save-error', (e) => toast(e.detail?.message || '資料沒有存到', 'error'));
 
 function closeReviewChoices() {
   document.getElementById('reviewChoices').hidden = true;

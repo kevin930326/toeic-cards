@@ -46,6 +46,13 @@ function writeJSON(key, value) {
 }
 
 let words = readJSON(WORDS_KEY, []);
+// id → 字卡的對照表：用 id 找字一步完成（原本每次從頭找，複習佇列幾百個字 × 3,000 張卡就很慢）
+// words 換成新陣列（刪除、整批取代）時重建；新增時順便加入
+let byId = new Map();
+function reindex() {
+  byId = new Map(words.map((w) => [w.id, w]));
+}
+reindex();
 let settings = { ...DEFAULT_SETTINGS, ...readJSON(SETTINGS_KEY, {}) };
 const SETS_KEY = 'toeic-cards:wordSets';
 let wordSets = sanitizeSets(readJSON(SETS_KEY, []));
@@ -54,9 +61,35 @@ function emit() {
   for (const fn of listeners) fn();
 }
 
+// 存字卡：先通知畫面更新，等畫面畫好再存（字卡多時整份轉成文字要幾十毫秒，不要卡在點擊和畫面之間）
+//   - 50 毫秒內的多次修改合併成一次存檔
+//   - 關閉頁面、切到背景、離開前一定會先存完（flushWords）
+//   - 存檔失敗（例如空間不足）時送出 toeic:save-error 事件，由 app.js 顯示提示
+//     （用事件而不是新增匯出的函式：舊版快取的 store.js 沒有新函式，匯入它會讓整個網站打不開）
+const SAVE_DELAY = 50;
+let saveTimer = null;
+let wordsDirty = false;
+
+export function flushWords() {
+  if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+  if (!wordsDirty) return;
+  wordsDirty = false;
+  try {
+    writeJSON(WORDS_KEY, words);
+  } catch (e) {
+    window.dispatchEvent(new CustomEvent('toeic:save-error', { detail: { message: e.message } }));
+  }
+}
+
 function saveWords() {
-  writeJSON(WORDS_KEY, words);
+  wordsDirty = true;
   emit();
+  if (!saveTimer) saveTimer = setTimeout(flushWords, SAVE_DELAY);
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('pagehide', flushWords);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushWords(); });
 }
 
 export function subscribe(fn) {
@@ -96,7 +129,12 @@ export function getWords() {
 }
 
 export function getWord(id) {
-  return words.find((w) => w.id === id);
+  const hit = byId.get(id);
+  if (hit && hit.id === id) return hit;
+  // 保險：對照表萬一沒跟上（理論上不會），退回逐一尋找並重建
+  const found = words.find((w) => w.id === id);
+  if (found) reindex();
+  return found;
 }
 
 export function hasWord(word) {
@@ -109,6 +147,8 @@ export function addWords(list, { autoGenerate = true, initialData = new Map() } 
   const added = [];
   const skipped = [];
   const seen = new Set(words.map((w) => w.word));
+  const tombs = getTombstones();   // 只讀一次（原本每加一個字就重新讀一次）
+  let tombsChanged = false;
   // 同一批的字時間各差 1 毫秒，讓「新字」照貼上的順序出現在複習裡
   const base = Date.now();
   for (const raw of list) {
@@ -119,7 +159,7 @@ export function addWords(list, { autoGenerate = true, initialData = new Map() } 
       continue;
     }
     seen.add(n);
-    clearTombstone(n);   // 刪掉後又加回來
+    if (tombs[n]) { delete tombs[n]; tombsChanged = true; }   // 刪掉後又加回來
     const w = createWord(n);
     const prepared = initialData.get(n);
     // 只允許預填內容欄位，id、建立時間與學習進度仍由儲存模組管理。
@@ -129,8 +169,10 @@ export function addWords(list, { autoGenerate = true, initialData = new Map() } 
     if (!autoGenerate) w.autoGenerate = false;
     w.createdAt = w.updatedAt = base + added.length;
     words.unshift(w);
+    byId.set(w.id, w);
     added.push(w);
   }
+  if (tombsChanged) setTombstones(tombs);
   if (added.length) saveWords();
   return { added, skipped };
 }
@@ -178,19 +220,12 @@ export function deleteWord(id) {
   const target = words.find((w) => w.id === id);
   if (!target) return;
   words = words.filter((w) => w.id !== id);
+  byId.delete(id);
   // 留下「刪除紀錄」，同步時其他裝置也會跟著刪掉
   const tombs = getTombstones();
   tombs[target.word] = Date.now();
   setTombstones(tombs);
   saveWords();
-}
-
-function clearTombstone(word) {
-  const tombs = getTombstones();
-  if (tombs[word]) {
-    delete tombs[word];
-    setTombstones(tombs);
-  }
 }
 
 // ---- 刪除紀錄（跨裝置同步用）：{ 單字: 刪除時間 } ----
@@ -211,6 +246,7 @@ export function toggleUnfamiliar(id, value) {
 // 匯入備份：整批換掉
 export function replaceWords(list) {
   words = Array.isArray(list) ? list : [];
+  reindex();
   saveWords();
 }
 
