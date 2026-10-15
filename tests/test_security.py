@@ -82,7 +82,7 @@ with sync_playwright() as p:
     pg.click('#packAdd')
     pg.wait_for_timeout(1200)
     pg.click('[aria-label="關閉加入單字"]')
-    for route in ['review', 'free', 'cards', 'quiz', 'stats', 'help', 'words']:
+    for route in ['review', 'free', 'cards', 'quiz', 'reading', 'stats', 'help', 'words']:
         pg.goto(URL + '#/' + route)
         pg.wait_for_timeout(500)
     pg.goto(URL + '#/cards')

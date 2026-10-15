@@ -3,7 +3,8 @@ import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js?v=dictionary-scale-1';
 import { renderFreeCards } from './views/free-cards.js?v=dictionary-scale-1';
 import { renderCards } from './views/cards.js?v=dictionary-scale-1';
-import { renderQuiz } from './views/quiz.js?v=forms-1';
+import { renderQuiz } from './views/quiz.js?v=reading-1';
+import { renderReading } from './views/reading.js?v=reading-1';
 import { renderStats } from './views/stats.js?v=stats-progress-1';
 import { pruneMistakes } from './mistakes.js';
 import { onLogChange, todayProgress, getLog, currentGoal } from './log.js';
@@ -27,6 +28,7 @@ const routes = {
   free: renderFreeCards,
   cards: renderCards,
   quiz: renderQuiz,
+  reading: renderReading,
   stats: renderStats,
   words: renderWords,
   settings: renderSettings,

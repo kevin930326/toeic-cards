@@ -8,6 +8,7 @@ import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK, 
 import { preparePart5 } from '../part5.js?v=forms-1';
 import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v=forms-1';
 import { normalizeWord } from '../parse.js';
+import { loadReadings } from './reading.js?v=reading-1';
 import { getMistakes, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
 import { recordQuiz } from '../log.js';
 import { scopedWords } from '../store.js';
@@ -74,6 +75,7 @@ export function renderQuiz(root) {
     if (!loadedFormsBank()) loadFormsBank().then(() => { if (state.view === 'home') draw(); }).catch(() => {});
     const ids = new Set(all.map((w) => w.id));
     const mistakes = getMistakes().filter((m) => ids.has(m.question.wordId)).length;
+    const readings = loadReadings().length;
     const cards = Object.entries(MODE_INFO).map(([mode, info]) => {
       let check = checkMode(mode, all, targets);
       if (mode === 'part5' && check.ok && !hasApiKey()) check = { ok: false, reason: '需要 Gemini 金鑰', needKey: true };
@@ -117,6 +119,11 @@ export function renderQuiz(root) {
           </label>
         </div>
         <div class="mode-grid">${cards}</div>
+        <a class="panel mistake-entry reading-entry" href="#/reading">
+          <span class="mistake-title">短文閱讀（Part 6／7）<span class="badge badge-ai">AI</span></span>
+          <span class="mistake-count">${readings ? `${readings} 篇` : '用你的單字寫一篇短文'}</span>
+          <span class="mistake-arrow" aria-hidden="true">›</span>
+        </a>
         <button class="panel mistake-entry" type="button" id="openMistakes">
           <span class="mistake-title">錯題本</span>
           <span class="mistake-count">${mistakes ? `${mistakes} 題` : '目前沒有錯題'}</span>
