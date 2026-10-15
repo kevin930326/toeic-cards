@@ -78,7 +78,7 @@ with sync_playwright() as p:
     pg.click('#editBtn')
     pg.fill('#editForm [name=en]','A custom explanation for this word')
     pg.click('#editForm button[type=submit]')
-    expect(pg.locator('.back-en')).to_have_text('A custom explanation for this word')
+    expect(pg.locator('.back-en')).to_contain_text('A custom explanation for this word')
     check(True,'編輯既有收藏後探索內容即時更新')
     pg.select_option('#setScope',ids['empty'])
     check(pg.locator('.empty-title').inner_text()=='這個單字集還沒有字卡','空分類保持範圍，不混入其他收藏')
@@ -111,6 +111,20 @@ with sync_playwright() as p:
     # 雲端同步移除目前字後，介面須選擇仍存在的有效字，不留下空白詳情。
     store(pg,"s.deleteWord(s.getWords().find(w=>w.word==='invoice').id);")
     check(pg.locator('#exploreWord').inner_text()!='invoice','目前字刪除後自動選擇有效收藏')
+    store(pg,"s.addWords(['negative'],{autoGenerate:false,initialData:new Map([['negative',{pos:'adj.',zh:'負面的；否定的',en:'expressing an unfavorable opinion or result',lookup:{dictAt:1,enDone:true}}]])});")
+    pg.locator('.explore-item').filter(has_text='negative').click()
+    for width in [1280,375,320]:
+        pg.set_viewport_size({'width':width,'height':900})
+        close=pg.locator('.explore-reading .back-en').evaluate('''el=>{
+          const pos=el.querySelector('.zh-pos').getBoundingClientRect();
+          const node=[...el.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());
+          const range=document.createRange();range.setStart(node,0);range.setEnd(node,Math.min(10,node.length));
+          const text=range.getClientRects()[0];
+          return Math.abs((pos.top+pos.bottom)/2-(text.top+text.bottom)/2)<10 && text.left-pos.right<=16;
+        }''')
+        check(close,str(width)+'px 英文詞性與解釋在同一行且間距不超過16px')
+        check(pg.locator('.explore-reading .back-pos').count()==0,'中文詞性也直接接在詞義旁邊')
+        if width==1280:pg.locator('#exploreDetail').screenshot(path=str(OUT/'explore-spacing.png'))
     ctx.close()
     browser.close()
 print('\nALL PASSED' if not errors else '\nERRORS: '+str(errors))

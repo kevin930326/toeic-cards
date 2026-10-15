@@ -106,7 +106,7 @@ with sync_playwright() as p:
     page.keyboard.press('p')
     after = page.evaluate('window.__spoken')
     check(len(after) == before + 1 and after[-1]['text'] == 'approve', 'P 鍵發音')
-    check(page.locator('.explore-reading .zh-pos').count() == 2, '多詞性分行顯示（vt. / vi.）')
+    check(page.locator('.explore-reading .back-zh .zh-pos').count() == 2, '多詞性分行顯示（vt. / vi.）')
     check('officially agree' in page.locator('.back-en').inner_text(), '探索同時顯示 Free Dictionary 英文解釋')
     page.screenshot(path=os.path.join(OUT, 's2_explore.png'))
 

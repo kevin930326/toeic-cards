@@ -190,11 +190,14 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .explore-actions { display: flex; flex-wrap: wrap; gap: 5px; padding: 18px 0; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
 .explore-pager { display: flex; margin-right: auto; }
 .explore-reading { overflow-wrap: anywhere; }
-.explore-reading .back-main { display: grid; gap: 24px; text-align: left; }
+.explore-reading .back-main { display: block; min-height: 0; text-align: left; }
+.explore-definition + .explore-definition { margin-top: 20px; }
 .explore-definition h3, .explore-reading .extra h3 { font-size: 12px; color: var(--ink-soft); letter-spacing: .08em; margin: 0 0 10px; }
 .explore-reading .back-zh, .explore-reading .back-zh.multi { font-size: 20px; line-height: 1.6; font-weight: 500; }
 .explore-reading .back-en { max-width: none; font-size: 19px; line-height: 1.7; }
-.explore-reading .back-pos { margin: 0 0 5px; font-size: 13px; }
+.explore-reading .back-pos { display: inline; margin: 0 8px 0 0; font-size: 14px; }
+.explore-reading .back-main > .back-en { display: inline; }
+.explore-reading .zh-pos { font-size: 14px; white-space: nowrap; }
 .explore-reading .extras { margin-top: 26px; padding-top: 24px; gap: 24px; border-top-style: solid; }
 .explore-reading .ex-en { font-size: 18px; line-height: 1.75; }
 .explore-reading .ex-zh { margin: 6px 0 14px; }

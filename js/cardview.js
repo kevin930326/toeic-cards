@@ -33,9 +33,9 @@ export function backHTML(w, mode) {
     const lines = zhLines(w.zh);
     const inlinePos = lines.some((l) => l.pos);
     main = lines.length
-      ? `${!inlinePos && w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}
+      ? `${mode !== 'both' && !inlinePos && w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}
          <div class="back-zh ${lines.length > 1 ? 'multi' : ''}">${lines.map((l) => `
-           <p>${l.pos ? `<span class="zh-pos">${esc(l.pos)}</span>` : ''}${esc(l.text)}</p>`).join('')}</div>`
+           <p>${l.pos || (mode === 'both' && !inlinePos && w.pos) ? `<span class="zh-pos">${esc(l.pos || w.pos)}</span>` : ''}${esc(l.text)}</p>`).join('')}</div>`
       : empty;
   } else {
     main = w.en
@@ -43,7 +43,7 @@ export function backHTML(w, mode) {
       : empty;
   }
   if (mode === 'both') main = `<div class="explore-definition"><h3>中文詞義</h3>${main}</div>
-    <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${esc(w.en)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
+    <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${w.pos ? `<span class="zh-pos">${esc(w.pos)}</span>` : ''}${esc(w.en)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
   const extras = [];
   if (w.examples.length) {
     extras.push(`<div class="extra"><h3>例句</h3>${w.examples.map((e) => `
