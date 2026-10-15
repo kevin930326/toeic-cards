@@ -1,5 +1,6 @@
 // 資料儲存：所有單字和設定都存在瀏覽器的 localStorage
 import { normalizeWord } from './parse.js';
+import { normalizeSetName, sanitizeSets, mergeSets, filterSetWords, UNFILED } from './word-sets.js';
 
 const WORDS_KEY = 'toeic-cards:words';
 const SETTINGS_KEY = 'toeic-cards:settings';
@@ -19,6 +20,7 @@ const DEFAULT_SETTINGS = {
   part5Fresh: false,    // Part 5 每次都出新題目（會用 AI 額度）
   statsDays: 30,        // 統計頁的期間：7 | 30 | 90
   dailyGoal: 20,        // 每日目標：複習＋測驗合計題數，達標才算打卡
+  activeSetId: '',      // 本機目前選的單字集：空字串全部、unfiled 未分類
 };
 
 const listeners = new Set();
@@ -44,6 +46,8 @@ function writeJSON(key, value) {
 
 let words = readJSON(WORDS_KEY, []);
 let settings = { ...DEFAULT_SETTINGS, ...readJSON(SETTINGS_KEY, {}) };
+const SETS_KEY = 'toeic-cards:wordSets';
+let wordSets = sanitizeSets(readJSON(SETS_KEY, []));
 
 function emit() {
   for (const fn of listeners) fn();
@@ -131,6 +135,17 @@ export function updateWord(id, patch) {
     const n = normalizeWord(patch.word);
     if (!n) throw new Error('英文單字不能空白');
     if (n !== w.word && hasWord(n)) throw new Error(`「${n}」已經在字卡裡了`);
+    // 改拼字時保留原本的分類；這是同一張卡，不建立第二份進度。
+    if (n !== w.word) {
+      const now = nextSetTime();
+      for (const set of wordSets) {
+        if (!set.deleted && set.members[w.word]?.present) {
+          set.members[w.word] = { present: false, at: now };
+          set.members[n] = { present: true, at: now };
+        }
+      }
+      writeJSON(SETS_KEY, wordSets);
+    }
     patch = { ...patch, word: n };
   }
   Object.assign(w, patch, { updatedAt: Date.now() });
@@ -224,4 +239,84 @@ export function settingsUpdatedAt() {
 }
 export function setSettingsUpdatedAt(t) {
   writeJSON(SETTINGS_AT_KEY, t);
+}
+
+// ---- 自訂單字集：獨立於卡片內容、共用同一張卡的複習進度 ----
+export function getSetRecords() { return wordSets; }
+export function getWordSets() { return wordSets.filter((s) => !s.deleted); }
+export function activeSetId() {
+  const id = settings.activeSetId;
+  return id === UNFILED || getWordSets().some((s) => s.id === id) ? id : '';
+}
+export function scopedWords() { return filterSetWords(words, wordSets, activeSetId()); }
+
+function nextSetTime(records = wordSets) {
+  // 同一毫秒連續加入／移出也必須能分辨先後。
+  return records.reduce((latest, s) => Object.values(s.members)
+    .reduce((t, m) => Math.max(t, m.at + 1), Math.max(latest, s.updatedAt + 1)), Date.now());
+}
+
+export function replaceSetRecords(list) {
+  const next = mergeSets([], list);
+  writeJSON(SETS_KEY, next);
+  wordSets = next;
+  emit();
+}
+
+export function mergeSetRecords(list) { replaceSetRecords(mergeSets(wordSets, list)); }
+
+// 「取代備份」是新的本機操作：留下被取代的刪除／移出紀錄，避免下次同步復活。
+export function restoreSetRecords(list) {
+  const incoming = mergeSets([], list);
+  const now = nextSetTime([...wordSets, ...incoming]);
+  const restored = new Map(incoming.map((s) => [s.id, s]));
+  const ids = new Set([...wordSets, ...incoming].map((s) => s.id));
+  replaceSetRecords([...ids].map((id) => {
+    const old = wordSets.find((s) => s.id === id);
+    const next = restored.get(id);
+    const members = Object.create(null);
+    for (const word of Object.keys(old?.members || {})) members[word] = { at: now, present: false };
+    for (const [word, m] of Object.entries(next?.members || {})) members[word] = { at: now, present: m.present };
+    return { ...(next || old), updatedAt: now, deleted: next ? next.deleted : true, members };
+  }));
+}
+
+function checkedSetName(raw, exceptId = '') {
+  const name = normalizeSetName(raw);
+  if (!name) throw new Error('請輸入單字集名稱');
+  if (name.length > 60) throw new Error('單字集名稱最多 60 個字元');
+  if (getWordSets().some((s) => s.id !== exceptId && s.name.toLocaleLowerCase() === name.toLocaleLowerCase())) {
+    throw new Error('已經有同名的單字集，請換個名稱');
+  }
+  return name;
+}
+
+export function createWordSet(raw) {
+  const set = { id: newId(), name: checkedSetName(raw), updatedAt: nextSetTime(), deleted: false, members: {} };
+  replaceSetRecords([...wordSets, set]);
+  return set;
+}
+
+export function renameWordSet(id, raw) {
+  const name = checkedSetName(raw, id);
+  const now = nextSetTime();
+  replaceSetRecords(wordSets.map((s) => s.id === id && !s.deleted ? { ...s, name, updatedAt: now } : s));
+}
+
+export function deleteWordSet(id) {
+  const now = nextSetTime();
+  replaceSetRecords(wordSets.map((s) => s.id === id ? { ...s, deleted: true, updatedAt: now } : s));
+}
+
+export function assignWordSet(ids, setId, present = true) {
+  const set = getWordSets().find((s) => s.id === setId);
+  if (!set) throw new Error('請先選擇單字集');
+  const selected = new Set(ids);
+  const changed = words.filter((w) => selected.has(w.id) && !!set.members[w.word]?.present !== present);
+  if (!changed.length) return 0;
+  const now = nextSetTime();
+  const members = Object.assign(Object.create(null), set.members);
+  for (const w of changed) members[w.word] = { at: now, present };
+  replaceSetRecords(wordSets.map((s) => s.id === setId ? { ...s, members } : s));
+  return changed.length;
 }

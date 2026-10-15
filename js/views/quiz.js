@@ -1,13 +1,15 @@
 // 測驗頁：選模式 → 作答 → 看結果；另外有錯題本
 //   答錯的字自動標記「不熟」，並把整題存進錯題本；在錯題本重做答對就移除
-import { getWords, getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
+import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { esc, toast, confirmAction } from '../ui.js';
 import { speak, canSpeak, speakerIcon, resolveAccent, accentLabel } from '../speech.js';
 import { hasApiKey, onRateWait } from '../llm.js';
 import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK } from '../quiz.js';
 import { preparePart5 } from '../part5.js';
-import { getMistakes, addMistake, removeMistake, clearMistakes, countMistakes, mistakeKey } from '../mistakes.js';
+import { getMistakes, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
 import { recordQuiz } from '../log.js';
+import { scopedWords } from '../store.js';
+import { setScopeHTML, bindSetScope } from '../set-ui.js';
 
 const MODE_INFO = {
   zh2en: { title: '看中文選英文', desc: '看中文意思，選出正確的英文單字', icon: '中' },
@@ -23,7 +25,7 @@ const state = { view: 'home', session: null, loading: null, error: null };
 let controller = null;
 
 function targetsForScope() {
-  const all = getWords();
+  const all = scopedWords();
   return getSettings().quizScope === 'unfamiliar' ? all.filter((w) => w.unfamiliar) : all;
 }
 
@@ -55,10 +57,11 @@ export function renderQuiz(root) {
   // ---------- 首頁：選模式 ----------
   function drawHome() {
     const s = getSettings();
-    const all = getWords();
+    const all = scopedWords();
     const unfamiliar = all.filter((w) => w.unfamiliar).length;
     const targets = targetsForScope();
-    const mistakes = countMistakes();
+    const ids = new Set(all.map((w) => w.id));
+    const mistakes = getMistakes().filter((m) => ids.has(m.question.wordId)).length;
     const cards = Object.entries(MODE_INFO).map(([mode, info]) => {
       let check = checkMode(mode, all, targets);
       if (mode === 'part5' && check.ok && !hasApiKey()) check = { ok: false, reason: '需要 Gemini 金鑰', needKey: true };
@@ -79,6 +82,7 @@ export function renderQuiz(root) {
         <h1 class="page-title">測驗</h1>
         ${state.error ? `<p class="ai-error" role="alert">⚠ ${esc(state.error)}</p>` : ''}
         <div class="panel quiz-options">
+          ${setScopeHTML()}
           <div class="setting-row wrap">
             <span class="setting-label">範圍</span>
             <div class="segmented" role="radiogroup" aria-label="範圍">
@@ -105,6 +109,7 @@ export function renderQuiz(root) {
         </button>
       </section>`;
 
+    bindSetScope(root);
     root.querySelectorAll('input[name="scope"]').forEach((i) =>
       i.addEventListener('change', () => updateSettings({ quizScope: i.value })));
     root.querySelectorAll('input[name="count"]').forEach((i) =>
@@ -118,7 +123,7 @@ export function renderQuiz(root) {
     state.error = null;
     const count = Number(getSettings().quizCount) || 10;
     const targets = targetsForScope();
-    const all = getWords();
+    const all = scopedWords();
     if (mode !== 'part5') {
       let questions = buildSimpleQuiz(mode, targets, all, count);
       // 聽力題：每題先決定口音（「多益混合」時每題隨機），重聽時用同一個口音
@@ -341,7 +346,7 @@ export function renderQuiz(root) {
 
   // ---------- 錯題本 ----------
   function drawMistakes() {
-    const existing = new Set(getWords().map((w) => w.id));
+    const existing = new Set(scopedWords().map((w) => w.id));
     const list = getMistakes().filter((m) => existing.has(m.question.wordId));
     root.innerHTML = `
       <section class="page">
@@ -352,7 +357,7 @@ export function renderQuiz(root) {
         ${list.length ? `
           <div class="mistake-actions">
             <button class="btn btn-primary" type="button" id="redoAll">重做全部 ${list.length} 題</button>
-            <button class="btn btn-ghost danger" type="button" id="clearAll">清空錯題本</button>
+            <button class="btn btn-ghost danger" type="button" id="clearAll">清空目前範圍的錯題</button>
           </div>
           <p class="hint-text">重做時答對的題目會自動從錯題本移除。</p>
           <ul class="mistake-list">
@@ -379,7 +384,7 @@ export function renderQuiz(root) {
       autoPlay();
     });
     root.querySelector('#clearAll')?.addEventListener('click', () => {
-      if (confirmAction('確定要清空錯題本嗎？')) { clearMistakes(); draw(); }
+      if (confirmAction('確定要清空目前範圍的錯題嗎？')) { for (const m of list) removeMistake(m.key); draw(); }
     });
     root.querySelectorAll('[data-act="remove"]').forEach((b) => b.addEventListener('click', () => {
       removeMistake(b.closest('.mistake-row').dataset.key);

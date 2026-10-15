@@ -1,7 +1,7 @@
 // 複習頁（首頁）：依間隔重複排程，一張一張複習
 //   往右滑／按「會」→ 隔越來越久才再出現
 //   往左滑／按「不熟」→ 標記不熟，這一輪稍後再出現一次，10 分鐘後也會再到期
-import { getWords, getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
+import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
 import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js';
@@ -13,6 +13,8 @@ import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal 
 import { streak } from '../stats.js';
 import { onLookupStatus } from '../dictionary.js';
 import { onGenerateStatus } from '../generate.js';
+import { scopedWords, activeSetId } from '../store.js';
+import { setScopeHTML, bindSetScope } from '../set-ui.js';
 
 const AGAIN_GAP = 3;   // 答「不熟」的字，在這一輪中隔 3 張後再出現
 
@@ -27,15 +29,18 @@ function startSession(extraNew = 0) {
   const now = Date.now();
   session = {
     day: dayKey(now),
-    extraNew: (session && session.day === dayKey(now) ? session.extraNew : 0) + extraNew,
+    scope: scopeKey(),
+    extraNew: (session && session.day === dayKey(now) && session.scope === scopeKey() ? session.extraNew : 0) + extraNew,
     queue: [],
     total: 0,
     history: [],     // 用來「復原」
     flipped: false,
   };
-  session.queue = buildQueue(getWords(), now, newLimitLeft(session.extraNew));
+  session.queue = buildQueue(scopedWords(), now, newLimitLeft(session.extraNew));
   session.total = session.queue.length;
 }
+
+function scopeKey() { return JSON.stringify([activeSetId(), scopedWords().map((w) => w.id)]); }
 
 export function renderReview(root) {
   if (!session || session.day !== dayKey(Date.now()) || (!session.queue.length && !session.history.length)) {
@@ -50,6 +55,7 @@ export function renderReview(root) {
   }
 
   function draw() {
+    if (session.scope !== scopeKey()) startSession();
     const w = current();
     const { cardMode } = getSettings();
     if (!w) { drawDone(); return; }
@@ -63,6 +69,7 @@ export function renderReview(root) {
 
     root.innerHTML = `
       <section class="page page-review">
+        ${setScopeHTML()}
         <div class="review-head">
           <p class="review-count"><strong id="remain">${session.queue.length}</strong> 張待複習</p>
           ${goalPill()}
@@ -96,6 +103,7 @@ export function renderReview(root) {
       </section>`;
 
     bindMode();
+    bindSetScope(root);
     const card = root.querySelector('#card');
     const wrap = root.querySelector('#swipe');
     // 滑鼠／觸控的點擊由 attachSwipe 的 onTap 處理；這裡處理鍵盤觸發的 click
@@ -124,7 +132,7 @@ export function renderReview(root) {
 
   function drawDone() {
     const now = Date.now();
-    const words = getWords();
+    const words = scopedWords();
     const day = getDay(now);
     const tomorrowEnd = dayStart(now) + 2 * DAY;
     const dueTomorrow = words.filter((w) => w.srs && w.srs.due < tomorrowEnd).length;
@@ -132,7 +140,7 @@ export function renderReview(root) {
 
     let body;
     if (!words.length) {
-      body = `<p class="empty-title">還沒有任何字卡</p>
+      body = `<p class="empty-title">${activeSetId() ? '這個單字集還沒有字卡' : '還沒有任何字卡'}</p>
         <p>到「單字庫」輸入英文單字，就可以開始複習。</p>
         <a class="btn btn-primary" href="#/words">新增單字</a>`;
     } else {
@@ -148,7 +156,8 @@ export function renderReview(root) {
           <a class="btn btn-outline" href="#/cards">自由瀏覽字卡</a>
         </div>`;
     }
-    root.innerHTML = `<section class="page"><div class="empty-state done-state">${body}</div></section>`;
+    root.innerHTML = `<section class="page">${setScopeHTML()}<div class="empty-state done-state">${body}</div></section>`;
+    bindSetScope(root);
     root.querySelector('#more')?.addEventListener('click', () => { startSession(10); draw(); });
     root.querySelector('#undo')?.addEventListener('click', undo);
   }
@@ -240,6 +249,6 @@ export function renderReview(root) {
 
 // 導覽列上的待複習數字
 export function reviewBadgeCount() {
-  if (session && session.day === dayKey(Date.now())) return session.queue.filter((id) => getWord(id)).length;
-  return buildQueue(getWords(), Date.now(), newLimitLeft()).length;
+  if (session && session.day === dayKey(Date.now()) && session.scope === scopeKey()) return session.queue.filter((id) => getWord(id)).length;
+  return buildQueue(scopedWords(), Date.now(), newLimitLeft()).length;
 }

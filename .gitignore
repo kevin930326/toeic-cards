@@ -24,3 +24,7 @@ node_modules/
 
 # Firebase 模擬器的紀錄檔
 *-debug.log
+
+# Codex 本機測試工具與暫存（不屬於網站）
+.test-tools/
+tmp/

@@ -1,7 +1,7 @@
 // 匯出／匯入備份（純函式，不碰畫面、不碰儲存，方便單獨測試）
 //
 // 備份檔格式：
-//   { app: 'toeic-cards', version: 1, exportedAt, counts, data: { words, settings, log, mistakes } }
+//   { app: 'toeic-cards', version: 2, exportedAt, counts, data: { words, settings, log, mistakes, wordSets } }
 //   - 不含 Gemini 金鑰（金鑰存在另一個欄位，匯出時本來就不會讀到）
 //
 // 匯入時：
@@ -11,9 +11,10 @@
 //   - 「取代」：全部換成備份裡的資料
 import { normalizeWord } from './parse.js';
 import { mistakeKey } from './mistakes.js';
+import { sanitizeSets, mergeSets } from './word-sets.js';
 
 export const BACKUP_APP = 'toeic-cards';
-export const BACKUP_VERSION = 1;
+export const BACKUP_VERSION = 2;
 export const MAX_BACKUP_CHARS = 20 * 1024 * 1024;
 const MAX_MISTAKES = 300;
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -34,13 +35,13 @@ export function backupFileName(now = Date.now()) {
   return `toeic-cards-backup-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.json`;
 }
 
-export function buildBackup({ words, settings, log, mistakes }, now = Date.now()) {
+export function buildBackup({ words, settings, log, mistakes, wordSets = [] }, now = Date.now()) {
   return {
     app: BACKUP_APP,
     version: BACKUP_VERSION,
     exportedAt: new Date(now).toISOString(),
-    counts: { words: words.length, days: Object.keys(log).length, mistakes: mistakes.length },
-    data: { words, settings, log, mistakes },
+    counts: { words: words.length, days: Object.keys(log).length, mistakes: mistakes.length, wordSets: wordSets.filter((s) => !s.deleted).length },
+    data: { words, settings, log, mistakes, wordSets },
   };
 }
 
@@ -187,6 +188,7 @@ export function parseBackup(text, defaultSettings) {
       settings: sanitizeSettings(obj.data.settings, defaultSettings),
       log: sanitizeLog(obj.data.log),
       mistakes: sanitizeMistakes(obj.data.mistakes),
+      wordSets: mergeSets([], sanitizeSets(obj.data.wordSets)),
       skipped,
     },
   };
@@ -247,6 +249,7 @@ export function mergeBackup(local, incoming) {
 
   return {
     words,
+    wordSets: mergeSets(local.wordSets, incoming.wordSets),
     log,
     mistakes: [...mistakes.values()].sort((a, b) => b.at - a.at).slice(0, MAX_MISTAKES),
     summary: { added: added.length, updated, kept },

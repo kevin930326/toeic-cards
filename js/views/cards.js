@@ -1,19 +1,21 @@
 // 字卡（瀏覽）頁：自由翻看全部或「不熟」的字；不影響複習排程
 // 手機上左右滑動換卡（往左滑＝下一張，往右滑＝上一張）
-import { getWords, getSettings, updateSettings, toggleUnfamiliar, subscribe } from '../store.js';
+import { getSettings, updateSettings, toggleUnfamiliar, subscribe } from '../store.js';
 import { openEditor } from '../ui.js';
 import { speak } from '../speech.js';
 import { onLookupStatus } from '../dictionary.js';
 import { onGenerateStatus } from '../generate.js';
 import { handleCardTap, flashcardHTML, modeToggleHTML } from '../cardview.js';
 import { attachSwipe } from '../swipe.js';
+import { scopedWords, activeSetId } from '../store.js';
+import { setScopeHTML, bindSetScope } from '../set-ui.js';
 
 // 跨頁面保留目前看到哪一張
 const state = { currentId: null, flipped: false };
 
 function deck() {
   const { cardFilter } = getSettings();
-  const all = getWords();
+  const all = scopedWords();
   return cardFilter === 'unfamiliar' ? all.filter((w) => w.unfamiliar) : all;
 }
 
@@ -21,15 +23,15 @@ export function renderCards(root) {
   function draw() {
     const { cardMode, cardFilter } = getSettings();
     const list = deck();
-    const total = getWords().length;
-    const unfamiliarCount = getWords().filter((w) => w.unfamiliar).length;
+    const total = scopedWords().length;
+    const unfamiliarCount = scopedWords().filter((w) => w.unfamiliar).length;
 
     let idx = list.findIndex((w) => w.id === state.currentId);
     if (idx === -1) { idx = 0; state.flipped = false; }
     const w = list[idx];
     state.currentId = w ? w.id : null;
 
-    const toolbar = `
+    const toolbar = `${setScopeHTML()}
       <div class="card-toolbar">
         ${modeToggleHTML(cardMode)}
         <div class="segmented" role="radiogroup" aria-label="範圍">
@@ -42,7 +44,7 @@ export function renderCards(root) {
       root.innerHTML = `<section class="page">${toolbar}
         <div class="empty-state">
           ${total === 0
-            ? `<p class="empty-title">還沒有任何字卡</p><p>到「單字庫」輸入第一個英文單字吧。</p><a class="btn btn-primary" href="#/words">新增單字</a>`
+            ? `<p class="empty-title">${activeSetId() ? '這個單字集還沒有字卡' : '還沒有任何字卡'}</p><p>到「單字庫」新增或分類單字吧。</p><a class="btn btn-primary" href="#/words">新增單字</a>`
             : `<p class="empty-title">沒有標記為「不熟」的字</p><p>很棒！切回「全部」繼續複習。</p>`}
         </div></section>`;
       bindToolbar();
@@ -89,6 +91,7 @@ export function renderCards(root) {
   }
 
   function bindToolbar() {
+    bindSetScope(root);
     root.querySelectorAll('input[name="mode"]').forEach((i) =>
       i.addEventListener('change', () => updateSettings({ cardMode: i.value })));
     root.querySelectorAll('input[name="filter"]').forEach((i) =>

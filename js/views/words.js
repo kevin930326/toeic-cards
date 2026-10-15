@@ -9,6 +9,10 @@ import {
   onGenerateStatus, generateStatus, countByState, isGenerating,
 } from '../generate.js';
 import { speak, canSpeak, speakerIcon } from '../speech.js';
+import { getSetRecords, scopedWords, activeSetId, assignWordSet } from '../store.js';
+import { setsForWord } from '../word-sets.js';
+import { setScopeHTML, bindSetScope, refreshSetScope, setOptions } from '../set-ui.js';
+import { renderSetsPanel } from './sets-panel.js';
 
 const state = { query: '', batchOpen: false, batchText: '' };
 const PREVIEW_LIMIT = 80;
@@ -27,9 +31,12 @@ function chipList(words, cls = '') {
 }
 
 export function renderWords(root) {
+  const selected = new Set();
   root.innerHTML = `
     <section class="page">
       <h1 class="page-title">單字庫</h1>
+      <div id="setsPanel"></div>
+      <label class="set-scope add-set-scope"><span>新增時加入</span><select id="addToSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId())}</select></label>
       <form class="add-form panel" id="addForm" autocomplete="off">
         <label class="field grow">
           <span>新增英文單字</span>
@@ -59,19 +66,72 @@ export function renderWords(root) {
         <input class="search" id="search" type="search" placeholder="搜尋單字或中文" value="${esc(state.query)}" aria-label="搜尋">
         <span class="count" id="count"></span>
       </div>
+      ${setScopeHTML()}
+      <div class="set-bulk panel">
+        <label class="check-row"><input id="selectShown" type="checkbox"><span>選取目前顯示的單字</span></label>
+        <span id="selectedCount" role="status"></span>
+        <label class="set-bulk-target"><span class="sr-only">批次歸類的單字集</span><select id="bulkSet">${setOptions()}</select></label>
+        <button class="btn btn-outline btn-sm" id="bulkAssign" type="button">加入單字集</button>
+        <button class="btn btn-ghost btn-sm" id="bulkRemove" type="button">移出單字集</button>
+      </div>
       <ul class="word-list" id="list"></ul>
     </section>`;
 
   const listEl = root.querySelector('#list');
   const countEl = root.querySelector('#count');
+  const refreshPanel = renderSetsPanel(root.querySelector('#setsPanel'));
+  bindSetScope(root);
+  root.querySelector('#setScope').addEventListener('change', () => {
+    root.querySelector('#addToSet').value = activeSetId() === 'unfiled' ? '' : activeSetId();
+    drawPreview();
+  });
+
+  function shownWords() {
+    const q = state.query.trim().toLowerCase();
+    return scopedWords().filter((w) => !q || w.word.includes(q) || w.zh.includes(q));
+  }
+
+  function drawSelected() {
+    const shown = shownWords();
+    const valid = new Set(shown.map((w) => w.id));
+    for (const id of selected) if (!valid.has(id)) selected.delete(id);
+    const all = root.querySelector('#selectShown');
+    all.checked = !!shown.length && selected.size === shown.length;
+    all.indeterminate = selected.size > 0 && selected.size < shown.length;
+    all.disabled = !shown.length;
+    root.querySelector('#selectedCount').textContent = `已選 ${selected.size} 個字`;
+    for (const id of ['bulkAssign', 'bulkRemove']) root.querySelector(`#${id}`).disabled = !selected.size || !root.querySelector('#bulkSet').value;
+  }
+
+  root.querySelector('#selectShown').addEventListener('change', (e) => {
+    for (const w of shownWords()) { if (e.target.checked) selected.add(w.id); else selected.delete(w.id); }
+    drawList();
+  });
+  root.querySelector('#bulkSet').addEventListener('change', drawSelected);
+  for (const [id, present] of [['bulkAssign', true], ['bulkRemove', false]]) {
+    root.querySelector(`#${id}`).addEventListener('click', () => {
+      try {
+        const n = assignWordSet([...selected], root.querySelector('#bulkSet').value, present);
+        selected.clear(); drawList();
+        toast(`${present ? '已加入' : '已移出'} ${n} 個字${present ? '' : '，單字與進度保留'}`);
+      } catch (err) { toast(err.message, 'error'); }
+    });
+  }
+  listEl.addEventListener('change', (e) => {
+    if (!e.target.matches('.word-select')) return;
+    const id = e.target.closest('.word-row').dataset.id;
+    if (e.target.checked) selected.add(id); else selected.delete(id);
+    drawSelected();
+  });
 
   function drawList() {
     const q = state.query.trim().toLowerCase();
     const all = getWords();
-    const shown = q ? all.filter((w) => w.word.includes(q) || w.zh.includes(q)) : all;
-    countEl.textContent = q ? `${shown.length} / ${all.length} 個字` : `共 ${all.length} 個字`;
+    const shown = shownWords();
+    countEl.textContent = q || activeSetId() ? `${shown.length} / ${all.length} 個字` : `共 ${all.length} 個字`;
+    drawSelected();
     if (!shown.length) {
-      listEl.innerHTML = `<li class="list-empty">${all.length ? '找不到符合的字' : '還沒有單字，從上面輸入第一個吧！'}</li>`;
+      listEl.innerHTML = `<li class="list-empty">${all.length ? '目前範圍沒有符合的單字，可切換單字集或新增單字。' : '還沒有單字，從上面輸入第一個吧！'}</li>`;
       return;
     }
     listEl.innerHTML = shown.map((w) => {
@@ -81,11 +141,13 @@ export function renderWords(root) {
         : (isLookingUp(w.id) ? '<span class="muted">查字典中…</span>' : '<span class="muted">（尚無中文）</span>');
       return `
       <li class="word-row ${w.unfamiliar ? 'is-unfamiliar' : ''}" data-id="${w.id}">
+        <input class="word-select" type="checkbox" aria-label="選取 ${esc(w.word)}" ${selected.has(w.id) ? 'checked' : ''}>
         <button class="star" type="button" data-act="mark" aria-pressed="${w.unfamiliar}"
           title="${w.unfamiliar ? '取消不熟' : '標記不熟'}" aria-label="${w.unfamiliar ? '取消不熟' : '標記不熟'}：${esc(w.word)}">${w.unfamiliar ? '★' : '☆'}</button>
         <div class="word-info">
           <span class="word-en">${esc(w.word)}${badge(w)}</span>
           <span class="word-zh">${zhText}</span>
+          <span class="word-set-tags">${setsForWord(getSetRecords(), w.word).map((s) => `<span class="chip">${esc(s.name)}</span>`).join('')}</span>
         </div>
         <div class="row-actions">
           ${w.llm?.status === 'failed' ? `<button class="btn btn-ghost btn-sm" type="button" data-act="regen" title="${esc(w.llm.error || '')}">重試 AI</button>` : ''}
@@ -99,20 +161,23 @@ export function renderWords(root) {
 
   function addFromText(text) {
     const { fresh, dupes, existing } = analyzeInput(text, getWords().map((w) => w.word));
-    if (!fresh.length) {
+    const setId = root.querySelector('#addToSet').value;
+    if (!fresh.length && !(existing.length && setId)) {
       if (existing.length) toast(`「${existing[0]}」${existing.length > 1 ? ` 等 ${existing.length} 個字` : ''}已經在字卡裡了`, 'error');
       else toast('沒有找到英文單字', 'error');
       return 0;
     }
     const { added } = addWords(fresh);
+    const existingIds = setId ? getWords().filter((w) => existing.includes(w.word)).map((w) => w.id) : [];
+    const assigned = setId ? assignWordSet([...added.map((w) => w.id), ...existingIds], setId) : 0;
     const ids = added.map((w) => w.id);
     enqueueLookup(ids);
     if (hasApiKey() && getSettings().autoGenerate) enqueueGenerate(ids);
     const skipped = dupes.length + existing.length;
-    toast(added.length === 1 && !skipped
+    toast(setId ? `新增 ${added.length} 個字，${assigned} 個字加入單字集` : added.length === 1 && !skipped
       ? `已加入「${added[0].word}」`
       : `已加入 ${added.length} 個字${skipped ? `，略過 ${skipped} 個重複` : ''}`);
-    return added.length;
+    return added.length + assigned;
   }
 
   root.querySelector('#addForm').addEventListener('submit', (e) => {
@@ -139,13 +204,14 @@ export function renderWords(root) {
       return;
     }
     const { fresh, dupes, existing } = analyzeInput(text, getWords().map((w) => w.word));
-    batchAdd.disabled = !fresh.length;
-    batchAdd.textContent = fresh.length ? `加入 ${fresh.length} 個字` : '加入';
+    const setId = root.querySelector('#addToSet').value;
+    batchAdd.disabled = !fresh.length && !(setId && existing.length);
+    batchAdd.textContent = fresh.length ? `加入 ${fresh.length} 個字` : setId && existing.length ? '加入單字集' : '加入';
     batchPreview.innerHTML = `
       ${fresh.length
         ? `<p class="preview-title">將新增 <strong>${fresh.length}</strong> 個字</p><p class="chips">${chipList(fresh)}</p>`
         : '<p class="preview-title">沒有新的字可以加入</p>'}
-      ${existing.length ? `<p class="preview-title muted">已在字卡裡，略過 ${existing.length} 個</p><p class="chips">${chipList(existing, 'chip-muted')}</p>` : ''}
+      ${existing.length ? `<p class="preview-title muted">已在字卡裡，${setId ? '保留內容與進度，加入指定單字集' : '略過'} ${existing.length} 個</p><p class="chips">${chipList(existing, 'chip-muted')}</p>` : ''}
       ${dupes.length ? `<p class="preview-title muted">貼上的內容裡重複，只算一次：${dupes.length} 個</p><p class="chips">${chipList(dupes, 'chip-muted')}</p>` : ''}`;
   }
 
@@ -157,6 +223,7 @@ export function renderWords(root) {
     state.batchText = batchInput.value;
     drawPreview();
   });
+  root.querySelector('#addToSet').addEventListener('change', drawPreview);
   root.querySelector('#batchClear').addEventListener('click', () => {
     batchInput.value = state.batchText = '';
     drawPreview();
@@ -259,7 +326,14 @@ export function renderWords(root) {
   drawPreview();
   drawProgress();
   drawAi();
-  const unsub = subscribe(() => { drawList(); drawAi(); });
+  const unsub = subscribe(() => {
+    refreshPanel(); refreshSetScope(root);
+    for (const id of ['addToSet', 'bulkSet']) {
+      const el = root.querySelector(`#${id}`);
+      el.innerHTML = setOptions(el.value);
+    }
+    drawList(); drawAi(); drawPreview();
+  });
   const unsubLookup = onLookupStatus((st) => { drawList(); drawProgress(st); });
   let lastKey = '';
   const unsubGen = onGenerateStatus((st) => {

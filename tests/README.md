@@ -32,6 +32,7 @@ python tests/test_daily_goal.py
 python tests/test_step9.py   # 可加 LAN_URL=http://你的區網IP:8000/ 測試非 HTTPS 的情況
 python tests/test_ai_speed.py
 python tests/test_step11.py   # 需要先啟動 Firebase 模擬器（見檔案開頭說明，需要 Java）
+python tests/test_word_sets.py # 自訂單字集（不需要 Firebase）
 ```
 
 改完 JS 之後，可以先用 Node 檢查所有檔案的語法（很快，能抓到打錯字造成整個網站打不開的問題）：
@@ -57,6 +58,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `test_step9.py` | manifest 與圖示、Service Worker 快取、離線字典、真正離線時重新整理／複習／測驗／查字典、AI 生成暫停與恢復、安裝按鈕、App 模式、iPhone 教學、非 HTTPS 提示 |
 | `test_ai_speed.py` | 思考設定（2.5 用 budget 0、3 以後 minimal → low → 不帶）、不支援時自動換並記住、第一批 5 個字、失敗時用字典補、測試 AI 按鈕、請求耗時顯示 |
 | `test_step11.py` | 跨裝置同步（Firebase 模擬器）：Google 與 Email 連結登入、多台裝置雙向同步、每日紀錄加總、刪除、設定、錯題本、自動同步、離線補傳、安全規則、iPhone 貼上連結、登出 |
+| `test_word_sets.py` | 自訂單字集：建立／改名／刪除、同字多集、批次加入／移出、既有單字歸類、限定複習／測驗／自由瀏覽、共用進度、備份版本相容、改拼字、HTML 注入、手機深色與離線操作 |
+| `unit/word-sets.test.mjs` | 單字集純邏輯：範圍篩選、個別成員的時間合併、移出與刪除紀錄、同時修改的結果一致、格式清理、備份往返與合併 |
 | `unit/srs.test.mjs` | 間隔重複演算法：間隔計算、答錯重設、ease 下限、早上 4 點換日、複習清單排序 |
 | `unit/parse.test.mjs` | 批次輸入解析：分隔符號、中文與編號、片語、去重 |
 | `unit/stats.test.mjs` | 統計計算：連續天數（跨日、跨月、早上 4 點換日）、加總與正確率、熟練度邊界、未來到期、座標刻度 |
@@ -65,6 +68,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `unit/quiz.test.mjs` | 出題邏輯：錯誤選項（不含答案、不重複、同詞性優先）、遮住答案字、不熟優先、Part 5 題目驗證 |
 
 `capture_screenshots.py` 用來產生 `docs/images/` 裡的截圖。
+
+`test_step11.py` 也會驗證單字集的 Firestore 交易合併：兩台裝置同時建立、改名與成員修改互不覆蓋、離線裝置不復活已刪分類，以及其他帳號無法讀取分類。Firebase SDK 和字型快取測試需要連線取得公開檔案；帳號與資料僅寫入 `demo-toeic` 本機模擬器。
 
 `test_deployed.py` 是部署後的冒煙測試，直接測真正的 GitHub Pages 網址（子路徑、HTTPS、Service Worker、離線）：
 

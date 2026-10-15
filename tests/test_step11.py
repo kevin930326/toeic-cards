@@ -103,7 +103,8 @@ def wait_synced(pg, timeout=20000, since=0):
         if st['ok'] and st['last'] > since:
             return st
         time.sleep(0.3)
-    raise AssertionError(f'等不到同步完成：{st}')
+    panel = pg.locator('#syncPanel').inner_text() if pg.locator('#syncPanel').count() else ''
+    raise AssertionError(f'等不到同步完成：{st}\n畫面：{panel}')
 
 def sync_now(pg):
     before = pg.evaluate("import('/js/sync.js').then((m) => m.syncState().lastSyncAt)")
@@ -414,6 +415,51 @@ with sync_playwright() as p:
     msg = R.evaluate("import('/js/sync.js').then((m) => m.friendlyError({ code: 'auth/quota-exceeded' }))")
     check('每天只能寄 5 封' in msg and 'Email＋密碼' in msg, f'登入信額度用完時的說明：{msg}')
     ctxR.close()
+
+    # ---- 自訂單字集：真正的 SDK＋交易，兩台裝置同時修改 ----
+    finance = A.evaluate("""async () => { const s = await import('/js/store.js');
+      const set = s.createWordSet('財務'); s.assignWordSet(s.getWords().filter(w => w.word === 'approve').map(w => w.id), set.id); return set.id; }""")
+    mock = B.evaluate("""async () => { const s = await import('/js/store.js');
+      const set = s.createWordSet('第 3 回模考'); s.assignWordSet(s.getWords().filter(w => w.word === 'deadline').map(w => w.id), set.id); return set.id; }""")
+    A.evaluate("() => { window.setSyncJob = import('/js/sync.js').then(m => m.syncNow()); }")
+    sync_now(B)
+    A.evaluate('window.setSyncJob')
+    sync_now(A)
+    sync_now(B)
+    sets_a = A.evaluate("import('/js/store.js').then(s => s.getWordSets())")
+    sets_b = B.evaluate("import('/js/store.js').then(s => s.getWordSets())")
+    check({s['id'] for s in sets_a} == {finance, mock} and sets_a == sets_b, '兩台裝置同時建立不同單字集，交易合併保留雙方')
+    check(next(s for s in sets_b if s['id'] == finance)['members']['approve']['present'], '分類以單字對應，跨裝置卡片 id 不同也保留歸屬')
+
+    A.evaluate("""async (id) => { const s = await import('/js/store.js');
+      s.assignWordSet(s.getWords().filter(w => w.word === 'approve').map(w => w.id), id, false); }""", finance)
+    B.evaluate("""async (id) => { const s = await import('/js/store.js'); s.renameWordSet(id, '財務與預算');
+      s.assignWordSet(s.getWords().filter(w => w.word === 'submit').map(w => w.id), id); }""", finance)
+    sync_now(A)
+    sync_now(B)
+    sync_now(A)
+    merged = A.evaluate("import('/js/store.js').then(s => s.getSetRecords())")
+    f = next(s for s in merged if s['id'] == finance)
+    check(f['name'] == '財務與預算' and f['members']['submit']['present'] and not f['members']['approve']['present'],
+          '改名、新增成員與移出各自合併，舊裝置不會把移出的字加回')
+
+    ctxA.set_offline(True)
+    A.evaluate("""async (id) => { const s = await import('/js/store.js');
+      s.assignWordSet(s.getWords().filter(w => w.word === 'deadline').map(w => w.id), id); }""", finance)
+    B.evaluate("import('/js/store.js').then(s => s.deleteWordSet('" + finance + "'))")
+    sync_now(B)
+    ctxA.set_offline(False)
+    sync_now(A)
+    sync_now(B)
+    check(A.evaluate("import('/js/store.js').then(s => s.getWordSets().every(x => x.id !== '" + finance + "'))"),
+          '離線裝置新增成員後重連，不會復活別台已刪除的單字集')
+    check('submit' in local_words(A) and 'approve' in local_words(B), '刪除單字集跨裝置傳遞，單字與進度保留')
+    foreign_sets = C.evaluate("""async (uid) => {
+      const fs = await import('https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js');
+      try { await fs.getDoc(fs.doc(fs.getFirestore(), 'users', uid, 'meta', 'wordSets')); return 'allowed'; }
+      catch (e) { return e.code; }
+    }""", uid)
+    check(foreign_sets == 'permission-denied', '別人的帳號不能讀取我的單字集')
 
     # ---- 登出：資料保留 ----
     B.goto(URL + '#/settings')

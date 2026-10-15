@@ -2,11 +2,12 @@
 //
 // 什麼時候同步：登入後、打開網站時（之前登入過）、資料改變後約 8 秒（把連續的修改合在一起）、
 //              切回這個分頁或 App 時、重新連上網路時、按「立即同步」
-// 同步的順序：拉下雲端的單字 → 套用 → 上傳本機有變更的單字 → 每日紀錄 → 設定 → 錯題本
+// 同步的順序：拉下雲端的單字 → 套用 → 上傳本機有變更的單字 → 每日紀錄 → 設定 → 錯題本 → 單字集
 import { firebaseConfig } from './firebase-config.js';
 import {
   getWords, replaceWords, getTombstones, setTombstones, getSettings, updateSettings,
   settingsUpdatedAt, setSettingsUpdatedAt, subscribe,
+  getSetRecords, mergeSetRecords,
 } from './store.js';
 import { getOwnLog, setRemoteLogs, onLogChange } from './log.js';
 import { getMistakes, mistakesUpdatedAt, setMistakesFromSync } from './mistakes.js';
@@ -336,6 +337,11 @@ async function doSync() {
     const mSide = newerSide(mistakesUpdatedAt(), rm);
     if (mSide === 'pull') setMistakesFromSync(remapMistakes(rm.value, getWords()), rm.updatedAt);
     else if (mSide === 'push') await remote.setMeta(uid, 'mistakes', getMistakes(), mistakesUpdatedAt());
+
+    // 6. 單字集與每個成員分別合併；等待網路期間的新修改也要保留。
+    const sets = await remote.syncWordSets(uid, getSetRecords());
+    applying = true;
+    try { mergeSetRecords(sets); } finally { applying = false; }
 
     // 其他裝置的紀錄和錯題不經過 store，主動通知畫面重畫
     applying = true;

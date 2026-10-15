@@ -4,6 +4,7 @@ import { getLog, replaceLog } from '../log.js';
 import { getMistakes, replaceMistakes } from '../mistakes.js';
 import { buildBackup, backupFileName, parseBackup, mergeBackup } from '../backup.js';
 import { esc, toast, confirmAction } from '../ui.js';
+import { getSetRecords, replaceSetRecords, restoreSetRecords } from '../store.js';
 
 const LAST_BACKUP_KEY = 'toeic-cards:lastBackup';
 
@@ -19,7 +20,9 @@ function fmtTime(ms) {
 }
 
 // 把資料寫回去。順序很重要：先換單字，錯題本才不會被「單字不存在」的清理機制刪掉
-function apply({ words, mistakes, log, settings }) {
+function apply({ words, mistakes, log, settings, wordSets }, replace = false) {
+  if (replace) restoreSetRecords(wordSets || []);
+  else replaceSetRecords(wordSets || []);
   replaceWords(words);
   replaceMistakes(mistakes);
   replaceLog(log);
@@ -54,7 +57,7 @@ export function renderBackupPanel(container) {
 
   function exportNow() {
     const now = Date.now();
-    const backup = buildBackup({ words: getWords(), settings: getSettings(), log: getLog(), mistakes: getMistakes() }, now);
+    const backup = buildBackup({ words: getWords(), settings: getSettings(), log: getLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, now);
     const blob = new Blob([JSON.stringify(backup, null, 1)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -88,12 +91,12 @@ export function renderBackupPanel(container) {
 
   function drawPreview() {
     const b = pending;
-    const dry = mergeBackup({ words: getWords(), log: getLog(), mistakes: getMistakes() }, b);
+    const dry = mergeBackup({ words: getWords(), log: getLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, b);
     const when = b.exportedAt ? fmtTime(Date.parse(b.exportedAt)) : '不明';
     container.querySelector('#importArea').innerHTML = `
       <div class="import-preview">
         <p class="import-title">備份內容（${esc(when)} 匯出）</p>
-        <p>單字 <strong>${b.words.length}</strong> 個・學習紀錄 <strong>${Object.keys(b.log).length}</strong> 天・錯題 <strong>${b.mistakes.length}</strong> 題
+        <p>單字 <strong>${b.words.length}</strong> 個・單字集 <strong>${b.wordSets.filter((s) => !s.deleted).length}</strong> 個・學習紀錄 <strong>${Object.keys(b.log).length}</strong> 天・錯題 <strong>${b.mistakes.length}</strong> 題
           ${b.skipped ? `<span class="muted">・略過 ${b.skipped} 筆格式不正確或重複的資料</span>` : ''}</p>
         <p class="import-merge">選「合併」會：新增 <strong>${dry.summary.added}</strong> 個字、更新 <strong>${dry.summary.updated}</strong> 個字（備份裡比較新）、
           <strong>${dry.summary.kept}</strong> 個字保留目前的版本；學習紀錄與錯題本合在一起。</p>
@@ -104,7 +107,7 @@ export function renderBackupPanel(container) {
         </div>
       </div>`;
     container.querySelector('#doMerge').addEventListener('click', () => {
-      const merged = mergeBackup({ words: getWords(), log: getLog(), mistakes: getMistakes() }, pending);
+      const merged = mergeBackup({ words: getWords(), log: getLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, pending);
       apply(merged);
       pending = null;
       toast(`已合併：新增 ${merged.summary.added} 個字、更新 ${merged.summary.updated} 個字`);
@@ -118,7 +121,8 @@ export function renderBackupPanel(container) {
         mistakes: pending.mistakes.filter((m) => ids.has(m.question.wordId)),
         log: pending.log,
         settings: pending.settings,
-      });
+        wordSets: pending.wordSets,
+      }, true);
       const n = pending.words.length;
       pending = null;
       toast(`已還原備份：${n} 個字`);

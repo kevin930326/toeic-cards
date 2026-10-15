@@ -76,7 +76,7 @@ with sync_playwright() as p:
     check(d.suggested_filename.startswith('toeic-cards-backup-') and d.suggested_filename.endswith('.json'), f'檔名 {d.suggested_filename}')
     raw = open(path, encoding='utf-8').read()
     data = json.loads(raw)
-    check(data['app'] == 'toeic-cards' and data['version'] == 1 and data['counts'] == {'words': 4, 'days': 2, 'mistakes': 1}, f"備份格式 {data['counts']}")
+    check(data['app'] == 'toeic-cards' and data['version'] == 2 and data['counts'] == {'words': 4, 'days': 2, 'mistakes': 1, 'wordSets': 0}, f"備份格式 {data['counts']}")
     check(KEY not in raw and 'gemini-key' not in raw, '備份檔不含 Gemini 金鑰')
     check(data['data']['words'][0]['srs']['interval'] == 3 and data['data']['settings']['accent'] == 'en-GB', '複習排程、設定都有匯出')
     check('上次備份' in a.locator('.backup-now').inner_text(), '匯出後顯示上次備份時間')

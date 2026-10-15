@@ -5,6 +5,7 @@
 //   瀏覽器會擋掉「跳轉登入」需要的第三方儲存空間，官方建議改用彈出視窗
 // - Email 登入連結：寄一封信，點信裡的連結就登入，不用密碼
 import { wordDocId } from './sync-core.js';
+import { mergeSets } from './word-sets.js';
 
 export const FIREBASE_SDK_VERSION = '13.0.0';
 const CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
@@ -134,6 +135,19 @@ export async function createFirebaseRemote(config) {
     async getMeta(uid, name) {
       const snap = await fs.getDoc(fs.doc(db, 'users', uid, 'meta', name));
       return snap.exists() ? snap.data() : null;
+    },
+    // 用交易在伺服器端重讀後合併，兩台裝置同時建立／改分類也不會整份互蓋。
+    async syncWordSets(uid, local) {
+      const ref = fs.doc(db, 'users', uid, 'meta', 'wordSets');
+      return fs.runTransaction(db, async (tx) => {
+        const snap = await tx.get(ref);
+        const cloud = snap.exists() ? snap.data().value : [];
+        const merged = mergeSets(cloud, local);
+        if (JSON.stringify(merged) !== JSON.stringify(cloud)) {
+          tx.set(ref, { value: plain(merged) });
+        }
+        return merged;
+      });
     },
     async setMeta(uid, name, value, updatedAt) {
       await fs.setDoc(fs.doc(db, 'users', uid, 'meta', name), { value: plain(value), updatedAt });
