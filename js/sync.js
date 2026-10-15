@@ -5,14 +5,14 @@
 // 同步的順序：拉下雲端的單字 → 套用 → 上傳本機有變更的單字 → 每日紀錄 → 設定 → 錯題本 → 單字集
 import { firebaseConfig } from './firebase-config.js';
 import {
-  getWords, replaceWords, getTombstones, setTombstones, getSettings, updateSettings,
+  getWords, replaceWords, getTombstones, setTombstones, getSettings, updateSettings, getDefaultSettings,
   settingsUpdatedAt, setSettingsUpdatedAt, subscribe,
   getSetRecords, mergeSetRecords,
 } from './store.js';
 import { getOwnLog, setRemoteLogs, onLogChange } from './log.js';
 import { getMistakes, mistakesUpdatedAt, setMistakesFromSync } from './mistakes.js';
 import {
-  applyRemoteWords, pendingChanges, pickSyncedSettings, remapMistakes, newerSide,
+  applyRemoteWords, pendingChanges, pickSyncedSettings, remoteSettings, remoteLogs, remapMistakes, newerSide,
 } from './sync-core.js';
 
 const STATE_KEY = 'toeic-cards:sync';            // { [uid]: { lastPullAt, pushed } }
@@ -319,14 +319,14 @@ async function doSync() {
     const me = deviceId();
     await remote.pushLog(uid, me, getOwnLog());
     const logs = await remote.pullLogs(uid);
-    setRemoteLogs(Object.fromEntries(logs.filter((l) => l.deviceId !== me).map((l) => [l.deviceId, l.log])));
+    setRemoteLogs(remoteLogs(logs, me));
 
     // 4. 設定：比較新的勝出
     const rs = await remote.getMeta(uid, 'settings');
     const sSide = newerSide(settingsUpdatedAt(), rs);
     if (sSide === 'pull') {
       applying = true;
-      try { updateSettings(pickSyncedSettings(rs.value || {}), { fromSync: true }); } finally { applying = false; }
+      try { updateSettings(remoteSettings(rs.value, getDefaultSettings()), { fromSync: true }); } finally { applying = false; }
       setSettingsUpdatedAt(rs.updatedAt);
     } else if (sSide === 'push') {
       await remote.setMeta(uid, 'settings', pickSyncedSettings(getSettings()), settingsUpdatedAt());

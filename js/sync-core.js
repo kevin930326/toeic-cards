@@ -10,7 +10,7 @@
 //   - 單字：同一個字以「最後修改時間 updatedAt」比較新的為準；刪除會留下「刪除紀錄」，讓其他裝置也刪掉
 //   - 每日紀錄：每台裝置各記各的，顯示時「加總」（手機背 10 題＋電腦背 10 題＝ 20 題，打卡才不會少算）
 //   - 設定、錯題本：整份以比較新的為準
-import { sanitizeWord } from './backup.js';
+import { sanitizeWord, sanitizeLog, sanitizeMistakes, sanitizeSettings } from './backup.js';
 import { normalizeWord } from './parse.js';
 import { mistakeKey } from './mistakes.js';
 
@@ -120,11 +120,26 @@ export function pickSyncedSettings(settings) {
   return out;
 }
 
-// 錯題本從別的裝置來：wordId 是那台裝置的 id，用單字本身換成本機的 id；對不到的丟掉
+// 雲端拉下來的設定：只取要同步的欄位，型別要和預設值一樣（和匯入備份同一套清理）
+export function remoteSettings(value, defaults) {
+  return sanitizeSettings(pickSyncedSettings(value && typeof value === 'object' ? value : {}), defaults);
+}
+
+// 雲端拉下來的每日紀錄：每台裝置的紀錄都和匯入備份一樣清理，只留日期和數字
+export function remoteLogs(list, ownDeviceId) {
+  const out = {};
+  for (const l of Array.isArray(list) ? list : []) {
+    if (!l || l.deviceId === ownDeviceId || typeof l.deviceId !== 'string') continue;
+    out[l.deviceId] = sanitizeLog(l.log);
+  }
+  return out;
+}
+
+// 錯題本從別的裝置來：先和匯入備份一樣清理，再把 wordId（那台裝置的 id）用單字本身換成本機的 id；對不到的丟掉
 export function remapMistakes(list, words) {
   const idByWord = new Map(words.map((w) => [w.word, w.id]));
   const out = [];
-  for (const m of Array.isArray(list) ? list : []) {
+  for (const m of sanitizeMistakes(list)) {
     const wordId = idByWord.get(normalizeWord(m?.question?.word));
     if (!wordId) continue;
     const question = { ...m.question, wordId };

@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   wordDocId, applyRemoteWords, pendingChanges, combineLogs, pickSyncedSettings, remapMistakes, newerSide,
+  remoteSettings, remoteLogs,
   toRemoteWord, toRemoteTombstone, SYNCED_SETTINGS,
 } from '../../js/sync-core.js';
 import { mistakeKey } from '../../js/mistakes.js';
@@ -102,4 +103,32 @@ test('整份資料比較新的勝出', () => {
   assert.equal(newerSide(20, { updatedAt: 20 }), 'none');
   assert.equal(newerSide(5, null), 'push');
   assert.equal(newerSide(0, null), 'none');
+});
+
+// 資安：雲端拉下來的資料和匯入備份一樣清理（帳號萬一被盜，也不能藉同步把 HTML 送進其他裝置的畫面）
+test('同步：雲端的設定只留要同步的欄位，型別不對的丟掉', () => {
+  const defaults = { dailyGoal: 20, newPerDay: 20, cardMode: 'zh', theme: 'system', quizScope: 'all' };
+  const s = remoteSettings({ dailyGoal: '<img src=x onerror=alert(1)>', newPerDay: 15, cardMode: 'en', theme: 'dark', quizScope: 5 }, defaults);
+  assert.deepEqual(s, { newPerDay: 15, cardMode: 'en' });
+  assert.deepEqual(remoteSettings(null, defaults), {});
+});
+
+test('同步：其他裝置的每日紀錄只留日期和數字，略過自己這台', () => {
+  const logs = remoteLogs([
+    { deviceId: 'me', log: { '2026-10-14': { reviews: 99 } } },
+    { deviceId: 'phone', log: { '2026-10-14': { reviews: '<b>5</b>', good: 3 }, 'not-a-day': { reviews: 1 } } },
+    { deviceId: 42, log: {} },
+  ], 'me');
+  assert.deepEqual(logs, { phone: { '2026-10-14': { reviews: 0, good: 3 } } });
+});
+
+test('同步：錯題本先清理再換 id，不合格的題目丟掉', () => {
+  const q = { mode: 'zh2en', wordId: 'pc-id', word: 'approve', prompt: 'p', options: ['a', 'b', 'c', 'd'], answerIndex: 0 };
+  const out = remapMistakes([
+    { question: q, chosen: 1, count: '<img src=x onerror=alert(1)>', at: 1 },
+    { question: { ...q, mode: 'evil' }, chosen: 1, count: 1, at: 1 },
+  ], [w('approve', 1, { id: 'phone-id' })]);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].question.wordId, 'phone-id');
+  assert.equal(out[0].count, 1);
 });
