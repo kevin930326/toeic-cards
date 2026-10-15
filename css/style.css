@@ -307,6 +307,22 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 }
 .nav a:hover { color: var(--ink); background: var(--surface-2); }
 .nav a.active { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.review-nav { position: relative; display: flex; align-items: center; border-radius: 999px; }
+.review-nav.active { background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.nav .review-nav > a.active { background: transparent; box-shadow: none; }
+.nav .review-nav > a { padding-right: 2px; }
+#reviewMenuToggle { padding: 7px 6px; color: var(--ink-soft); border: 0; border-radius: 999px; background: transparent; cursor: pointer; }
+#reviewMenuToggle:hover { background: var(--surface-2); }
+.review-choices { position: absolute; top: calc(100% + 8px); left: 0; z-index: 50; min-width: 220px; padding: 6px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-lg); }
+.nav .review-choices a { display: block; text-align: left; padding: 10px 12px; border-radius: 8px; }
+.review-choices small { display: block; font-size: 12px; color: var(--ink-faint); font-weight: 400; }
+.nav .review-choices a[aria-current=page] { background: var(--surface-2); color: var(--accent); }
+.free-toolbar, .free-actions, .free-links { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.free-toolbar .check-row { margin: 0; }
+.free-actions { justify-content: space-between; gap: 6px; }
+.free-links { justify-content: center; font-size: 14px; }
+#freeSwipe { touch-action: pan-y; }
+@media (max-width: 560px) { .topbar .nav .review-nav { flex: 1; } .free-actions .btn { padding: 10px 8px; font-size: 13px; } }
 
 .icon-btn {
   display: inline-grid; place-items: center;

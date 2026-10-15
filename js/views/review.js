@@ -163,7 +163,7 @@ export function renderReview(root) {
         <div class="done-actions">
           ${newLeft ? `<button class="btn btn-primary" id="more" type="button">再學 ${Math.min(10, newLeft)} 個新字</button>` : ''}
           ${session.history.length ? '<button class="btn btn-ghost" id="undo" type="button">↶ 復原上一張</button>' : ''}
-          <a class="btn btn-outline" href="#/cards">自由瀏覽字卡</a>
+          <a class="btn btn-outline" href="#/free">自由翻卡</a><a class="btn btn-ghost" href="#/cards">探索單字</a>
         </div>`;
     }
     root.innerHTML = `<section class="page">${setScopeHTML()}<div class="empty-state done-state">${body}</div></section>`;

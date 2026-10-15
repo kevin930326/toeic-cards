@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=library-bulk-1">
+  <link rel="stylesheet" href="css/style.css?v=free-cards-1">
   <script>
     // 在畫面出現前套用主題，避免閃一下白色
     try {
@@ -35,7 +35,8 @@
       <span class="brand-text">多益字卡</span>
     </a>
     <nav class="nav" aria-label="主要功能">
-      <a href="#/review" data-route="review">複習<span class="nav-badge" id="reviewBadge" hidden></span></a>
+      <div class="review-nav" id="reviewNav"><a href="#/review" data-route="review">複習<span class="nav-badge" id="reviewBadge" hidden></span></a><button id="reviewMenuToggle" type="button" aria-label="選擇複習方式" aria-expanded="false" aria-controls="reviewChoices">▾</button>
+        <div class="review-choices" id="reviewChoices" hidden><a href="#/review">今日複習<small>依排程回想與評分</small></a><a href="#/free">自由翻卡<small>翻閱目前單字集的所有字</small></a></div></div>
       <a href="#/cards" data-route="cards">探索</a>
       <a href="#/quiz" data-route="quiz">測驗</a>
       <a href="#/words" data-route="words">單字庫</a>
@@ -108,6 +109,6 @@
     </form>
   </dialog>
 
-  <script type="module" src="js/app.js?v=library-bulk-1"></script>
+  <script type="module" src="js/app.js?v=free-cards-1"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 // 主程式：依網址的 #/xxx 切換頁面
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
-import { renderReview, reviewBadgeCount } from './views/review.js?v=inline-lookup-1';
+import { renderReview, reviewBadgeCount } from './views/review.js?v=free-cards-1';
+import { renderFreeCards } from './views/free-cards.js?v=free-cards-1';
 import { renderCards } from './views/cards.js?v=inline-lookup-1';
 import { renderQuiz } from './views/quiz.js';
 import { renderStats } from './views/stats.js?v=stats-progress-1';
@@ -21,6 +22,7 @@ import { initWordLookup } from './word-lookup.js?v=inline-lookup-1';
 
 const routes = {
   review: renderReview,
+  free: renderFreeCards,
   cards: renderCards,
   quiz: renderQuiz,
   stats: renderStats,
@@ -46,7 +48,34 @@ function render() {
     if (a.dataset.route === name) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   });
+  document.getElementById('reviewNav').classList.toggle('active', name === 'review' || name === 'free');
+  for (const link of document.querySelectorAll('#reviewChoices a')) {
+    if (link.hash === `#/${name}`) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  }
+  closeReviewChoices();
 }
+
+function closeReviewChoices() {
+  document.getElementById('reviewChoices').hidden = true;
+  document.getElementById('reviewMenuToggle').setAttribute('aria-expanded', 'false');
+}
+document.getElementById('reviewMenuToggle').addEventListener('click', () => {
+  const panel = document.getElementById('reviewChoices');
+  panel.hidden = !panel.hidden;
+  document.getElementById('reviewMenuToggle').setAttribute('aria-expanded', String(!panel.hidden));
+});
+document.getElementById('reviewChoices').addEventListener('click', e => { if (e.target.closest('a')) closeReviewChoices(); });
+document.getElementById('reviewNav').addEventListener('keydown', e => {
+  // 選單中的方向鍵與文字鍵不能穿透到複習評分或自由換字。
+  if (!document.getElementById('reviewChoices').hidden && e.key !== 'Escape') e.stopPropagation();
+});
+document.addEventListener('click', e => { if (!e.target.closest('#reviewNav')) closeReviewChoices(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !document.getElementById('reviewChoices').hidden) {
+    closeReviewChoices(); document.getElementById('reviewMenuToggle').focus();
+  }
+});
 
 // ---- 深色模式 ----
 const media = window.matchMedia('(prefers-color-scheme: dark)');

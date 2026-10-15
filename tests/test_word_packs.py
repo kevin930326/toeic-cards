@@ -173,6 +173,10 @@ with sync_playwright() as p:
     token.click()
     expect(pg.locator('#lookupInput')).to_have_value(word)
     check(pg.locator('#lookupDialog').is_visible(), '真正離線重新整理後仍載入新版逐字查詢介面')
+    pg.press('#lookupInput','Escape')
+    pg.goto(URL+'#/free');pg.reload()
+    expect(pg.locator('#freePosition')).to_have_text('1 / 1000')
+    check(pg.locator('#card').is_visible(), '真正離線重新整理後仍可自由翻閱1000張字卡')
     ctx.close()
 
     # 即使已有個人金鑰，全包不會重新生成；重連與手動生成缺項也不會重送。

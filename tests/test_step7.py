@@ -173,17 +173,20 @@ with sync_playwright() as p:
     bar = m.evaluate("(() => { const n = document.querySelector('.topbar'); return n.scrollWidth - n.clientWidth; })()")
     check(sw <= 375 and bar <= 0, f'手機無橫向捲動（頁面 {sw}、導覽列 {bar}）')
     # 導覽文字不能折成兩行（例如「字／卡」）：每個項目的高度要和單行文字一樣
-    single_line = m.evaluate("""[...document.querySelectorAll('.nav a')].every(a=>{
-      const s=getComputedStyle(a);
-      return a.getBoundingClientRect().height<=parseFloat(s.lineHeight)+parseFloat(s.paddingTop)+parseFloat(s.paddingBottom)+2;
+    single_line = m.evaluate("""[...document.querySelectorAll('.nav > a, .review-nav > a')].every(a=>{
+      const range=document.createRange();
+      const text=[...a.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());
+      range.selectNodeContents(text);
+      return range.getBoundingClientRect().height<=parseFloat(getComputedStyle(a).lineHeight)+2;
     })""")
-    check(single_line, '手機導覽文字不換行（依實際字高與內距檢查）')
+    check(single_line, '手機導覽文字不換行（量測文字本身，排除按鈕造成的容器伸展）')
     ticks = m.locator('#chartForecast .chart-tick').all_text_contents()
     check('明天' in ticks, f'手機上未來圖的 X 軸也有「明天」（{ticks}）')
     svg_w = m.evaluate("document.querySelector('#chartReviews svg').getBoundingClientRect().right")
     check(svg_w <= 375, f'圖表不超出畫面（{svg_w:.0f}）')
     m.screenshot(path=os.path.join(OUT, 's7_mobile.png'), full_page=True)
     m.set_viewport_size({'width':320,'height':812})
+    m.wait_for_function('document.documentElement.scrollWidth<=innerWidth')
     check(m.evaluate('document.documentElement.scrollWidth<=innerWidth'), '320px統計卡片及門檻說明無橫向溢出')
 
     browser.close()
