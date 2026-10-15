@@ -21,3 +21,6 @@ node_modules/
 
 # Claude Code 本機設定與第三方 skill（不屬於網站本身）
 .claude/
+
+# Firebase 模擬器的紀錄檔
+*-debug.log

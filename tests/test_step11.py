@@ -1,8 +1,8 @@
 """第 11 步：跨裝置同步（Firebase）端對端測試
 
 使用 Firebase 官方的本機模擬器（真的 Firebase SDK，不會碰到正式專案），並套用專案的 firestore.rules：
-  npx firebase emulators:start --only auth,firestore --project demo-toeic
-  （firebase.json 的 firestore.rules 指向本專案的 firestore.rules；auth 9099、firestore 8080）
+  npx firebase-tools emulators:start --only auth,firestore --project demo-toeic
+  （在專案根目錄執行，設定檔是根目錄的 firebase.json；auth 9099、firestore 8080）
 
 每個「裝置」是一個獨立的瀏覽器環境（各自的 localStorage），模擬電腦、手機、別人的裝置。
 """
