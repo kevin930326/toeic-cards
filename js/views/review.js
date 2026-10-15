@@ -4,7 +4,7 @@
 import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
-import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=lookup-mode-1';
+import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=custom-words-1';
 import { createCardLookupMode } from '../card-lookup-mode.js';
 import { attachSwipe, flyOut } from '../swipe.js?v=swipe-isolation-1';
 import {
@@ -12,8 +12,8 @@ import {
 } from '../srs.js';
 import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal } from '../log.js';
 import { streak } from '../stats.js';
-import { onLookupStatus } from '../dictionary.js';
-import { onGenerateStatus } from '../generate.js';
+import { onLookupStatus } from '../dictionary.js?v=custom-words-1';
+import { onGenerateStatus } from '../generate.js?v=custom-words-1';
 import { scopedWords, activeSetId } from '../store.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js';
 

@@ -1,8 +1,8 @@
 // 主程式：依網址的 #/xxx 切換頁面
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
-import { renderReview, reviewBadgeCount } from './views/review.js?v=lookup-mode-1';
-import { renderFreeCards } from './views/free-cards.js?v=lookup-mode-1';
-import { renderCards } from './views/cards.js?v=inline-lookup-1';
+import { renderReview, reviewBadgeCount } from './views/review.js?v=custom-words-1';
+import { renderFreeCards } from './views/free-cards.js?v=custom-words-1';
+import { renderCards } from './views/cards.js?v=custom-words-1';
 import { renderQuiz } from './views/quiz.js';
 import { renderStats } from './views/stats.js?v=stats-progress-1';
 import { pruneMistakes } from './mistakes.js';
@@ -13,14 +13,14 @@ import { toast } from './ui.js';
 import { initPWA } from './pwa.js';
 import { initSync } from './sync.js';
 import { hasApiKey } from './llm.js';
-import { renderWords } from './views/words.js?v=library-bulk-1';
-import { renderSettings } from './views/settings.js?v=onboarding-1';
+import { renderWords } from './views/words.js?v=custom-words-1';
+import { renderSettings } from './views/settings.js?v=custom-words-1';
 import { renderHelp } from './views/help.js?v=lookup-mode-1';
 import { initOnboarding } from './onboarding.js';
-import { lookupMissing } from './dictionary.js';
+import { lookupMissing } from './dictionary.js?v=custom-words-1';
 import { onRateWait } from './llm.js';
-import { setWaiting, generateMissing } from './generate.js';
-import { initWordLookup } from './word-lookup.js?v=inline-lookup-1';
+import { setWaiting, generateMissing } from './generate.js?v=custom-words-1';
+import { initWordLookup } from './word-lookup.js?v=custom-words-1';
 
 const routes = {
   review: renderReview,

@@ -1,7 +1,7 @@
 // 全站查字典：不切換頁面、不使用 Gemini，也不影響學習紀錄。
 import { getWords, addWords, assignWordSet, activeSetId, subscribe } from './store.js';
 import { normalizeWord } from './parse.js';
-import { lookupLocal, lookupEnglish } from './dictionary.js';
+import { lookupLocal, lookupEnglish } from './dictionary.js?v=custom-words-1';
 import { esc, toast, zhLines } from './ui.js';
 import { setOptions } from './set-ui.js';
 import { speak, canSpeak, speakerIcon } from './speech.js';
@@ -24,6 +24,7 @@ export function initWordLookup() {
   let controller;
   let current = null;
   let viewingCard = false;
+  let manual = { pos: '', zh: '', en: '' };
   let returnTrigger = null;
   const saved = (word) => getWords().find((w) => w.word === word);
   function stop() { sequence++; controller?.abort(); }
@@ -49,6 +50,12 @@ export function initWordLookup() {
       ${examples.length ? `<div class="lookup-example"><p lang="en">${esc(examples[0].en)}</p><p>${esc(examples[0].zh)}</p></div>` : ''}
       <p class="hint-text">${esc(viewingCard && own ? '來自你已收藏的字卡' : current.source)}</p>
       ${!item.en ? '<button class="btn btn-ghost btn-sm" id="lookupEnglish" type="button">查英文解釋</button><p class="hint-text" id="lookupEnglishStatus" role="status"></p>' : ''}
+      ${!own && !current.zh ? `<p class="hint-text">未收錄可能是變化形或拼字差異；仍可保留「${esc(current.word)}」新增字卡，不會自動改成原形。</p>
+        <details class="lookup-manual"><summary>手動補上意思（選填）</summary>
+          <label class="field"><span>中文意思</span><textarea id="lookupManualZh" rows="2" maxlength="300" placeholder="例如：討論（discuss 的過去式／過去分詞）">${esc(manual.zh)}</textarea></label>
+          <label class="field"><span>詞性（選填）</span><input id="lookupManualPos" maxlength="60" value="${esc(manual.pos)}" placeholder="例如 v."></label>
+          <label class="field"><span>英文解釋（選填）</span><textarea id="lookupManualEn" rows="2" maxlength="300">${esc(manual.en)}</textarea></label>
+        </details>` : ''}
       <div class="lookup-save"><label class="field"><span>${own ? '加入其他單字集' : '收藏到單字集'}</span><select id="lookupSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId())}</select></label>
       <button class="btn btn-primary" id="lookupSave" type="button">${own ? '加入單字集' : '加入我的單字庫'}</button></div>
       ${own ? '<button class="btn btn-ghost" type="button" id="lookupOwn">查看我的字卡</button>' : ''}
@@ -56,6 +63,9 @@ export function initWordLookup() {
     result.querySelector('#lookupSpeak')?.addEventListener('click', () => speak(current.word));
     result.querySelector('#lookupEnglish')?.addEventListener('click', () => english(current.word));
     result.querySelector('#lookupOwn')?.addEventListener('click', () => { viewingCard = true; render(); });
+    for (const [id, key] of [['lookupManualZh', 'zh'], ['lookupManualPos', 'pos'], ['lookupManualEn', 'en']]) {
+      result.querySelector('#' + id)?.addEventListener('input', (event) => { manual[key] = event.target.value; });
+    }
     const save = result.querySelector('#lookupSave');
     const select = result.querySelector('#lookupSet');
     const refreshSave = () => { save.disabled = !!saved(current.word) && !select.value; };
@@ -66,14 +76,19 @@ export function initWordLookup() {
       try {
         let word = saved(current.word);
         if (!word) {
-          const initialData = new Map([[current.word, { phonetic: current.phonetic || '', pos: current.pos || '', zh: current.zh || '', en: current.en || '',
-            src: { ...(current.zh ? { zh: 'dict', pos: 'dict' } : {}), ...(current.en ? { en: 'freedict' } : {}) },
+          const fields = Object.fromEntries(['pos', 'zh', 'en'].map((key) => [key, manual[key].trim() || current[key] || '']));
+          const src = {};
+          for (const key of ['pos', 'zh', 'en']) if (fields[key]) src[key] = manual[key].trim() ? 'user' : key === 'en' ? 'freedict' : 'dict';
+          const initialData = new Map([[current.word, { phonetic: current.phonetic || '', ...fields,
+            src,
             lookup: { dictAt: Date.now(), enDone: true } }]]);
           word = addWords([current.word], { autoGenerate: false, initialData }).added[0];
+          viewingCard = true;
         }
         if (setId) assignWordSet([word.id], setId);
         render();
         result.querySelector('#lookupSaveStatus').textContent = setId ? '已收藏到指定單字集，原有進度保留。' : '已加入我的單字庫。';
+        if (!word.zh && !word.en) result.querySelector('#lookupSaveStatus').textContent += ' 尚無解釋，可在單字庫的編輯模式手動補上，或設定 Gemini 金鑰後使用 AI 內容工具。';
         toast('已收藏單字');
       } catch (err) { result.querySelector('#lookupSaveStatus').textContent = err.message; }
     });
@@ -95,7 +110,7 @@ export function initWordLookup() {
       viewingCard = false;
       render();
     } else {
-      if (status) status.textContent = response.status === 'notfound' ? '找不到英文解釋，請確認拼字或改查原形。' : '目前無法連線查英文，已查到的中文仍可使用。';
+      if (status) status.textContent = response.status === 'notfound' ? '找不到英文解釋，請確認拼字；也可保留原拼字新增字卡。' : '目前無法連線查英文，仍可新增字卡或手動補意思。';
       if (button) button.disabled = false;
     }
   }
@@ -103,7 +118,7 @@ export function initWordLookup() {
     stop();
     const token = sequence;
     const word = normalizeWord(value);
-    current = null; viewingCard = false;
+    current = null; viewingCard = false; manual = { pos: '', zh: '', en: '' };
     if (!/^[a-zà-öø-ÿ]+(?:[-' ][a-zà-öø-ÿ]+)*$/i.test(word) || word.length > 80) {
       result.innerHTML = '<p class="set-error" role="alert">請輸入一個英文單字或片語。</p>'; return;
     }

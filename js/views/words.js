@@ -1,13 +1,13 @@
 // 單字庫：新增（單個／批次）、搜尋、編輯、刪除
 import { getWords, getSettings, addWords, deleteWord, toggleUnfamiliar, subscribe } from '../store.js';
 import { esc, toast, openEditor, confirmAction, zhLines } from '../ui.js';
-import { enqueueLookup, isLookingUp, onLookupStatus, lookupStatus } from '../dictionary.js';
+import { enqueueLookup, isLookingUp, onLookupStatus, lookupStatus } from '../dictionary.js?v=custom-words-1';
 import { analyzeInput } from '../parse.js';
 import { hasApiKey, lastRequestStats } from '../llm.js';
 import {
   enqueueGenerate, generateMissing, retryFailed, stopGenerating,
   onGenerateStatus, generateStatus, countByState, isGenerating,
-} from '../generate.js';
+} from '../generate.js?v=custom-words-1';
 import { speak, canSpeak, speakerIcon } from '../speech.js';
 import { getSetRecords, scopedWords, activeSetId, assignWordSet } from '../store.js';
 import { setsForWord } from '../word-sets.js';

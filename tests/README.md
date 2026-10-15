@@ -45,6 +45,7 @@ python tests/test_onboarding.py # 真正首次體驗、舊資料提示、三步�
 python tests/test_swipe_isolation.py # 滑卡邊緣保留、觸控中斷、捲動與評分隔離
 python tests/test_card_lookup_mode.py # 手機翻面／點字模式、換卡重設、資料保護與離線
 python tests/test_batch_add_responsiveness.py # 1000張既有卡下建立新集再批次新增100字
+python tests/test_unknown_words.py # 未收錄字原樣收藏、手動字義與查詢草稿保留
 python tests/test_security.py   # 資安：CSP 沒有誤擋、注入的程式不會執行（不需要 Firebase）
 ```
 
@@ -66,6 +67,7 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 | 檔案 | 測試內容 |
 |---|---|
+| `test_unknown_words.py` | discussed 保留變化形建卡、手動字義標示user來源、英文查詢成功／失敗後草稿保留、HTML安全顯示、原拼字空白建卡提醒、重整後內容保留且不覆寫舊卡 |
 | `test_batch_add_responsiveness.py` | 1000 張既有卡＋建立新單字集＋真實貼上100字；記錄畫面間隔、限制全量存檔／清單重建次數，確認可關閉視窗、分類與原有SRS保留；不用固定毫秒門檻 |
 | `test_card_lookup_mode.py` | 手機今日複習與自由翻卡預設點英文翻面、開啟後顯示背面且空白不翻面、例句發音、點字收藏保留模式／原卡／SRS／紀錄、換卡／切語言／重整重設、320／375px及深色、桌機與探索仍直接點字、真正離線重整後切換與查已快取中文 |
 | `test_swipe_isolation.py` | 左右邊緣起點不拖卡、卡片內水平觸控取消預設動作、真正垂直捲動、第二指／touchCancel／視窗失焦歸位、飛出途中切頁不評分、點字與發音及320／375／390px；不模擬 iPhone 系統導覽動畫，Safari／主畫面 App 仍需真機驗證 |

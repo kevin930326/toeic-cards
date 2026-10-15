@@ -6,7 +6,7 @@
 // 使用者手動改過的欄位（src[欄位] === 'user'）不會被覆蓋。
 import { getWord, getWords, updateWords } from './store.js';
 import { generateJSON, hasApiKey, LlmError } from './llm.js';
-import { enqueueLookup } from './dictionary.js';
+import { enqueueLookup } from './dictionary.js?v=custom-words-1';
 
 const BATCH_SIZE = 20;
 const FIRST_BATCH_SIZE = 5;   // 第一批少一點，幾秒內就能看到結果，不用等 20 個字全部生成完
