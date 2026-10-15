@@ -53,6 +53,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 
 `test_step7.py` 另外驗證「學習中」排除新字與熟悉中字、「長期熟記」的 21 天說明、期間切換不影響目前熟練度，以及 320／375px 版面。
 
+`test_free_cards.py` 另量測 1280／768／375／320px 的中英切換高度及張數垂直對齊，避免段落 margin 再次撐高按鈕。
+
 `test_library_interactions.py` 也涵蓋批次勾選框預設隱藏、三步驟工具、全選目前搜尋結果、取消選取、結束模式後清空選取、整理與編輯模式互斥，以及 320／375px 批次工具排版；分類實際加入／移出由 `test_word_sets.py` 與 `test_library_ui.py` 回歸。
 
 | 檔案 | 測試內容 |

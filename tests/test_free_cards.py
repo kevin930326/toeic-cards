@@ -38,6 +38,13 @@ with sync_playwright() as p:
     pg.locator('h1').click()
     check(not pg.locator('#reviewChoices').is_visible(),'選單鍵盤不會穿透換字，點外側可關閉')
     check(pg.locator('#again').count()==0 and pg.locator('#good').count()==0,'未到期的三字皆能翻卡，沒有排程評分按鈕')
+    for width in [1280,768,375,320]:
+      pg.set_viewport_size({'width':width,'height':950})
+      compact=pg.locator('.card-toolbar').evaluate('''el=>{const box=el.querySelector('.segmented').getBoundingClientRect(),
+        label=el.querySelector('.seg span').getBoundingClientRect(),count=el.querySelector('#freePosition').getBoundingClientRect();
+        return box.height-label.height<=9 && Math.abs((box.top+box.bottom)/2-(count.top+count.bottom)/2)<2;}''')
+      check(compact,f'{width}px中英切換沒有被張數段落撐高，且垂直置中')
+    pg.set_viewport_size({'width':1100,'height':950})
     pg.click('.card-front .headword')
     expect(pg.locator('#card')).to_have_class(re.compile('is-flipped'))
     pg.locator('.back-en [data-lookup-word=meeting]').click()

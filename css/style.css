@@ -319,6 +319,8 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .nav .review-choices a[aria-current=page] { background: var(--surface-2); color: var(--accent); }
 .free-toolbar, .free-actions, .free-links { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
 .free-toolbar .check-row { margin: 0; }
+.page-free-cards .card-toolbar { align-items: center; }
+#freePosition { margin: 0; white-space: nowrap; font-size: 14px; color: var(--ink-soft); }
 .free-actions { justify-content: space-between; gap: 6px; }
 .free-links { justify-content: center; font-size: 14px; }
 #freeSwipe { touch-action: pan-y; }

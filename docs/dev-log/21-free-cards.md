@@ -29,3 +29,13 @@
 ![自由翻卡](../images/21-free-cards.png)
 
 <img src="../images/21-free-mobile.png" alt="手機自由翻卡" width="375">
+
+## 排版修正：中英切換被張數段落撐高
+
+使用者指出中英切換膠囊高度異常。自由翻卡的 `.card-toolbar` 沿用 flex 預設 stretch，旁邊張數 `<p>` 的上下 margin 把整排與切換容器一起撐高。
+
+- 自由頁工具列改為垂直置中，張數段落 margin 歸零，讓切換維持內容高度；樣式限定自由翻卡，不影響今日複習。
+- `test_free_cards.py` 新增 1280／768／375／320px 幾何量測，驗證外框只比文字選項高出內距與邊線，且與張數中心對齊；全套自由翻卡測試通過。
+- 使用者本機頁重新載入後確認切換高度約 40px、張數 margin 為 0。樣式版本更新為 `free-cards-2`。
+
+![修正後中英切換與張數對齊](../images/21-free-switch-spacing.png)
