@@ -8,6 +8,7 @@ import { hasApiKey, generateJSON, onRateWait } from '../llm.js';
 import { recordQuiz } from '../log.js';
 import { wordTokens } from '../word-tokens.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
+import { aiBadge } from '../ai-badge.js';
 import {
   READING_TYPES, MAX_SAVED, pickReadingWords, buildReadingPrompt, READING_SCHEMA, normalizeReading, sanitizeSaved,
   readingScore, wordPattern,
@@ -82,7 +83,7 @@ export function renderReading(root) {
             <option value="random" ${state.type === 'random' ? 'selected' : ''}>隨機</option>
             ${Object.entries(READING_TYPES).map(([k, v]) => `<option value="${k}" ${state.type === k ? 'selected' : ''}>${esc(v)}</option>`).join('')}
           </select></label>
-          <button class="btn btn-primary" type="button" id="generate" ${canAI && enough ? '' : 'disabled'}>產生新短文<span class="badge badge-ai">AI</span></button>
+          <button class="btn btn-primary" type="button" id="generate" ${canAI && enough ? '' : 'disabled'}>產生新短文${aiBadge('required')}</button>
           <p class="hint-text">${!canAI ? '需要 Gemini 金鑰，<a href="#/settings">前往設定</a>。已存的短文不需要金鑰也能讀。'
             : !enough ? `目前範圍只有 ${words.length} 個字，至少需要 ${MIN_WORDS} 個字。`
             : '每篇約用 1 次 AI 請求；會優先挑「不熟」的字寫進文章。'}</p>

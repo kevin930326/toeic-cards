@@ -1367,3 +1367,8 @@ a.exam-empty { display: block; color: var(--ink-soft); text-decoration: none; fo
 a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
 .exam-countdown { display: inline-block; margin-left: 8px; color: var(--accent); }
 .exam-date-input { padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
+
+/* 「部分 AI」：外框標示，和一定要金鑰的「AI」區分（規則見 js/ai-badge.js） */
+.badge-ai-partial { background: transparent; box-shadow: inset 0 0 0 1px color-mix(in srgb, #3f8a4f 55%, transparent); }
+.ai-legend { margin: 0 0 10px; line-height: 1.9; }
+.ai-legend .badge:first-child { margin-left: 0; }

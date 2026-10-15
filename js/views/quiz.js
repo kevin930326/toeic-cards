@@ -8,7 +8,8 @@ import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK, 
 import { preparePart5 } from '../part5.js?v=forms-1';
 import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v=forms-1';
 import { normalizeWord } from '../parse.js';
-import { loadReadings } from './reading.js?v=reading-1';
+import { loadReadings } from './reading.js?v=badge-1';
+import { aiBadge, AI_BADGE_LEGEND } from '../ai-badge.js';
 import { getMistakes, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
 import { recordQuiz } from '../log.js';
 import { scopedWords } from '../store.js';
@@ -18,8 +19,8 @@ const MODE_INFO = {
   zh2en: { title: '看中文選英文', desc: '看中文意思，選出正確的英文單字', icon: '中' },
   en2word: { title: '看解釋選單字', desc: '看淺白的英文解釋，選出是哪個字', icon: 'Aa' },
   listen: { title: '聽力測驗', desc: '聽發音，選出正確的中文意思', icon: '♪' },
-  part5: { title: 'Part 5 句子填空', desc: '仿多益閱讀 Part 5：商務句子挖一個空，四選一', icon: '___' },
-  forms: { title: '詞性變化', desc: '四個選項是同一個字的不同形式，看句子結構選對詞性（Part 5 最常考）', icon: '形' },
+  part5: { title: 'Part 5 句子填空', desc: '仿多益閱讀 Part 5：商務句子挖一個空，四選一', icon: '___', ai: 'required' },
+  forms: { title: '詞性變化', desc: '四個選項是同一個字的不同形式，看句子結構選對詞性（Part 5 最常考）', icon: '形', ai: 'partial' },
 };
 const isSentence = (mode) => SENTENCE_MODES.includes(mode);
 // 詞性變化：有內建題目的字（題庫載入前先用「是不是單字包的字」估計）、或存過 AI 題目的字，不需要金鑰
@@ -87,7 +88,7 @@ export function renderQuiz(root) {
         <div class="mode-card ${check.ok ? '' : 'is-disabled'}" data-mode="${mode}">
           <button class="mode-btn" type="button" data-mode="${mode}" ${check.ok ? '' : 'disabled'}>
             <span class="mode-icon" aria-hidden="true">${esc(info.icon)}</span>
-            <span class="mode-title">${esc(info.title)}${mode === 'part5' ? '<span class="badge badge-ai">AI</span>' : ''}</span>
+            <span class="mode-title">${esc(info.title)}${aiBadge(info.ai)}</span>
             <span class="mode-desc">${esc(info.desc)}</span>
           </button>
           ${check.ok ? '' : `<p class="mode-reason">${esc(check.reason)}${check.needKey ? '，<a href="#/settings">前往設定</a>' : ''}</p>`}
@@ -118,9 +119,10 @@ export function renderQuiz(root) {
             <span>Part 5／詞性變化出新題目<span class="muted">（不勾選會優先使用已存的題目，省 AI 額度；單字包的字一律用內建題目）</span></span>
           </label>
         </div>
+        <p class="hint-text ai-legend">${AI_BADGE_LEGEND}</p>
         <div class="mode-grid">${cards}</div>
         <a class="panel mistake-entry reading-entry" href="#/reading">
-          <span class="mistake-title">短文閱讀（Part 6／7）<span class="badge badge-ai">AI</span></span>
+          <span class="mistake-title">短文閱讀（Part 6／7）${aiBadge('required')}</span>
           <span class="mistake-count">${readings ? `${readings} 篇` : '用你的單字寫一篇短文'}</span>
           <span class="mistake-arrow" aria-hidden="true">›</span>
         </a>

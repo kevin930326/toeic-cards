@@ -99,6 +99,14 @@ with sync_playwright() as p:
     pg.wait_for_selector('.mode-btn[data-mode=forms]')
     check(pg.locator('.mode-btn[data-mode=forms]').is_enabled(), '有單字包的字，沒有金鑰也能考詞性變化')
     check('詞性變化' in pg.locator('.mode-card[data-mode=forms]').inner_text(), '測驗首頁有「詞性變化」')
+    # AI 標示的規則（js/ai-badge.js）：一定要金鑰＝AI、部分用 AI＝部分 AI、不用 AI 不標
+    badges = {m: pg.locator(f'.mode-card[data-mode={m}] .mode-title .badge').all_inner_texts()
+              for m in ['zh2en', 'en2word', 'listen', 'part5', 'forms']}
+    badges = {m: [t.split('：')[0].strip() for t in v] for m, v in badges.items()}
+    check(badges == {'zh2en': [], 'en2word': [], 'listen': [], 'part5': ['AI'], 'forms': ['部分 AI']},
+          f'測驗模式的 AI 標示一致：{badges}')
+    check('AI' in pg.locator('.reading-entry .badge').inner_text() and pg.locator('.ai-legend').count() == 1,
+          '短文閱讀也標 AI，首頁有標示說明')
     start_forms(pg)
     pg.wait_for_selector('.q-forms .q-sentence')
     total = int(pg.locator('.quiz-progress').inner_text().split('/')[1])
