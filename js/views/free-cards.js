@@ -4,7 +4,7 @@ import { flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=d
 import { createCardLookupMode } from '../card-lookup-mode.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
 import { speak } from '../speech.js';
-import { shuffle } from '../quiz.js';
+import { shuffle } from '../quiz.js?v=forms-1';
 import { attachSwipe } from '../swipe.js?v=swipe-isolation-1';
 import { onLookupStatus } from '../dictionary.js?v=dictionary-scale-1';
 import { onGenerateStatus } from '../generate.js?v=dictionary-scale-1';

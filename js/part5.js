@@ -6,7 +6,7 @@
 //   - 錯誤選項優先從使用者字卡裡的其他字挑（同詞性優先），由 Gemini 改成和答案一樣的詞形
 import { getWord, updateWords } from './store.js';
 import { generateJSON, LlmError } from './llm.js';
-import { buildPart5Prompt, PART5_SCHEMA, normalizePart5, pickDistractors, part5Question } from './quiz.js';
+import { buildPart5Prompt, PART5_SCHEMA, normalizePart5, pickDistractors, part5Question } from './quiz.js?v=forms-1';
 
 const BATCH_SIZE = 10;
 const MAX_PER_WORD = 3;

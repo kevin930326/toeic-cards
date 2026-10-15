@@ -1,0 +1,49 @@
+# 第 1 組（1～100）：目標字 | 句子 | 答案 | 錯誤選項 | 中文翻譯 | 解析
+amount | The total cost of the renovation ___ to nearly two million dollars last year. | amounted | amount / amounts / amounting | 去年整修的總花費將近兩百萬美元。 | 句尾有 last year，動詞要用過去式。
+clinic | The new medicine passed several ___ trials before it was approved. | clinical | clinic / clinically / clinician | 這種新藥在核准前通過了幾項臨床試驗。 | 空格在名詞 trials 前面，要用形容詞修飾。
+appointment | Please call the front desk to schedule an ___ with Dr. Chen. | appointment | appoint / appointed / appointing | 請打電話到櫃台和陳醫師預約看診。 | 空格前有冠詞 an，要填名詞。
+reservation | I would like to make a ___ for four people at seven o'clock. | reservation | reserve / reserved / reserving | 我想預約七點、四個人的位子。 | 空格前有冠詞 a，make a reservation 是固定搭配，要填名詞。
+employee | The company plans to ___ fifty additional workers next year. | employ | employee / employment / employed | 公司計畫明年再雇用五十名員工。 | plans to 後面接原形動詞。
+label | All boxes must be clearly ___ before they leave the warehouse. | labeled | label / labels / labeling | 所有箱子離開倉庫前都必須清楚標示。 | must be＋副詞後面接過去分詞，表示被動。
+option | Attendance at the evening reception is ___, but all staff are welcome. | optional | option / options / optionally | 晚上的招待會可以自由參加，但歡迎所有員工出席。 | be 動詞 is 後面要用形容詞當補語。
+receipt | Please keep your ___ as proof of purchase. | receipt | receive / received / receiving | 請保留收據作為購買證明。 | 所有格 your 後面要接名詞。
+printer | Please ___ two copies of the agenda before the meeting. | print | printer / printed / printing | 請在開會前把議程印兩份。 | Please 開頭的祈使句，要用原形動詞。
+author | The annual report was ___ by two senior analysts. | authored | author / authors / authoring | 這份年度報告是由兩位資深分析師撰寫的。 | was＋過去分詞＋by，是被動語態。
+description | Please read the job ___ carefully before you apply. | description | describe / described / descriptive | 應徵前請仔細閱讀職務說明。 | 空格前的 job 和空格組成名詞片語，被 read 當受詞，要填名詞。
+reminder | This is a friendly ___ that the office will close early on Friday. | reminder | remind / reminded / reminding | 友善提醒您，辦公室星期五會提早關門。 | 冠詞 a＋形容詞 friendly 後面要接名詞。
+occupation | Our design team will ___ the entire fourth floor starting in May. | occupy | occupation / occupied / occupational | 從五月開始，我們的設計團隊將使用整個四樓。 | 助動詞 will 後面接原形動詞。
+payment | Customers can ___ by credit card or bank transfer. | pay | payment / payable / paid | 顧客可以用信用卡或銀行轉帳付款。 | 助動詞 can 後面接原形動詞。
+account | Online sales ___ for nearly half of our revenue last year. | accounted | account / accounts / accounting | 去年線上銷售占我們營收將近一半。 | 句尾有 last year，動詞要用過去式。
+region | These products are sold ___ rather than nationwide. | regionally | region / regional / regions | 這些產品是在區域內販售，而不是全國販售。 | 修飾動詞 are sold、和副詞 nationwide 對照，要用副詞。
+item | Please ___ all of your travel expenses on the form. | itemize | item / items / itemized | 請在表格上逐項列出所有差旅費用。 | Please 開頭的祈使句，要用原形動詞。
+permission | Visitors are not ___ to enter the laboratory without an escort. | permitted | permit / permission / permits | 訪客沒有人陪同不得進入實驗室。 | are not＋過去分詞＋to，表示「不被允許」。
+period | All fire extinguishers are inspected ___ by a certified technician. | periodically | period / periodic / periods | 所有滅火器都由合格技術人員定期檢查。 | 修飾動詞 are inspected，要用副詞。
+equipment | All of our meeting rooms are ___ with projectors and microphones. | equipped | equip / equipment / equipping | 我們所有會議室都配有投影機和麥克風。 | be equipped with 是「配備有」的被動用法，要用過去分詞。
+attendance | ___ at the safety training is mandatory for all new staff. | Attendance | Attend / Attended / Attendee | 所有新進員工都必須參加安全訓練。 | 空格是句子的主詞，後面接 at，要填名詞；attendee 是可數名詞，前面需要冠詞。
+response | Thank you for your quick ___ to our inquiry. | response | respond / responsive / responsively | 謝謝您迅速回覆我們的詢問。 | 所有格 your＋形容詞 quick 後面要接名詞。
+sum | Please ___ the main findings in no more than one page. | summarize | summary / summarized / summarizing | 請用不超過一頁的篇幅摘要主要發現。 | Please 開頭的祈使句，要用原形動詞。
+decision | The manager acted ___ when the shipment was delayed. | decisively | decide / decision / decisive | 貨物延遲時，經理果斷地採取行動。 | 修飾動詞 acted，要用副詞。
+energy | Our new sales trainer is very ___ and enthusiastic. | energetic | energy / energize / energetically | 我們新的業務講師非常有活力又熱情。 | very 後面、和形容詞 enthusiastic 並列，要用形容詞。
+purpose | The lobby was ___ designed to let in as much natural light as possible. | purposely | purpose / purposes / purposeful | 大廳是刻意設計成盡量引進自然光的。 | 夾在 was 和過去分詞 designed 中間修飾動詞，要用副詞。
+selection | Only ___ candidates will be invited to a second interview. | selected | select / selection / selecting | 只有被選上的應徵者會受邀參加第二次面試。 | 空格修飾名詞 candidates，表示「被選上的」，要用過去分詞當形容詞。
+sample | Shoppers were invited to ___ the new coffee blend for free. | sample | samples / sampled / sampling | 顧客受邀免費試喝新的綜合咖啡。 | to 後面接原形動詞（不定詞）。
+quantity | It is often difficult to ___ the benefits of employee training. | quantify | quantity / quantities / quantifiable | 員工訓練的效益常常很難量化。 | to 後面接原形動詞（不定詞）。
+method | Ms. Wu reviewed the contract ___, checking every clause. | methodically | method / methods / methodical | 吳小姐有條不紊地審閱合約，檢查每一條條款。 | 修飾動詞 reviewed，要用副詞。
+pollution | The factory was fined for ___ the nearby river. | polluting | pollute / polluted / pollution | 這間工廠因為污染附近的河流而被罰款。 | 介系詞 for 後面要接動名詞，而且後面還有受詞 the nearby river。
+condition | The job offer is ___ on the successful completion of a background check. | conditional | condition / conditions / conditionally | 這份工作的錄取以通過背景調查為條件。 | be 動詞 is 後面要用形容詞，be conditional on 是固定用法。
+departure | Passengers should arrive at the airport two hours before ___. | departure | depart / departs / departed | 旅客應在起飛前兩小時抵達機場。 | 介系詞 before 後面要接名詞。
+solution | Our engineers are working hard to ___ the problem as soon as possible. | solve | solution / solved / solving | 我們的工程師正努力盡快解決這個問題。 | to 後面接原形動詞（不定詞）。
+confidence | Mr. Huang spoke ___ throughout the entire presentation. | confidently | confidence / confident / confidential | 黃先生整場簡報都說得很有自信。 | 修飾動詞 spoke，要用副詞。
+instruction | All workers were ___ to wear helmets at the construction site. | instructed | instruct / instruction / instructor | 所有工人都被指示在工地戴安全帽。 | were＋過去分詞＋to，是被動語態。
+insurance | All shipments are fully ___ against loss or damage. | insured | insure / insurance / insurer | 所有貨物都有全額保險，承保遺失或損壞。 | are＋副詞 fully 後面接過去分詞，表示被動。
+growth | The company expects strong ___ in the Asian market this year. | growth | grow / grown / grows | 公司預期今年在亞洲市場會有強勁成長。 | 形容詞 strong 後面、當 expects 的受詞，要填名詞。
+variety | The store offers a wide ___ of office supplies. | variety | vary / various / varied | 這家店提供種類繁多的辦公用品。 | 冠詞 a＋形容詞 wide 後面要接名詞，a wide variety of 是固定用法。
+accommodation | The conference hall can ___ up to three hundred guests. | accommodate | accommodation / accommodated / accommodating | 會議廳最多可以容納三百位來賓。 | 助動詞 can 後面接原形動詞。
+admission | ___ to the museum is free on the first Sunday of every month. | Admission | Admit / Admitted / Admits | 每個月第一個星期日博物館免費入場。 | 空格是句子的主詞，後面接 to the museum，要填名詞。
+expert | The damaged machine was repaired ___ by our technicians. | expertly | expert / experts / expertise | 損壞的機器由我們的技術人員熟練地修好了。 | 修飾動詞 was repaired，要用副詞。
+sequence | All of the files are numbered ___ for easy reference. | sequentially | sequence / sequential / sequences | 所有檔案都依序編號，方便查閱。 | 修飾動詞 are numbered，要用副詞。
+advantage | The new location is ___ for attracting tourists. | advantageous | advantage / advantages / advantaged | 新地點對吸引觀光客很有利。 | be 動詞 is 後面要用形容詞，表示「有利的」。
+facility | Ms. Park will ___ tomorrow's discussion on the budget. | facilitate | facility / facilities / facilitator | 朴小姐將主持明天關於預算的討論。 | 助動詞 will 後面接原形動詞。
+complaint | Several customers ___ about the slow delivery last week. | complained | complain / complaint / complaints | 上週有幾位顧客抱怨送貨太慢。 | 句尾有 last week，動詞要用過去式。
+supplier | All of the paper we use is ___ by a local company. | supplied | supply / supplier / supplies | 我們使用的紙張全部由一家本地公司供應。 | is＋過去分詞＋by，是被動語態。
+announcement | The CEO will ___ the merger at tomorrow's press conference. | announce | announcement / announced / announcing | 執行長將在明天的記者會上宣布合併案。 | 助動詞 will 後面接原形動詞。

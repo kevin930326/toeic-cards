@@ -21,7 +21,7 @@ const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
 const LOG_FIELDS = ['reviews', 'again', 'good', 'learned', 'quiz', 'quizCorrect', 'goal'];
 const SRC_FIELDS = ['pos', 'zh', 'en', 'examples', 'collocations', 'forms', 'synonyms'];
 const SRC_VALUES = ['dict', 'freedict', 'llm', 'user', 'pack'];
-const QUIZ_MODES = ['zh2en', 'en2word', 'listen', 'part5'];
+const QUIZ_MODES = ['zh2en', 'en2word', 'listen', 'part5', 'forms'];
 // 單字的 id 會放進網頁屬性和選取器裡，只接受英數字、- 和 _（和單字集 id 同一套規則），
 // 避免被改過的備份檔用 id 夾帶 HTML 或程式碼
 const ID_RE = /^[A-Za-z0-9_-]{1,80}$/;
@@ -107,6 +107,7 @@ export function sanitizeWord(raw) {
     llm,
     srs: sanitizeSrs(raw.srs),
     part5: sanitizePart5(raw.part5),
+    ...(Array.isArray(raw.formQs) ? { formQs: sanitizePart5(raw.formQs) } : {}),   // AI 出的詞性變化題（格式和 Part 5 一樣）
     createdAt: num(raw.createdAt),
     updatedAt: num(raw.updatedAt),
   };

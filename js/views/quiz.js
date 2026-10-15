@@ -4,8 +4,9 @@ import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../
 import { esc, toast, confirmAction } from '../ui.js';
 import { speak, canSpeak, speakerIcon, resolveAccent, accentLabel } from '../speech.js';
 import { hasApiKey, onRateWait } from '../llm.js';
-import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK } from '../quiz.js';
-import { preparePart5 } from '../part5.js';
+import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK, SENTENCE_MODES } from '../quiz.js?v=forms-1';
+import { preparePart5 } from '../part5.js?v=forms-1';
+import { prepareForms } from '../forms-quiz.js?v=forms-1';
 import { getMistakes, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
 import { recordQuiz } from '../log.js';
 import { scopedWords } from '../store.js';
@@ -16,7 +17,11 @@ const MODE_INFO = {
   en2word: { title: '看解釋選單字', desc: '看淺白的英文解釋，選出是哪個字', icon: 'Aa' },
   listen: { title: '聽力測驗', desc: '聽發音，選出正確的中文意思', icon: '♪' },
   part5: { title: 'Part 5 句子填空', desc: '仿多益閱讀 Part 5：商務句子挖一個空，四選一', icon: '___' },
+  forms: { title: '詞性變化', desc: '四個選項是同一個字的不同形式，看句子結構選對詞性（Part 5 最常考）', icon: '形' },
 };
+const isSentence = (mode) => SENTENCE_MODES.includes(mode);
+// 詞性變化：多益 1000 單字包的字有內建題目；自己加的字要有存過的題目或 Gemini 金鑰
+const hasFormSource = (w) => w.pack?.id === 'toeic-1000' || !!(w.formQs && w.formQs.length);
 const modeTitle = (mode) => (MODE_INFO[mode] ? MODE_INFO[mode].title : '錯題重做');
 const LETTERS = ['A', 'B', 'C', 'D'];
 
@@ -65,6 +70,9 @@ export function renderQuiz(root) {
     const cards = Object.entries(MODE_INFO).map(([mode, info]) => {
       let check = checkMode(mode, all, targets);
       if (mode === 'part5' && check.ok && !hasApiKey()) check = { ok: false, reason: '需要 Gemini 金鑰', needKey: true };
+      if (mode === 'forms' && check.ok && !hasApiKey() && !targets.some(hasFormSource)) {
+        check = { ok: false, reason: '目前範圍沒有內建題目的字（多益 1000 單字包）；自己加的字需要 Gemini 金鑰', needKey: true };
+      }
       // 按鈕和「前往設定」連結分開放（連結不能放在按鈕裡面）
       return `
         <div class="mode-card ${check.ok ? '' : 'is-disabled'}" data-mode="${mode}">
@@ -98,7 +106,7 @@ export function renderQuiz(root) {
           </div>
           <label class="check-row">
             <input type="checkbox" id="fresh" ${s.part5Fresh ? 'checked' : ''}>
-            <span>Part 5 出新題目<span class="muted">（不勾選會優先使用已存的題目，省 AI 額度）</span></span>
+            <span>Part 5／詞性變化出新題目<span class="muted">（不勾選會優先使用已存的題目，省 AI 額度；單字包的字一律用內建題目）</span></span>
           </label>
         </div>
         <div class="mode-grid">${cards}</div>
@@ -124,7 +132,7 @@ export function renderQuiz(root) {
     const count = Number(getSettings().quizCount) || 10;
     const targets = targetsForScope();
     const all = scopedWords();
-    if (mode !== 'part5') {
+    if (!isSentence(mode)) {
       let questions = buildSimpleQuiz(mode, targets, all, count);
       // 聽力題：每題先決定口音（「多益混合」時每題隨機），重聽時用同一個口音
       if (mode === 'listen') questions = questions.map((q) => ({ ...q, accent: resolveAccent(getSettings().accent) }));
@@ -139,15 +147,25 @@ export function renderQuiz(root) {
     draw();
     controller = new AbortController();
     try {
-      const picked = pickTargets('part5', targets, count);
-      const { questions, failed } = await preparePart5(picked, all, {
+      const options = {
         fresh: !!getSettings().part5Fresh,
         signal: controller.signal,
         onProgress: (p) => { Object.assign(state.loading, p); if (state.view === 'loading') draw(); },
-      });
+      };
+      let result;
+      if (mode === 'forms') {
+        result = await prepareForms(targets, count, options);
+        if (!result.questions.length && result.skipped) {
+          throw new Error('目前範圍沒有內建題目的字（多益 1000 單字包）；填入 Gemini 金鑰後，自己加的字也能出詞性變化題');
+        }
+        if (result.skipped && result.questions.length < count) toast(`有 ${result.skipped} 個字沒有內建題目，填入 Gemini 金鑰後也能考`);
+      } else {
+        result = await preparePart5(pickTargets('part5', targets, count), all, options);
+      }
+      const { questions, failed } = result;
       if (!questions.length) throw new Error('AI 沒有成功出題，請稍後再試');
       if (failed.length) toast(`有 ${failed.length} 個字出題失敗，這次先略過`);
-      newSession('part5', questions);
+      newSession(mode, questions);
     } catch (err) {
       state.view = 'home';
       state.error = err.kind === 'aborted' ? null : err.message;
@@ -165,7 +183,7 @@ export function renderQuiz(root) {
     root.innerHTML = `
       <section class="page">
         <div class="empty-state loading-state">
-          <p class="empty-title">AI 出題中…</p>
+          <p class="empty-title">${l.total ? 'AI 出題中…' : '準備題目中…'}</p>
           <p class="muted" id="loadText">${l.total ? `正在為 ${l.total} 個字出新題目（每 10 題一次請求）` : '正在準備題目'}</p>
           <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
           <p class="ai-sub" id="waitText">${l.waiting ? `為了不超過免費額度，等待 ${l.waiting} 秒…` : ''}</p>
@@ -212,7 +230,7 @@ export function renderQuiz(root) {
         if (i === q.answerIndex) cls = 'is-correct';
         else if (i === s.answered) cls = 'is-wrong';
       }
-      const label = q.mode === 'part5' ? `(${LETTERS[i]})` : String(i + 1);
+      const label = isSentence(q.mode) ? `(${LETTERS[i]})` : String(i + 1);
       return `<button class="option ${cls} ${q.mode === 'listen' ? 'option-zh' : 'option-en'}" type="button" data-i="${i}" ${answered ? 'disabled' : ''}>
         <span class="option-key">${label}</span><span class="option-text">${esc(opt)}</span></button>`;
     }).join('');
@@ -221,7 +239,7 @@ export function renderQuiz(root) {
     if (answered) {
       const ok = s.answered === q.answerIndex;
       let detail = '';
-      if (q.mode === 'part5') {
+      if (isSentence(q.mode)) {
         detail = `${q.extra?.translation ? `<p class="fb-trans">${esc(q.extra.translation)}</p>` : ''}
            ${q.extra?.explanation ? `<p class="fb-explain">💡 ${esc(q.extra.explanation)}</p>` : ''}
            ${canSpeak() ? `<button class="btn btn-ghost btn-sm fb-read" type="button" id="readSentence">${speakerIcon} 朗讀整句</button>` : ''}`;
@@ -251,9 +269,9 @@ export function renderQuiz(root) {
         </div>
         <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
         <div class="question q-${q.mode}">${prompt}</div>
-        <div class="options ${q.mode === 'part5' ? 'options-part5' : ''}">${options}</div>
+        <div class="options ${isSentence(q.mode) ? 'options-part5' : ''}">${options}</div>
         ${feedback}
-        <p class="kbd-hint">鍵盤：${q.mode === 'part5' ? 'A–D' : '1–4'} 作答　Enter 下一題${q.mode === 'listen' ? '　P 再聽一次' : ''}</p>
+        <p class="kbd-hint">鍵盤：${isSentence(q.mode) ? 'A–D' : '1–4'} 作答　Enter 下一題${q.mode === 'listen' ? '　P 再聽一次' : ''}</p>
       </section>`;
 
     root.querySelectorAll('.option').forEach((b) => b.addEventListener('click', () => choose(Number(b.dataset.i))));
@@ -400,7 +418,7 @@ export function renderQuiz(root) {
     const q = s.questions[s.index];
     const k = e.key.toLowerCase();
     if (s.answered === null) {
-      const idx = q.mode === 'part5' ? 'abcd'.indexOf(k) : '1234'.indexOf(k);
+      const idx = isSentence(q.mode) ? 'abcd'.indexOf(k) : '1234'.indexOf(k);
       if (idx >= 0 && e.key.length === 1) { e.preventDefault(); choose(idx); return; }
     } else if (e.key === 'Enter' || e.key === 'ArrowRight') {
       e.preventDefault();

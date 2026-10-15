@@ -5,11 +5,14 @@
 //   en2word 看英文解釋，選單字（解釋裡出現答案的字會被遮住）
 //   listen  聽發音，選中文意思
 //   part5   多益 Part 5 句子填空（題目由 Gemini 產生，見 part5.js）
+//   forms   詞性變化：句子挖一個空，四個選項是同一個字的不同形式（內建題庫＋Gemini，見 forms-quiz.js）
 //
 // 一題的格式：
 //   { mode, wordId, prompt, options: [4 個字串], answerIndex, word, extra }
 
-export const MODES = ['zh2en', 'en2word', 'listen', 'part5'];
+export const MODES = ['zh2en', 'en2word', 'listen', 'part5', 'forms'];
+// 題目是「句子挖空」的題型（畫面、鍵盤 A–D、朗讀整句都一樣）
+export const SENTENCE_MODES = ['part5', 'forms'];
 export const MIN_WORDS = 4;   // 至少要 4 個字才能出四選一
 
 // ---- 小工具 ----
@@ -71,7 +74,7 @@ export function maskWord(text, word) {
 export function isEligible(mode, w) {
   if (mode === 'zh2en' || mode === 'listen') return !!firstMeaning(w.zh);
   if (mode === 'en2word') return !!(w.en && w.en.trim());
-  if (mode === 'part5') return true;
+  if (mode === 'part5' || mode === 'forms') return true;
   return false;
 }
 
@@ -81,6 +84,8 @@ export function eligibleWords(mode, words) {
 
 // 這個題型能不能出題；不能的話回傳原因
 export function checkMode(mode, words, targets = words) {
+  // 詞性變化的四個選項都來自同一個字，不需要其他字當錯誤選項
+  if (mode === 'forms') return targets.length ? { ok: true } : { ok: false, reason: '這個範圍裡沒有可以出題的字' };
   const pool = eligibleWords(mode, words);
   if (pool.length < MIN_WORDS) {
     const need = { zh2en: '有中文意思的字', listen: '有中文意思的字', en2word: '有英文解釋的字', part5: '單字' }[mode];
@@ -227,4 +232,78 @@ export function part5Question(word, q, rng = Math.random) {
     answerIndex: options.indexOf(q.answer),
     extra: { translation: q.translation, explanation: q.explanation, qid: q.id },
   };
+}
+
+// ---- 詞性變化（四個選項是同一個字的不同形式；內建題庫或 Gemini 出題）----
+
+// 兩個字開頭相同的字母數
+function sharedPrefix(a, b) {
+  let i = 0;
+  while (i < a.length && i < b.length && a[i] === b[i]) i++;
+  return i;
+}
+
+// 選項是不是和目標字同一個字族（approve → approval、approving…）：
+// 開頭至少有 3 個字母相同（很短的字放寬到 字長−1），擋掉 AI 混進別的字
+export function sameFamily(option, target) {
+  const a = String(option || '').toLowerCase().split(' ')[0];
+  const b = String(target || '').toLowerCase().split(' ')[0];
+  if (!a || !b) return false;
+  return sharedPrefix(a, b) >= Math.min(3, b.length - 1);
+}
+
+// 四個選項都是同一個字族：和目標字開頭相同，或和「已確定同字族的選項」開頭相同
+// （例如 payment 的 paid：和 payment 只有 pa 相同，但和 pay 相同）
+export function allSameFamily(options, target) {
+  const anchors = [target, ...options.filter((o) => sameFamily(o, target))];
+  return options.every((o) => anchors.some((a) => sameFamily(o, a)));
+}
+
+// 檢查一題詞性變化題是否可用（內建題庫和 AI 的結果都經過這裡）；可用就整理成要存的格式，否則回傳 null
+export function normalizeFormQ(item, target) {
+  const q = normalizePart5(item);
+  if (!q) return null;
+  const word = String(target || item?.target || '').trim();
+  if (!word || !allSameFamily([q.answer, ...q.distractors], word)) return null;
+  return q;
+}
+
+// 把存好的詞性變化題變成一題（選項每次重新打亂）
+export function formsQuestion(word, q, rng = Math.random) {
+  return { ...part5Question(word, q, rng), mode: 'forms' };
+}
+
+export function buildFormsPrompt(targets) {
+  return `You are writing TOEIC Reading Part 5 word-form questions for a Taiwanese learner.
+
+For each target word:
+- Write ONE natural business-context sentence (12-25 words) containing exactly one blank written as "${BLANK}".
+- The four options are four DIFFERENT forms of the same word family as the target, e.g. approve / approval / approving / approved, or success / successful / successfully / succeed. Use real English words only.
+- The sentence must contain a clear grammatical clue (article, preposition, auxiliary verb, subject-verb agreement, adverb position, etc.) so that EXACTLY ONE option is grammatically correct. Do not rely on meaning alone; the other three must be clearly ungrammatical in the blank.
+- Put the correct form in "answer" and the other three forms in "distractors".
+- "translation": Traditional Chinese as used in Taiwan (繁體中文、台灣用語) translation of the full sentence with the answer filled in.
+- "explanation": one or two short sentences in Traditional Chinese (Taiwan) naming the grammatical clue and the part of speech required.
+- Copy the target word exactly into "target". Return every item once, in the same order.
+
+Targets:
+${targets.map((t, i) => `${i + 1}. ${t}`).join('\n')}`;
+}
+
+export const FORMS_SCHEMA = PART5_SCHEMA;
+
+// 內建詞性變化題庫：{ packId, version, questions: [{ target, sentence, answer, distractors, translation, explanation }] }
+// 回傳 Map（單字 → 題目陣列）；每題都經過 normalizeFormQ，不合格的題目略過
+export function parseFormsBank(raw, normalize = (w) => String(w || '').trim().toLowerCase()) {
+  if (!raw || raw.packId !== 'toeic-1000' || raw.version !== 1 || !Array.isArray(raw.questions)) {
+    throw new Error('詞性變化題庫格式不正確，請重新載入');
+  }
+  const bank = new Map();
+  for (const item of raw.questions) {
+    const word = normalize(item?.target);
+    const q = word ? normalizeFormQ(item, word) : null;
+    if (!q) continue;
+    if (!bank.has(word)) bank.set(word, []);
+    bank.get(word).push(q);
+  }
+  return bank;
 }
