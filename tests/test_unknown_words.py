@@ -2,6 +2,7 @@
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from storage_helpers import flush
 
 URL=os.environ.get('BASE_URL','http://127.0.0.1:8123/')
 with sync_playwright() as p:
@@ -34,6 +35,7 @@ with sync_playwright() as p:
     pg.locator('#lookupSave').tap()
     expect(pg.locator('.lookup-meaning')).to_contain_text('過去式')
     expect(pg.locator('#lookupResult h3')).to_have_text('zzdiscussed')
+    flush(pg)
     saved=pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).find(w=>w.word==='zzdiscussed')")
     assert saved['src']['zh']=='user' and saved['src']['pos']=='user' and saved['autoGenerate'] is False
     assert not pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).some(w=>w.word==='discuss')")
@@ -56,6 +58,7 @@ with sync_playwright() as p:
     query('disscussed')
     pg.locator('#lookupSave').tap()
     expect(pg.locator('#lookupSaveStatus')).to_contain_text('尚無解釋')
+    flush(pg)
     assert pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).some(w=>w.word==='disscussed')")
     print('PASS 不自動改寫拼字，未填意思仍可新增並清楚提示補內容',flush=True)
     pg.locator('#lookupDialog [data-close]').tap();pg.reload();pg.wait_for_load_state('networkidle')

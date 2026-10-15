@@ -1,4 +1,5 @@
 from onboarding_helpers import existing_user
+from storage_helpers import flush
 """第 6 步：測驗（簡易模式、聽力、Part 5、錯題本）端對端測試"""
 import json, os, re, sys
 from playwright.sync_api import sync_playwright
@@ -58,6 +59,7 @@ def gemini(route):
         {'candidates': [{'content': {'parts': [{'text': json.dumps({'questions': qs})}]}, 'finishReason': 'STOP'}]}))
 
 def store(page, key):
+    flush(page)
     return page.evaluate(f"JSON.parse(localStorage.getItem('toeic-cards:{key}') || 'null')")
 
 def words(page):
@@ -102,6 +104,7 @@ with sync_playwright() as p:
     page.on('pageerror', lambda e: errors.append('pageerror: ' + str(e)))
     page.on('dialog', lambda d: d.accept())
     page.goto(URL)
+    flush(page)
     page.evaluate("ws => { localStorage.clear(); localStorage.setItem('toeic-cards:words', JSON.stringify(ws)); }",
                   [make(*d, i) for i, d in enumerate(DATA)][:3])
     page.goto(URL + '#/quiz')
@@ -111,6 +114,7 @@ with sync_playwright() as p:
     # ---- 字不夠 ----
     card = page.locator('.mode-card[data-mode=zh2en]')
     check(card.locator('button').is_disabled() and '至少 4 個' in card.inner_text(), '只有 3 個字時不能測驗，並說明原因')
+    flush(page)
     page.evaluate("ws => localStorage.setItem('toeic-cards:words', JSON.stringify(ws))", [make(*d, i) for i, d in enumerate(DATA)])
     page.reload()
     page.wait_for_load_state('networkidle')

@@ -1,4 +1,5 @@
 from onboarding_helpers import existing_user
+from storage_helpers import flush
 from library_helpers import open_add, close_add, open_ai
 import json, os, re, sys, time
 from playwright.sync_api import sync_playwright
@@ -70,6 +71,7 @@ def fake_dict(route):
     route.fulfill(status=404, body='{}')
 
 def words_db(page):
+    flush(page)
     return {w['word']: w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words') || '[]')")}
 
 def set_settings(page, **kw):
@@ -193,6 +195,7 @@ with sync_playwright() as p:
     page.fill('#editForm [name=zh]', 'v. 我自己的解釋')
     page.fill('#editForm [name=collocations]', 'my own collocation')
     page.click('#editForm button[type=submit]')
+    flush(page)
     page.evaluate("""() => {
       const ws = JSON.parse(localStorage.getItem('toeic-cards:words'));
       const a = ws.find((w) => w.word === 'approve'); a.llm = null; a.en = 'old';

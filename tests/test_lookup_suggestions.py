@@ -2,6 +2,7 @@
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
+from storage_helpers import flush
 from shots import doc_shot
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
@@ -31,6 +32,7 @@ with sync_playwright() as p:
 
     page.evaluate('''async()=>{const s=await import('/js/store.js');s.addWords(['actcustom'],{autoGenerate:false,
       initialData:new Map([['actcustom',{zh:'我的自訂字',en:'custom',lookup:{dictAt:1,enDone:true}}]])});}''')
+    flush(page)
     before=page.evaluate("[localStorage.getItem('toeic-cards:log'),localStorage.getItem('toeic-cards:words')]")
     page.fill('#lookupInput','ac')
     expect(page.get_by_role('option',name='act',exact=True)).to_be_visible()
@@ -42,6 +44,7 @@ with sync_playwright() as p:
     expect(page.locator('#lookupInput')).to_have_attribute('aria-activedescendant',f'lookupSuggestion-{position}')
     page.press('#lookupInput','Enter')
     expect(page.locator('#lookupResult h3')).to_have_text('act')
+    flush(page)
     assert before==page.evaluate("[localStorage.getItem('toeic-cards:log'),localStorage.getItem('toeic-cards:words')]")
     print('PASS ac 顯示 act；收藏標記、8字上限、鍵盤選字、窄螢幕且不改學習資料',flush=True)
 

@@ -1,4 +1,5 @@
 from onboarding_helpers import existing_user
+from storage_helpers import flush
 from library_helpers import open_add, close_add, open_ai
 """第 5 步：間隔重複＋滑卡手勢（端對端測試）"""
 import json, os, sys, time
@@ -26,6 +27,7 @@ def make_word(word, created, srs=None, unfamiliar=False):
     }
 
 def seed(page):
+    flush(page)
     now = page.evaluate('Date.now()')
     words = [
         make_word('overdue', 10, {'reps': 2, 'interval': 3, 'ease': 2.5, 'lapses': 0, 'due': now - 2 * HOUR}),
@@ -39,6 +41,7 @@ def seed(page):
     }""", [words])
 
 def db(page):
+    flush(page)
     return {w['word']: w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words'))")}
 
 def today_log(page):
