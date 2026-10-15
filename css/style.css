@@ -408,6 +408,13 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .page-help li { margin-bottom: 8px; }
 .guided-tour { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; padding: 0; margin: 0; border: 0; overflow: visible; background: transparent; color: var(--ink); pointer-events: none; z-index: 10000; }
 .guided-tour::backdrop { background: transparent; pointer-events: none; }
+.tour-pause { display: none; }
+.guided-tour.is-paused, .guided-tour.is-inline { position: relative; inset: auto; width: 100%; height: auto; max-width: 360px; margin: 16px auto; z-index: auto; }
+.guided-tour.is-paused { max-width: none; }
+.guided-tour.is-paused > :not(.tour-pause) { display: none; }
+.guided-tour.is-paused .tour-pause { display: block; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 10px; background: var(--surface-2); font-size: 13px; pointer-events: auto; }
+.tour-pause p { margin: 6px 0; color: var(--ink-soft); }
+.guided-tour.is-inline .tour-tip { position: relative; left: auto !important; top: auto !important; box-shadow: none; }
 .tour-ring { position: fixed; border: 3px solid var(--accent); border-radius: 14px; box-shadow: 0 0 0 9999px rgb(28 25 19 / .24); pointer-events: none; animation: tour-pulse 1.8s ease-in-out infinite; }
 .tour-origin { position: fixed; top: 0; left: 0; width: 0; height: 0; pointer-events: none; }
 .tour-tip { position: fixed; display: flex; flex-direction: column; box-sizing: border-box; padding: 20px; border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface); color: var(--ink); box-shadow: 0 12px 40px rgb(0 0 0 / .18); pointer-events: auto; overflow: hidden; font-size: 14px; line-height: 1.65; }

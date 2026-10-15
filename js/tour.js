@@ -1,5 +1,5 @@
 // 導覽只描述／觀察真正的控制項，不代按新增、評分或 AI 按鈕。
-import { saveOnboarding } from './onboarding.js?v=tour-keyboard-1';
+import { saveOnboarding } from './onboarding.js?v=tour-overlap-1';
 
 const step = (route, target, title, text, action = '') => ({ route, target, title, text, action });
 const library = [
@@ -68,12 +68,13 @@ export function startTour(topic = 'start') {
   const previousFocus = document.activeElement;
   const layer = document.createElement('div');
   layer.id = 'guidedTour'; layer.className = 'guided-tour'; layer.setAttribute('popover', 'manual');
-  layer.innerHTML = `<span class="tour-origin" aria-hidden="true"></span><div class="tour-ring" aria-hidden="true"></div><section class="tour-tip" role="dialog" aria-modal="false" aria-labelledby="tourTitle" aria-describedby="tourText" tabindex="-1"><div class="tour-copy"><p class="eyebrow" id="tourCount"></p><h2 id="tourTitle"></h2><p id="tourText"></p><p class="hint-text" id="tourInstruction"></p></div><div class="tour-footer"><button type="button" class="btn btn-outline btn-sm" id="tourKeyboard" hidden>收起鍵盤，看完整說明</button><div class="tour-buttons"><button type="button" class="btn btn-ghost btn-sm" id="tourExit">結束導覽</button><button type="button" class="btn btn-primary btn-sm" id="tourNext">下一步</button></div><a href="#/help" class="tour-help">查看全部教學</a></div></section>`;
+  layer.innerHTML = `<aside class="tour-pause"><strong>教學已暫停</strong><p>請先完成或取消這個視窗的操作；關閉視窗後，會回到原本的教學步驟。</p><button class="btn btn-ghost btn-sm" type="button" id="tourPauseExit">結束導覽</button></aside><span class="tour-origin" aria-hidden="true"></span><div class="tour-ring" aria-hidden="true"></div><section class="tour-tip" role="dialog" aria-modal="false" aria-labelledby="tourTitle" aria-describedby="tourText" tabindex="-1"><div class="tour-copy"><p class="eyebrow" id="tourCount"></p><h2 id="tourTitle"></h2><p id="tourText"></p><p class="hint-text" id="tourInstruction"></p></div><div class="tour-footer"><button type="button" class="btn btn-outline btn-sm" id="tourKeyboard" hidden>收起鍵盤，看完整說明</button><div class="tour-buttons"><button type="button" class="btn btn-ghost btn-sm" id="tourExit">結束導覽</button><button type="button" class="btn btn-primary btn-sm" id="tourNext">下一步</button></div><a href="#/help" class="tour-help">查看全部教學</a></div></section>`;
   const tip = layer.querySelector('.tour-tip'), ring = layer.querySelector('.tour-ring');
   const next = layer.querySelector('#tourNext');
   const origin = layer.querySelector('.tour-origin');
   const keyboardButton = layer.querySelector('#tourKeyboard');
   const viewport = window.visualViewport;
+  let inline = false;
   let watchedTarget = null;
   const sizes = new ResizeObserver(schedule);
   function stop(completed = false) {
@@ -94,7 +95,12 @@ export function startTour(topic = 'start') {
     saveOnboarding(completed ? 'completed' : 'skipped');
     if (previousFocus?.isConnected && !document.querySelector('dialog[open]')) previousFocus.focus({ preventScroll: true });
   }
-  function advance() {
+  function advance(fromAction = false) {
+    if (fromAction !== true) {
+      const currentDialog = [...document.querySelectorAll('dialog[open]')].at(-1);
+      const currentTarget = visible(tour.steps[index].target);
+      if (currentDialog && (!currentTarget || !currentDialog.contains(currentTarget))) { schedule(); return; }
+    }
     if (++index >= tour.steps.length) { stop(true); return; }
     showStep();
   }
@@ -107,13 +113,43 @@ export function startTour(topic = 'start') {
     frame = 0;
     if (stopped) return;
     const s = tour.steps[index];
+    const emptyReview = !s.action && s.route === 'review' && !document.querySelector('#card') && s.target.includes('.done-state');
+    const text = emptyReview ? s.target.includes('.grade-controls')
+      ? '目前沒有可評分的字卡。加入單字後，「不熟／會」會安排下次複習並計入每日目標；這裡可以先了解規則，再繼續導覽。'
+      : '目前這個範圍沒有可複習的字卡。先用「新增單字」準備想學的內容；有卡片後，點卡片或按空白鍵就能翻面。'
+      : s.text;
+    if (layer.querySelector('#tourText').textContent !== text) layer.querySelector('#tourText').textContent = text;
     const dialog = [...document.querySelectorAll('dialog[open]')].at(-1) || null;
+    target = visible(s.target);
+    const blockedDialog = dialog && (!target || !dialog.contains(target)) ? dialog : null;
+    if (blockedDialog) {
+      // 正在操作其他視窗，先讓它完成；不能把下一步蓋在無關視窗上。
+      if (typeof layer.hidePopover === 'function' && layer.matches(':popover-open')) layer.hidePopover();
+      layer.removeAttribute('popover');
+      layer.classList.remove('is-inline'); layer.classList.add('is-paused'); inline = false;
+      const heading = dialog.querySelector('.tool-heading');
+      if (layer.parentElement !== dialog) {
+        if (heading) heading.after(layer); else dialog.prepend(layer);
+      }
+      ring.hidden = true;
+      return;
+    }
+    layer.classList.remove('is-paused');
+    if (inline && matchMedia('(hover: none)').matches && document.activeElement?.matches('input, textarea, select')) {
+      inline = false; layer.classList.remove('is-inline');
+    }
+    if (inline) {
+      // 同一步已選擇上下排列後就維持，避免捲動時來回切換造成跳動。
+      placeInline(dialog);
+      positionInline();
+      return;
+    }
+    layer.setAttribute('popover', 'manual');
     if (layer.parentElement !== (dialog || document.body)) {
       if (typeof layer.hidePopover === 'function' && layer.matches(':popover-open')) layer.hidePopover();
       (dialog || document.body).append(layer);
     }
     if (typeof layer.showPopover === 'function' && !layer.matches(':popover-open')) layer.showPopover();
-    target = visible(s.target);
     if (target !== watchedTarget) {
       sizes.disconnect();
       if (target) sizes.observe(target);
@@ -133,6 +169,11 @@ export function startTour(topic = 'start') {
     // 與 target 一樣用 client 座標，再扣除固定定位原點，避免 Safari 的固定層位移被加算兩次。
     const base = origin.getBoundingClientRect();
     const r = usable ? target.getBoundingClientRect() : null;
+    if (emptyReview) {
+      if (touch && !editing) {
+        inline = true; placeInline(dialog); positionInline(); return;
+      }
+    }
     const clipped = r && {
       left: Math.max(x + 4, r.left - 5), top: Math.max(y + 4, r.top - 5),
       right: Math.min(x + width - 4, r.right + 5), bottom: Math.min(y + height - 4, r.bottom + 5),
@@ -145,7 +186,18 @@ export function startTour(topic = 'start') {
     const tw = Math.min(360, width - 24);
     tip.style.width = `${tw}px`;
     tip.style.maxHeight = `${Math.max(1, height - 24)}px`;
-    const th = tip.getBoundingClientRect().height;
+    let th = tip.getBoundingClientRect().height;
+    if (!editing && r && r.bottom > y && r.top < y + height) {
+      const above = Math.max(0, r.top - y - 28), below = Math.max(0, y + height - r.bottom - 28);
+      const space = Math.max(above, below);
+      if (space < Math.min(th, 180) && touch) {
+        inline = true; placeInline(dialog); positionInline(); return;
+      }
+      if (space >= 130) {
+        tip.style.maxHeight = `${Math.min(height - 24, space)}px`;
+        th = tip.getBoundingClientRect().height;
+      }
+    }
     let top;
     if (editing) {
       // 小提示放在離輸入欄較遠的一側，輸入時不顯示整段教學蓋住欄位。
@@ -164,10 +216,30 @@ export function startTour(topic = 'start') {
       if (!document.activeElement?.matches('input, textarea, select')) tip.focus({ preventScroll: true });
     }
   }
+  function placeInline(dialog) {
+    if (typeof layer.hidePopover === 'function' && layer.matches(':popover-open')) layer.hidePopover();
+    layer.removeAttribute('popover'); layer.classList.add('is-inline');
+    const container = dialog || target?.closest('.page') || document.querySelector('#view .page') || document.body;
+    let anchor = target;
+    if (!anchor || !container.contains(anchor) || anchor === container) {
+      if (layer.parentElement !== container) container.prepend(layer);
+      return;
+    }
+    while (anchor.parentElement !== container) anchor = anchor.parentElement;
+    if (anchor.nextElementSibling !== layer) anchor.after(layer);
+  }
+  function positionInline() {
+    // 教學成為正常排版的一部分，沒有疊在目標上的浮窗或巨大備援光圈。
+    ring.hidden = true;
+    tip.style.width = '100%'; tip.style.maxHeight = `${Math.max(130, (viewport?.height || innerHeight) - 24)}px`;
+    if (entering) { entering = false; tip.scrollIntoView({ block: 'nearest', behavior: 'instant' }); tip.focus({ preventScroll: true }); }
+  }
   function schedule() { if (!stopped && !frame) frame = requestAnimationFrame(position); }
   function showStep() {
     const s = tour.steps[index];
     entering = true;
+    inline = false;
+    layer.classList.remove('is-inline');
     layer.querySelector('#tourCount').textContent = `${tour.title} · ${index + 1} / ${tour.steps.length}`;
     layer.querySelector('#tourTitle').textContent = s.title;
     layer.querySelector('#tourText').textContent = s.text;
@@ -183,7 +255,7 @@ export function startTour(topic = 'start') {
     if (s.action && e.target.closest(s.action) && !e.target.closest(':disabled')) {
       // 等原本的 click handler / hashchange 跑完，不攔截正常導向。
       followingAction = true;
-      setTimeout(() => { followingAction = false; if (!stopped && s === tour.steps[index]) advance(); }, 0);
+      setTimeout(() => { followingAction = false; if (!stopped && s === tour.steps[index]) advance(true); }, 0);
     }
   }
   function onRoute() {
@@ -215,6 +287,7 @@ export function startTour(topic = 'start') {
     tip.focus({ preventScroll: true }); schedule();
   });
   layer.querySelector('#tourExit').addEventListener('click', () => stop(false));
+  layer.querySelector('#tourPauseExit').addEventListener('click', () => stop(false));
   layer.querySelector('.tour-help').addEventListener('click', () => stop(false));
   next.addEventListener('click', advance);
   running = { stop }; showStep();

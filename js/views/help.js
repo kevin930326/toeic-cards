@@ -1,4 +1,4 @@
-import { startTour, tourTopics } from '../tour.js?v=tour-keyboard-1';
+import { startTour, tourTopics } from '../tour.js?v=tour-overlap-1';
 
 export function renderHelp(root) {
   document.getElementById('tutorialBanner')?.remove();
