@@ -9,6 +9,8 @@ import { setScopeHTML, bindSetScope, refreshSetScope } from '../set-ui.js?v=dict
 import { exploreWords, selectedExploreWord, stepExploreWord } from '../explore.js';
 
 const state = { currentId: null, query: '' };
+// 清單一次只畫一部分：字很多時（例如 3,000 個）一次畫完要將近 2 秒；捲到底再畫下一批
+const CHUNK = 100;
 
 export function renderCards(root) {
   root.innerHTML = `<section class="page page-explore">
@@ -30,6 +32,9 @@ export function renderCards(root) {
   const search = root.querySelector('#exploreSearch');
   let detailKey = '';
   let listKey = '';
+  let limit = CHUNK;        // 目前清單畫到第幾個
+  let rangeKey = '';        // 單字集／搜尋／篩選改變時，清單回到前 100 個
+  let moreObserver = null;
 
   function deck() { return exploreWords(scopedWords(), { query: state.query, filter: getSettings().cardFilter }); }
   function draw() {
@@ -41,16 +46,28 @@ export function renderCards(root) {
     const word = selectedExploreWord(list, state.currentId);
     state.currentId = word?.id || null;
     root.querySelector('#exploreCount').textContent = `${list.length} / ${scopedWords().length} 個收藏`;
-    const nextListKey = JSON.stringify([state.currentId, list.map((w) => [w.id, w.word, w.zh, w.unfamiliar])]);
+    const index = list.findIndex((w) => w.id === state.currentId);
+    const nextRange = JSON.stringify([activeSetId(), state.query, filter]);
+    let resetScroll = false;
+    if (rangeKey !== nextRange) { resetScroll = !!rangeKey; rangeKey = nextRange; limit = CHUNK; }   // 範圍改了：回到前 100 個、捲回頂端
+    // 選到的字在後面（例如一直按「下一字」）時，至少畫到那個字，讓它在清單裡看得到
+    const shown = list.slice(0, Math.max(limit, index + 1));
+    // 只比對畫出來的那幾筆，不必每次把整份清單轉成文字
+    const nextListKey = JSON.stringify([state.currentId, list.length, shown.map((w) => [w.id, w.word, w.zh, w.unfamiliar])]);
     if (listKey !== nextListKey) {
       listKey = nextListKey;
       const scroll = listEl.scrollTop;
-      listEl.innerHTML = list.map((w) => `<li><button class="explore-item" type="button" data-id="${esc(w.id)}" ${w.id === state.currentId ? 'aria-current="true"' : ''}>
+      // 清單整個重畫時，原本有焦點的字會被換掉；記下來、畫完放回去（鍵盤使用者才不會掉回頁首）
+      const focusedId = listEl.contains(document.activeElement) ? document.activeElement.dataset.id : null;
+      const rest = list.length - shown.length;
+      listEl.innerHTML = shown.map((w) => `<li><button class="explore-item" type="button" data-id="${esc(w.id)}" ${w.id === state.currentId ? 'aria-current="true"' : ''}>
       <span lang="en">${esc(w.word)}${w.unfamiliar ? '<small aria-label="不熟">★</small>' : ''}</span>
-      <span class="explore-item-meaning">${esc(zhLines(w.zh)[0]?.text || '尚無中文')}</span></button></li>`).join('');
-      listEl.scrollTop = scroll;
+      <span class="explore-item-meaning">${esc(zhLines(w.zh)[0]?.text || '尚無中文')}</span></button></li>`).join('')
+        + (rest > 0 ? `<li class="explore-more"><button class="btn btn-ghost btn-sm" type="button" data-more>顯示更多（還有 ${rest} 個）</button></li>` : '');
+      listEl.scrollTop = resetScroll ? 0 : scroll;
+      if (focusedId) listEl.querySelector(`[data-id="${CSS.escape(focusedId)}"]`)?.focus({ preventScroll: true });
+      watchMore();
     }
-    const index = list.findIndex((w) => w.id === state.currentId);
     const nextKey = JSON.stringify([word, index, list.length, activeSetId(), state.query, filter]);
     if (detailKey !== nextKey) {
       detailKey = nextKey;
@@ -72,6 +89,25 @@ export function renderCards(root) {
     if (focusId && focusId !== 'exploreSearch') root.querySelector(`#${focusId}`)?.focus({ preventScroll: true });
   }
 
+  // 「顯示更多」捲進清單可見範圍時自動載入下一批；也可以直接按（鍵盤使用者）
+  // 「顯示更多」有焦點時（鍵盤使用者 Tab 到它，或按了它），畫完把焦點移到新出現的第一個字，不讓焦點掉回頁首
+  function showMore() {
+    const hadFocus = !!document.activeElement?.matches?.('#exploreList [data-more]');
+    const first = listEl.querySelectorAll('[data-id]').length;
+    limit += CHUNK;
+    draw();
+    if (hadFocus) listEl.querySelectorAll('[data-id]')[first]?.focus();
+  }
+  function watchMore() {
+    moreObserver?.disconnect();
+    const more = listEl.querySelector('[data-more]');
+    if (!more || !('IntersectionObserver' in window)) return;
+    moreObserver = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) showMore();
+    }, { root: listEl, rootMargin: '0px 0px 200px 0px' });
+    moreObserver.observe(more);
+  }
+
   function focusEntry() {
     root.querySelector('#exploreWord')?.focus({ preventScroll: true });
     if (window.matchMedia('(max-width: 700px)').matches) detail.scrollIntoView({ block: 'start' });
@@ -87,6 +123,7 @@ export function renderCards(root) {
   for (const radio of root.querySelectorAll('input[name="filter"]')) radio.addEventListener('change', () => updateSettings({ cardFilter: radio.value }));
   search.addEventListener('input', () => { state.query = search.value; draw(); });
   listEl.addEventListener('click', (event) => {
+    if (event.target.closest('[data-more]')) { showMore(); return; }
     const button = event.target.closest('[data-id]');
     if (!button) return;
     state.currentId = button.dataset.id;
@@ -115,5 +152,5 @@ export function renderCards(root) {
   const unsubLookup = onLookupStatus(draw);
   const unsubGen = onGenerateStatus(draw);
   document.addEventListener('keydown', onKey);
-  return () => { unsub(); unsubLookup(); unsubGen(); document.removeEventListener('keydown', onKey); };
+  return () => { moreObserver?.disconnect(); unsub(); unsubLookup(); unsubGen(); document.removeEventListener('keydown', onKey); };
 }

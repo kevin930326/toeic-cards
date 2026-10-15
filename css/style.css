@@ -1375,3 +1375,4 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
 /* 徽章和旁邊文字的垂直對齊：用截圖量「實際筆畫」的中心調整（中文字的筆畫沒有填滿行框，量行框會偏） */
 .ai-legend .badge { vertical-align: 0; }
 .mode-title .badge { vertical-align: 1px; }
+.explore-more { padding: 8px 4px; text-align: center; }
