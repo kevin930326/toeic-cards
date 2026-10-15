@@ -189,6 +189,7 @@ with sync_playwright() as p:
     A.goto(URL + '#/words')
     A.click('#toggleLibraryEdit')
     A.locator('.word-row', has_text='invoice').locator('[data-act=delete]').click()
+    A.click('#confirmWordDeletion')
     sync_now(A)
     check(cloud_words(uid)['invoice']['deleted'] is True, '雲端留下刪除紀錄')
     sync_now(B)

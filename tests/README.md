@@ -41,6 +41,7 @@ python tests/test_explore.py    # 單字探索、直接閱讀與複習分工（�
 python tests/test_inline_lookup.py # 解釋與例句點字查詢、收藏及複習狀態保護
 python tests/test_library_interactions.py # 1000字互動、星星局部更新與編輯模式
 python tests/test_free_cards.py # 複習選單、自由翻卡與排程／紀錄隔離
+python tests/test_bulk_delete.py # 單筆／批次刪除視窗、跨頁全選、同步刪除紀錄與取消
 python tests/test_onboarding.py # 真正首次體驗、舊資料提示、跨頁導覽、原生視窗、重看及資料保護
 python tests/test_swipe_isolation.py # 滑卡邊緣保留、觸控中斷、捲動與評分隔離
 python tests/test_card_lookup_mode.py # 手機翻面／點字模式、換卡重設、資料保護與離線
@@ -79,6 +80,7 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `test_batch_add_responsiveness.py` | 1000 張既有卡＋建立新單字集＋真實貼上100字；記錄畫面間隔、限制全量存檔／清單重建次數，確認可關閉視窗、分類與原有SRS保留；不用固定毫秒門檻 |
 | `test_card_lookup_mode.py` | 手機今日複習與自由翻卡預設點英文翻面、開啟後顯示背面且空白不翻面、例句發音、點字收藏保留模式／原卡／SRS／紀錄、換卡／切語言／重整重設、320／375px及深色、桌機與探索仍直接點字、真正離線重整後切換與查已快取中文 |
 | `test_swipe_isolation.py` | 左右邊緣起點不拖卡、卡片內水平觸控取消預設動作、真正垂直捲動、第二指／touchCancel／視窗失焦歸位、飛出途中切頁不評分、點字與發音及320／375／390px；不模擬 iPhone 系統導覽動畫，Safari／主畫面 App 仍需真機驗證 |
+| `test_bulk_delete.py` | 取消／Escape／預設焦點、跨頁刪除、搜尋全選、數量與八字預覽、一次通知與同步刪除紀錄、其他字卡與分類保留、重整持久化、新增期間選取快照、切頁取消、儲存失敗、320／375px與深色 |
 | `test_onboarding.py` | 歡迎視窗、略過／Escape／完成後不再提示、舊字卡或僅紀錄的提示列、真實跨頁與新增／批次／單字包分頁、七個獨立主題、正式新增保存與評分、單純看導覽不改資料或呼叫API、查字候選焦點、設定重看、直接連結與不疊窗、儲存被封鎖、320／375px／深色畫面及減少動態效果 |
 | `unit/onboarding-state.test.mjs` | 空白／舊資料分流、三種教學狀態、清空學習資料後仍不重複提示、錯誤格式紀錄 |
 | `test_free_cards.py` | 複習選單開關／Escape／外側關閉／焦點與按鍵隔離、完成畫面入口、未到期字卡全覽、翻面、換字、隨機、中英切換、單字集與空範圍、不熟篩選、點字與發音、真實觸控滑動、SRS／紀錄不變及320／375px；離線1000字由 `test_word_packs.py` 覆蓋 |

@@ -217,15 +217,24 @@ export function updateWords(patches) {
 }
 
 export function deleteWord(id) {
-  const target = words.find((w) => w.id === id);
-  if (!target) return;
-  words = words.filter((w) => w.id !== id);
-  byId.delete(id);
+  return deleteWords([id]);
+}
+
+// 一次處理選取範圍：單次掃描、單次刪除紀錄寫入、單次畫面通知。
+export function deleteWords(ids) {
+  const selected = new Set(ids);
+  const targets = words.filter(w => selected.has(w.id));
+  if (!targets.length) return 0;
   // 留下「刪除紀錄」，同步時其他裝置也會跟著刪掉
   const tombs = getTombstones();
-  tombs[target.word] = Date.now();
+  const now = Date.now();
+  for (const target of targets) tombs[target.word] = now;
+  // 寫入失敗時先拋錯，保留目前字卡，不先刪記憶體資料。
   setTombstones(tombs);
+  words = words.filter(w => !selected.has(w.id));
+  for (const target of targets) byId.delete(target.id);
   saveWords();
+  return targets.length;
 }
 
 // ---- 刪除紀錄（跨裝置同步用）：{ 單字: 刪除時間 } ----

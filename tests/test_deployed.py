@@ -117,6 +117,15 @@ with sync_playwright() as p:
     page.wait_for_selector('#guidedTour')
     check(page.locator('#tourTitle').inner_text() == '先回想，再點卡片翻面', '正式網站離線重整後仍可使用實際頁面導覽')
     page.click('#tourExit')
+    page.goto(URL + '#/words')
+    page.click('#toggleBulk')
+    page.check('#selectShown')
+    page.click('#bulkDelete')
+    page.wait_for_selector('#deleteWordsDialog')
+    check(page.locator('#deleteWordsTitle').inner_text() == '刪除 1 張字卡？', '正式網站離線仍可開啟批次刪除確認')
+    page.click('#confirmWordDeletion')
+    page.wait_for_function('() => document.querySelectorAll("#list .word-row").length === 0')
+    check(True, '隔離測試字卡可透過正式版批次流程刪除')
     ctx.set_offline(False)
 
     # 設定頁：HTTPS 下不會出現「離線功能無法使用」

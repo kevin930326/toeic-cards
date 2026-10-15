@@ -1,5 +1,5 @@
 // 導覽只描述／觀察真正的控制項，不代按新增、評分或 AI 按鈕。
-import { saveOnboarding } from './onboarding.js?v=guided-tour-1';
+import { saveOnboarding } from './onboarding.js?v=bulk-delete-1';
 
 const step = (route, target, title, text, action = '') => ({ route, target, title, text, action });
 const library = [
@@ -12,7 +12,7 @@ const library = [
   step('words', '#addWordsDialog [data-close]', '回到你的收藏', '完成加入或先看完後，點這個關閉按鈕。', '#addWordsDialog [data-close]'),
   step('words', '#search', '快速找到收藏', '可用英文或中文搜尋。每頁顯示 100 字；搜尋會涵蓋目前單字集全部的收藏。'),
   step('words', '#openManageSets', '建立自己的單字本', '在「管理單字集」建立主題分類；上方「單字集」切換這次要看的範圍。同一個字可以屬於多個集，共用內容和進度。'),
-  step('words', '.library-edit-tools', '分類與內容分開整理', '「批次整理」開啟勾選工具，能跨頁選字、加入或移出分類；「編輯模式」修改或刪除字卡。星星用來標記不熟。'),
+  step('words', '.library-edit-tools', '分類與內容分開整理', '「批次整理」開啟勾選工具，能跨頁選字、加入或移出分類，也能刪除所選字卡；刪除會影響所有分類與複習進度，確認前請看清預覽。「編輯模式」修改或刪除字卡。星星用來標記不熟。'),
 ];
 const review = [
   step('review', '#card, .done-state, .page-review', '先回想，再點卡片翻面', '這裡就是你的今日複習。有字卡時可直接點卡片，或按空白鍵翻面；還沒有可複習的字時，先從單字庫加入。'),

@@ -1,6 +1,8 @@
 // 單字庫：新增（單個／批次）、搜尋、編輯、刪除
 import { getWords, getSettings, addWords, deleteWord, toggleUnfamiliar, subscribe } from '../store.js';
-import { esc, toast, openEditor, confirmAction, zhLines } from '../ui.js';
+import * as store from '../store.js';
+import { esc, toast, openEditor, zhLines } from '../ui.js';
+import { confirmWordDeletion } from '../delete-confirm.js';
 import { enqueueLookup, isLookingUp, onLookupStatus, lookupStatus } from '../dictionary.js?v=dictionary-scale-1';
 import { analyzeInput } from '../parse.js';
 import { hasApiKey, lastRequestStats } from '../llm.js';
@@ -34,6 +36,8 @@ function chipList(words, cls = '') {
 }
 
 export function renderWords(root) {
+  const lifetime = new AbortController();
+  let confirmingDelete = false;
   const selected = new Set();
   let editMode = false;
   let bulkMode = false;
@@ -84,6 +88,7 @@ export function renderWords(root) {
         <div class="bulk-step"><h2>1. 勾選下方單字</h2><div class="bulk-selection"><label class="check-row"><input id="selectShown" type="checkbox"><span id="selectShownLabel">全選目前結果</span></label><button class="btn btn-ghost btn-sm" id="clearSelected" type="button">取消選取</button></div><p id="selectedCount" role="status"></p></div>
         <div class="bulk-step"><label class="field"><span>2. 選擇要整理的單字集</span><select id="bulkSet">${setOptions()}</select></label></div>
         <div class="bulk-step"><h2>3. 套用分類變更</h2><div class="bulk-actions"><button class="btn btn-primary btn-sm" id="bulkAssign" type="button">加入單字集</button><button class="btn btn-outline btn-sm" id="bulkRemove" type="button">移出單字集</button></div><p class="hint-text">加入可讓同一字屬於多個集；移出只移除分類，保留字卡與學習進度。</p></div>
+        <div class="bulk-delete-zone"><div><h2>刪除字卡</h2><p class="hint-text">從單字庫及所有分類刪除，與「移出單字集」不同。</p></div><button class="btn btn-outline danger" id="bulkDelete" type="button" disabled>刪除所選字卡</button></div>
       </section>
       <ul class="word-list" id="list"></ul>
       <nav class="library-pages" aria-label="單字清單分頁" hidden>
@@ -181,6 +186,7 @@ export function renderWords(root) {
     root.querySelector('#selectedCount').textContent = `已選 ${selected.size} 個字`;
     root.querySelector('#selectShownLabel').textContent = `全選目前結果（${shown.length} 字）`;
     root.querySelector('#clearSelected').disabled = !selected.size;
+    root.querySelector('#bulkDelete').disabled = !selected.size;
     for (const checkbox of listEl.querySelectorAll('.word-select')) checkbox.checked = selected.has(checkbox.closest('.word-row').dataset.id);
     for (const id of ['bulkAssign', 'bulkRemove']) root.querySelector(`#${id}`).disabled = !selected.size || !root.querySelector('#bulkSet').value;
   }
@@ -190,6 +196,25 @@ export function renderWords(root) {
     drawSelected();
   });
   root.querySelector('#clearSelected').addEventListener('click', () => { selected.clear(); drawSelected(); });
+  async function removeWords(ids) {
+    if (confirmingDelete) return;
+    confirmingDelete = true;
+    const chosen = new Set(ids);
+    const targets = getWords().filter(w => chosen.has(w.id));
+    try {
+      if (!await confirmWordDeletion(targets, { signal: lifetime.signal }) || lifetime.signal.aborted) return;
+      // 舊版 store 可能仍在 HTTP 快取；用命名空間偵測新 API，避免整個網站因匯入失敗打不開。
+      let n;
+      if (store.deleteWords) n = store.deleteWords(targets.map(w => w.id));
+      else {
+        n = 0;
+        for (const w of targets) if (getWords().some(item => item.id === w.id)) { deleteWord(w.id); n++; }
+      }
+      toast(`已刪除 ${n} 張字卡`);
+    } catch (err) { toast(err.message, 'error'); }
+    finally { confirmingDelete = false; }
+  }
+  root.querySelector('#bulkDelete').addEventListener('click', () => removeWords([...selected]));
   root.querySelector('#bulkSet').addEventListener('change', drawSelected);
   for (const [id, present] of [['bulkAssign', true], ['bulkRemove', false]]) {
     root.querySelector(`#${id}`).addEventListener('click', () => {
@@ -377,10 +402,7 @@ export function renderWords(root) {
     else if (act === 'edit' && editMode) openEditor(id);
     else if (act === 'delete' && editMode) {
       const w = getWords().find((x) => x.id === id);
-      if (w && confirmAction(`確定要刪除「${w.word}」嗎？`)) {
-        deleteWord(id);
-        toast(`已刪除「${w.word}」`);
-      }
+      if (w) removeWords([id]);
     }
   });
 
@@ -480,5 +502,5 @@ export function renderWords(root) {
     if (key !== lastKey) drawList();
     lastKey = key;
   });
-  return () => { unsub(); unsubLookup(); unsubGen(); packPanel.cleanup(); addDialog.close(); setsDialog.close(); };
+  return () => { lifetime.abort(); unsub(); unsubLookup(); unsubGen(); packPanel.cleanup(); addDialog.close(); setsDialog.close(); };
 }

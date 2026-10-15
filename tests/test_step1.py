@@ -69,6 +69,8 @@ with sync_playwright() as p:
 
     # 刪除
     page.locator('.word-row', has_text='deadline').locator('[data-act=delete]').click()
+    page.click('#confirmWordDeletion')
+    page.locator('#deleteWordsDialog').wait_for(state='detached')
     check(page.locator('.word-row').count() == 2, '刪除單字')
     page.screenshot(path=os.path.join(OUT, 's1_words.png'), full_page=True)
 

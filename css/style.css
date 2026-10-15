@@ -472,7 +472,10 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .word-list:not(.is-selecting) .word-select { display: none; }
 .word-list.is-selecting .word-row:has(.word-select:checked) { background: var(--surface-2); }
 .library-bulk { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 20px; margin-bottom: 16px; }
-.bulk-step:last-child { grid-column: 1 / -1; }
+.bulk-step:nth-child(3) { grid-column: 1 / -1; }
+.bulk-delete-zone { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
+.bulk-delete-zone h2 { margin: 0 0 6px; font-size: 14px; color: var(--ink); }
+.bulk-delete-zone .hint-text { margin: 0; }
 .bulk-step h2, .bulk-step .field > span { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
 .bulk-selection, .bulk-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
 .bulk-selection .check-row { margin: 0; }
@@ -616,6 +619,16 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .dialog::backdrop { background: rgba(20, 15, 5, 0.45); backdrop-filter: blur(2px); }
 .dialog-title { margin: 0 0 14px; font-size: 20px; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+.delete-confirm { width: min(480px, calc(100vw - 32px)); padding: 30px; border-top: 3px solid var(--accent); }
+.delete-confirm-icon { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 20px; border-radius: 50%; color: var(--accent); background: var(--accent-soft); }
+.delete-confirm h2 { margin: 8px 0 14px; font-size: 26px; }
+.delete-confirm > p { line-height: 1.8; }
+.delete-preview { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 14px 0; overflow-wrap: anywhere; }
+.delete-preview .chip { max-width: 100%; white-space: normal; }
+.delete-preview-more { color: var(--ink-soft); font-size: 13px; }
+.delete-confirm .delete-alternative { padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 13px; }
+.delete-confirm .dialog-actions { margin-top: 24px; flex-wrap: wrap; }
+@media (max-width: 520px) { .delete-confirm { padding: 22px; } .delete-confirm .dialog-actions > button { flex: 1 1 auto; } }
 
 /* ===== 提示訊息 ===== */
 .toast {
