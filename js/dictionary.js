@@ -106,17 +106,19 @@ async function fillLocal(ids) {
   // 2. 再「一口氣」檢查並寫入，中間沒有任何等待：
   //    等待下載時 AI 可能已經寫好內容，這時要看最新的資料，才不會用字典蓋掉 AI 的結果
   const patches = [];
-  for (const [id, local] of found) {
+  for (const id of ids) {
     const w = getWord(id);
     if (!w) continue;
-    const patch = {};
+    // 查本機與完成標記一起批次存，避免後面的純本機佇列逐字重存所有字卡。
+    const patch = { lookup: { ...(w.lookup || {}), dictAt: Date.now(), enDone: !!w.lookup?.enDone } };
+    const local = found.get(id);
     const src = { ...(w.src || {}) };
-    if (canFill(w, 'zh') && local.zh) {
+    if (canFill(w, 'zh') && local?.zh) {
       patch.zh = local.zh;
       src.zh = 'dict';
       if (!w.pos && local.pos) { patch.pos = local.pos; src.pos = 'dict'; }
     }
-    if (!w.phonetic && local.phonetic) patch.phonetic = local.phonetic;
+    if (!w.phonetic && local?.phonetic) patch.phonetic = local.phonetic;
     if (Object.keys(patch).length) patches.push([id, { ...patch, src }]);
   }
   updateWords(patches);
@@ -145,7 +147,7 @@ async function fillEnglish(id) {
     }
     enDone = eng.status !== 'error';
   }
-  updateWord(id, { ...patch, lookup: { ...(w.lookup || {}), dictAt: Date.now(), enDone } });
+  if (usedNetwork) updateWord(id, { ...patch, lookup: { ...(w.lookup || {}), dictAt: Date.now(), enDone } });
   return usedNetwork;
 }
 
@@ -178,7 +180,8 @@ async function runQueue() {
       console.warn('查英文解釋失敗', id, e);
     }
     pending.delete(id);
-    emitStatus();
+    // 本機完成的字不需要逐字重建畫面；網路查詢保留逐字進度，純本機一次更新。
+    if (usedNetwork || !queue.length) emitStatus();
     if (usedNetwork && queue.length) await new Promise((r) => setTimeout(r, 250));
   }
   running = false;
