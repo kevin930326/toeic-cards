@@ -53,6 +53,10 @@ npx firebase-tools emulators:start --only auth,firestore --project demo-toeic
 ## 其他
 
 - 要安裝軟體、下載檔案前，先問使用者
+- **資安**（見 [docs/dev-log/23-security-review.md](docs/dev-log/23-security-review.md)）：
+  - 外部資料（AI 回應、字典、匯入的備份、同步下來的資料）放進 HTML 前一律 `esc()`；匯入／同步的資料要經過 `js/backup.js` 的 sanitize 函式
+  - `index.html` 有 CSP：新增外部服務（API、CDN、iframe）時要一起更新 CSP，並跑 `tests/test_security.py`；不要加內嵌 `<script>` 或 `onclick=` 這類屬性
+  - 改了上傳到 Firestore 的資料格式，要一起改 `firestore.rules`，並請使用者到 Firebase 主控台重新發布
 - push 前檢查沒有金鑰（`js/firebase-config.js` 裡的 Firebase apiKey 是公開識別碼，可以放）
 - 部署：push 到 `main` 後 GitHub Pages 自動更新（https://kevin930326.github.io/toeic-cards/），說明見 [docs/deploy.md](docs/deploy.md)
 - README 的展示圖：先 `python tests/capture_readme.py`（需要 8123 伺服器）再 `python tools/make_readme_images.py`；介面有明顯改變時重拍
