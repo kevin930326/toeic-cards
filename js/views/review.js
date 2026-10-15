@@ -11,7 +11,7 @@ import {
   grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
 } from '../srs.js';
 import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal } from '../log.js';
-import { streak } from '../stats.js';
+import { streak } from '../stats.js?v=stats-progress-1';
 import { onLookupStatus } from '../dictionary.js?v=dictionary-scale-1';
 import { onGenerateStatus } from '../generate.js?v=dictionary-scale-1';
 import { scopedWords, activeSetId } from '../store.js';

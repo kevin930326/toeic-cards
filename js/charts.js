@@ -6,7 +6,7 @@
 //   - 只在最高的那根柱子標數字（不是每根都標）；2 個以上系列一定有圖例
 //   - 滑鼠移上去或鍵盤聚焦會顯示提示框；每張圖都附「查看表格」，數字不會只藏在提示框裡
 //   - 文字一律用文字顏色，系列顏色只用在柱子和圖例的色塊
-import { niceScale } from './stats.js';
+import { niceScale } from './stats.js?v=stats-progress-1';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const PLOT_H = 180;

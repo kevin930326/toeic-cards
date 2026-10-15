@@ -7,7 +7,7 @@ import { renderQuiz } from './views/quiz.js';
 import { renderStats } from './views/stats.js?v=stats-progress-1';
 import { pruneMistakes } from './mistakes.js';
 import { onLogChange, todayProgress, getLog, currentGoal } from './log.js';
-import { streak } from './stats.js';
+import { streak } from './stats.js?v=stats-progress-1';
 import { dayKey } from './srs.js';
 import { toast } from './ui.js';
 import { initPWA } from './pwa.js';
