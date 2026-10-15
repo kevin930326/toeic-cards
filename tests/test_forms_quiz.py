@@ -107,6 +107,16 @@ with sync_playwright() as p:
           f'測驗模式的 AI 標示一致：{badges}')
     check('AI' in pg.locator('.reading-entry .badge').inner_text() and pg.locator('.ai-legend').count() == 1,
           '短文閱讀也標 AI，首頁有標示說明')
+    # 徽章和旁邊文字的垂直中心差距不超過 1px（使用者回報過說明列的徽章偏上）
+    offsets = pg.evaluate("""() => [...document.querySelectorAll('.ai-legend .badge, .mode-title .badge, .reading-entry .badge')].map((b) => {
+      let node = b.nextSibling;
+      while (node && !(node.nodeType === 3 && node.textContent.trim())) node = node.nextSibling;
+      if (!node) { node = b.previousSibling; while (node && !(node.nodeType === 3 && node.textContent.trim())) node = node.previousSibling; }
+      const range = document.createRange(); range.selectNodeContents(node);
+      const t = [...range.getClientRects()].find((x) => x.height), r = b.getBoundingClientRect();
+      return Math.abs((r.top + r.height / 2) - (t.top + t.height / 2));
+    })""")
+    check(offsets and max(offsets) <= 1, f'AI 標示和旁邊的文字垂直置中（差距 {[round(o, 1) for o in offsets]} px）')
     start_forms(pg)
     pg.wait_for_selector('.q-forms .q-sentence')
     total = int(pg.locator('.quiz-progress').inner_text().split('/')[1])
