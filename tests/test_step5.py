@@ -230,18 +230,18 @@ with sync_playwright() as p:
     touch_drag(mp, cdp, 15, 200)
     check(head(mp) == 'new1' and db(mp)['new1']['srs'] is None, '上下滑動不會評分')
 
-    # ---- 字卡（瀏覽）頁也能滑動換卡，且不影響排程 ----
+    # ---- 探索用上一字／下一字閱讀，不影響排程 ----
     mp.goto(URL + '#/cards')
     mp.wait_for_load_state('networkidle')
-    first = head(mp)
+    first = mp.locator('#exploreWord').inner_text()
     before = db(mp)
-    touch_drag(mp, cdp, -220)
-    second = head(mp)
-    check(second != first, f'瀏覽頁往左滑＝下一張（{first} → {second}）')
-    touch_drag(mp, cdp, 220)
-    check(head(mp) == first, '瀏覽頁往右滑＝上一張')
+    mp.click('#next')
+    second = mp.locator('#exploreWord').inner_text()
+    check(second != first, f'探索下一字（{first} → {second}）')
+    mp.click('#prev')
+    check(mp.locator('#exploreWord').inner_text() == first, '探索上一字')
     after = db(mp)
-    check(all(before[k]['srs'] == after[k]['srs'] for k in before), '瀏覽頁滑動不會改變複習排程')
+    check(all(before[k]['srs'] == after[k]['srs'] for k in before), '探索換字不會改變複習排程')
 
     # ---- 批次加入的新字照貼上順序出現 ----
     o = browser.new_context()

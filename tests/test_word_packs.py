@@ -42,6 +42,16 @@ def setup(browser, key=False, worker=True):
     if worker:
         pg.evaluate('navigator.serviceWorker.ready')
         pg.wait_for_function('!!navigator.serviceWorker.controller')
+        # SW 接手不代表初次載入的 ES modules 已快取完；離線前等待全部依賴。
+        for _ in range(60):
+            shell_ready = pg.evaluate("""async () => {
+              const cache=await caches.open('toeic-shell-v1');
+              const required=performance.getEntriesByType('resource').map(e=>e.name).filter(u=>u.startsWith(location.origin)&&u.endsWith('.js'));
+              return (await Promise.all(required.map(u=>cache.match(u)))).every(Boolean);
+            }""")
+            if shell_ready: break
+            pg.wait_for_timeout(100)
+        check(shell_ready, '初次載入的程式依賴均已完成離線快取')
     if key:
         pg.evaluate("localStorage.setItem('toeic-cards:gemini-key', 'fake-key-for-pack-tests')")
         store(pg, "s.updateSettings({llmRpm:600,autoGenerate:true,llmModel:'gemini-2.5-flash'});")
@@ -182,8 +192,7 @@ with sync_playwright() as p:
     check(not ai.locator('#aiBox').is_visible(), '完整內建字卡的閒置AI工具收合，不顯示需要生成1000字的提示')
     check(ai.locator('.badge', has_text='內建').count()==1000, '以內建標籤區別個人即時生成')
     ai.goto(URL+'#/cards')
-    ai.click('#card')
-    check(ai.locator('.ex-en').count()==1 and ai.locator('.ex-zh').count()==1, '字卡可直接翻面查看中英例句')
+    check(ai.locator('.ex-en').is_visible() and ai.locator('.ex-zh').is_visible(), '探索頁直接閱讀中英例句')
     ai.goto(URL+'#/quiz')
     check(ai.locator('.mode-btn[data-mode=en2word]').is_enabled(), '未使用個人額度也能做英文解釋測驗')
     ai_ctx.close()

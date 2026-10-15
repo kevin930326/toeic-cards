@@ -246,19 +246,16 @@ with sync_playwright() as p:
     check(stopped_missing > 0 and len(gen_requests) <= 1, f'停止後不再送請求（剩 {stopped_missing} 個未生成，{len(gen_requests)} 次請求）')
     set_settings(page, llmRpm=600)
 
-    # 10. 字卡顯示 AI 內容
+    # 10. 探索直接閱讀 AI 內容
     page.goto(URL + '#/cards')
     page.reload()
     page.wait_for_load_state('networkidle')
     for _ in range(200):
-        if page.locator('.card-front .headword').inner_text() == 'zzfail':
+        if page.locator('#exploreWord').inner_text() == 'zzfail':
             break
         page.keyboard.press('ArrowRight')
-    page.click('.seg:has(input[value=en])')
-    page.click('#card')
-    page.wait_for_timeout(700)
-    back = page.locator('.card-back').inner_text()
-    check('simple meaning of zzfail' in back and 'Please zzfail the report.' in back and 'zzfail a plan' in back, '卡片背面顯示 AI 解釋、例句、搭配詞')
+    back = page.locator('.explore-reading').inner_text()
+    check('simple meaning of zzfail' in back and 'Please zzfail the report.' in back and 'zzfail a plan' in back, '探索直接顯示 AI 解釋、例句、搭配詞')
     page.screenshot(path=os.path.join(OUT, 's4_card.png'))
 
     # 11. 金鑰不會出現在網址

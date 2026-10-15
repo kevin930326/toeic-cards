@@ -1,4 +1,4 @@
-// 字卡的畫面（「字卡」瀏覽頁和「複習」頁共用）
+// 共用閱讀內容；翻面字卡用於複習，探索頁直接顯示雙語內容。
 import { esc, zhLines } from './ui.js';
 import { canSpeak, speakerIcon, speak } from './speech.js';
 import { isLookingUp } from './dictionary.js';
@@ -26,9 +26,10 @@ export function handleCardTap(target, word, flip) {
 export function backHTML(w, mode) {
   const empty = isLookingUp(w.id) || isGenerating(w.id)
     ? `<p class="back-empty">${isGenerating(w.id) ? 'AI 生成中…' : '查字典中…'}</p>`
-    : '<p class="back-empty">還沒有資料<br><span>點下方「編輯」手動填寫</span></p>';
+    : mode === 'both' ? '<p class="hint-text">尚無中文詞義，可用「編輯內容」補充。</p>'
+      : '<p class="back-empty">還沒有資料<br><span>點下方「編輯」手動填寫</span></p>';
   let main;
-  if (mode === 'zh') {
+  if (mode === 'zh' || mode === 'both') {
     const lines = zhLines(w.zh);
     const inlinePos = lines.some((l) => l.pos);
     main = lines.length
@@ -41,6 +42,8 @@ export function backHTML(w, mode) {
       ? `${w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}<p class="back-en">${esc(w.en)}</p>`
       : empty;
   }
+  if (mode === 'both') main = `<div class="explore-definition"><h3>中文詞義</h3>${main}</div>
+    <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${esc(w.en)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
   const extras = [];
   if (w.examples.length) {
     extras.push(`<div class="extra"><h3>例句</h3>${w.examples.map((e) => `

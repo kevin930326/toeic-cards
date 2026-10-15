@@ -68,37 +68,26 @@ with sync_playwright() as p:
     check(page.locator('.word-row').count() == 2, '刪除單字')
     page.screenshot(path=os.path.join(OUT, 's1_words.png'), full_page=True)
 
-    # 字卡
+    # 探索：直接閱讀雙語內容，複習的翻面由 test_step5 驗證。
     page.click('.nav a[data-route=cards]')
-    # 卡片順序：最新的在前 → invoice, approve
-    check(page.locator('.card-front .headword').inner_text() == 'invoice', '第一張卡是 invoice')
-    check(page.locator('.card-front .stamp').is_visible(), '不熟印章顯示')
+    check(page.locator('#exploreWord').inner_text() == 'invoice', '第一個探索字是 invoice')
+    check(page.locator('#markBtn').get_attribute('aria-pressed') == 'true', '探索顯示不熟標記')
     page.keyboard.press('ArrowRight')
-    check(page.locator('.card-front .headword').inner_text() == 'approve', '右鍵換下一張')
-    page.click('#card')
-    page.wait_for_timeout(700)
-    check('is-flipped' in page.get_attribute('#card', 'class'), '點擊翻面')
-    check('核准' in page.locator('.card-back').inner_text(), '中文模式背面顯示中文')
-    page.screenshot(path=os.path.join(OUT, 's1_back_zh.png'))
-    page.click('.seg:has(input[value=en])')
-    check('officially agree' in page.locator('.card-back').inner_text(), '英文模式背面顯示英文解釋')
-    check('is-flipped' in page.get_attribute('#card', 'class'), '切換模式保持翻面')
-    page.keyboard.press(' ')
-    page.wait_for_timeout(700)
-    check('is-flipped' not in page.get_attribute('#card', 'class'), '空白鍵翻回正面')
-
-    # 只看不熟
+    check(page.locator('#exploreWord').inner_text() == 'approve', '右鍵換下一字')
+    check('核准' in page.locator('.back-zh').inner_text(), '探索直接顯示中文')
+    check('officially agree' in page.locator('.back-en').inner_text(), '探索同時顯示英文解釋')
+    check(page.locator('#card').count() == 0, '探索不再提供翻面')
+    page.screenshot(path=os.path.join(OUT, 's1_explore.png'))
     page.click('.seg:has(input[value=unfamiliar])')
-    check(page.locator('.card-front .headword').inner_text() == 'invoice', '不熟篩選只剩 invoice')
+    check(page.locator('#exploreWord').inner_text() == 'invoice', '不熟篩選只剩 invoice')
     page.click('#markBtn')
     check(page.locator('.empty-state').is_visible(), '取消不熟後顯示「沒有不熟的字」')
     page.click('.seg:has(input[value=all])')
-
-    # 重新整理後資料仍在
     page.reload()
     page.wait_for_load_state('networkidle')
-    check(page.locator('.card-front .headword').count() == 1, '重新整理後資料保留')
-    check(page.locator('.seg input[value=en]').is_checked(), '重新整理後保留英文模式')
+    check(page.locator('#exploreWord').count() == 1, '重新整理後資料保留')
+    page.locator('.explore-item').filter(has_text='approve').click()
+    check(page.locator('.back-zh').is_visible() and page.locator('.back-en').is_visible(), '重新整理後仍直接閱讀雙語')
 
     # 深色模式
     page.click('#themeToggle')

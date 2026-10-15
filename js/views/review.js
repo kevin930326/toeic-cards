@@ -69,6 +69,7 @@ export function renderReview(root) {
 
     root.innerHTML = `
       <section class="page page-review">
+        <div class="review-purpose"><h1>今日複習</h1><p>先回想，再翻面確認；評分會安排下次複習時間。</p></div>
         ${setScopeHTML()}
         <div class="review-head">
           <p class="review-count"><strong id="remain">${session.queue.length}</strong> 張待複習</p>

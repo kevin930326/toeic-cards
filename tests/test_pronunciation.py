@@ -94,25 +94,23 @@ with sync_playwright() as p:
     }""")
     check(langs == ['en-AU', 'en-GB', 'en-US'], f'多益混合只用有語音的口音，而且會輪換：{langs}')
 
-    # ---- 卡片背面：例句、搭配詞發音 ----
+    # ---- 探索閱讀：例句、搭配詞發音 ----
     set_accent(page, 'en-US')
     page.goto(URL + '#/cards')
     page.reload()
     page.wait_for_load_state('networkidle')
-    page.click('#card')
-    page.wait_for_timeout(700)
     before = len(spoken(page))
-    page.locator('.card-back .mini-speak').first.click()
+    page.locator('.explore-reading .mini-speak').first.click()
     s = spoken(page)
-    first_word = page.locator('.card-front .headword').inner_text()
+    first_word = page.locator('#exploreWord').inner_text()
     check(len(s) == before + 1 and s[-1]['text'] == f'Please {first_word} the request today.', f'例句發音：{s[-1]}')
-    check('is-flipped' in page.get_attribute('#card', 'class'), '點例句發音不會翻回正面')
-    page.locator('.card-back .chip-speak').nth(1).click()
+    check(page.locator('#card').count() == 0, '探索發音沒有翻面操作')
+    page.locator('.explore-reading .chip-speak').nth(1).click()
     check(spoken(page)[-1]['text'] == f'{first_word} a budget', f"搭配詞發音：{spoken(page)[-1]['text']!r}")
-    check('is-flipped' in page.get_attribute('#card', 'class'), '點搭配詞不會翻面')
+    check(page.locator('.explore-reading').is_visible(), '點搭配詞後仍直接顯示完整內容')
     page.screenshot(path=os.path.join(OUT, 'sp_card.png'))
     # 鍵盤也能操作例句發音
-    page.locator('.card-back .mini-speak').first.focus()
+    page.locator('.explore-reading .mini-speak').first.focus()
     page.keyboard.press('Enter')
     check(spoken(page)[-1]['text'].startswith('Please'), '例句發音按鈕可以用鍵盤觸發')
 

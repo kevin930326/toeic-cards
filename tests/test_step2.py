@@ -94,26 +94,21 @@ with sync_playwright() as p:
     inv = [w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words'))") if w['word'] == 'invoice'][0]
     check(inv['zh'] == 'n. 請款單' and inv['src']['zh'] == 'user', f"手動修改不被覆蓋: {inv['zh']!r}")
 
-    # 字卡：音標、發音、多行中文
+    # 探索：音標、發音、多行中文與英文同時顯示。
     page.goto(URL + '#/cards')
     page.wait_for_load_state('networkidle')
-    while page.locator('.card-front .headword').inner_text() != 'approve':
-        page.keyboard.press('ArrowRight')
-    check(page.locator('.card-front .phonetic').inner_text() == a['phonetic'], '卡片正面顯示音標')
-    page.click('.speak-btn')
-    page.wait_for_timeout(300)
-    check('is-flipped' not in page.get_attribute('#card', 'class'), '按發音鈕不會翻面')
-    check(page.evaluate('window.__spoken')[-1]['text'] == 'approve', '卡片發音')
+    page.locator('.explore-item').filter(has_text='approve').click()
+    check(page.locator('.explore-entry-head .phonetic').inner_text() == a['phonetic'], '探索顯示音標')
+    page.click('.explore-entry-head [data-speak]')
+    check(page.locator('#card').count() == 0, '探索發音不需要翻面')
+    check(page.evaluate('window.__spoken')[-1]['text'] == 'approve', '探索單字發音')
     before = len(page.evaluate('window.__spoken'))
     page.keyboard.press('p')
     after = page.evaluate('window.__spoken')
     check(len(after) == before + 1 and after[-1]['text'] == 'approve', 'P 鍵發音')
-    page.click('#card')
-    page.wait_for_timeout(700)
-    check(page.locator('.card-back .zh-pos').count() == 2, '多詞性分行顯示（vt. / vi.）')
-    page.screenshot(path=os.path.join(OUT, 's2_back.png'))
-    page.click('.seg:has(input[value=en])')
-    check('officially agree' in page.locator('.card-back').inner_text(), '英文模式顯示 Free Dictionary 解釋')
+    check(page.locator('.explore-reading .zh-pos').count() == 2, '多詞性分行顯示（vt. / vi.）')
+    check('officially agree' in page.locator('.back-en').inner_text(), '探索同時顯示 Free Dictionary 英文解釋')
+    page.screenshot(path=os.path.join(OUT, 's2_explore.png'))
 
     # 設定：英式口音、速度
     page.goto(URL + '#/settings')

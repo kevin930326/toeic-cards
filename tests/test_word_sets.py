@@ -104,9 +104,9 @@ with sync_playwright() as p:
     expect(pg.locator('#setScope')).to_have_value(people)
     seen = set()
     for _ in range(3):
-        seen.add(pg.locator('.card-front .headword').inner_text())
+        seen.add(pg.locator('#exploreWord').inner_text())
         pg.click('#next')
-    check(seen == {'budget', 'recruit'}, '自由瀏覽限定單字集')
+    check(seen == {'budget', 'recruit'}, '單字探索限定單字集')
     pg.goto(URL + '#/review')
     pg.select_option('#setScope', finance)
     learned = pg.locator('.card-front .headword').inner_text()
