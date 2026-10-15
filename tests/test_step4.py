@@ -170,6 +170,13 @@ with sync_playwright() as p:
     check('1 個字生成失敗' in page.locator('#aiBox').inner_text(), '顯示失敗數量')
     check(page.locator('.word-row', has_text='zzfail').locator('.badge-fail').count() == 1, '失敗的字有標記')
     # 有金鑰時，AI 成功的字不查 Free Dictionary；只有 AI 失敗的 zzfail 會改用字典補英文解釋
+    # 改查字典是在 AI 失敗「之後」才非同步送出，要等請求真的出現（原本直接檢查，偶爾會早一步而失敗）；
+    # 出現後再多等一下，確認沒有其他不該查的字跟著送出
+    for _ in range(50):
+        if dict_calls:
+            break
+        page.wait_for_timeout(100)
+    page.wait_for_timeout(500)
     check([u.rstrip('/').split('/')[-1] for u in dict_calls] == ['zzfail'], f'只有 AI 失敗的字才查 Free Dictionary（{dict_calls}）')
     page.screenshot(path=os.path.join(OUT, 's4_failed.png'))
 
