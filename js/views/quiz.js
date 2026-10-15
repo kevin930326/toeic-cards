@@ -9,7 +9,7 @@ import { preparePart5 } from '../part5.js';
 import { getMistakes, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
 import { recordQuiz } from '../log.js';
 import { scopedWords } from '../store.js';
-import { setScopeHTML, bindSetScope } from '../set-ui.js';
+import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
 
 const MODE_INFO = {
   zh2en: { title: '看中文選英文', desc: '看中文意思，選出正確的英文單字', icon: '中' },

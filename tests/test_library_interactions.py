@@ -41,7 +41,7 @@ with sync_playwright() as p:
     if os.environ.get('PROFILE_ONLY')=='1':
         b.close();sys.exit(0)
     check(times['sameRow'],'點星星保留原列節點，不重建全部1000列')
-    check(pg.locator('.word-row').count()==1000,'仍顯示全部1000字，不改變搜尋或批次範圍')
+    check(pg.locator('.word-row').count()==100,'只建立100列，搜尋與批次範圍仍為1000字')
     check(pg.evaluate('''async()=>{const s=await import('/js/store.js');const w=s.getWords()[0];
       return w.unfamiliar && !w.srs && JSON.parse(localStorage.getItem('toeic-cards:words'))[0].unfamiliar;}'''), '星星立即寫入本機儲存，且不改動複習排程')
     check(not pg.locator('[data-act=edit]').first.is_visible() and not pg.locator('[data-act=delete]').first.is_visible(),'預設隱藏編輯與刪除按鈕')

@@ -1,13 +1,13 @@
 // 自由翻卡只讀目前範圍；不呼叫 SRS 評分或每日紀錄。
 import { scopedWords, activeSetId, getSettings, updateSettings, toggleUnfamiliar, subscribe } from '../store.js';
-import { flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=custom-words-1';
+import { flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=dictionary-scale-1';
 import { createCardLookupMode } from '../card-lookup-mode.js';
-import { setScopeHTML, bindSetScope } from '../set-ui.js';
+import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
 import { speak } from '../speech.js';
 import { shuffle } from '../quiz.js';
 import { attachSwipe } from '../swipe.js?v=swipe-isolation-1';
-import { onLookupStatus } from '../dictionary.js?v=custom-words-1';
-import { onGenerateStatus } from '../generate.js?v=custom-words-1';
+import { onLookupStatus } from '../dictionary.js?v=dictionary-scale-1';
+import { onGenerateStatus } from '../generate.js?v=dictionary-scale-1';
 
 export function renderFreeCards(root) {
   let currentId = null, flipped = false, filter = 'all', random = false;

@@ -479,7 +479,6 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 @media (max-width: 520px) { .library-bulk { grid-template-columns: 1fr; } }
 .word-list:not(.is-editing) [data-act="edit"], .word-list:not(.is-editing) [data-act="delete"] { display: none; }
 /* 畫面外的列延後排版，仍保留搜尋、全選、鍵盤及完整清單。 */
-.word-list .word-row { content-visibility: auto; contain-intrinsic-size: auto 92px; }
 .word-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px 8px 6px; border-top: 1px solid var(--line); }
 .word-row:first-child { border-top: 0; }
 .word-row.is-unfamiliar { background: var(--warn-soft); }
@@ -1314,3 +1313,7 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .link-login { margin-top: 14px; font-size: 14px; }
 .link-login > summary { cursor: pointer; color: var(--ink-soft); margin-bottom: 8px; }
 .set-pw { margin-top: 6px; padding-top: 4px; border-top: 1px dashed var(--line); }
+
+/* 清單最多保留一頁，分頁控制在窄螢幕也可換行。 */
+.library-pages { display: flex; align-items: center; justify-content: center; gap: .75rem; flex-wrap: wrap; margin: 1rem 0 1.5rem; }
+.library-pages span { font-size: .875rem; color: var(--ink-soft); }

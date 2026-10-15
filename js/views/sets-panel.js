@@ -1,7 +1,7 @@
 import { getWordSets, getSetRecords, getWords, createWordSet, renameWordSet, deleteWordSet } from '../store.js';
-import { filterSetWords } from '../word-sets.js';
+import { indexMembership } from '../word-sets.js?v=dictionary-scale-1';
 import { esc, toast, confirmAction } from '../ui.js';
-import { askSetName } from '../set-ui.js';
+import { askSetName } from '../set-ui.js?v=dictionary-scale-1';
 
 export function renderSetsPanel(container) {
   container.innerHTML = `<details class="panel sets-panel"><summary>管理單字集<span class="summary-hint">自己命名、自由分類</span></summary>
@@ -27,8 +27,9 @@ export function renderSetsPanel(container) {
   });
   function refresh() {
     const sets = getWordSets();
+    const { counts } = indexMembership(getWords(), getSetRecords());
     container.querySelector('#setList').innerHTML = sets.length ? sets.map((s) => `<li class="set-row">
-      <span class="set-label">${esc(s.name)}<small>${filterSetWords(getWords(), getSetRecords(), s.id).length} 個字</small></span>
+      <span class="set-label">${esc(s.name)}<small>${counts.get(s.id) || 0} 個字</small></span>
       <button class="btn btn-ghost btn-sm" data-set-act="rename" data-id="${esc(s.id)}" type="button" aria-label="重新命名 ${esc(s.name)}">改名</button>
       <button class="btn btn-ghost btn-sm danger" data-set-act="delete" data-id="${esc(s.id)}" type="button" aria-label="刪除單字集 ${esc(s.name)}">刪除</button>
     </li>`).join('') : '<li class="hint-text">還沒有單字集，先建立一個吧。</li>';

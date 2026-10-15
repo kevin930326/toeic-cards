@@ -2,10 +2,10 @@
 import { getSettings, updateSettings, toggleUnfamiliar, subscribe, scopedWords, activeSetId } from '../store.js';
 import { esc, openEditor, zhLines } from '../ui.js';
 import { speak, canSpeak, speakerIcon } from '../speech.js';
-import { onLookupStatus } from '../dictionary.js?v=custom-words-1';
-import { onGenerateStatus } from '../generate.js?v=custom-words-1';
-import { backHTML } from '../cardview.js?v=custom-words-1';
-import { setScopeHTML, bindSetScope, refreshSetScope } from '../set-ui.js';
+import { onLookupStatus } from '../dictionary.js?v=dictionary-scale-1';
+import { onGenerateStatus } from '../generate.js?v=dictionary-scale-1';
+import { backHTML } from '../cardview.js?v=dictionary-scale-1';
+import { setScopeHTML, bindSetScope, refreshSetScope } from '../set-ui.js?v=dictionary-scale-1';
 import { exploreWords, selectedExploreWord, stepExploreWord } from '../explore.js';
 
 const state = { currentId: null, query: '' };

@@ -3,6 +3,24 @@
 import { normalizeWord } from './parse.js';
 
 export const UNFILED = 'unfiled';
+// 反向索引：一次走訪成員，供清單標籤與各集計數共用，避免每個集重掃所有字卡。
+export function indexMembership(words, sets) {
+  const owned = new Set(words.map((w) => w.word));
+  const byWord = new Map();
+  const counts = new Map();
+  for (const set of sets) {
+    if (set.deleted) continue;
+    let count = 0;
+    for (const [word, member] of Object.entries(set.members)) {
+      if (!member.present || !owned.has(word)) continue;
+      if (!byWord.has(word)) byWord.set(word, []);
+      byWord.get(word).push(set);
+      count++;
+    }
+    counts.set(set.id, count);
+  }
+  return { byWord, counts, unfiled: owned.size - byWord.size };
+}
 export const normalizeSetName = (name) => String(name || '').trim().replace(/\s+/g, ' ');
 const time = (n) => Number.isFinite(n) && n >= 0 ? n : 0;
 

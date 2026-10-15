@@ -5,7 +5,7 @@
 //   瀏覽器會擋掉「跳轉登入」需要的第三方儲存空間，官方建議改用彈出視窗
 // - Email 登入連結：寄一封信，點信裡的連結就登入，不用密碼
 import { wordDocId } from './sync-core.js';
-import { mergeSets } from './word-sets.js';
+import { mergeSets } from './word-sets.js?v=dictionary-scale-1';
 
 export const FIREBASE_SDK_VERSION = '13.0.0';
 const CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;

@@ -11,7 +11,7 @@
 //   - 「取代」：全部換成備份裡的資料
 import { normalizeWord } from './parse.js';
 import { mistakeKey } from './mistakes.js';
-import { sanitizeSets, mergeSets } from './word-sets.js';
+import { sanitizeSets, mergeSets } from './word-sets.js?v=dictionary-scale-1';
 
 export const BACKUP_APP = 'toeic-cards';
 export const BACKUP_VERSION = 2;

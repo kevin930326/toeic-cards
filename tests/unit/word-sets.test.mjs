@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { sanitizeSets, mergeSets, setsForWord, filterSetWords } from '../../js/word-sets.js';
+import { sanitizeSets, mergeSets, setsForWord, filterSetWords, indexMembership } from '../../js/word-sets.js';
 import { buildBackup, parseBackup, mergeBackup } from '../../js/backup.js';
 
 const set = (id = 'finance', extra = {}) => ({ id, name: '財務', updatedAt: 10, deleted: false,
@@ -82,4 +82,14 @@ test('備份合併保留雙方分類且不重複建立單字集', () => {
   const merged = mergeBackup(local, incoming);
   assert.equal(merged.wordSets.length, 2);
   assert.deepEqual(mergeBackup(merged, incoming).wordSets, merged.wordSets);
+});
+
+test('分類反向索引排除刪除集、移出紀錄與未收藏字，同字可屬多集', () => {
+  const sets = [{ id: 'a', members: { budget: { present: true }, other: { present: true } } },
+    { id: 'b', members: { budget: { present: true }, invoice: { present: false } } },
+    { id: 'c', deleted: true, members: { invoice: { present: true } } }];
+  const result = indexMembership([{ word: 'budget' }, { word: 'invoice' }], sets);
+  assert.deepEqual([...result.counts], [['a', 1], ['b', 1]]);
+  assert.deepEqual(result.byWord.get('budget').map((s) => s.id), ['a', 'b']);
+  assert.equal(result.unfiled, 1);
 });

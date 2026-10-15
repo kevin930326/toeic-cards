@@ -1,14 +1,15 @@
 // 單字庫、複習、自由瀏覽與測驗共用單字集選擇器。
 import { getWordSets, getSetRecords, getWords, activeSetId, updateSettings } from './store.js';
-import { filterSetWords } from './word-sets.js';
+import { indexMembership } from './word-sets.js?v=dictionary-scale-1';
 import { esc } from './ui.js';
 
 export function setOptions(selected = '', { scopes = false } = {}) {
   const words = getWords();
+  const { counts, unfiled } = indexMembership(words, getSetRecords());
   const option = (id, name) => `<option value="${esc(id)}" ${selected === id ? 'selected' : ''}>${esc(name)}</option>`;
   return option('', scopes ? `全部單字（${words.length}）` : '不指定單字集')
-    + (scopes ? option('unfiled', `未分類（${filterSetWords(words, getSetRecords(), 'unfiled').length}）`) : '')
-    + getWordSets().map((s) => option(s.id, `${s.name}（${filterSetWords(words, [s], s.id).length}）`)).join('');
+    + (scopes ? option('unfiled', `未分類（${unfiled}）`) : '')
+    + getWordSets().map((s) => option(s.id, `${s.name}（${counts.get(s.id) || 0}）`)).join('');
 }
 
 export function setScopeHTML() {

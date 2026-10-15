@@ -1,6 +1,6 @@
 // 資料儲存：所有單字和設定都存在瀏覽器的 localStorage
 import { normalizeWord } from './parse.js';
-import { normalizeSetName, sanitizeSets, mergeSets, filterSetWords, UNFILED } from './word-sets.js';
+import { normalizeSetName, sanitizeSets, mergeSets, filterSetWords, UNFILED } from './word-sets.js?v=dictionary-scale-1';
 
 const WORDS_KEY = 'toeic-cards:words';
 const SETTINGS_KEY = 'toeic-cards:settings';

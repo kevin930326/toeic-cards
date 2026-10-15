@@ -122,7 +122,7 @@ with sync_playwright() as p:
     # 重新整理後：批次面板不會殘留錯誤，資料都在
     page.reload()
     page.wait_for_load_state('networkidle')
-    check(page.locator('.word-row').count() == 108, '重新整理後 108 個字都在')
+    check(page.locator('.word-row').count() == 100 and page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).length") == 108, '重新整理後 108 個字都在，首頁顯示 100 字')
 
     # 手機版面
     m = ctx.new_page()

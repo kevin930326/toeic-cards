@@ -42,10 +42,10 @@ with sync_playwright() as p:
     incoming=pg.evaluate("async()=>{const p=await(await fetch('data/packs/toeic-1000.json')).json();return p.words || p.groups.flatMap(g=>g.words);}")[:100]
     pg.fill('#batchInput','\n'.join(incoming))
     pg.evaluate('''()=>{
-      window.batchMetric={writes:0,renders:0,start:performance.now(),last:performance.now(),gap:0};
+      window.batchMetric={writes:0,renders:0,rowMutations:0,start:performance.now(),last:performance.now(),gap:0};
       const original=Storage.prototype.setItem;
       Storage.prototype.setItem=function(k,v){if(k==='toeic-cards:words')batchMetric.writes++;return original.call(this,k,v);};
-      new MutationObserver(rs=>{batchMetric.renders+=rs.filter(r=>r.type==='childList').length;}).observe(document.querySelector('#list'),{childList:true});
+      new MutationObserver(rs=>{batchMetric.renders++;batchMetric.rowMutations+=rs.filter(r=>r.type==='childList').length;}).observe(document.querySelector('#list'),{childList:true});
       const tick=()=>{const n=performance.now();batchMetric.gap=Math.max(batchMetric.gap,n-batchMetric.last);batchMetric.last=n;requestAnimationFrame(tick);};requestAnimationFrame(tick);
     }''')
     pg.click('#batchAdd')
@@ -59,7 +59,8 @@ with sync_playwright() as p:
     assert pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word.startsWith('saved')).every(w=>w.srs.interval===3)")
     assert metrics['writes']<=5, '本機批次查字不應每個字都重存整份資料'
     assert metrics['renders']<=10, '單次批次加入不應逐字重建整份清單'
+    assert metrics['rowMutations']<=700, '每次更新最多影響一頁，不能重建所有收藏'
     assert not errors,errors
-    pg.screenshot(path='docs/images/26-batch-add.png')
+    pg.screenshot(path='tests/screenshots/batch-add-paged.png')
     b.close()
 print('ALL PASSED')

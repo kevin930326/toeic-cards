@@ -4,7 +4,7 @@
 import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
-import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=custom-words-1';
+import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=dictionary-scale-1';
 import { createCardLookupMode } from '../card-lookup-mode.js';
 import { attachSwipe, flyOut } from '../swipe.js?v=swipe-isolation-1';
 import {
@@ -12,10 +12,10 @@ import {
 } from '../srs.js';
 import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal } from '../log.js';
 import { streak } from '../stats.js';
-import { onLookupStatus } from '../dictionary.js?v=custom-words-1';
-import { onGenerateStatus } from '../generate.js?v=custom-words-1';
+import { onLookupStatus } from '../dictionary.js?v=dictionary-scale-1';
+import { onGenerateStatus } from '../generate.js?v=dictionary-scale-1';
 import { scopedWords, activeSetId } from '../store.js';
-import { setScopeHTML, bindSetScope } from '../set-ui.js';
+import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
 
 const AGAIN_GAP = 3;   // 答「不熟」的字，在這一輪中隔 3 張後再出現
 

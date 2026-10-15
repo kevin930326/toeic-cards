@@ -1,22 +1,23 @@
 // 單字庫：新增（單個／批次）、搜尋、編輯、刪除
 import { getWords, getSettings, addWords, deleteWord, toggleUnfamiliar, subscribe } from '../store.js';
 import { esc, toast, openEditor, confirmAction, zhLines } from '../ui.js';
-import { enqueueLookup, isLookingUp, onLookupStatus, lookupStatus } from '../dictionary.js?v=custom-words-1';
+import { enqueueLookup, isLookingUp, onLookupStatus, lookupStatus } from '../dictionary.js?v=dictionary-scale-1';
 import { analyzeInput } from '../parse.js';
 import { hasApiKey, lastRequestStats } from '../llm.js';
 import {
   enqueueGenerate, generateMissing, retryFailed, stopGenerating,
   onGenerateStatus, generateStatus, countByState, isGenerating,
-} from '../generate.js?v=custom-words-1';
+} from '../generate.js?v=dictionary-scale-1';
 import { speak, canSpeak, speakerIcon } from '../speech.js';
 import { getSetRecords, scopedWords, activeSetId, assignWordSet } from '../store.js';
-import { setsForWord } from '../word-sets.js';
-import { setScopeHTML, bindSetScope, refreshSetScope, setOptions } from '../set-ui.js';
-import { renderSetsPanel } from './sets-panel.js';
+import { indexMembership } from '../word-sets.js?v=dictionary-scale-1';
+import { setScopeHTML, bindSetScope, refreshSetScope, setOptions } from '../set-ui.js?v=dictionary-scale-1';
+import { renderSetsPanel } from './sets-panel.js?v=dictionary-scale-1';
 import { renderWordPackPanel } from './word-pack-panel.js';
 
 const state = { query: '', batchOpen: false, batchText: '' };
 const PREVIEW_LIMIT = 80;
+const PAGE_SIZE = 100;
 
 function badge(w) {
   if (isGenerating(w.id)) return '<span class="badge badge-busy">AI 生成中</span>';
@@ -37,6 +38,9 @@ export function renderWords(root) {
   let editMode = false;
   let bulkMode = false;
   let markingId = null;
+  let page = 0;
+  let scopeKey = '';
+  const rows = new Map(); // id → { node, html }；背景更新保留沒變的列與焦點。
   root.innerHTML = `
     <section class="page">
       <div class="library-heading"><div><p class="eyebrow">MY VOCABULARY</p><h1 class="page-title">單字庫</h1><p class="hint-text">整理收藏，選好這次想背的範圍。</p></div>
@@ -74,6 +78,7 @@ export function renderWords(root) {
         <span class="count" id="count"></span>
       </div>
       <div class="library-scope">${setScopeHTML()}<button class="btn btn-ghost btn-sm" id="openManageSets" type="button">管理單字集</button></div>
+      <p class="hint-text">每頁顯示 100 字；搜尋與全選涵蓋目前範圍的全部單字。</p>
       <div class="library-edit-tools"><button class="btn btn-outline btn-sm" id="toggleBulk" type="button" aria-expanded="false" aria-controls="bulkTools">批次整理</button><button class="btn btn-outline btn-sm" id="toggleLibraryEdit" type="button" aria-pressed="false" aria-controls="list">編輯模式</button><span class="hint-text" id="libraryEditHint">整理分類用「批次整理」；修改內容用「編輯模式」。</span></div>
       <section class="library-bulk panel" id="bulkTools" aria-label="批次整理單字" hidden>
         <div class="bulk-step"><h2>1. 勾選下方單字</h2><div class="bulk-selection"><label class="check-row"><input id="selectShown" type="checkbox"><span id="selectShownLabel">全選目前結果</span></label><button class="btn btn-ghost btn-sm" id="clearSelected" type="button">取消選取</button></div><p id="selectedCount" role="status"></p></div>
@@ -81,6 +86,11 @@ export function renderWords(root) {
         <div class="bulk-step"><h2>3. 套用分類變更</h2><div class="bulk-actions"><button class="btn btn-primary btn-sm" id="bulkAssign" type="button">加入單字集</button><button class="btn btn-outline btn-sm" id="bulkRemove" type="button">移出單字集</button></div><p class="hint-text">加入可讓同一字屬於多個集；移出只移除分類，保留字卡與學習進度。</p></div>
       </section>
       <ul class="word-list" id="list"></ul>
+      <nav class="library-pages" aria-label="單字清單分頁" hidden>
+        <button class="btn btn-outline btn-sm" type="button" id="previousWords">上一頁</button>
+        <span id="wordPage" role="status"></span>
+        <button class="btn btn-outline btn-sm" type="button" id="nextWords">下一頁</button>
+      </nav>
       <details class="library-ai" id="aiTools"><summary>AI 內容工具<span class="summary-hint">生成缺項、查看狀態</span></summary><div id="aiToolsBody"></div></details>
       <dialog class="dialog word-tools-dialog" id="addWordsDialog" aria-labelledby="addWordsTitle">
         <div class="tool-heading"><div><p class="eyebrow">建立你的收藏</p><h2 id="addWordsTitle">加入單字</h2></div><button class="icon-btn" type="button" data-close aria-label="關閉加入單字">✕</button></div>
@@ -117,6 +127,13 @@ export function renderWords(root) {
 
   const listEl = root.querySelector('#list');
   const countEl = root.querySelector('#count');
+  for (const [id, step] of [['previousWords', -1], ['nextWords', 1]]) {
+    root.querySelector(`#${id}`).addEventListener('click', () => {
+      page += step;
+      drawList();
+      root.querySelector('.list-head').scrollIntoView({ block: 'start' });
+    });
+  }
   function setBulkMode(enabled) {
     bulkMode = enabled;
     root.querySelector('#bulkTools').hidden = !enabled;
@@ -194,21 +211,34 @@ export function renderWords(root) {
     const q = state.query.trim().toLowerCase();
     const all = getWords();
     const shown = shownWords();
+    const key = JSON.stringify([q, activeSetId()]);
+    if (key !== scopeKey) { page = 0; scopeKey = key; }
+    page = Math.max(0, Math.min(page, Math.ceil(shown.length / PAGE_SIZE) - 1));
+    const start = page * PAGE_SIZE;
+    const visible = shown.slice(start, start + PAGE_SIZE);
+    root.querySelector('.library-pages').hidden = shown.length <= PAGE_SIZE;
+    root.querySelector('#previousWords').disabled = page === 0;
+    root.querySelector('#nextWords').disabled = start + PAGE_SIZE >= shown.length;
+    root.querySelector('#wordPage').textContent = `第 ${start + 1}–${start + visible.length} 筆，共 ${shown.length} 字`;
     countEl.textContent = q || activeSetId() ? `${shown.length} / ${all.length} 個字` : `共 ${all.length} 個字`;
     drawSelected();
     if (!shown.length) {
+      rows.clear();
       listEl.innerHTML = `<li class="list-empty">${all.length ? '目前範圍沒有符合的單字，可切換單字集或新增單字。' : '還沒有收藏的單字。點「＋ 加入單字」，或用上方「查單字」找到第一個字。'}</li>`;
       return;
     }
-    const records = getSetRecords();
+    const { byWord } = indexMembership(all, getSetRecords());
     const speaking = canSpeak();
-    listEl.innerHTML = shown.map((w) => {
+    const visibleIds = new Set(visible.map((w) => w.id));
+    for (const [id, row] of rows) if (!visibleIds.has(id)) { row.node.remove(); rows.delete(id); }
+    listEl.querySelector('.list-empty')?.remove();
+    visible.forEach((w, index) => {
       // 清單只呈現第一行，避免每次解析整份多行解釋。
       const first = zhLines(w.zh.split('\n').find((line) => line.trim()) || '')[0];
       const zhText = first
         ? `${first.pos || w.pos ? `<em>${esc(first.pos || w.pos)}</em> ` : ''}${esc(first.text)}`
         : (isLookingUp(w.id) ? '<span class="muted">查字典中…</span>' : '<span class="muted">（尚無中文）</span>');
-      return `
+      const html = `
       <li class="word-row ${w.unfamiliar ? 'is-unfamiliar' : ''}" data-id="${esc(w.id)}">
         <input class="word-select" type="checkbox" aria-label="選取 ${esc(w.word)}" ${selected.has(w.id) ? 'checked' : ''}>
         <button class="star" type="button" data-act="mark" aria-pressed="${w.unfamiliar}"
@@ -216,7 +246,7 @@ export function renderWords(root) {
         <div class="word-info">
           <span class="word-en">${esc(w.word)}${badge(w)}</span>
           <span class="word-zh">${zhText}</span>
-          <span class="word-set-tags">${setsForWord(records, w.word).map((s) => `<span class="chip">${esc(s.name)}</span>`).join('')}</span>
+          <span class="word-set-tags">${(byWord.get(w.word) || []).map((s) => `<span class="chip">${esc(s.name)}</span>`).join('')}</span>
         </div>
         <div class="row-actions">
           ${w.llm?.status === 'failed' ? `<button class="btn btn-ghost btn-sm" type="button" data-act="regen" title="${esc(w.llm.error || '')}">重試 AI</button>` : ''}
@@ -225,7 +255,16 @@ export function renderWords(root) {
           <button class="btn btn-ghost btn-sm danger" type="button" data-act="delete" aria-label="刪除 ${esc(w.word)}">刪除</button>
         </div>
       </li>`;
-    }).join('');
+      let row = rows.get(w.id);
+      if (!row || row.html !== html) {
+        const template = document.createElement('template');
+        template.innerHTML = html.trim();
+        const node = template.content.firstElementChild;
+        if (row) row.node.replaceWith(node);
+        row = { node, html }; rows.set(w.id, row);
+      }
+      if (listEl.children[index] !== row.node) listEl.insertBefore(row.node, listEl.children[index] || null);
+    });
   }
 
   function addFromText(text) {
@@ -237,7 +276,8 @@ export function renderWords(root) {
       return 0;
     }
     const { added } = addWords(fresh);
-    const existingIds = setId ? getWords().filter((w) => existing.includes(w.word)).map((w) => w.id) : [];
+    const existingWords = new Set(existing);
+    const existingIds = setId ? getWords().filter((w) => existingWords.has(w.word)).map((w) => w.id) : [];
     const assigned = setId ? assignWordSet([...added.map((w) => w.id), ...existingIds], setId) : 0;
     const ids = added.map((w) => w.id);
     enqueueLookup(ids);

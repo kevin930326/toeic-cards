@@ -1,8 +1,8 @@
 // 共用閱讀內容；翻面字卡用於複習，探索頁直接顯示雙語內容。
 import { esc, zhLines } from './ui.js';
 import { canSpeak, speakerIcon, speak } from './speech.js';
-import { isLookingUp } from './dictionary.js?v=custom-words-1';
-import { isGenerating } from './generate.js?v=custom-words-1';
+import { isLookingUp } from './dictionary.js?v=dictionary-scale-1';
+import { isGenerating } from './generate.js?v=dictionary-scale-1';
 import { wordTokens } from './word-tokens.js';
 
 const lookupText = (text, enabled = true) => !enabled ? esc(text) : wordTokens(text).map((part) => part.word

@@ -1,5 +1,5 @@
 import { getWords, getWordSets, addWords, updateWords, assignWordSet, createWordSet, updateSettings } from '../store.js';
-import { normalizeSetName } from '../word-sets.js';
+import { normalizeSetName } from '../word-sets.js?v=dictionary-scale-1';
 import { loadWordPack, previewPack, PACK_SET_NAME, initialPackData, packBackfill } from '../word-packs.js';
 import { esc, toast } from '../ui.js';
 
