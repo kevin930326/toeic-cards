@@ -188,7 +188,7 @@ with sync_playwright() as p:
     check(svg_w <= 375, f'圖表不超出畫面（{svg_w:.0f}）')
     m.screenshot(path=os.path.join(OUT, 's7_mobile.png'), full_page=True)
     m.set_viewport_size({'width':320,'height':812})
-    m.wait_for_function('document.documentElement.scrollWidth<=innerWidth')
+    m.wait_for_function('() => document.documentElement.scrollWidth<=innerWidth')
     check(m.evaluate('document.documentElement.scrollWidth<=innerWidth'), '320px統計卡片及門檻說明無橫向溢出')
 
     browser.close()

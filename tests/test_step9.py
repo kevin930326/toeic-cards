@@ -88,9 +88,9 @@ with sync_playwright() as p:
     # ---- 下載離線字典 ----
     page.goto(URL + '#/settings')
     page.wait_for_selector('#dictStatus')
-    page.wait_for_function("document.querySelector('#dictStatus').textContent !== '檢查中…'")
+    page.wait_for_function("() => document.querySelector('#dictStatus').textContent !== '檢查中…'")
     page.click('#dictBtn')
-    page.wait_for_function("document.querySelector('#dictStatus').textContent.includes('已下載（26')", timeout=30000)
+    page.wait_for_function("() => document.querySelector('#dictStatus').textContent.includes('已下載（26')", timeout=30000)
     check(True, '下載完整字典（26 個檔案）')
     page.screenshot(path=os.path.join(OUT, 's9_settings.png'), full_page=True)
 
@@ -134,7 +134,7 @@ with sync_playwright() as p:
     open_add(page, 'single')
     page.press('#addInput', 'Enter')
     close_add(page)
-    page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'zealous')?.zh", timeout=10000)
+    page.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'zealous')?.zh", timeout=10000)
     zh = [w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words'))") if w['word'] == 'zealous'][0]['zh']
     check('熱心' in zh or '熱情' in zh or len(zh) > 0, f'離線新增單字也查得到中文：{zh!r}')
     page.screenshot(path=os.path.join(OUT, 's9_offline.png'))
@@ -160,7 +160,7 @@ with sync_playwright() as p:
     ctx.set_offline(False)
     OFFLINE['on'] = False
     page.evaluate("window.dispatchEvent(new Event('online'))")
-    page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'yield')?.llm?.status === 'done'", timeout=15000)
+    page.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'yield')?.llm?.status === 'done'", timeout=15000)
     check(True, '連上網路後自動繼續 AI 生成')
     check(page.locator('#offlineBar').is_hidden(), '連上網路後提示列消失')
 

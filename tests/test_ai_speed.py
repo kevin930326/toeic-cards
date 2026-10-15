@@ -110,7 +110,7 @@ with sync_playwright() as p:
     open_add(page, 'single')
     page.press('#addInput', 'Enter')
     close_add(page)
-    page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'budget')?.llm?.status === 'done'", timeout=10000)
+    page.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'budget')?.llm?.status === 'done'", timeout=10000)
     check(calls[0][1] == {'thinkingBudget': 0}, f'Gemini 2.5 用 thinkingBudget 0：{calls[0][1]}')
 
     # ---- 完全不接受思考設定的模型：最後不帶思考設定 ----
@@ -123,7 +123,7 @@ with sync_playwright() as p:
     open_add(page, 'single')
     page.press('#addInput', 'Enter')
     close_add(page)
-    page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'fallback')?.llm?.status === 'done'", timeout=10000)
+    page.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'fallback')?.llm?.status === 'done'", timeout=10000)
     check([c[1] for c in calls] == [{'thinkingLevel': 'minimal'}, {'thinkingLevel': 'low'}, None], f'都不支援時改成不帶思考設定：{[c[1] for c in calls]}')
 
     # ---- 生成中顯示上次請求花多久 ----
@@ -152,7 +152,7 @@ with sync_playwright() as p:
     open_add(page, 'single')
     page.press('#addInput', 'Enter')
     close_add(page)
-    page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'missingword')?.en", timeout=10000)
+    page.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'missingword')?.en", timeout=10000)
     w = words(page)['missingword']
     check(w['llm']['status'] == 'failed' and w['en'] == 'dictionary meaning of missingword' and w['src']['en'] == 'freedict',
           f"AI 失敗時用字典補英文解釋：{w['en']!r}")

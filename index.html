@@ -2,6 +2,11 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
+  <!-- 內容安全政策（CSP）：只允許從這些地方載入程式和連線；就算哪裡忘了跳脫 HTML，混進來的程式也不會執行。
+       script：自己的檔案、Firebase SDK（gstatic）、Google 登入用的腳本（apis.google.com）
+       connect：Gemini、Firebase 登入與 Firestore 都在 *.googleapis.com；英文解釋備援是 Free Dictionary
+       frame：Firebase 登入用的隱藏 iframe（authDomain）　說明見 docs/decisions.md -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.googleapis.com https://api.dictionaryapi.dev; frame-src https://toeic-cards.firebaseapp.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>多益字卡 TOEIC Cards</title>
   <meta name="description" content="只要輸入英文單字，自動產生中文、英文解釋與多益例句的背單字網站">
@@ -20,13 +25,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=onboarding-1">
-  <script>
-    // 在畫面出現前套用主題，避免閃一下白色
-    try {
-      const t = JSON.parse(localStorage.getItem('toeic-cards:settings') || '{}').theme;
-      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
-    } catch (e) {}
-  </script>
+  <!-- 在畫面出現前套用主題（一般 script，不是 module，才會在畫面出現前執行）-->
+  <script src="js/theme-init.js"></script>
 </head>
 <body>
   <header class="topbar">

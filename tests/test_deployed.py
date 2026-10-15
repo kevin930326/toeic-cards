@@ -49,7 +49,7 @@ with sync_playwright() as p:
     open_add(page, 'single')
     page.press('#addInput', 'Enter')
     close_add(page)
-    page.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words') || '[]').find((w) => w.word === 'approve')?.zh", timeout=15000)
+    page.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words') || '[]').find((w) => w.word === 'approve')?.zh", timeout=15000)
     zh = page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words')).find((w) => w.word === 'approve').zh")
     check('核准' in zh, f'字典在子路徑下可以查：{zh!r}')
 

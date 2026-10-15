@@ -43,7 +43,7 @@ def setup(browser, key=False, worker=True):
     pg.wait_for_load_state('networkidle')
     if worker:
         pg.evaluate('navigator.serviceWorker.ready')
-        pg.wait_for_function('!!navigator.serviceWorker.controller')
+        pg.wait_for_function('() => !!navigator.serviceWorker.controller')
         # SW 接手不代表初次載入的 ES modules 已快取完；離線前等待全部依賴。
         for _ in range(60):
             shell_ready = pg.evaluate("""async () => {
@@ -122,7 +122,7 @@ with sync_playwright() as p:
     check(store(pg, 'return s.getWords().length') == 101, '第一組只新增99字，已有 company 不重複建立')
     expect(pg.locator('#setScope')).to_have_value(target)
     check(pg.locator('.word-row').count() == 100, '加入後自動切換到指定單字集')
-    pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word!=='zebra').every(w=>w.zh)")
+    pg.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word!=='zebra').every(w=>w.zh)")
     check(store(pg, "return s.getWords().filter(w=>w.pack).every(w=>w.en && w.examples.length && w.collocations.length && w.src.en==='pack');"), '第一組新字立即有英文解釋、中英例句、搭配詞與來源標記')
     check(store(pg, 'return s.getWords().find(w=>w.word==="company");') == saved['word'], '既有單字的內容、來源標記與複習排程完全保留')
     check(pg.locator('#packAdd').is_disabled(), '重複加入同組不重複建立字卡或單字集')
@@ -133,13 +133,13 @@ with sync_playwright() as p:
     pg.select_option('#packGroup','2')
     check(pg.locator('#packWordList li').filter(has_text='résumé').count() == 1, '預覽保留重音拼字 résumé')
     pg.click('#packAdd')
-    pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).find(w=>w.word==='résumé')?.zh")
+    pg.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).find(w=>w.word==='résumé')?.zh")
     check(store(pg, "return s.getWords().find(w=>w.word==='résumé').zh;") == '履歷', 'résumé 直接加入且有正確內建詞義，不經貼上拆字')
     pg.select_option('#packGroup','all')
     check(pg.locator('#packWordList li').count() == 1000, '可以預覽全部1000字')
     pg.click('#packAdd')
-    pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).length===1001")
-    pg.wait_for_function("JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word!=='zebra').every(w=>w.zh)", timeout=30000)
+    pg.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).length===1001")
+    pg.wait_for_function("() => JSON.parse(localStorage.getItem('toeic-cards:words')).filter(w=>w.word!=='zebra').every(w=>w.zh)", timeout=30000)
     check(pg.locator('.word-row').count() == 1000, '全部加入後集內剛好1000字，原有其他單字保留')
     check(store(pg, 'return s.getWords().filter(w=>w.pack && w.autoGenerate===false).length;') == 999 and not requests, '999個新字直接帶入預製內容，沒有呼叫 Gemini')
     check(pg.locator('#packAdd').is_disabled(), '再次加入全部時停用按鈕，沒有重複資料')
