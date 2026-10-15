@@ -1,5 +1,8 @@
 # AGENTS.md（給 Codex 等 AI 程式助手）
 
+> **這個專案是使用者的作品集**，公開放在 GitHub（https://github.com/kevin930326/toeic-cards），同時也是使用者自己準備多益用的工具。
+> 開發過程本身也是作品集的一部分：commit 歷史、`docs/dev-log/`、`docs/decisions.md`、README 都會被別人看到，請維持一樣的品質和風格。
+
 這個專案原本用 Claude Code 開發，**所有專案規則都寫在 [CLAUDE.md](CLAUDE.md)**。開始工作前請先完整讀過 CLAUDE.md，裡面的規則一樣適用，特別是：
 
 - 用**繁體中文**和使用者溝通；使用者是初學者，解釋要淺白
