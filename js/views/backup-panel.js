@@ -1,7 +1,8 @@
 import { profileStorage } from '../profile-storage.js';
 // 設定頁的「備份與還原」區塊：匯出 JSON、匯入（先預覽，再選合併或取代）
 import { getWords, getSettings, replaceWords, replaceSettings, getDefaultSettings } from '../store.js';
-import { getLog, replaceLog } from '../log.js';
+import { getLog, getLogLedger } from '../log.js';
+import { restoreBackup, currentData } from '../restore-data.js';
 import { getMistakes, replaceMistakes } from '../mistakes.js';
 import { buildBackup, backupFileName, parseBackup, mergeBackup } from '../backup.js';
 import { esc, toast, confirmAction } from '../ui.js';
@@ -21,14 +22,6 @@ function fmtTime(ms) {
 }
 
 // 把資料寫回去。順序很重要：先換單字，錯題本才不會被「單字不存在」的清理機制刪掉
-function apply({ words, mistakes, log, settings, wordSets }, replace = false) {
-  if (replace) restoreSetRecords(wordSets || []);
-  else replaceSetRecords(wordSets || []);
-  replaceWords(words);
-  replaceMistakes(mistakes);
-  replaceLog(log);
-  if (settings) replaceSettings(settings);
-}
 
 export function renderBackupPanel(container) {
   let pending = null;   // 讀進來、還沒套用的備份
@@ -58,7 +51,7 @@ export function renderBackupPanel(container) {
 
   function exportNow() {
     const now = Date.now();
-    const backup = buildBackup({ words: getWords(), settings: getSettings(), log: getLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, now);
+    const backup = buildBackup({ ...currentData() }, now);
     const blob = new Blob([JSON.stringify(backup, null, 1)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -92,7 +85,7 @@ export function renderBackupPanel(container) {
 
   function drawPreview() {
     const b = pending;
-    const dry = mergeBackup({ words: getWords(), log: getLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, b);
+    const dry = mergeBackup(currentData(), b);
     const when = b.exportedAt ? fmtTime(Date.parse(b.exportedAt)) : '不明';
     container.querySelector('#importArea').innerHTML = `
       <div class="import-preview">
@@ -101,6 +94,7 @@ export function renderBackupPanel(container) {
           ${b.skipped ? `<span class="muted">・略過 ${b.skipped} 筆格式不正確或重複的資料</span>` : ''}</p>
         <p class="import-merge">選「合併」會：新增 <strong>${dry.summary.added}</strong> 個字、更新 <strong>${dry.summary.updated}</strong> 個字（備份裡比較新）、
           <strong>${dry.summary.kept}</strong> 個字保留目前的版本；學習紀錄與錯題本合在一起。</p>
+        ${b.legacyLog ? '<p class="pwa-note">這是舊版備份，沒有紀錄來源。為避免重複計算，合併時各日取較大數值，並建立新的同步基準；無法精確還原互不重疊的來源，請先匯出目前資料。</p>' : '<p class="hint-text">紀錄保留來源，同一份備份重複匯入不會重複加總。取代會建立新的同步基準，舊雲端紀錄不會再加回。</p>'}
         <div class="backup-actions">
           <button class="btn btn-primary" type="button" id="doMerge">合併到目前資料</button>
           <button class="btn btn-outline danger" type="button" id="doReplace">用備份取代全部</button>
@@ -108,8 +102,8 @@ export function renderBackupPanel(container) {
         </div>
       </div>`;
     container.querySelector('#doMerge').addEventListener('click', () => {
-      const merged = mergeBackup({ words: getWords(), log: getLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, pending);
-      apply(merged);
+      let merged;
+      try { merged = restoreBackup(pending); } catch(err) { toast(err.message,'error'); return; }
       pending = null;
       toast(`已合併：新增 ${merged.summary.added} 個字、更新 ${merged.summary.updated} 個字`);
       draw();
@@ -117,13 +111,15 @@ export function renderBackupPanel(container) {
     container.querySelector('#doReplace').addEventListener('click', () => {
       if (!confirmAction('確定要用備份取代目前所有資料嗎？\n目前的單字、學習紀錄、錯題本和設定都會被覆蓋。\n（建議先按「匯出備份」保存目前的資料）')) return;
       const ids = new Set(pending.words.map((w) => w.id));
-      apply({
+      try { restoreBackup({
         words: pending.words,
         mistakes: pending.mistakes.filter((m) => ids.has(m.question.wordId)),
         log: pending.log,
+        logLedger: pending.logLedger,
+        legacyLog: pending.legacyLog,
         settings: pending.settings,
         wordSets: pending.wordSets,
-      }, true);
+      }, true); } catch(err) { toast(err.message,'error'); return; }
       const n = pending.words.length;
       pending = null;
       toast(`已還原備份：${n} 個字`);

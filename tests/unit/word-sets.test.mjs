@@ -69,7 +69,7 @@ test('constructor 等單字不受 JavaScript 物件原型影響', () => {
 test('新版備份保留空單字集、分類與移出紀錄，舊版仍可讀', () => {
   const data = { words, log: {}, settings: {}, mistakes: [], wordSets: [set(), set('empty', { members: {} })] };
   const exported = buildBackup(data);
-  assert.equal(exported.version, 2);
+  assert.equal(exported.version, 3);
   const result = parseBackup(JSON.stringify(exported), {});
   assert.deepEqual(result.backup.wordSets, mergeSets([], data.wordSets));
   const legacy = parseBackup(JSON.stringify({ ...exported, version: 1, data: { ...data, wordSets: undefined } }), {});

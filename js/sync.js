@@ -11,7 +11,9 @@ import {
 } from './store.js';
 import { profileStorage, profileOwner, profileIsCurrent, pinProfileLayout, hasGuestData, readProfile, writeProfile, activateProfile } from './profile-storage.js';
 import { mergeBackup, parseBackup, buildBackup } from './backup.js';
-import { getOwnLog, setRemoteLogs, onLogChange } from './log.js';
+import { mergeLedgers } from './log-ledger.js';
+import { getOwnLog, getLogLedger, setLogLedger, onLogChange } from './log.js';
+export { deviceId } from './device-id.js';
 import { getMistakes, mistakesUpdatedAt, setMistakesFromSync } from './mistakes.js';
 import {
   applyRemoteWords, pendingChanges, pickSyncedSettings, remoteSettings, remoteLogs, remapMistakes, newerSide,
@@ -77,7 +79,7 @@ export function resolveGuestData(merge) {
   if (merge) {
     const guest = readProfile('');
     const clean = parseBackup(JSON.stringify(buildBackup({ words: guest.words || [], settings: {},
-      log: guest.log || {}, mistakes: guest.mistakes || [], wordSets: guest.wordSets || [] })), getDefaultSettings()).backup;
+      log: guest.log || {}, logLedger: getLogLedger(), mistakes: guest.mistakes || [], wordSets: guest.wordSets || [] })), getDefaultSettings()).backup;
     // 先載入帳號的雲端資料，再合併訪客；不能用空白本機 meta 覆蓋既有帳號。
     writeProfile(uid, { pendingGuest: clean });
   }
@@ -113,14 +115,7 @@ function emit(patch) {
   for (const fn of listeners) fn(syncState());
 }
 
-export function deviceId() {
-  let id = ls.get(DEVICE_KEY, '');
-  if (!id) {
-    id = (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`).slice(0, 36);
-    ls.set(DEVICE_KEY, id);
-  }
-  return id;
-}
+export function invalidateSync() { invalidateSession(); }
 
 function loadState(uid) {
   const all = ls.get(STATE_KEY, {});
@@ -336,11 +331,22 @@ async function doSync() {
   const uid = user.uid;
   try {
     const st = loadState(uid);
+    const restoring = !!profileStorage.getItem('toeic-cards:restoreIntent');
 
     // 1. 拉下雲端有變動的單字，套用到本機
     //    （套用和寫入之間沒有任何等待，不會蓋掉同步途中使用者做的修改，見 decisions #31）
-    const { docs, maxSyncedAt } = await remote.pullWords(uid, st.lastPullAt);
+    const { docs, maxSyncedAt } = await remote.pullWords(uid, restoring ? 0 : st.lastPullAt);
     check();
+    if (restoring) {
+      const now = Math.max(Date.now(),...docs.map(d=>(Number(d.updatedAt)||0)+1),...getWords().map(w=>w.updatedAt+1));
+      const wanted = new Set(getWords().map(w=>w.word));
+      const tombs = {...getTombstones()};
+      for (const d of docs) if (!wanted.has(d.word)) tombs[d.word]=now;
+      for (const word of wanted) delete tombs[word];
+      setTombstones(tombs);
+      replaceWords(getWords().map(w=>({...w,updatedAt:now})));
+      st.pushed = {};
+    }
     const applied = applyRemoteWords(getWords(), getTombstones(), docs);
     for (const d of docs) st.pushed[d.word] = Math.max(st.pushed[d.word] || 0, Number(d.updatedAt) || 0);
     st.lastPullAt = maxSyncedAt;
@@ -362,16 +368,16 @@ async function doSync() {
     }
 
     // 3. 每日紀錄：上傳自己的，拉下其他裝置的（顯示時加總）
-    const me = deviceId();
-    await remote.pushLog(uid, me, getOwnLog());
+    const ledger = await remote.syncLogLedger(uid, getLogLedger(), !!profileStorage.getItem('toeic-cards:logReset'), active);
     check();
-    const logs = await remote.pullLogs(uid);
-    check();
-    setRemoteLogs(remoteLogs(logs, me));
+    const latest = getLogLedger();
+    setLogLedger(mergeLedgers(ledger, latest.epoch.id === ledger.epoch.id ? {...latest,epoch:ledger.epoch} : latest));
+    profileStorage.removeItem('toeic-cards:logReset');
 
     // 4. 設定：比較新的勝出
     const rs = await remote.getMeta(uid, 'settings');
     check();
+    if (restoring) setSettingsUpdatedAt(Math.max(Date.now(),(rs?.updatedAt||0)+1));
     const sSide = newerSide(settingsUpdatedAt(), rs);
     if (sSide === 'pull') {
       applying = true;
@@ -385,23 +391,26 @@ async function doSync() {
     // 5. 錯題本：比較新的勝出（題目裡的單字 id 換成本機的）
     const rm = await remote.getMeta(uid, 'mistakes');
     check();
+    if (restoring) setMistakesFromSync(getMistakes(),Math.max(Date.now(),(rm?.updatedAt||0)+1));
     const mSide = newerSide(mistakesUpdatedAt(), rm);
     if (mSide === 'pull') setMistakesFromSync(remapMistakes(rm.value, getWords()), rm.updatedAt);
     else if (mSide === 'push') await remote.setMeta(uid, 'mistakes', getMistakes(), mistakesUpdatedAt());
     check();
 
     // 6. 單字集與每個成員分別合併；等待網路期間的新修改也要保留。
-    const sets = await remote.syncWordSets(uid, getSetRecords(), active);
+    const sets = await remote.syncWordSets(uid, getSetRecords(), active, restoring);
     check();
     applying = true;
     try { mergeSetRecords(sets); } finally { applying = false; }
+    if (restoring) profileStorage.removeItem('toeic-cards:restoreIntent');
 
     const guest = JSON.parse(profileStorage.getItem('toeic-cards:pendingGuest') || 'null');
     if (guest) {
       if (!flushWords()) throw new Error('帳號字卡尚未存好，訪客資料仍保留，請釋放空間後重試。');
-      const result = mergeBackup({ words: getWords(), log: getOwnLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, guest);
+      if (guest.logLedger) guest.logLedger.epoch = getLogLedger().epoch;
+      const result = mergeBackup({ words: getWords(), log: getOwnLog(), logLedger:getLogLedger(), mistakes: getMistakes(), wordSets: getSetRecords() }, guest);
       writeProfile(uid, { words: result.words, log: result.log, mistakes: result.mistakes,
-        wordSets: result.wordSets, mistakesAt: Date.now() });
+        ...(result.logLedger ? {logLedger:result.logLedger} : {}), wordSets: result.wordSets, mistakesAt: Date.now() });
       profileStorage.removeItem('toeic-cards:pendingGuest');
       location.reload();
       return;

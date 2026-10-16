@@ -2,7 +2,8 @@
 const OWNER = 'toeic-cards:profileOwner';
 const MIGRATED = 'toeic-cards:profiles-v1';
 export const PROFILE_KEYS = ['words', 'settings', 'wordSets', 'deleted', 'log', 'remoteLogs',
-  'settingsAt', 'mistakes', 'mistakesAt', 'lastBackup', 'celebrated', 'readings', 'gemini-key', 'thinking'];
+  'settingsAt', 'mistakes', 'mistakesAt', 'lastBackup', 'celebrated', 'readings', 'gemini-key', 'thinking',
+  'logLedger', 'logOrigin', 'logReset', 'restoreIntent', 'pendingGuest'];
 let raw;
 try { raw = globalThis.localStorage; } catch { /* 被封鎖時仍讓網站可開啟 */ }
 const parse = (s, fallback) => { try { return JSON.parse(s) ?? fallback; } catch { return fallback; } };

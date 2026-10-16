@@ -41,6 +41,8 @@ def seed(page, words, log, mistakes, settings, key=None):
     }""", [words, log, mistakes, settings, key])
 
 def store(page, k):
+    if k == 'log':
+        return page.evaluate("import('/js/log.js').then(m=>m.getLog())")
     return page.evaluate(f"JSON.parse(localStorage.getItem('toeic-cards:{k}') || 'null')")
 
 def new_page(browser):
@@ -78,7 +80,7 @@ with sync_playwright() as p:
     check(d.suggested_filename.startswith('toeic-cards-backup-') and d.suggested_filename.endswith('.json'), f'檔名 {d.suggested_filename}')
     raw = open(path, encoding='utf-8').read()
     data = json.loads(raw)
-    check(data['app'] == 'toeic-cards' and data['version'] == 2 and data['counts'] == {'words': 4, 'days': 2, 'mistakes': 1, 'wordSets': 0}, f"備份格式 {data['counts']}")
+    check(data['app'] == 'toeic-cards' and data['version'] == 3 and data['counts'] == {'words': 4, 'days': 2, 'mistakes': 1, 'wordSets': 0}, f"備份格式 {data['counts']}")
     check(KEY not in raw and 'gemini-key' not in raw, '備份檔不含 Gemini 金鑰')
     check(data['data']['words'][0]['srs']['interval'] == 3 and data['data']['settings']['accent'] == 'en-GB', '複習排程、設定都有匯出')
     check('上次備份' in a.locator('.backup-now').inner_text(), '匯出後顯示上次備份時間')
@@ -110,14 +112,12 @@ with sync_playwright() as p:
     check('1 題' in b.locator('#openMistakes').inner_text(), '還原後錯題本可以使用')
 
     # ======== 裝置 B 多學一點，再把 A 的備份「合併」進來 ========
-    b.evaluate("""() => {
-      const ws = JSON.parse(localStorage.getItem('toeic-cards:words'));
-      ws.find((w) => w.word === 'approve').zh = 'v. 在 B 改過'; ws.find((w) => w.word === 'approve').updatedAt = 999;
-      ws.unshift({ ...ws[0], id: 'id-submit', word: 'submit', zh: 'v. 提交', updatedAt: 500 });
-      localStorage.setItem('toeic-cards:words', JSON.stringify(ws));
-      const log = JSON.parse(localStorage.getItem('toeic-cards:log'));
-      log['2026-10-14'].reviews = 20;
-      localStorage.setItem('toeic-cards:log', JSON.stringify(log));
+    b.evaluate("""async () => {
+      const s=await import('/js/store.js');
+      s.updateWord(s.getWords().find(w=>w.word==='approve').id,{zh:'v. 在 B 改過'});
+      s.addWords(['submit'],{autoGenerate:false}); s.flushWords();
+      const log=await import('/js/log.js');
+      for(let i=0;i<15;i++) log.recordReview('good',false,new Date('2026-10-14T12:00:00').getTime());
     }""")
     b.goto(URL + '#/settings')
     b.reload()
