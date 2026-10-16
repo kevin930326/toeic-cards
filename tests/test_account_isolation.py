@@ -12,7 +12,7 @@ from shots import doc_shot
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 PROJECT = 'demo-toeic'
 CFG = """window.__toeicFirebaseConfig = {apiKey:'demo-key', authDomain:'demo-toeic.firebaseapp.com',
-projectId:'demo-toeic',appId:'demo-app',emulator:{auth:'http://127.0.0.1:9099',firestoreHost:'127.0.0.1',firestorePort:8080}};"""
+projectId:'demo-toeic',appId:'demo-app',emulator:{auth:'http://127.0.0.1:9099',firestoreHost:'127.0.0.1',firestorePort:8090}};"""
 
 def wait_idle(page):
     until = time.time() + 30
@@ -128,7 +128,7 @@ export async function createFirebaseRemote(config) {
     login(page, users[2][0], merge=True)
     assert words(page) == ['visitor'], '只有明確確認才合併訪客資料'
     # 雲端 B 的字卡應仍是空的（不是只在畫面隱藏）。
-    req = urllib.request.Request(f'http://127.0.0.1:8080/v1/projects/{PROJECT}/databases/(default)/documents/users/{users[1][1]}/words', headers={'Authorization':'Bearer owner'})
+    req = urllib.request.Request(f'http://127.0.0.1:8090/v1/projects/{PROJECT}/databases/(default)/documents/users/{users[1][1]}/words', headers={'Authorization':'Bearer owner'})
     with urllib.request.urlopen(req) as res:
         assert not json.load(res).get('documents'), 'B 雲端不得收到 A 的字卡'
     other = context.new_page()

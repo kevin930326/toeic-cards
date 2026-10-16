@@ -48,7 +48,8 @@ npx firebase-tools emulators:start --only auth,firestore --project demo-toeic
 
 ## Windows 上的坑
 
-- 停掉背景伺服器後，子程序常常沒被關掉，會繼續佔住連接埠（http.server 的 8123；模擬器的 9099、8080、4400），下次啟動就會失敗或 `ERR_EMPTY_RESPONSE`
+- 本機連接埠 8080 保留給其他專案，本專案一律使用 8090，不得使用 8080（Firestore 模擬器在 `firebase.json` 設為 8090）
+- 停掉背景伺服器後，子程序常常沒被關掉，會繼續佔住連接埠（http.server 的 8123；模擬器的 9099、8090、4400），下次啟動就會失敗或 `ERR_EMPTY_RESPONSE`
 - 停掉後用 `Get-NetTCPConnection -State Listen` 檢查這些連接埠，確認是自己開的程序（命令列含 http.server、firebase、firestore）再 `Stop-Process`
 
 ## 其他

@@ -5,7 +5,7 @@ from onboarding_helpers import existing_user
 from sync_helpers import sync_state
 from shots import doc_shot
 URL=os.environ.get('BASE_URL','http://127.0.0.1:8123/')
-CFG="""window.__toeicFirebaseConfig={apiKey:'demo-key',authDomain:'demo-toeic.firebaseapp.com',projectId:'demo-toeic',appId:'demo-app',emulator:{auth:'http://127.0.0.1:9099',firestoreHost:'127.0.0.1',firestorePort:8080}};"""
+CFG="""window.__toeicFirebaseConfig={apiKey:'demo-key',authDomain:'demo-toeic.firebaseapp.com',projectId:'demo-toeic',appId:'demo-app',emulator:{auth:'http://127.0.0.1:9099',firestoreHost:'127.0.0.1',firestorePort:8090}};"""
 email=f'conflict-{time.time_ns()}@test.invalid'
 req=urllib.request.Request('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-key',data=json.dumps({'email':email,'password':'test-password','returnSecureToken':True}).encode(),headers={'Content-Type':'application/json'})
 with urllib.request.urlopen(req):pass

@@ -4,7 +4,7 @@ from sync_helpers import sync_state
 
 使用 Firebase 官方的本機模擬器（真的 Firebase SDK，不會碰到正式專案），並套用專案的 firestore.rules：
   npx firebase-tools emulators:start --only auth,firestore --project demo-toeic
-  （在專案根目錄執行，設定檔是根目錄的 firebase.json；auth 9099、firestore 8080）
+  （在專案根目錄執行，設定檔是根目錄的 firebase.json；auth 9099、firestore 8090）
 
 每個「裝置」是一個獨立的瀏覽器環境（各自的 localStorage），模擬電腦、手機、別人的裝置。
 """
@@ -16,7 +16,7 @@ os.makedirs(OUT, exist_ok=True)
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 PROJECT = 'demo-toeic'
 AUTH = 'http://127.0.0.1:9099'
-FS = 'http://127.0.0.1:8080'
+FS = 'http://127.0.0.1:8090'
 errors = []
 
 def check(cond, msg):
@@ -25,7 +25,7 @@ def check(cond, msg):
         errors.append(msg)
 
 CFG = f"""window.__toeicFirebaseConfig = {{ apiKey: 'demo-key', authDomain: '{PROJECT}.firebaseapp.com', projectId: '{PROJECT}', appId: 'demo-app',
-  emulator: {{ auth: '{AUTH}', firestoreHost: '127.0.0.1', firestorePort: 8080 }} }};
+  emulator: {{ auth: '{AUTH}', firestoreHost: '127.0.0.1', firestorePort: 8090 }} }};
 if (window.speechSynthesis) speechSynthesis.speak = () => {{}};"""
 
 def http(method, url, headers=None):
