@@ -20,6 +20,7 @@ const DEFAULT_SETTINGS = {
   quizScope: 'all',     // 測驗範圍：'all' | 'unfamiliar'
   quizCount: 10,        // 每次測驗題數
   part5Fresh: false,    // Part 5 每次都出新題目（會用 AI 額度）
+  part5Prefetch: true,  // 有金鑰時在背景先出好 Part 5 題目（每天有上限；只存在這台裝置）
   statsDays: 30,        // 統計頁的期間：7 | 30 | 90
   dailyGoal: 20,        // 每日目標：複習＋測驗合計題數，達標才算打卡
   activeSetId: '',      // 本機目前選的單字集：空字串全部、unfiled 未分類

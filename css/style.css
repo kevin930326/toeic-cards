@@ -922,6 +922,8 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .mode-desc { grid-area: desc; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
 .mode-reason { margin: -8px 16px 14px 78px; font-size: 12px; color: var(--accent); }
 .mode-reason a { color: var(--accent); font-weight: 700; }
+.mode-stock { color: var(--ink-soft); }
+.quiz-pending { margin-left: 4px; font-size: 12px; color: var(--ink-faint); }
 .mistake-entry {
   display: flex; align-items: center; gap: 10px;
   width: 100%;

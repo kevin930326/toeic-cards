@@ -5,7 +5,7 @@ import { esc, toast, confirmAction } from '../ui.js';
 import { speak, canSpeak, speakerIcon, resolveAccent, accentLabel } from '../speech.js';
 import { hasApiKey, onRateWait } from '../llm.js';
 import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK, SENTENCE_MODES } from '../quiz.js?v=forms-1';
-import { preparePart5 } from '../part5.js?v=forms-1';
+import { preparePart5, scheduleTopUp, part5Stock } from '../part5.js?v=part5-fast-1';
 import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v=review-fixes-1';
 import { normalizeWord } from '../parse.js';
 import { loadReadings } from './reading.js?v=badge-1';
@@ -33,6 +33,9 @@ function hasFormSource(w) {
 }
 const modeTitle = (mode) => (MODE_INFO[mode] ? MODE_INFO[mode].title : '錯題重做');
 const LETTERS = ['A', 'B', 'C', 'D'];
+// 題號：AI 還在出後面的題目時，總數後面加「＋」
+const progressText = (s) => `<strong>${Math.min(s.index + 1, s.questions.length)}</strong> / ${s.questions.length}${s.pending ? '<span class="quiz-pending" title="AI 還在出後面的題目">＋出題中</span>' : ''}`;
+const nextLabel = (s) => (s.index + 1 < s.questions.length ? '下一題 →' : s.pending ? '下一題（出題中）→' : '看結果');
 
 // 頁面狀態（切換頁面回來還在）
 const state = { view: 'home', session: null, loading: null, error: null };
@@ -50,8 +53,9 @@ function reshuffle(q) {
   return { ...q, options, answerIndex: options.indexOf(answer),extra:q.extra ? {...q.extra,optionReasons:options.map(o=>q.extra.optionReasons?.[q.options.indexOf(o)]||'')} : undefined };
 }
 
-function newSession(mode, questions, { fromMistakes = false } = {}) {
-  state.session = { mode, questions, index: 0, results: [], answered: null, fromMistakes };
+// pending：AI 還在背景出後面的題目（Part 5 先開考、邊考邊補）
+function newSession(mode, questions, { fromMistakes = false, pending = false } = {}) {
+  state.session = { mode, questions, index: 0, results: [], answered: null, fromMistakes, pending };
   state.view = questions.length ? 'question' : 'home';
 }
 
@@ -67,6 +71,7 @@ export function renderQuiz(root) {
     if (state.view === 'question' && state.session) drawQuestion();
     else if (state.view === 'result' && state.session) drawResult();
     else if (state.view === 'loading') drawLoading();
+    else if (state.view === 'waitNext' && state.session) drawWaitNext();
     else if (state.view === 'mistakes') drawMistakes();
     else { state.view = 'home'; drawHome(); }
   }
@@ -89,6 +94,7 @@ export function renderQuiz(root) {
     const cards = Object.entries(MODE_INFO).map(([mode, info]) => {
       let check = checkMode(mode, all, targets);
       if (mode === 'part5' && check.ok && !hasApiKey()) check = { ok: false, reason: '需要 Gemini 金鑰', needKey: true };
+      const stock = mode === 'part5' && check.ok ? part5Stock() : null;
       if (mode === 'forms' && check.ok && !hasApiKey() && !targets.some(hasFormSource)) {
         check = { ok: false, reason: '目前範圍沒有內建題目的字（多益 1000 單字包）；自己加的字需要 Gemini 金鑰', needKey: true };
       }
@@ -101,6 +107,7 @@ export function renderQuiz(root) {
             <span class="mode-desc">${esc(info.desc)}</span>
           </button>
           ${check.ok ? '' : `<p class="mode-reason">${esc(check.reason)}${check.needKey ? '，<a href="#/settings">前往設定</a>' : ''}</p>`}
+          ${stock?.ready ? `<p class="mode-reason mode-stock">已先備好 ${stock.ready} 個字的題目，這些字不用等 AI</p>` : ''}
         </div>`;
     }).join('');
 
@@ -175,15 +182,25 @@ export function renderQuiz(root) {
     }
     // Part 5：需要時呼叫 Gemini 出題
     state.view = 'loading';
-    state.loading = { done: 0, total: 0, waiting: 0 };
+    state.loading = { done: 0, total: 0, waiting: 0, startedAt: Date.now(), phase: '', batch: 0, batches: 0 };
     draw();
     controller = new AbortController();
+    const myController = controller;
     try {
       const options = {
         fresh: !!getSettings().part5Fresh,
         signal: controller.signal,
-        onProgress: (p) => { Object.assign(state.loading, p); if (state.view === 'loading') draw(); },
+        onProgress: (p) => {
+          if (!state.loading) return;
+          if (p.phase && p.phase !== state.loading.phase) state.loading.phaseAt = Date.now();
+          Object.assign(state.loading, p);
+          if (state.view === 'loading') draw();
+        },
       };
+      if (mode === 'part5') {
+        await startPart5Progressive(targets, all, count, options, myController);
+        return;
+      }
       let result;
       if (mode === 'forms') {
         result = await prepareForms(targets, count, options);
@@ -192,8 +209,6 @@ export function renderQuiz(root) {
         }
         if (result.bankUnavailable) toast('內建題庫暫時無法載入，這次只使用已存題目；其他字請連網後重試，未使用 AI 額度。');
         else if (result.skipped && result.questions.length < count) toast(`有 ${result.skipped} 個字沒有內建題目，填入 Gemini 金鑰後也能考`);
-      } else {
-        result = await preparePart5(pickTargets('part5', targets, count), all, options);
       }
       const { questions, failed } = result;
       if (!questions.length) throw new Error('AI 沒有成功出題，請稍後再試');
@@ -203,32 +218,122 @@ export function renderQuiz(root) {
       state.view = 'home';
       state.error = err.kind === 'aborted' ? null : err.message;
     } finally {
-      controller = null;
-      state.loading = null;
+      if (controller === myController) controller = null;
+      if (mode !== 'part5') state.loading = null;
     }
-    draw();
+    if (mode !== 'part5') draw();
+  }
+
+  // Part 5：已存的題目馬上能考；其餘每出好一批就加進測驗，不必等全部出完
+  async function startPart5Progressive(targets, all, count, options, myController) {
+    let session = null;
+    const onQuestions = (qs) => {
+      if (!session) {
+        newSession('part5', qs, { pending: true });
+        session = state.session;
+        state.loading = null;
+        draw();
+        return;
+      }
+      if (state.session !== session) return;   // 使用者已經離開這次測驗
+      session.questions.push(...qs);
+      if (state.view === 'waitNext') { state.view = 'question'; draw(); }
+      else if (state.view === 'question') updateQuizProgress();
+    };
+    let result;
+    try {
+      result = await preparePart5(pickTargets('part5', targets, count), all, { ...options, onQuestions });
+    } catch (err) {
+      if (!session) {
+        state.view = 'home';
+        state.error = err.kind === 'aborted' ? null : err.message;
+        state.loading = null;
+        draw();
+      }
+      return;
+    } finally {
+      if (session) session.pending = false;
+      scheduleTopUp();   // 這次用掉的存題，之後在背景慢慢補回來
+    }
+    if (!session) {
+      state.view = 'home';
+      state.loading = null;
+      state.error = result.rejected
+        ? `AI 出的 ${result.rejected} 題都沒通過第二輪檢查（可能有兩個答案都說得通），請再試一次或到設定換模型`
+        : 'AI 沒有成功出題，請稍後再試';
+      draw();
+      return;
+    }
+    if (state.session !== session) return;
+    if (result.error) toast(`後面的題目沒出完：${result.error.message}`, 'error');
+    else if (result.failed.length) toast(`有 ${result.failed.length} 個字這次沒出成題目${result.rejected ? `（${result.rejected} 題沒通過 AI 檢查）` : ''}，先略過`);
+    if (state.view === 'waitNext') { state.view = 'result'; draw(); }
+    else if (state.view === 'question') updateQuizProgress();
+  }
+
+  // 只更新題號和下一題按鈕（不重畫，避免打斷作答）
+  function updateQuizProgress() {
+    const s = state.session;
+    const el = root.querySelector('.quiz-progress');
+    if (s && el) el.innerHTML = progressText(s);
+    const btn = root.querySelector('#next');
+    if (s && btn) btn.textContent = nextLabel(s);
   }
 
   // ---------- AI 出題中 ----------
+  const PHASE_TEXT = { generate: 'AI 出題中（1/2）', review: 'AI 檢查題目中（2/2）' };
   function drawLoading() {
     const l = state.loading || { done: 0, total: 0, waiting: 0 };
-    const pct = l.total ? Math.round((l.done / l.total) * 100) : 0;
+    const pct = l.total ? Math.round(((l.done + (l.phase === 'review' ? 0.5 * Math.min(l.total - l.done, l.batch === 1 ? 5 : 10) : 0)) / l.total) * 100) : 0;
+    const title = l.total ? (PHASE_TEXT[l.phase] || 'AI 出題中…') : '準備題目中…';
+    const detail = l.total
+      ? `${l.batches > 1 ? `第 ${Math.max(1, l.batch)} / ${l.batches} 批・` : ''}共 ${l.total} 個字要出新題目，第一批出好就先開始`
+      : '正在準備題目';
     root.innerHTML = `
       <section class="page">
         <div class="empty-state loading-state">
-          <p class="empty-title">${l.total ? 'AI 出題中…' : '準備題目中…'}</p>
-          <p class="muted" id="loadText">${l.total ? `正在為 ${l.total} 個字出新題目（每 10 題一次請求）` : '正在準備題目'}</p>
+          <p class="empty-title" id="loadTitle">${esc(title)}</p>
+          <p class="muted" id="loadText">${esc(detail)}</p>
           <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
+          <p class="ai-sub" id="elapsedText"></p>
           <p class="ai-sub" id="waitText">${l.waiting ? `為了不超過免費額度，等待 ${l.waiting} 秒…` : ''}</p>
+          ${l.total ? '<p class="hint-text">每批要送兩次請求：先出題，再請 AI 檢查有沒有兩個答案都對。有金鑰時網站會在背景先出好題目，下次就不用等。</p>' : ''}
           <button class="btn btn-ghost" type="button" id="cancel">取消</button>
         </div>
       </section>`;
     root.querySelector('#cancel').addEventListener('click', () => controller?.abort());
-    unsubWait = onRateWait((sec) => {
+    const tick = () => {
+      const el = root.querySelector('#elapsedText');
+      if (!el || !state.loading) return;
+      const sec = Math.floor((Date.now() - (state.loading.phaseAt || state.loading.startedAt || Date.now())) / 1000);
+      el.textContent = l.total && sec >= 3 ? `這個階段已經 ${sec} 秒（AI 回覆通常要 10–60 秒）` : '';
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
+    const unsubRate = onRateWait((sec) => {
       if (state.loading) state.loading.waiting = sec;
       const el = root.querySelector('#waitText');
       if (el) el.textContent = sec ? `為了不超過免費額度，等待 ${sec} 秒…` : '';
     });
+    unsubWait = () => { clearInterval(timer); unsubRate(); };
+  }
+
+  // ---------- 已出好的題目答完了，等 AI 出下一題 ----------
+  function drawWaitNext() {
+    const s = state.session;
+    root.innerHTML = `
+      <section class="page page-quiz">
+        <div class="quiz-head">
+          <span class="quiz-mode">${esc(modeTitle(s.mode))}</span>
+          <span class="quiz-progress">${progressText(s)}</span>
+          <button class="btn btn-ghost btn-sm" type="button" id="quit">結束</button>
+        </div>
+        <div class="empty-state loading-state" role="status">
+          <p class="empty-title">下一題還在出題中…</p>
+          <p class="muted">AI 出好就會自動顯示；也可以先按「結束」看已作答的結果。</p>
+        </div>
+      </section>`;
+    root.querySelector('#quit').addEventListener('click', quit);
   }
 
   // ---------- 作答 ----------
@@ -291,14 +396,14 @@ export function renderQuiz(root) {
           ${!ok ? '<p class="fb-note">已標記為「不熟」，並加入錯題本</p>' : ''}
           ${ok && q.fromMistakes ? '<p class="fb-note">已從錯題本移除</p>' : ''}
         </div>
-        <button class="btn btn-primary next-btn" type="button" id="next">${s.index + 1 < s.questions.length ? '下一題 →' : '看結果'}</button>`;
+        <button class="btn btn-primary next-btn" type="button" id="next">${nextLabel(s)}</button>`;
     }
 
     root.innerHTML = `
       <section class="page page-quiz">
         <div class="quiz-head">
           <span class="quiz-mode">${esc(info.title)}${s.fromMistakes ? '・錯題重做' : ''}</span>
-          <span class="quiz-progress"><strong>${s.index + 1}</strong> / ${s.questions.length}</span>
+          <span class="quiz-progress">${progressText(s)}</span>
           <button class="btn btn-ghost btn-sm" type="button" id="quit">結束</button>
         </div>
         <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
@@ -315,10 +420,7 @@ export function renderQuiz(root) {
       speak(q.prompt.replace(BLANK, q.options[q.answerIndex])));
     root.querySelector('#fbSpeak')?.addEventListener('click', () => speak(word.word));
     root.querySelector('#next')?.addEventListener('click', next);
-    root.querySelector('#quit').addEventListener('click', () => {
-      if (s.results.length) { state.view = 'result'; } else { state.view = 'home'; state.session = null; }
-      draw();
-    });
+    root.querySelector('#quit').addEventListener('click', quit);
     root.querySelector('#reportQuestion')?.addEventListener('click',async()=>{
       if(await reportQuestion(q)) {
         s.questions.splice(s.index,1);s.answered=null;
@@ -352,9 +454,17 @@ export function renderQuiz(root) {
     if (!s || s.answered === null) return;
     s.index += 1;
     s.answered = null;
-    if (s.index >= s.questions.length) state.view = 'result';
+    if (s.index >= s.questions.length) state.view = s.pending ? 'waitNext' : 'result';
     draw();
     autoPlay();
+  }
+
+  // 結束測驗：AI 還在出後面的題目就停下來
+  function quit() {
+    const s = state.session;
+    if (s?.pending) { controller?.abort(); s.pending = false; }
+    if (s?.results.length) { state.view = 'result'; } else { state.view = 'home'; state.session = null; }
+    draw();
   }
 
   function autoPlay() {

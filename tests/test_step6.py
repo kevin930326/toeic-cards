@@ -83,7 +83,7 @@ def correct_index(page, mode_name):
     return opts.index(ans)
 
 def answer_all(page, mode_name, wrong_first=False):
-    n = int(page.locator('.quiz-progress').inner_text().split('/')[1])
+    n = int(page.locator('.quiz-progress').inner_text().split('/')[1].strip('＋ '))
     for i in range(n):
         idx = correct_index(page, mode_name)
         if wrong_first and i == 0:
@@ -193,15 +193,16 @@ with sync_playwright() as p:
     page.evaluate(f"""() => {{
       localStorage.setItem('toeic-cards:gemini-key', '{KEY}');
       const s = JSON.parse(localStorage.getItem('toeic-cards:settings') || '{{}}');
-      localStorage.setItem('toeic-cards:settings', JSON.stringify({{ ...s, llmRpm: 600 }}));
+      localStorage.setItem('toeic-cards:settings', JSON.stringify({{ ...s, llmRpm: 600, part5Prefetch: false }}));
     }}""")
     page.reload()
     page.wait_for_load_state('networkidle')
     mode['broken'] = 'deadline'
     page.click('.mode-btn[data-mode=part5]')
     page.wait_for_selector('.q-sentence', timeout=10000)
-    check(len(gemini_calls) == 1 and len(gemini_calls[0]) == 8, f'8 個字一批生成並完成另一輪覆核（{[len(c) for c in gemini_calls]}）')
-    sample = dict((t, re.findall(r'"([^"]+)"', d)) for t, d in gemini_calls[0])
+    page.wait_for_selector('.quiz-pending', state='detached', timeout=10000)   # 等背景補完後面的題目
+    check([len(c) for c in gemini_calls] == [5, 3], f'第一批 5 個字先出好就開考，其餘 3 個字邊考邊補（{[len(c) for c in gemini_calls]}）')
+    sample = dict((t, re.findall(r'"([^"]+)"', d)) for c in gemini_calls for t, d in c)
     pos = {w: p_ for w, p_, _, _ in DATA}
     check(all(len(ds) == 3 and t not in ds and all(d in pos for d in ds) for t, ds in sample.items()), '錯誤選項都來自使用者自己的字卡')
     check(all(all(pos[d] == pos[t] for d in ds) for t, ds in sample.items()), '錯誤選項優先挑同詞性的字')
@@ -227,7 +228,8 @@ with sync_playwright() as p:
     page.click('#home')
     page.click('.mode-btn[data-mode=part5]')
     page.wait_for_selector('.q-sentence', timeout=10000)
-    check(len(gemini_calls) == 2 and [t for t, _ in gemini_calls[1]] == ['deadline'], f'只為沒有題目的字呼叫 AI（{[[t for t, _ in c] for c in gemini_calls]}）')
+    page.wait_for_selector('.quiz-pending', state='detached', timeout=10000)   # 等背景補完後面的題目
+    check(len(gemini_calls) == 3 and [t for t, _ in gemini_calls[2]] == ['deadline'], f'只為沒有題目的字呼叫 AI（{[[t for t, _ in c] for c in gemini_calls]}）')
     check(page.locator('.quiz-progress').inner_text() == '1 / 8', '8 題')
     page.click('#quit')
     check(page.locator('.mode-grid').count() == 1, '還沒作答就結束 → 直接回測驗首頁')
@@ -236,7 +238,8 @@ with sync_playwright() as p:
     page.check('#fresh')
     page.click('.mode-btn[data-mode=part5]')
     page.wait_for_selector('.q-sentence', timeout=10000)
-    check(len(gemini_calls) == 3 and len(gemini_calls[2]) == 8, '出新題目時全部重新出題')
+    page.wait_for_selector('.quiz-pending', state='detached', timeout=10000)   # 等背景補完後面的題目
+    check(len(gemini_calls) == 5 and len(gemini_calls[3]) + len(gemini_calls[4]) == 8, '出新題目時全部重新出題')
     check(len(words(page)['approve']['part5']) == 2, '舊題目保留，每個字最多存 3 題')
     page.click('#quit')
     page.uncheck('#fresh')

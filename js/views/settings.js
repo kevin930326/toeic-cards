@@ -3,6 +3,7 @@ import { getSettings, updateSettings } from '../store.js';
 import { speak, canSpeak, ACCENTS, MIXED, accentAvailability, onVoicesChanged } from '../speech.js';
 import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel, lastRequestStats } from '../llm.js';
 import { testGeneration } from '../generate.js?v=dictionary-scale-1';
+import { STOCK_TARGET, STOCK_DAILY_BATCHES, scheduleTopUp } from '../part5.js?v=part5-fast-1';
 import { esc, toast } from '../ui.js';
 import { renderBackupPanel } from './backup-panel.js';
 import { renderPwaPanel } from './pwa-panel.js?v=dictionary-scale-1';
@@ -98,6 +99,10 @@ export function renderSettings(root) {
         <label class="check-row">
           <input type="checkbox" id="autoGenerate" ${s.autoGenerate ? 'checked' : ''}>
           <span>新增單字後自動用 AI 生成內容</span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="part5Prefetch" ${s.part5Prefetch ? 'checked' : ''}>
+          <span>在背景先出好 Part 5 題目<span class="muted">（網站開著時，替目前測驗範圍補到約 ${STOCK_TARGET} 個字有題目；每天最多 ${STOCK_DAILY_BATCHES * 2} 次請求，只在這台裝置）</span></span>
         </label>
 
         <p class="privacy">🔒 金鑰只存在這台電腦的瀏覽器裡，只會直接送給 Google，不會上傳到其他地方。
@@ -226,6 +231,10 @@ export function renderSettings(root) {
     btn.disabled = false;
   });
   root.querySelector('#autoGenerate').addEventListener('change', (e) => updateSettings({ autoGenerate: e.target.checked }));
+  root.querySelector('#part5Prefetch').addEventListener('change', (e) => {
+    updateSettings({ part5Prefetch: e.target.checked });
+    if (e.target.checked) scheduleTopUp();
+  });
 
   root.querySelectorAll('input[name="llmRpm"]').forEach((input) => {
     input.addEventListener('change', () => updateSettings({ llmRpm: Number(input.value) }));
