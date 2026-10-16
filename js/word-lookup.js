@@ -3,7 +3,7 @@ import { getWords, addWords, assignWordSet, activeSetId, subscribe } from './sto
 import { normalizeWord } from './parse.js';
 import { lookupLocalResult, lookupEnglish } from './dictionary.js?v=dictionary-scale-1';
 import { esc, toast, zhLines } from './ui.js';
-import { setOptions } from './set-ui.js?v=dictionary-scale-1';
+import { setOptions, bindCreateSet } from './set-ui.js?v=dictionary-scale-1';
 import { speak, canSpeak, speakerIcon } from './speech.js';
 import { lookupSuggestions } from './dictionary-suggestions.js';
 import { focusEntryInput } from './input-focus.js';
@@ -138,7 +138,7 @@ export function initWordLookup() {
           <label class="field"><span>詞性（選填）</span><input id="lookupManualPos" maxlength="60" value="${esc(manual.pos)}" placeholder="例如 v."></label>
           <label class="field"><span>英文解釋（選填）</span><textarea id="lookupManualEn" rows="2" maxlength="300">${esc(manual.en)}</textarea></label>
         </details>` : ''}
-      <div class="lookup-save"><label class="field"><span>${own ? '加入其他單字集' : '收藏到單字集'}</span><select id="lookupSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId())}</select></label>
+      <div class="lookup-save"><label class="field"><span>${own ? '加入其他單字集' : '收藏到單字集'}</span><select id="lookupSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId(), { create: true })}</select></label>
       <button class="btn btn-primary" id="lookupSave" type="button">${own ? '加入單字集' : '加入我的單字庫'}</button></div>
       ${own ? '<button class="btn btn-ghost" type="button" id="lookupOwn">查看我的字卡</button>' : ''}
       <p class="hint-text" id="lookupSaveStatus" role="status"></p></article>`;
@@ -150,6 +150,7 @@ export function initWordLookup() {
     }
     const save = result.querySelector('#lookupSave');
     const select = result.querySelector('#lookupSet');
+    bindCreateSet(select);
     const refreshSave = () => { save.disabled = !!saved(current.word) && !select.value; };
     select.addEventListener('change', refreshSave);
     refreshSave();
@@ -251,6 +252,6 @@ export function initWordLookup() {
   subscribe(() => {
     if (!dialog.open || !current) return;
     const select = result.querySelector('#lookupSet');
-    if (select) select.innerHTML = setOptions(select.value);
+    if (select) select.innerHTML = setOptions(select.value, { create: true });
   });
 }

@@ -14,7 +14,7 @@ import {
 import { speak, canSpeak, speakerIcon } from '../speech.js';
 import { getSetRecords, scopedWords, activeSetId, assignWordSet } from '../store.js';
 import { indexMembership } from '../word-sets.js?v=dictionary-scale-1';
-import { setScopeHTML, bindSetScope, refreshSetScope, setOptions } from '../set-ui.js?v=dictionary-scale-1';
+import { setScopeHTML, bindSetScope, refreshSetScope, setOptions, bindCreateSet } from '../set-ui.js?v=dictionary-scale-1';
 import { renderSetsPanel } from './sets-panel.js?v=dictionary-scale-1';
 import { renderWordPackPanel } from './word-pack-panel.js';
 
@@ -52,7 +52,7 @@ export function renderWords(root) {
         <button class="btn btn-primary" id="openAddWords" type="button">＋ 加入單字</button></div>
       <div id="wordPackPanel"></div>
       <div id="setsPanel"></div>
-      <label class="set-scope add-set-scope"><span>新增時加入</span><select id="addToSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId())}</select></label>
+      <label class="set-scope add-set-scope"><span>新增時加入</span><select id="addToSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId(), { create: true })}</select></label>
       <form class="add-form panel" id="addForm" autocomplete="off">
         <label class="field grow">
           <span>新增英文單字</span>
@@ -87,7 +87,7 @@ export function renderWords(root) {
       <div class="library-edit-tools"><button class="btn btn-outline btn-sm" id="toggleBulk" type="button" aria-expanded="false" aria-controls="bulkTools">批次整理</button><button class="btn btn-outline btn-sm" id="toggleLibraryEdit" type="button" aria-pressed="false" aria-controls="list">編輯模式</button><span class="hint-text" id="libraryEditHint">整理分類用「批次整理」；修改內容用「編輯模式」。</span></div>
       <section class="library-bulk panel" id="bulkTools" aria-label="批次整理單字" hidden>
         <div class="bulk-step"><h2>1. 勾選下方單字</h2><div class="bulk-selection"><label class="check-row"><input id="selectShown" type="checkbox"><span id="selectShownLabel">全選目前結果</span></label><button class="btn btn-ghost btn-sm" id="clearSelected" type="button">取消選取</button></div><p id="selectedCount" role="status"></p></div>
-        <div class="bulk-step"><label class="field"><span>2. 選擇要整理的單字集</span><select id="bulkSet">${setOptions()}</select></label></div>
+        <div class="bulk-step"><label class="field"><span>2. 選擇要整理的單字集</span><select id="bulkSet">${setOptions('', { create: true })}</select></label></div>
         <div class="bulk-step"><h2>3. 套用分類變更</h2><div class="bulk-actions"><button class="btn btn-primary btn-sm" id="bulkAssign" type="button">加入單字集</button><button class="btn btn-outline btn-sm" id="bulkRemove" type="button">移出單字集</button></div><p class="hint-text">加入可讓同一字屬於多個集；移出只移除分類，保留字卡與學習進度。</p></div>
         <div class="bulk-delete-zone"><div><h2>刪除字卡</h2><p class="hint-text">從單字庫及所有分類刪除，與「移出單字集」不同。</p></div><button class="btn btn-outline danger" id="bulkDelete" type="button" disabled>刪除所選字卡</button></div>
       </section>
@@ -217,6 +217,8 @@ export function renderWords(root) {
     finally { confirmingDelete = false; }
   }
   root.querySelector('#bulkDelete').addEventListener('click', () => removeWords([...selected]));
+  bindCreateSet(root.querySelector('#bulkSet'));
+  bindCreateSet(root.querySelector('#addToSet'));
   root.querySelector('#bulkSet').addEventListener('change', drawSelected);
   for (const [id, present] of [['bulkAssign', true], ['bulkRemove', false]]) {
     root.querySelector(`#${id}`).addEventListener('click', () => {
@@ -491,7 +493,7 @@ export function renderWords(root) {
     packPanel.refresh();
     for (const id of ['addToSet', 'bulkSet']) {
       const el = root.querySelector(`#${id}`);
-      el.innerHTML = setOptions(el.value);
+      el.innerHTML = setOptions(el.value, { create: true });
     }
     drawList(); drawAi(); drawPreview();
   });
