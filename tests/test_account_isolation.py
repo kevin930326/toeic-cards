@@ -6,6 +6,7 @@ import urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 from onboarding_helpers import existing_user
+from sync_helpers import sync_state
 from shots import doc_shot
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
@@ -16,7 +17,7 @@ projectId:'demo-toeic',appId:'demo-app',emulator:{auth:'http://127.0.0.1:9099',f
 def wait_idle(page):
     until = time.time() + 30
     while time.time() < until:
-        s = page.evaluate("import('/js/sync.js').then(m => m.syncState())")
+        s = sync_state(page)
         if s['status'] == 'error':
             raise AssertionError(s['error'])
         if s['user'] and s['lastSyncAt'] and s['status'] == 'idle':
@@ -33,7 +34,7 @@ def login(page, email, merge=None):
         # 首次登入尚未確認即重整，仍須停在選擇畫面，不可重新判成舊帳號資料。
         page.reload(wait_until='domcontentloaded')
         page.locator('#guestMerge').wait_for()
-        s = page.evaluate("import('/js/sync.js').then(m => m.syncState())")
+        s = sync_state(page)
         assert not s['lastSyncAt'], '未確認前不可同步'
         page.locator('#syncPanel').screenshot(path=doc_shot('41-guest-confirm.png'))
         page.locator('#guestMerge' if merge else '#guestKeep').click()

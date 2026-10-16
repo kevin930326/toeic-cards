@@ -21,3 +21,5 @@ GitHub Actions 加入語法、151 項單元、發布清單一致性與瀏覽器�
 需要一次下載完整程式與約 1000 字單字包內容，比原先首頁小快取多用空間與下載量；大型擴充字典仍按需且限量。新功能需關閉所有分頁／App 才生效。第一次尚未受控的網路載入及舊 v1 已開啟頁面無法追溯保證，首次遷移需先備份、關閉舊頁面。快取被系統清除且同版已無法下載時，要連線更新完整新版。
 
 依據 [W3C Service Workers：Activate／Try Activate](https://www.w3.org/TR/service-workers/#activation-algorithm)，採原生命週期等待，不強迫正在操作的舊頁面換版。
+
+首次 GitHub Linux 執行的 151 單元及清單檢查通過；帳號整合在切帳重新載入與讀取同步狀態同時發生時，遇到 Playwright execution context destroyed。新增共用唯讀等待，僅重試該特定導覽中斷；錯誤狀態與其他例外仍會失敗，沒有放寬資料驗收。工作流程改成 PR 與 main push，避免分支 push 與 PR 重複跑兩次。

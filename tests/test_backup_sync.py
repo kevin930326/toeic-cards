@@ -2,6 +2,7 @@
 import json, os, time, urllib.request
 from playwright.sync_api import sync_playwright
 from onboarding_helpers import existing_user
+from sync_helpers import sync_state
 from shots import doc_shot
 
 URL=os.environ.get('BASE_URL','http://127.0.0.1:8123/')
@@ -15,7 +16,7 @@ def sync(page):
     page.evaluate("import('/js/sync.js').then(m=>m.syncNow())")
     until=time.time()+25
     while time.time()<until:
-        s=page.evaluate("import('/js/sync.js').then(m=>m.syncState())")
+        s=sync_state(page)
         if s['status']=='error': raise AssertionError(s['error'])
         if s['user'] and s['lastSyncAt'] and s['status']=='idle': return
         page.wait_for_timeout(100)

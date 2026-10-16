@@ -2,6 +2,7 @@
 import json,os,time,urllib.request
 from playwright.sync_api import sync_playwright
 from onboarding_helpers import existing_user
+from sync_helpers import sync_state
 from shots import doc_shot
 URL=os.environ.get('BASE_URL','http://127.0.0.1:8123/')
 CFG="""window.__toeicFirebaseConfig={apiKey:'demo-key',authDomain:'demo-toeic.firebaseapp.com',projectId:'demo-toeic',appId:'demo-app',emulator:{auth:'http://127.0.0.1:9099',firestoreHost:'127.0.0.1',firestorePort:8080}};"""
@@ -12,7 +13,7 @@ def sync(pg):
     pg.evaluate("import('/js/sync.js').then(m=>m.syncNow())")
     end=time.time()+25
     while time.time()<end:
-        s=pg.evaluate("import('/js/sync.js').then(m=>m.syncState())")
+        s=sync_state(pg)
         if s['status']=='error':raise AssertionError(s['error'])
         if s['status']=='idle' and s['lastSyncAt']:return
         pg.wait_for_timeout(100)

@@ -1,4 +1,5 @@
 from onboarding_helpers import existing_user
+from sync_helpers import sync_state
 """第 11 步：跨裝置同步（Firebase）端對端測試
 
 使用 Firebase 官方的本機模擬器（真的 Firebase SDK，不會碰到正式專案），並套用專案的 firestore.rules：
@@ -104,9 +105,8 @@ def wait_synced(pg, timeout=20000, since=0):
         if pg.locator('#guestMerge').count():
             pg.click('#guestMerge')
             pg.wait_for_load_state('domcontentloaded')
-        st = pg.evaluate("""() => import('/js/sync.js').then((m) => {
-          const s = m.syncState(); return { ok: !!s.user && s.status === 'idle' && s.lastSyncAt > 0, last: s.lastSyncAt, status: s.status, error: s.error };
-        })""")
+        raw = sync_state(pg)
+        st = {'ok': bool(raw['user']) and raw['status']=='idle' and raw['lastSyncAt']>0, 'last':raw['lastSyncAt'], 'status':raw['status'], 'error':raw['error']}
         if st['ok'] and st['last'] > since:
             return st
         time.sleep(0.3)
