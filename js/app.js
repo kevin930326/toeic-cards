@@ -136,6 +136,8 @@ onLogChange(() => {
 });
 
 window.addEventListener('hashchange', () => { render(); updateBadge(); });
+// 複習數字也會隨時間改變（「不熟」的字 10 分鐘後到期），每分鐘更新一次
+setInterval(updateBadge, 60000);
 applyTheme();
 render();
 updateBadge();

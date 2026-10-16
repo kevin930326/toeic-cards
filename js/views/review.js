@@ -8,7 +8,7 @@ import { setCardFlipped, handleCardTap, flashcardHTML, modeToggleHTML, swipeLabe
 import { createCardLookupMode } from '../card-lookup-mode.js';
 import { attachSwipe, flyOut } from '../swipe.js?v=swipe-isolation-1';
 import {
-  grade, buildQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
+  grade, buildQueue, reconcileQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
 } from '../srs.js';
 import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal } from '../log.js';
 import { streak } from '../stats.js?v=stats-progress-1';
@@ -46,6 +46,22 @@ function startSession(extraNew = 0) {
   };
   session.queue = buildQueue(scopedWords(), now, newLimitLeft(session.extraNew));
   session.total = session.queue.length;
+  // 每張卡排進佇列時看到的 srs.last；之後若變了，代表在別的裝置評分過（見 syncSession）
+  session.known = new Map(session.queue.map((id) => [id, getWord(id)?.srs?.last || 0]));
+}
+
+// 佇列是開始這一輪時排好的；同步進來別台裝置的複習結果、或時間到了有字到期時，
+// 用 reconcileQueue 對齊：別處複習過的字拿掉、新到期的字補上。回傳佇列有沒有改變。
+function syncSession(now = Date.now()) {
+  if (!session || session.day !== dayKey(now) || session.scope !== scopeKey()) return false;
+  const front = session.queue[0];
+  const r = reconcileQueue(session.queue, session.known, scopedWords(), now);
+  session.known = r.known;
+  if (!r.removed && !r.added) return false;
+  session.queue = r.queue;
+  session.total = Math.max(session.queue.length, session.total - r.removed + r.added);
+  if (session.queue[0] !== front) session.flipped = false;
+  return true;
 }
 
 function scopeKey() { return JSON.stringify([activeSetId(), scopedWords().map((w) => w.id)]); }
@@ -75,6 +91,7 @@ export function renderReview(root) {
       if (session.queue.length && oldSet === nextSet && oldIds.every((id) => available.has(id))) session.scope = nextScope;
       else startSession();
     }
+    syncSession();
     const w = current();
     const { cardMode } = getSettings();
     lookupMode.prepare(JSON.stringify([activeSetId(), w?.id, cardMode]));
@@ -234,6 +251,7 @@ export function renderReview(root) {
     if (rating === 'again') patch.unfamiliar = true;
     else if (srs.interval >= MASTERED_DAYS) patch.unfamiliar = false;   // 已經很熟了
 
+    session.known.set(w.id, srs.last);   // 這台裝置自己評分的，不算「別處複習過」
     session.queue.shift();
     if (rating === 'again') session.queue.splice(Math.min(AGAIN_GAP, session.queue.length), 0, w.id);
     session.flipped = false;
@@ -247,6 +265,7 @@ export function renderReview(root) {
     const h = session.history.pop();
     if (!h || !getWord(h.id)) return;
     session.queue = h.queue;
+    session.known.set(h.id, h.srs?.last || 0);
     session.flipped = false;
     recordReview(h.rating, h.wasNew, h.at, -1);
     updateWord(h.id, { srs: h.srs, unfamiliar: h.unfamiliar });
@@ -271,6 +290,10 @@ export function renderReview(root) {
 
   draw();
   const unsub = subscribe(() => { if (!busy) draw(); });
+  // 沒有資料變動時，也要讓時間到了的字（例如 10 分鐘前在別台按「不熟」）出現
+  const recheck = () => { if (!busy && document.visibilityState !== 'hidden' && syncSession()) draw(); };
+  const timer = setInterval(recheck, 30000);
+  document.addEventListener('visibilitychange', recheck);
   const unsubLookup = onLookupStatus(() => { if (!busy) draw(); });
   let genKey = '';
   const unsubGen = onGenerateStatus((st) => {
@@ -278,11 +301,15 @@ export function renderReview(root) {
     if (k !== genKey) { genKey = k; if (!busy) draw(); }
   });
   document.addEventListener('keydown', onKey);
-  return () => { detachSwipe?.(); unsub(); unsubLookup(); unsubGen(); document.removeEventListener('keydown', onKey); };
+  return () => {
+    detachSwipe?.(); unsub(); unsubLookup(); unsubGen(); clearInterval(timer);
+    document.removeEventListener('keydown', onKey); document.removeEventListener('visibilitychange', recheck);
+  };
 }
 
 // 導覽列上的待複習數字
 export function reviewBadgeCount() {
+  syncSession();
   if (session && session.day === dayKey(Date.now()) && session.scope === scopeKey()) return session.queue.filter((id) => getWord(id)).length;
   return buildQueue(scopedWords(), Date.now(), newLimitLeft()).length;
 }

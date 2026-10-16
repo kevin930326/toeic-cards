@@ -110,6 +110,31 @@ export function buildQueue(words, now, newLimit) {
   return [...due, ...fresh].map((w) => w.id);
 }
 
+// 這一輪的佇列和最新資料（例如其他裝置同步過來的複習結果）對齊：
+//   known：佇列建立或這台裝置評分時看到的 srs.last（新字是 0）
+//   - 佇列裡的字在別處被評分過（last 變了），而且還沒到期 → 拿掉
+//   - 不在佇列、但已經到期的字（例如別台裝置按「不熟」，10 分鐘到了）→ 加到最後
+//   - 這台裝置按「不熟」重排、還沒到期的字照舊保留（last 沒變）
+// 回傳新的 { queue, known, removed, added }；不在 words 裡的 id 原樣保留，由畫面略過
+export function reconcileQueue(queue, known, words, now) {
+  const byId = new Map(words.map((w) => [w.id, w]));
+  const nextKnown = new Map(known);
+  const next = [];
+  let removed = 0;
+  for (const id of queue) {
+    const w = byId.get(id);
+    if (w && known.has(id) && (w.srs?.last || 0) !== known.get(id)) {
+      nextKnown.set(id, w.srs?.last || 0);
+      if (!isDue(w, now)) { removed++; continue; }
+    }
+    next.push(id);
+  }
+  const inQueue = new Set(next);
+  const added = words.filter((w) => isDue(w, now) && !inQueue.has(w.id)).sort((a, b) => a.srs.due - b.srs.due);
+  for (const w of added) { next.push(w.id); nextKnown.set(w.id, w.srs.last || 0); }
+  return { queue: next, known: nextKnown, removed, added: added.length };
+}
+
 // 首頁顯示用：今天還有幾個字要複習
 export function countToday(words, now, newLimit) {
   const due = words.filter((w) => isDue(w, now)).length;
