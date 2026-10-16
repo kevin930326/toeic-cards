@@ -27,20 +27,30 @@ with sync_playwright() as p:
 
     look = lambda w: page.evaluate('async ([path, w]) => (await import(path)).lookupLocal(w)', [DICT, w])
 
-    # 1. 只有 -s 形、詞性又對不上 → 改用原形的意思
+    # 1. 變化形一律先顯示原形的意思；同形字的冷門意思、縮寫、遊戲地名、錯的說明都不顯示
     r = look('receives')
-    check('收到' in r['zh'] and '受光面' not in r['zh'] and r['pos'].startswith('vt'), f'receives 用 receive 的意思（{r["zh"]!r}）')
+    check(r['zh'].startswith('vt. 收到') and '受光面' not in r['zh'] and r['pos'].startswith('vt'), f'receives 用 receive 的意思（{r["zh"]!r}）')
     check(r['lemma'] == 'receive' and r['form'] == '第三人稱單數', '仍標示是 receive 的第三人稱單數')
-    r = look('viables')
-    check(r['zh'] == 'adj. 能養活的；能生長發育的', f'複數形對不上詞性時也用原形（{r["zh"]!r}）')
-
-    # 2. -ing／-ed 形的衍生意思保留，後面補上原形的意思
-    r = look('substituting')
-    check(r['zh'].startswith('n. 代入；取代\n') and 'vt. 代替' in r['zh'], f'substituting 保留自己的意思並補上 substitute 的動詞意思（{r["zh"]!r}）')
-
-    # 3. 詞性對得上的變化形、常用字都不動
+    r = look('scans')
+    check('掃描' in r['zh'] and '網路系統' not in r['zh'], f'scans 不再顯示縮寫的意思（{r["zh"]!r}）')
+    r = look('faring')
+    check('遊戲' not in r['zh'] and '進展' in r['zh'], f'faring 不再顯示遊戲地名（{r["zh"]!r}）')
+    r = look('samples')
+    check('suffer' not in r['zh'] and '樣品' in r['zh'], f'samples 不再出現錯的「suffer 的複數」（{r["zh"]!r}）')
     r = look('offers')
-    check(r['zh'].startswith('n. 提議') and r['zh'].count('提議') == 1, f'offers 不變（{r["zh"]!r}）')
+    check('提議' in r['zh'] and '的複數' not in r['zh'] and '另有' not in r['zh'], f'offers 用原形意思、不重複列同義詞（{r["zh"]!r}）')
+    r = look('terminates')
+    check('另有：n. 結束' not in r['zh'] or 'adj.' in r['zh'], '動詞的「名詞複數」不另外列')
+
+    # 2. 原形沒有的詞性才放在「另有」：-ing／-ed 的形容詞、形容詞轉來的名詞複數
+    r = look('exceeding')
+    check(r['zh'].startswith('vt. 超過') and r['zh'].endswith('另有：adj. 超越的；非常的；極度的'), f'exceeding 補上形容詞用法（{r["zh"]!r}）')
+    r = look('vitals')
+    check('另有：n. 重要器官' in r['zh'], f'vitals 保留名詞「要害」的用法（{r["zh"]!r}）')
+    r = look('durables')
+    check('另有' not in r['zh'] and '耐用' in r['zh'], f'只是重複原形意思的不另外列（{r["zh"]!r}）')
+
+    # 3. 常用小字典的獨立詞條不動
     r = look('bearing')
     check(r['zh'] == 'n. 舉止；軸承；忍受；關係；意義', '常用小字典的 bearing 不變')
 

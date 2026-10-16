@@ -5,7 +5,7 @@
 import { getWord, getWords, updateWord, updateWords, normalizeWord } from './store.js';
 import { hasApiKey } from './llm.js';
 import { EXTRA_ENTRIES } from './dictionary-extra.js';
-import { createJsonCache, dictionaryShard, FORM_LABELS } from './dictionary-data.js';
+import { createJsonCache, dictionaryShard, FORM_LABELS, inflectionMeaning } from './dictionary-data.js';
 
 async function fetchJson(path) {
   const controller = new AbortController();
@@ -45,36 +45,12 @@ export async function lookupLocalResult(word) {
   if (!e) return { entry: null, status: !chunk || !extended ? 'unavailable' : 'notfound' };
   const entry = { phonetic: e.p || '', pos: e.s || '', zh: e.t || '',
     lemma: e.l || '', form: (e.f || []).map((kind) => FORM_LABELS[kind]).filter(Boolean).join('／') };
-  const fix = inflectionFix(e);
-  if (fix) {
+  // 變化形：以原形的意思為主（見 dictionary-data.js 的 inflectionMeaning）；原形讀不到時保留字典原文
+  if (e.l && e.f?.length) {
     const base = (await lookupLocalResult(e.l)).entry;
-    if (base?.zh && !base.lemma) {
-      if (fix === 'base') Object.assign(entry, { pos: base.pos, zh: base.zh });
-      else entry.zh = `${entry.zh}\n${base.zh}`;
-    }
+    if (base?.zh && !base.lemma) Object.assign(entry, inflectionMeaning(e, base));
   }
   return { status: 'ok', entry };
-}
-
-// 變化形（有 l 原形、f 變化種類）的中文，詞性卻和變化種類對不上時（例如 receives 是第三人稱單數，
-// 字典卻寫「n. 受光面」），那筆中文是另一個同形字的意思，不是這個變化形的意思：
-//   - 只有 -s 形（第三人稱單數、複數）或比較級／最高級 → 幾乎都是冷門同形字，改用原形的意思（回傳 'base'）
-//   - 有 -ing／-ed 形 → 常是有用的衍生意思（bearing 軸承、defined 清晰的），保留並補上原形的意思（'append'）
-// 詞性對得上就不動（回傳 ''）。
-const FORM_POS = { 3: 'v', p: 'v', d: 'v', i: 'v', s: 'n', r: 'a', t: 'a' };
-function posGroups(text) {
-  const groups = new Set();
-  for (const m of String(text || '').matchAll(/\b(vt|vi|v|n|adj|adv|a)\./g)) {
-    groups.add(m[1].startsWith('v') ? 'v' : m[1] === 'n' ? 'n' : 'a');
-  }
-  return groups;
-}
-export function inflectionFix(e) {
-  const kinds = e?.l ? (e.f || []).filter((k) => FORM_POS[k]) : [];
-  if (!kinds.length) return '';
-  const own = posGroups(e.s || e.t);
-  if (!own.size || kinds.some((k) => own.has(FORM_POS[k]))) return '';
-  return kinds.some((k) => 'ipd'.includes(k)) ? 'append' : 'base';
 }
 
 // Free Dictionary API：回傳
