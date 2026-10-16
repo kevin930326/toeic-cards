@@ -150,6 +150,22 @@ export function pickTargets(mode, targets, count, rng = Math.random) {
   return merged.slice(0, count);
 }
 
+// 分層挑字：前一層不夠才從下一層補；每層內照 pickTargets（不熟的字優先）
+//   tiers：判斷函式陣列，一個字歸在第一個符合的層
+export function pickInTiers(mode, targets, count, tiers, rng = Math.random) {
+  const picked = [];
+  const used = new Set();
+  for (const inTier of tiers) {
+    if (picked.length >= count) break;
+    const pool = targets.filter((w) => !used.has(w.id) && inTier(w));
+    for (const w of pickTargets(mode, pool, count - picked.length, rng)) {
+      picked.push(w);
+      used.add(w.id);
+    }
+  }
+  return picked;
+}
+
 export function buildSimpleQuiz(mode, targets, pool, count, rng = Math.random) {
   return pickTargets(mode, targets, count, rng)
     .map((w) => buildSimpleQuestion(mode, w, pool, rng))

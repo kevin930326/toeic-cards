@@ -5,23 +5,20 @@ import { profileStorage } from '../profile-storage.js';
 //   - 短文存在這台裝置（最多 20 篇），可以重複閱讀；不同步、不放進備份
 import { scopedWords, subscribe } from '../store.js';
 import { esc, toast, confirmAction } from '../ui.js';
-import { hasApiKey, generateJSON, onRateWait } from '../llm.js';
+import { hasApiKey, onRateWait } from '../llm.js';
 import { recordQuiz } from '../log.js';
 import { wordTokens } from '../word-tokens.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
 import { aiBadge } from '../ai-badge.js';
-import {
-  READING_TYPES, MAX_SAVED, pickReadingWords, buildReadingPrompt, READING_SCHEMA, normalizeReading, sanitizeSaved,
-  readingScore, wordPattern,
-} from '../reading.js?v=reading-1';
+import { READING_TYPES, MAX_SAVED, pickReadingWords, sanitizeSaved, readingScore, wordPattern } from '../reading.js?v=reading-1';
+import { MIN_WORDS, writeReading, randomReadingType, preparedReading, takePreparedReading } from '../reading-store.js';
+import { beginForeground } from '../ai-prefetch.js';
+import { scheduleTopUp } from '../ai-stock.js';
 
 const STORAGE_KEY = 'toeic-cards:readings';
-const MIN_WORDS = 3;
 const LETTERS = ['A', 'B', 'C', 'D'];
 const state = { view: 'list', currentId: null, type: 'random', error: null };
 let controller = null;
-
-const newId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
 
 export function loadReadings() {
   try {
@@ -70,6 +67,7 @@ export function renderReading(root) {
     const words = scopedWords();
     const canAI = hasApiKey();
     const enough = words.length >= MIN_WORDS;
+    const ready = canAI ? preparedReading() : null;
     root.innerHTML = `
       <section class="page page-reading">
         <div class="quiz-head">
@@ -87,6 +85,7 @@ export function renderReading(root) {
           <button class="btn btn-primary" type="button" id="generate" ${canAI && enough ? '' : 'disabled'}>產生新短文${aiBadge('required')}</button>
           <p class="hint-text">${!canAI ? '需要 Gemini 金鑰，<a href="#/settings">前往設定</a>。已存的短文不需要金鑰也能讀。'
             : !enough ? `目前範圍只有 ${words.length} 個字，至少需要 ${MIN_WORDS} 個字。`
+            : ready ? `已在背景先寫好一篇${esc(READING_TYPES[ready.type])}，選「隨機」或「${esc(READING_TYPES[ready.type])}」按下就能直接讀；之後會再先寫下一篇。`
             : '每篇約用 1 次 AI 請求；會優先挑「不熟」的字寫進文章。'}</p>
         </div>
         ${list.length ? `
@@ -116,36 +115,42 @@ export function renderReading(root) {
 
   async function generate() {
     state.error = null;
+    // 背景先寫好的那篇類型符合就直接用，不必等 AI
+    const ready = takePreparedReading(state.type);
+    if (ready) {
+      open(ready);
+      scheduleTopUp();   // 再先寫下一篇
+      return;
+    }
     const words = pickReadingWords(scopedWords());
     if (words.length < MIN_WORDS) return;
-    const keys = Object.keys(READING_TYPES);
-    const type = state.type === 'random' ? keys[Math.floor(Math.random() * keys.length)] : state.type;
+    const type = state.type === 'random' ? randomReadingType() : state.type;
     state.view = 'loading';
     draw();
     controller = new AbortController();
+    const end = beginForeground();
     try {
-      const { data } = await generateJSON({
-        prompt: buildReadingPrompt(words, type),
-        schema: READING_SCHEMA,
-        signal: controller.signal,
-        temperature: 0.8,
-      });
-      const reading = normalizeReading({ ...data, type }, words);
-      if (!reading) throw new Error('AI 回傳的短文不完整，請再產生一次');
-      const item = { ...reading, id: newId(), answers: reading.questions.map(() => null), at: Date.now() };
-      if (saveReadings([item, ...loadReadings()])) {
-        state.currentId = item.id;
-        state.view = 'read';
-      } else {
-        state.view = 'list';
-      }
+      open(await writeReading(words, type, controller.signal), false);
     } catch (err) {
       state.view = 'list';
       state.error = err.kind === 'aborted' ? null : err.message;
     } finally {
       controller = null;
+      end();
+      scheduleTopUp();
     }
     if (alive) draw();
+  }
+
+  // 存進列表並打開
+  function open(item, redraw = true) {
+    if (saveReadings([item, ...loadReadings()])) {
+      state.currentId = item.id;
+      state.view = 'read';
+    } else {
+      state.view = 'list';
+    }
+    if (redraw && alive) { draw(); window.scrollTo(0, 0); }
   }
 
   // ---------- AI 寫作中 ----------

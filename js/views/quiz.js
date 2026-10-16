@@ -4,11 +4,12 @@ import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../
 import { esc, toast, confirmAction } from '../ui.js';
 import { speak, canSpeak, speakerIcon, resolveAccent, accentLabel } from '../speech.js';
 import { hasApiKey, onRateWait } from '../llm.js';
-import { checkMode, buildSimpleQuiz, pickTargets, firstMeaning, shuffle, BLANK, SENTENCE_MODES } from '../quiz.js?v=forms-1';
-import { preparePart5, scheduleTopUp, part5Stock } from '../part5.js?v=part5-fast-1';
+import { checkMode, buildSimpleQuiz, firstMeaning, shuffle, BLANK, SENTENCE_MODES } from '../quiz.js?v=forms-1';
+import { preparePart5, pickPart5Targets } from '../part5.js?v=part5-fast-1';
+import { scheduleTopUp, stockStatus } from '../ai-stock.js';
 import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v=review-fixes-1';
 import { normalizeWord } from '../parse.js';
-import { loadReadings } from './reading.js?v=badge-1';
+import { loadReadings } from './reading.js?v=ai-stock-1';
 import { aiBadge, AI_BADGE_LEGEND } from '../ai-badge.js';
 import { getMistakes, archivedMistakeCount, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
 import {currentSavedQuestion} from '../question-policy.js';
@@ -91,10 +92,12 @@ export function renderQuiz(root) {
     const ids = new Set(all.map((w) => w.id));
     const mistakes = getMistakes().filter((m) => ids.has(m.question.wordId)).length;
     const readings = loadReadings().length;
+    const stock = hasApiKey() ? stockStatus() : null;
+    const stockText = { part5: stock?.part5 ? `已先備好 ${stock.part5} 個字的新題目，這些字不用等 AI` : '',
+      forms: stock?.forms ? `自己加的字已先備好 ${stock.forms} 題` : '' };
     const cards = Object.entries(MODE_INFO).map(([mode, info]) => {
       let check = checkMode(mode, all, targets);
       if (mode === 'part5' && check.ok && !hasApiKey()) check = { ok: false, reason: '需要 Gemini 金鑰', needKey: true };
-      const stock = mode === 'part5' && check.ok ? part5Stock() : null;
       if (mode === 'forms' && check.ok && !hasApiKey() && !targets.some(hasFormSource)) {
         check = { ok: false, reason: '目前範圍沒有內建題目的字（多益 1000 單字包）；自己加的字需要 Gemini 金鑰', needKey: true };
       }
@@ -107,7 +110,7 @@ export function renderQuiz(root) {
             <span class="mode-desc">${esc(info.desc)}</span>
           </button>
           ${check.ok ? '' : `<p class="mode-reason">${esc(check.reason)}${check.needKey ? '，<a href="#/settings">前往設定</a>' : ''}</p>`}
-          ${stock?.ready ? `<p class="mode-reason mode-stock">已先備好 ${stock.ready} 個字的題目，這些字不用等 AI</p>` : ''}
+          ${check.ok && stockText[mode] ? `<p class="mode-reason mode-stock">${esc(stockText[mode])}</p>` : ''}
         </div>`;
     }).join('');
 
@@ -180,7 +183,7 @@ export function renderQuiz(root) {
       autoPlay();   // 聽力題第一題也要自動播放
       return;
     }
-    // Part 5：需要時呼叫 Gemini 出題
+    // Part 5／詞性變化：需要時呼叫 Gemini 出題
     state.view = 'loading';
     state.loading = { done: 0, total: 0, waiting: 0, startedAt: Date.now(), phase: '', batch: 0, batches: 0 };
     draw();
@@ -197,39 +200,18 @@ export function renderQuiz(root) {
           if (state.view === 'loading') draw();
         },
       };
-      if (mode === 'part5') {
-        await startPart5Progressive(targets, all, count, options, myController);
-        return;
-      }
-      let result;
-      if (mode === 'forms') {
-        result = await prepareForms(targets, count, options);
-        if (!result.questions.length && result.skipped) {
-          throw new Error('目前範圍沒有內建題目的字（多益 1000 單字包）；填入 Gemini 金鑰後，自己加的字也能出詞性變化題');
-        }
-        if (result.bankUnavailable) toast('內建題庫暫時無法載入，這次只使用已存題目；其他字請連網後重試，未使用 AI 額度。');
-        else if (result.skipped && result.questions.length < count) toast(`有 ${result.skipped} 個字沒有內建題目，填入 Gemini 金鑰後也能考`);
-      }
-      const { questions, failed } = result;
-      if (!questions.length) throw new Error('AI 沒有成功出題，請稍後再試');
-      if (failed.length) toast(`有 ${failed.length} 個字出題失敗，這次先略過`);
-      newSession(mode, questions);
-    } catch (err) {
-      state.view = 'home';
-      state.error = err.kind === 'aborted' ? null : err.message;
+      await startProgressive(mode, targets, all, count, options);
     } finally {
       if (controller === myController) controller = null;
-      if (mode !== 'part5') state.loading = null;
     }
-    if (mode !== 'part5') draw();
   }
 
-  // Part 5：已存的題目馬上能考；其餘每出好一批就加進測驗，不必等全部出完
-  async function startPart5Progressive(targets, all, count, options, myController) {
+  // Part 5／詞性變化：已存的題目馬上能考；其餘每出好一批就加進測驗，不必等全部出完
+  async function startProgressive(mode, targets, all, count, options) {
     let session = null;
     const onQuestions = (qs) => {
       if (!session) {
-        newSession('part5', qs, { pending: true });
+        newSession(mode, qs, { pending: true });
         session = state.session;
         state.loading = null;
         draw();
@@ -242,7 +224,9 @@ export function renderQuiz(root) {
     };
     let result;
     try {
-      result = await preparePart5(pickTargets('part5', targets, count), all, { ...options, onQuestions });
+      result = mode === 'forms'
+        ? await prepareForms(targets, count, { ...options, onQuestions })
+        : await preparePart5(pickPart5Targets(targets, count, { fresh: options.fresh }), all, { ...options, onQuestions });
     } catch (err) {
       if (!session) {
         state.view = 'home';
@@ -258,14 +242,18 @@ export function renderQuiz(root) {
     if (!session) {
       state.view = 'home';
       state.loading = null;
-      state.error = result.rejected
+      state.error = mode === 'forms' && result.skipped
+        ? '目前範圍沒有內建題目的字（多益 1000 單字包）；填入 Gemini 金鑰後，自己加的字也能出詞性變化題'
+        : result.rejected
         ? `AI 出的 ${result.rejected} 題都沒通過第二輪檢查（可能有兩個答案都說得通），請再試一次或到設定換模型`
         : 'AI 沒有成功出題，請稍後再試';
       draw();
       return;
     }
     if (state.session !== session) return;
-    if (result.error) toast(`後面的題目沒出完：${result.error.message}`, 'error');
+    if (result.bankUnavailable) toast('內建題庫暫時無法載入，這次只使用已存題目；其他字請連網後重試，未使用 AI 額度。');
+    else if (result.skipped && session.questions.length < count) toast(`有 ${result.skipped} 個字沒有內建題目，填入 Gemini 金鑰後也能考`);
+    if (result.error) toast(`後面的題目沒出完：${result.error}`, 'error');
     else if (result.failed.length) toast(`有 ${result.failed.length} 個字這次沒出成題目${result.rejected ? `（${result.rejected} 題沒通過 AI 檢查）` : ''}，先略過`);
     if (state.view === 'waitNext') { state.view = 'result'; draw(); }
     else if (state.view === 'question') updateQuizProgress();

@@ -5,9 +5,9 @@ import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js?v=exam-1';
 import { renderFreeCards } from './views/free-cards.js?v=dictionary-scale-1';
 import { renderCards } from './views/cards.js?v=perf-1';
-import { renderQuiz } from './views/quiz.js?v=part5-fast-1';
-import { initPart5Stock } from './part5.js?v=part5-fast-1';
-import { renderReading } from './views/reading.js?v=badge-1';
+import { renderQuiz } from './views/quiz.js?v=ai-stock-1';
+import { initAiStock } from './ai-stock.js';
+import { renderReading } from './views/reading.js?v=ai-stock-1';
 import { renderStats } from './views/stats.js?v=review-fixes-1';
 import { pruneMistakes } from './mistakes.js';
 import { onLogChange, todayProgress, getLog, currentGoal } from './log.js';
@@ -18,7 +18,7 @@ import { initPWA } from './pwa.js';
 import { initSync } from './sync.js';
 import { hasApiKey } from './llm.js';
 import { renderWords } from './views/words.js?v=tour-overlap-1';
-import { renderSettings } from './views/settings.js?v=part5-fast-1';
+import { renderSettings } from './views/settings.js?v=ai-stock-1';
 import { renderHelp } from './views/help.js?v=tour-overlap-1';
 import { initOnboarding } from './onboarding.js?v=tour-overlap-1';
 import { lookupMissing } from './dictionary.js?v=dictionary-scale-1';
@@ -146,8 +146,8 @@ onRateWait(setWaiting);
 // 跨裝置同步（有設定 Firebase、而且登入過才會連線）
 initSync();
 
-// 有金鑰時在背景先出好一些 Part 5 題目，點進測驗不用等（設定可關閉，每天有上限）
-initPart5Stock();
+// 有金鑰時在背景先準備 AI 題目（Part 5、詞性變化、下一篇短文），點進去不用等（設定可關閉，每天有上限）
+initAiStock();
 
 // PWA：離線使用、安裝到主畫面。重新連上網路時，補查字典、繼續 AI 生成
 initPWA({

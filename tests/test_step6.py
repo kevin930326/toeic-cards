@@ -193,7 +193,7 @@ with sync_playwright() as p:
     page.evaluate(f"""() => {{
       localStorage.setItem('toeic-cards:gemini-key', '{KEY}');
       const s = JSON.parse(localStorage.getItem('toeic-cards:settings') || '{{}}');
-      localStorage.setItem('toeic-cards:settings', JSON.stringify({{ ...s, llmRpm: 600, part5Prefetch: false }}));
+      localStorage.setItem('toeic-cards:settings', JSON.stringify({{ ...s, llmRpm: 600 }}));
     }}""")
     page.reload()
     page.wait_for_load_state('networkidle')

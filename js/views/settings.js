@@ -3,7 +3,8 @@ import { getSettings, updateSettings } from '../store.js';
 import { speak, canSpeak, ACCENTS, MIXED, accentAvailability, onVoicesChanged } from '../speech.js';
 import { getApiKey, setApiKey, listModels, pickDefaultModel, getModel, lastRequestStats } from '../llm.js';
 import { testGeneration } from '../generate.js?v=dictionary-scale-1';
-import { STOCK_TARGET, STOCK_DAILY_BATCHES, scheduleTopUp } from '../part5.js?v=part5-fast-1';
+import { scheduleTopUp, STOCK_MULTIPLIER } from '../ai-stock.js';
+import { DAILY_CHOICES, dailyLimit, usedToday } from '../ai-prefetch.js';
 import { esc, toast } from '../ui.js';
 import { renderBackupPanel } from './backup-panel.js';
 import { renderPwaPanel } from './pwa-panel.js?v=dictionary-scale-1';
@@ -101,9 +102,14 @@ export function renderSettings(root) {
           <span>新增單字後自動用 AI 生成內容</span>
         </label>
         <label class="check-row">
-          <input type="checkbox" id="part5Prefetch" ${s.part5Prefetch ? 'checked' : ''}>
-          <span>在背景先出好 Part 5 題目<span class="muted">（網站開著時，替目前測驗範圍補到約 ${STOCK_TARGET} 個字有題目；每天最多 ${STOCK_DAILY_BATCHES * 2} 次請求，只在這台裝置）</span></span>
+          <input type="checkbox" id="aiPrefetch" ${s.aiPrefetch ? 'checked' : ''}>
+          <span>在背景先準備 AI 題目<span class="muted">（點進 Part 5、詞性變化、短文閱讀就不用等）</span></span>
         </label>
+        <div class="setting-row wrap">
+          <span class="setting-label">上限</span>
+          ${segmented('aiPrefetchDaily', String(dailyLimit()), DAILY_CHOICES.map((n) => [String(n), `${n} 次`]), '背景每天最多幾次請求')}
+        </div>
+        <p class="hint-text">網站開著時，替目前測驗範圍先備好約「題數 × ${STOCK_MULTIPLIER}」個字的題目，並先寫好下一篇短文；只在這台裝置。「上限」是背景每天最多用幾次請求（今天已用 ${usedToday()} 次），自己按下的出題、生成不受限制；Part 5／詞性變化每 10 個字用 2 次（出題＋檢查），短文每篇 1 次。</p>
 
         <p class="privacy">🔒 金鑰只存在這台電腦的瀏覽器裡，只會直接送給 Google，不會上傳到其他地方。
           使用 AI 時會送出所選單字、出題及覆核所需的句子、選項、翻譯與閱讀練習文字。資料處理與是否用於模型改進依 Google 服務條款及帳戶方案而定。</p>
@@ -231,9 +237,12 @@ export function renderSettings(root) {
     btn.disabled = false;
   });
   root.querySelector('#autoGenerate').addEventListener('change', (e) => updateSettings({ autoGenerate: e.target.checked }));
-  root.querySelector('#part5Prefetch').addEventListener('change', (e) => {
-    updateSettings({ part5Prefetch: e.target.checked });
-    if (e.target.checked) scheduleTopUp();
+  root.querySelector('#aiPrefetch').addEventListener('change', (e) => {
+    updateSettings({ aiPrefetch: e.target.checked });
+    if (e.target.checked) scheduleTopUp(5000);
+  });
+  root.querySelectorAll('input[name="aiPrefetchDaily"]').forEach((input) => {
+    input.addEventListener('change', () => { updateSettings({ aiPrefetchDaily: Number(input.value) }); scheduleTopUp(5000); });
   });
 
   root.querySelectorAll('input[name="llmRpm"]').forEach((input) => {

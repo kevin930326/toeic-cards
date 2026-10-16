@@ -20,7 +20,8 @@ const DEFAULT_SETTINGS = {
   quizScope: 'all',     // 測驗範圍：'all' | 'unfamiliar'
   quizCount: 10,        // 每次測驗題數
   part5Fresh: false,    // Part 5 每次都出新題目（會用 AI 額度）
-  part5Prefetch: true,  // 有金鑰時在背景先出好 Part 5 題目（每天有上限；只存在這台裝置）
+  aiPrefetch: true,     // 有金鑰時在背景先準備 AI 題目（Part 5、詞性變化、短文閱讀；只存在這台裝置）
+  aiPrefetchDaily: 24,  // 背景備題每天最多幾次請求：12 | 24 | 40
   statsDays: 30,        // 統計頁的期間：7 | 30 | 90
   dailyGoal: 20,        // 每日目標：複習＋測驗合計題數，達標才算打卡
   activeSetId: '',      // 本機目前選的單字集：空字串全部、unfiled 未分類
@@ -60,6 +61,9 @@ function reindex() {
 }
 reindex();
 let settings = { ...DEFAULT_SETTINGS, ...readJSON(SETTINGS_KEY, {}) };
+// 第 48 步的開關叫 part5Prefetch（只管 Part 5）；關掉過的人沿用「關閉」
+if (settings.part5Prefetch === false && readJSON(SETTINGS_KEY, {}).aiPrefetch === undefined) settings.aiPrefetch = false;
+delete settings.part5Prefetch;
 const SETS_KEY = 'toeic-cards:wordSets';
 let wordSets = sanitizeSets(readJSON(SETS_KEY, []));
 
