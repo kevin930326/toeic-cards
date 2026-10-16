@@ -1,3 +1,4 @@
+import { profileStorage } from './profile-storage.js';
 // 每日學習紀錄（統計、每日目標、連續打卡都用它）
 // 存在 localStorage：{ '2026-10-14': { reviews, again, good, learned, quiz, quizCorrect, goal } }
 //   reviews／again／good／learned：複習；quiz／quizCorrect：測驗題數、答對題數
@@ -15,7 +16,7 @@ const listeners = new Set();
 
 function read() {
   try {
-    const v = JSON.parse(localStorage.getItem(LOG_KEY) || '{}');
+    const v = JSON.parse(profileStorage.getItem(LOG_KEY) || '{}');
     return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
   } catch (e) {
     return {};
@@ -23,7 +24,7 @@ function read() {
 }
 
 function write(log) {
-  try { localStorage.setItem(LOG_KEY, JSON.stringify(log)); } catch (e) { console.error('寫入學習紀錄失敗', e); }
+  try { profileStorage.setItem(LOG_KEY, JSON.stringify(log)); } catch (e) { console.error('寫入學習紀錄失敗', e); }
   for (const fn of listeners) fn();
 }
 
@@ -35,7 +36,7 @@ export function onLogChange(fn) {
 
 function readRemote() {
   try {
-    const v = JSON.parse(localStorage.getItem(REMOTE_KEY) || '{}');
+    const v = JSON.parse(profileStorage.getItem(REMOTE_KEY) || '{}');
     return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
   } catch (e) {
     return {};
@@ -54,13 +55,13 @@ export function getOwnLog() {
 
 // 同步時把其他裝置的紀錄存起來（不跳慶祝訊息）
 export function setRemoteLogs(map) {
-  try { localStorage.setItem(REMOTE_KEY, JSON.stringify(map && typeof map === 'object' ? map : {})); } catch (e) { /* 存不了只是統計少算 */ }
+  try { profileStorage.setItem(REMOTE_KEY, JSON.stringify(map && typeof map === 'object' ? map : {})); } catch (e) { /* 存不了只是統計少算 */ }
 }
 
 // 匯入備份時整個換掉（不通知「紀錄改變」，免得匯入時跳出達標慶祝）
 export function replaceLog(log) {
   try {
-    localStorage.setItem(LOG_KEY, JSON.stringify(log && typeof log === 'object' ? log : {}));
+    profileStorage.setItem(LOG_KEY, JSON.stringify(log && typeof log === 'object' ? log : {}));
   } catch (e) {
     console.error('寫入學習紀錄失敗', e);
   }

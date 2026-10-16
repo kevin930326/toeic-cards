@@ -1,3 +1,4 @@
+import { profileStorage } from './profile-storage.js';
 // 主程式：依網址的 #/xxx 切換頁面
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js?v=exam-1';
@@ -124,9 +125,9 @@ onLogChange(() => {
   if (!t.met) return;
   const today = dayKey(Date.now());
   let last = '';
-  try { last = localStorage.getItem(CELEBRATED_KEY) || ''; } catch (e) { /* 讀不到就當作還沒慶祝 */ }
+  try { last = profileStorage.getItem(CELEBRATED_KEY) || ''; } catch (e) { /* 讀不到就當作還沒慶祝 */ }
   if (last === today) return;
-  try { localStorage.setItem(CELEBRATED_KEY, today); } catch (e) { /* 寫不進去頂多再跳一次 */ }
+  try { profileStorage.setItem(CELEBRATED_KEY, today); } catch (e) { /* 寫不進去頂多再跳一次 */ }
   const days = streak(getLog(), Date.now(), currentGoal()).days;
   toast(`🎉 今日目標達成！連續打卡 ${days} 天`, 'success');
 });

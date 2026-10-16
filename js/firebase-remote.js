@@ -114,8 +114,9 @@ export async function createFirebaseRemote(config) {
     },
 
     // 上傳單字（Firestore 一次批次最多 500 筆，這裡每 400 筆一批）
-    async pushWords(uid, items) {
+    async pushWords(uid, items, active = () => true) {
       for (let i = 0; i < items.length; i += 400) {
+        if (!active() || auth.currentUser?.uid !== uid) throw Object.assign(new Error('帳號已切換'), { cancelled: true });
         const batch = fs.writeBatch(db);
         for (const it of items.slice(i, i + 400)) {
           batch.set(fs.doc(wordsCol(uid), wordDocId(it.word)), { ...plain(it), syncedAt: fs.serverTimestamp() });
@@ -137,10 +138,11 @@ export async function createFirebaseRemote(config) {
       return snap.exists() ? snap.data() : null;
     },
     // 用交易在伺服器端重讀後合併，兩台裝置同時建立／改分類也不會整份互蓋。
-    async syncWordSets(uid, local) {
+    async syncWordSets(uid, local, active = () => true) {
       const ref = fs.doc(db, 'users', uid, 'meta', 'wordSets');
       return fs.runTransaction(db, async (tx) => {
         const snap = await tx.get(ref);
+        if (!active() || auth.currentUser?.uid !== uid) throw Object.assign(new Error('帳號已切換'), { cancelled: true });
         const cloud = snap.exists() ? snap.data().value : [];
         const merged = mergeSets(cloud, local);
         if (JSON.stringify(merged) !== JSON.stringify(cloud)) {

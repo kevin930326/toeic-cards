@@ -1,3 +1,4 @@
+import { profileStorage } from '../profile-storage.js';
 // 設定頁的「備份與還原」區塊：匯出 JSON、匯入（先預覽，再選合併或取代）
 import { getWords, getSettings, replaceWords, replaceSettings, getDefaultSettings } from '../store.js';
 import { getLog, replaceLog } from '../log.js';
@@ -9,7 +10,7 @@ import { getSetRecords, replaceSetRecords, restoreSetRecords } from '../store.js
 const LAST_BACKUP_KEY = 'toeic-cards:lastBackup';
 
 function lastBackup() {
-  try { return Number(localStorage.getItem(LAST_BACKUP_KEY)) || 0; } catch (e) { return 0; }
+  try { return Number(profileStorage.getItem(LAST_BACKUP_KEY)) || 0; } catch (e) { return 0; }
 }
 
 function fmtTime(ms) {
@@ -67,7 +68,7 @@ export function renderBackupPanel(container) {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    try { localStorage.setItem(LAST_BACKUP_KEY, String(now)); } catch (e) { /* 只是提醒用，存不了沒關係 */ }
+    try { profileStorage.setItem(LAST_BACKUP_KEY, String(now)); } catch (e) { /* 只是提醒用，存不了沒關係 */ }
     toast(`已匯出 ${backup.counts.words} 個字`);
     draw();
   }

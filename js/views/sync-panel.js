@@ -1,7 +1,7 @@
 // 設定頁的「帳號與同步」區塊
 import {
   syncState, onSyncChange, signInWithGoogle, sendEmailLink, completeEmailLink, signOutSync, syncNow,
-  signInWithPassword, registerWithPassword, setAccountPassword, sendPasswordReset,
+  signInWithPassword, registerWithPassword, setAccountPassword, sendPasswordReset, resolveGuestData,
 } from '../sync.js';
 import { isIOS, isStandalone } from '../pwa.js';
 import { esc, toast, confirmAction } from '../ui.js';
@@ -25,7 +25,7 @@ export function renderSyncPanel(container) {
   //   2. 重畫時保留輸入框的內容、「貼上連結」是否展開、以及游標所在的欄位
   function draw(st = syncState()) {
     const key = JSON.stringify([st.configured, st.user?.uid, st.user?.email, st.user?.providers, st.status, st.error,
-      st.lastSyncAt, st.summary, st.pendingLink, st.linkSentTo, panelError]);
+      st.lastSyncAt, st.summary, st.pendingLink, st.linkSentTo, st.guestChoice, panelError]);
     if (key === lastKey && container.firstChild) return;
     lastKey = key;
     const typed = {};
@@ -54,7 +54,13 @@ export function renderSyncPanel(container) {
     }
 
     let body;
-    if (st.user) {
+    if (st.guestChoice) {
+      body = `<p class="sync-user">即將使用帳號：<strong>${esc(st.user.email || st.user.uid)}</strong></p>
+        <p class="panel-desc">這個瀏覽器有訪客資料。要將訪客的字卡、分類、紀錄與錯題合併到這個帳號嗎？確認前不會上傳任何資料。Gemini 金鑰不會移轉。</p>
+        <div class="backup-actions"><button class="btn btn-outline" id="guestKeep" type="button">保留訪客資料，僅載入帳號</button>
+        <button class="btn btn-primary" id="guestMerge" type="button">確認合併訪客資料</button>
+        <button class="btn btn-ghost" id="signOut" type="button">取消登入</button></div>`;
+    } else if (st.user) {
       const via = st.user.provider === 'google.com' ? 'Google' : 'Email';
       let line;
       if (st.status === 'syncing' || st.status === 'connecting') line = '<p class="sync-line">同步中…</p>';
@@ -72,7 +78,7 @@ export function renderSyncPanel(container) {
           <button class="btn btn-outline" type="button" id="syncNow" ${st.status === 'syncing' ? 'disabled' : ''}>立即同步</button>
           <button class="btn btn-ghost" type="button" id="signOut">登出</button>
         </div>
-        <p class="hint-text">資料改變後會自動同步；打開網站、切回這個 App 時也會同步。登出後，這台裝置的資料會保留。</p>
+        <p class="hint-text">資料改變後會自動同步。登出後回到獨立的訪客空間；此帳號的本機資料保留在自己的儲存區，下次登入同一帳號才能載入。</p>
         <div class="set-pw">
           <h3 class="sub-title">設定／變更密碼（讓 iPhone 主畫面 App 也能登入）</h3>
           <p class="hint-text">iPhone 主畫面 App 不能用 Google 登入。替這個帳號設定密碼後，在 App 裡用
@@ -173,6 +179,8 @@ export function renderSyncPanel(container) {
   }
 
   function bind() {
+    container.querySelector('#guestKeep')?.addEventListener('click', e => run(e.currentTarget, () => resolveGuestData(false)));
+    container.querySelector('#guestMerge')?.addEventListener('click', e => run(e.currentTarget, () => resolveGuestData(true)));
     container.querySelector('#googleBtn')?.addEventListener('click', (e) => run(e.currentTarget, async () => {
       await signInWithGoogle();
       toast('已登入，開始同步');
@@ -246,7 +254,7 @@ export function renderSyncPanel(container) {
     });
     container.querySelector('#syncNow')?.addEventListener('click', (e) => run(e.currentTarget, syncNow));
     container.querySelector('#signOut')?.addEventListener('click', (e) => {
-      if (!confirmAction('確定要登出嗎？這台裝置的資料會保留，只是不再同步。')) return;
+      if (!confirmAction('確定要登出並回到訪客空間嗎？帳號資料會分開保留，不會交給下一個帳號。')) return;
       run(e.currentTarget, async () => { await signOutSync(); toast('已登出'); });
     });
   }

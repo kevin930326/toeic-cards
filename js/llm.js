@@ -1,3 +1,4 @@
+import { profileStorage } from './profile-storage.js';
 // Gemini API（使用者自己的金鑰，只存在這台電腦的瀏覽器裡）
 //
 // - 金鑰放在 HTTP 標頭 x-goog-api-key，不會出現在網址裡
@@ -10,13 +11,13 @@ const API = 'https://generativelanguage.googleapis.com/v1beta';
 export const FALLBACK_MODEL = 'gemini-flash-latest';
 
 export function getApiKey() {
-  try { return localStorage.getItem(KEY_STORAGE) || ''; } catch (e) { return ''; }
+  try { return profileStorage.getItem(KEY_STORAGE) || ''; } catch (e) { return ''; }
 }
 
 export function setApiKey(key) {
   const k = String(key || '').trim();
-  if (k) localStorage.setItem(KEY_STORAGE, k);
-  else localStorage.removeItem(KEY_STORAGE);
+  if (k) profileStorage.setItem(KEY_STORAGE, k);
+  else profileStorage.removeItem(KEY_STORAGE);
 }
 
 export function hasApiKey() {
@@ -171,13 +172,13 @@ export function thinkingLabel(opt) {
 }
 
 function rememberedThinking(model) {
-  try { return JSON.parse(localStorage.getItem(THINKING_KEY) || '{}')[model] ?? 0; } catch (e) { return 0; }
+  try { return JSON.parse(profileStorage.getItem(THINKING_KEY) || '{}')[model] ?? 0; } catch (e) { return 0; }
 }
 function rememberThinking(model, index) {
   try {
-    const all = JSON.parse(localStorage.getItem(THINKING_KEY) || '{}');
+    const all = JSON.parse(profileStorage.getItem(THINKING_KEY) || '{}');
     all[model] = index;
-    localStorage.setItem(THINKING_KEY, JSON.stringify(all));
+    profileStorage.setItem(THINKING_KEY, JSON.stringify(all));
   } catch (e) { /* 記不住只是每次多試一次 */ }
 }
 

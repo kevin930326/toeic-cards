@@ -1,3 +1,4 @@
+import { profileStorage } from './profile-storage.js';
 // 資料儲存：所有單字和設定都存在瀏覽器的 localStorage
 import { normalizeWord } from './parse.js';
 import { normalizeSetName, sanitizeSets, mergeSets, filterSetWords, UNFILED } from './word-sets.js?v=dictionary-scale-1';
@@ -28,7 +29,7 @@ const listeners = new Set();
 
 function readJSON(key, fallback) {
   try {
-    const raw = localStorage.getItem(key);
+    const raw = profileStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
   } catch (e) {
     console.warn('讀取資料失敗', key, e);
@@ -38,7 +39,7 @@ function readJSON(key, fallback) {
 
 function writeJSON(key, value) {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    profileStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
     console.error('儲存資料失敗', key, e);
     throw new Error('瀏覽器儲存空間不足或被封鎖，資料沒有存到。');
@@ -72,12 +73,14 @@ let wordsDirty = false;
 
 export function flushWords() {
   if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
-  if (!wordsDirty) return;
+  if (!wordsDirty) return true;
   try {
     writeJSON(WORDS_KEY, words);
     wordsDirty = false;   // 只有存成功才清除；暫時失敗後，離頁／切背景仍可重試。
+    return true;
   } catch (e) {
     window.dispatchEvent(new CustomEvent('toeic:save-error', { detail: { message: e.message } }));
+    return false;
   }
 }
 
@@ -89,6 +92,7 @@ function saveWords() {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('pagehide', flushWords);
+  window.addEventListener('toeic:profile-leave', e => { if (!flushWords()) e.preventDefault(); });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushWords(); });
 }
 

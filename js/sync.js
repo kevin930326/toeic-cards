@@ -7,8 +7,10 @@ import { firebaseConfig } from './firebase-config.js';
 import {
   getWords, replaceWords, getTombstones, setTombstones, getSettings, updateSettings, getDefaultSettings,
   settingsUpdatedAt, setSettingsUpdatedAt, subscribe,
-  getSetRecords, mergeSetRecords,
+  getSetRecords, mergeSetRecords, flushWords,
 } from './store.js';
+import { profileStorage, profileOwner, profileIsCurrent, pinProfileLayout, hasGuestData, readProfile, writeProfile, activateProfile } from './profile-storage.js';
+import { mergeBackup, parseBackup, buildBackup } from './backup.js';
 import { getOwnLog, setRemoteLogs, onLogChange } from './log.js';
 import { getMistakes, mistakesUpdatedAt, setMistakesFromSync } from './mistakes.js';
 import {
@@ -31,6 +33,7 @@ const state = {
   summary: null,      // { added, updated, deleted, pushed }
   pendingLink: '',    // 用登入連結打開網站，但這台裝置不知道 Email 時
   linkSentTo: '',
+  guestChoice: false,
 };
 const listeners = new Set();
 let remotePromise = null;
@@ -39,6 +42,47 @@ let rerun = false;
 let applying = false;
 let pushTimer = null;
 let lastFocusSync = 0;
+let session = 0;
+let signingOut = false;
+
+function invalidateSession() {
+  session++;
+  clearTimeout(pushTimer);
+  rerun = false;
+}
+
+function changeAccount(user) {
+  invalidateSession();
+  pinProfileLayout();
+  emit({ user, lastSyncAt: 0, summary: null, status: 'idle', error: '', guestChoice: false });
+  if (signingOut && user) return;
+  const uid = user?.uid || '';
+  if (uid) ls.set(ACTIVE_KEY, uid);
+  else ls.del(ACTIVE_KEY);
+  if (uid !== profileOwner()) {
+    if (uid && !profileOwner() && hasGuestData()) {
+      emit({ guestChoice: true });
+      location.hash = '#/settings';
+    } else {
+      if (!flushWords()) throw new Error('目前字卡尚未存好，請先匯出備份並釋放空間，再重新整理。暫停同步以保護資料。');
+      activateProfile(uid);
+    }
+  } else if (uid) syncNow();
+}
+
+export function resolveGuestData(merge) {
+  const uid = state.user?.uid;
+  if (!uid || !state.guestChoice || profileOwner()) return;
+  if (!flushWords()) throw new Error('訪客資料尚未存好，請先匯出備份並釋放空間再試。');
+  if (merge) {
+    const guest = readProfile('');
+    const clean = parseBackup(JSON.stringify(buildBackup({ words: guest.words || [], settings: {},
+      log: guest.log || {}, mistakes: guest.mistakes || [], wordSets: guest.wordSets || [] })), getDefaultSettings()).backup;
+    // 先載入帳號的雲端資料，再合併訪客；不能用空白本機 meta 覆蓋既有帳號。
+    writeProfile(uid, { pendingGuest: clean });
+  }
+  activateProfile(uid);
+}
 
 const ls = {
   get(k, fb) { try { const v = localStorage.getItem(k); return v === null ? fb : JSON.parse(v); } catch (e) { return fb; } },
@@ -126,15 +170,11 @@ async function ensureRemote() {
       .then((m) => m.createFirebaseRemote(getConfig()))
       .then((remote) => {
         state.remote = remote;
-        remote.onAuth((user) => {
-          const was = state.user?.uid;
-          emit({ user, status: 'idle', error: '' });
-          if (user) {
-            ls.set(ACTIVE_KEY, user.uid);
-            if (was !== user.uid) syncNow();
-          } else {
-            ls.del(ACTIVE_KEY);
-          }
+        remote.onAuth(user => {
+          if (!profileIsCurrent()) return;
+          if (state.user?.uid === user?.uid && (user?.uid || '') === profileOwner()) return;
+          try { changeAccount(user); }
+          catch (err) { emit({ status: 'error', error: friendlyError(err) }); }
         });
         return remote;
       })
@@ -267,9 +307,10 @@ export async function sendPasswordReset(email) {
 
 export async function signOutSync() {
   if (!state.remote) return;
-  await state.remote.signOut();
-  clearTimeout(pushTimer);
-  emit({ user: null, status: 'idle', summary: null, lastSyncAt: 0 });
+  signingOut = true;
+  invalidateSession();
+  try { await state.remote.signOut(); if (profileIsCurrent() && state.user) changeAccount(null); }
+  finally { signingOut = false; }
 }
 
 // ---- 同步 ----
@@ -286,7 +327,10 @@ export function syncNow() {
 async function doSync() {
   const remote = state.remote;
   const user = state.user;
-  if (!remote || !user) return;
+  if (!remote || !user || state.guestChoice || signingOut || user.uid !== profileOwner() || !profileIsCurrent()) return;
+  const token = session;
+  const active = () => token === session && !signingOut && profileIsCurrent() && state.user?.uid === user.uid;
+  const check = () => { if (!active()) throw Object.assign(new Error('帳號已切換'), { cancelled: true }); };
   if (!navigator.onLine) { emit({ status: 'offline' }); return; }
   emit({ status: 'syncing', error: '' });
   const uid = user.uid;
@@ -296,6 +340,7 @@ async function doSync() {
     // 1. 拉下雲端有變動的單字，套用到本機
     //    （套用和寫入之間沒有任何等待，不會蓋掉同步途中使用者做的修改，見 decisions #31）
     const { docs, maxSyncedAt } = await remote.pullWords(uid, st.lastPullAt);
+    check();
     const applied = applyRemoteWords(getWords(), getTombstones(), docs);
     for (const d of docs) st.pushed[d.word] = Math.max(st.pushed[d.word] || 0, Number(d.updatedAt) || 0);
     st.lastPullAt = maxSyncedAt;
@@ -310,7 +355,8 @@ async function doSync() {
     // 2. 上傳本機有變更的單字和刪除紀錄
     const pending = pendingChanges(getWords(), getTombstones(), st.pushed);
     if (pending.length) {
-      await remote.pushWords(uid, pending);
+      await remote.pushWords(uid, pending, active);
+      check();
       for (const p of pending) st.pushed[p.word] = p.updatedAt;
       saveState(uid, st);
     }
@@ -318,11 +364,14 @@ async function doSync() {
     // 3. 每日紀錄：上傳自己的，拉下其他裝置的（顯示時加總）
     const me = deviceId();
     await remote.pushLog(uid, me, getOwnLog());
+    check();
     const logs = await remote.pullLogs(uid);
+    check();
     setRemoteLogs(remoteLogs(logs, me));
 
     // 4. 設定：比較新的勝出
     const rs = await remote.getMeta(uid, 'settings');
+    check();
     const sSide = newerSide(settingsUpdatedAt(), rs);
     if (sSide === 'pull') {
       applying = true;
@@ -330,24 +379,40 @@ async function doSync() {
       setSettingsUpdatedAt(rs.updatedAt);
     } else if (sSide === 'push') {
       await remote.setMeta(uid, 'settings', pickSyncedSettings(getSettings()), settingsUpdatedAt());
+      check();
     }
 
     // 5. 錯題本：比較新的勝出（題目裡的單字 id 換成本機的）
     const rm = await remote.getMeta(uid, 'mistakes');
+    check();
     const mSide = newerSide(mistakesUpdatedAt(), rm);
     if (mSide === 'pull') setMistakesFromSync(remapMistakes(rm.value, getWords()), rm.updatedAt);
     else if (mSide === 'push') await remote.setMeta(uid, 'mistakes', getMistakes(), mistakesUpdatedAt());
+    check();
 
     // 6. 單字集與每個成員分別合併；等待網路期間的新修改也要保留。
-    const sets = await remote.syncWordSets(uid, getSetRecords());
+    const sets = await remote.syncWordSets(uid, getSetRecords(), active);
+    check();
     applying = true;
     try { mergeSetRecords(sets); } finally { applying = false; }
+
+    const guest = JSON.parse(profileStorage.getItem('toeic-cards:pendingGuest') || 'null');
+    if (guest) {
+      if (!flushWords()) throw new Error('帳號字卡尚未存好，訪客資料仍保留，請釋放空間後重試。');
+      const result = mergeBackup({ words: getWords(), log: getOwnLog(), mistakes: getMistakes(), wordSets: getSetRecords() }, guest);
+      writeProfile(uid, { words: result.words, log: result.log, mistakes: result.mistakes,
+        wordSets: result.wordSets, mistakesAt: Date.now() });
+      profileStorage.removeItem('toeic-cards:pendingGuest');
+      location.reload();
+      return;
+    }
 
     // 其他裝置的紀錄和錯題不經過 store，主動通知畫面重畫
     applying = true;
     try { updateSettings({}, { fromSync: true }); } finally { applying = false; }
     emit({ status: 'idle', lastSyncAt: Date.now(), summary: { ...s, pushed: pending.length } });
   } catch (err) {
+    if (!active() || err.cancelled) return;
     emit({ status: navigator.onLine ? 'error' : 'offline', error: friendlyError(err) });
   }
 }
