@@ -15,6 +15,7 @@ import sys
 from playwright.sync_api import sync_playwright
 
 from onboarding_helpers import existing_user
+from storage_helpers import flush
 
 URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8123/')
 errors = []
@@ -58,6 +59,7 @@ with sync_playwright() as p:
     pg.wait_for_load_state('networkidle')
 
     # ---- 單字探索分批畫 ----
+    flush(pg)   # 先存完網站延後的存檔，避免重新整理時蓋掉測試資料
     pg.evaluate(SEED, 250)
     pg.goto(URL + '#/cards')
     pg.reload()
@@ -99,6 +101,7 @@ with sync_playwright() as p:
 
     # ---- 存檔延後、合併、關閉前一定存完 ----
     pg.goto(URL + '#/settings')
+    flush(pg)   # 先存完網站延後的存檔，避免重新整理時蓋掉測試資料
     pg.evaluate(SEED, 250)
     pg.reload()
     pg.wait_for_load_state('networkidle')
@@ -143,6 +146,7 @@ with sync_playwright() as p:
 
     # ---- 3,000 張字卡的速度（寬鬆上限，不限 CPU）----
     pg.goto(URL + '#/settings')
+    flush(pg)   # 先存完網站延後的存檔，避免重新整理時蓋掉測試資料
     pg.evaluate(SEED, 3000)
     pg.reload()
     pg.wait_for_load_state('networkidle')

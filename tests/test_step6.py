@@ -1,3 +1,4 @@
+from review_mock import mock_review
 from onboarding_helpers import existing_user
 from storage_helpers import flush
 """第 6 步：測驗（簡易模式、聽力、Part 5、錯題本）端對端測試"""
@@ -45,6 +46,7 @@ def gemini(route):
                              body=json.dumps({'error': {'code': 400, 'message': 'API key not valid.', 'status': 'INVALID_ARGUMENT'}}))
     prompt = json.loads(req.post_data)['contents'][0]['parts'][0]['text']
     items = re.findall(r'^\d+\. target: "([^"]+)"; distractors: (.+)$', prompt, re.M)
+    if mock_review(route,prompt,forms=False): return
     gemini_calls.append(items)
     qs = []
     for target, ds in items:
@@ -198,7 +200,7 @@ with sync_playwright() as p:
     mode['broken'] = 'deadline'
     page.click('.mode-btn[data-mode=part5]')
     page.wait_for_selector('.q-sentence', timeout=10000)
-    check(len(gemini_calls) == 1 and len(gemini_calls[0]) == 8, f'8 個字用 1 次請求出題（{[len(c) for c in gemini_calls]}）')
+    check(len(gemini_calls) == 1 and len(gemini_calls[0]) == 8, f'8 個字一批生成並完成另一輪覆核（{[len(c) for c in gemini_calls]}）')
     sample = dict((t, re.findall(r'"([^"]+)"', d)) for t, d in gemini_calls[0])
     pos = {w: p_ for w, p_, _, _ in DATA}
     check(all(len(ds) == 3 and t not in ds and all(d in pos for d in ds) for t, ds in sample.items()), '錯誤選項都來自使用者自己的字卡')
@@ -278,6 +280,7 @@ with sync_playwright() as p:
     page.goto(URL + '#/words')
     page.click('#toggleLibraryEdit')
     page.locator('.word-row', has_text=wid).first.locator('[data-act=delete]').click()
+    page.click('#confirmWordDeletion')
     page.wait_for_timeout(200)
     check(store(page, 'mistakes') == [], '刪除單字時相關錯題也清掉')
 

@@ -4,8 +4,10 @@
 // - Google 登入用彈出視窗（signInWithPopup）：網站不在 Firebase 自己的網域（我們在 GitHub Pages），
 //   瀏覽器會擋掉「跳轉登入」需要的第三方儲存空間，官方建議改用彈出視窗
 // - Email 登入連結：寄一封信，點信裡的連結就登入，不用密碼
-import { wordDocId } from './sync-core.js';
+import { wordDocId, mergeRemoteRecord } from './sync-core.js';
 import { mergeSets } from './word-sets.js?v=dictionary-scale-1';
+import { cleanLedger, mergeLedgers } from './log-ledger.js';
+import {stableJSON} from './meta-sync.js';
 
 export const FIREBASE_SDK_VERSION = '13.0.0';
 const CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
@@ -114,19 +116,47 @@ export async function createFirebaseRemote(config) {
     },
 
     // 上傳單字（Firestore 一次批次最多 500 筆，這裡每 400 筆一批）
-    async pushWords(uid, items) {
+    async pushWords(uid, items, active = () => true) {
+      const results=[];
       for (let i = 0; i < items.length; i += 400) {
-        const batch = fs.writeBatch(db);
-        for (const it of items.slice(i, i + 400)) {
-          batch.set(fs.doc(wordsCol(uid), wordDocId(it.word)), { ...plain(it), syncedAt: fs.serverTimestamp() });
-        }
-        await batch.commit();
+        if (!active() || auth.currentUser?.uid !== uid) throw Object.assign(new Error('帳號已切換'), { cancelled: true });
+        const chunk=items.slice(i,i+400);
+        const merged=await fs.runTransaction(db,async tx=>{
+          const refs=chunk.map(it=>fs.doc(wordsCol(uid),wordDocId(it.word)));
+          const snaps=await Promise.all(refs.map(ref=>tx.get(ref)));
+          if(!active()||auth.currentUser?.uid!==uid) throw Object.assign(new Error('帳號已切換'),{cancelled:true});
+          const docs=chunk.map((it,j)=>{
+            const data=snaps[j].exists()?snaps[j].data():null;
+            const cloud=data?{word:data.word,updatedAt:data.updatedAt,deleted:data.deleted,data:data.data}:null;
+            return mergeRemoteRecord(cloud,it);
+          });
+          docs.forEach((it,j)=>tx.set(refs[j],{...plain(it),syncedAt:fs.serverTimestamp()}));
+          return docs;
+        });
+        results.push(...merged);
       }
+      return results;
     },
 
     async pullLogs(uid) {
       const snap = await fs.getDocs(fs.collection(db, 'users', uid, 'logs'));
       return snap.docs.map((d) => ({ deviceId: d.id, log: d.data().log || {}, updatedAt: d.data().updatedAt || 0 }));
+    },
+    async syncLogLedger(uid, local, reset, active = () => true) {
+      const ref = fs.doc(db, 'users', uid, 'meta', 'learningLog');
+      // 舊版 logs 僅在帳本首次建立時遷移，之後不再把舊資料加回。
+      const exists = await fs.getDoc(ref);
+      const legacy = exists.exists() ? {docs:[]} : await fs.getDocs(fs.collection(db, 'users', uid, 'logs'));
+      return fs.runTransaction(db, async tx => {
+        const snap = await tx.get(ref);
+        if (!active() || auth.currentUser?.uid !== uid) throw Object.assign(new Error('帳號已切換'), {cancelled:true});
+        const cloud = snap.exists() ? cleanLedger(snap.data().value) : cleanLedger({sources:Object.fromEntries(legacy.docs.map(d=>[d.id,d.data()]))});
+        let merged;
+        if (reset) merged = {...cleanLedger(local), epoch:{id:local.epoch.id,at:Math.max(Date.now(),local.epoch.at,cloud.epoch.at+1)}};
+        else merged = mergeLedgers(cloud, local);
+        tx.set(ref, {value:plain(merged)});
+        return merged;
+      });
     },
     async pushLog(uid, deviceId, log) {
       await fs.setDoc(fs.doc(db, 'users', uid, 'logs', deviceId), { log: plain(log), updatedAt: Date.now() });
@@ -137,20 +167,39 @@ export async function createFirebaseRemote(config) {
       return snap.exists() ? snap.data() : null;
     },
     // 用交易在伺服器端重讀後合併，兩台裝置同時建立／改分類也不會整份互蓋。
-    async syncWordSets(uid, local) {
+    async syncWordSets(uid, local, active = () => true, replace = false) {
       const ref = fs.doc(db, 'users', uid, 'meta', 'wordSets');
       return fs.runTransaction(db, async (tx) => {
         const snap = await tx.get(ref);
+        if (!active() || auth.currentUser?.uid !== uid) throw Object.assign(new Error('帳號已切換'), { cancelled: true });
         const cloud = snap.exists() ? snap.data().value : [];
-        const merged = mergeSets(cloud, local);
+        let desired = local;
+        if (replace) {
+          const all = mergeSets(cloud,local);
+          const at = Math.max(Date.now(),...all.flatMap(s=>[s.updatedAt+1,...Object.values(s.members).map(m=>m.at+1)]));
+          desired = all.map(old=>{
+            const s=local.find(s=>s.id===old.id);
+            const members=Object.fromEntries(Object.keys(old.members).map(w=>[w,{present:false,at}]));
+            for(const [w,m] of Object.entries(s?.members||{})) members[w]={present:m.present,at};
+            return {...(s||old),deleted:!s||s.deleted,updatedAt:at,members};
+          });
+        }
+        const merged = mergeSets(cloud, desired);
         if (JSON.stringify(merged) !== JSON.stringify(cloud)) {
           tx.set(ref, { value: plain(merged) });
         }
         return merged;
       });
     },
-    async setMeta(uid, name, value, updatedAt) {
-      await fs.setDoc(fs.doc(db, 'users', uid, 'meta', name), { value: plain(value), updatedAt });
+    async setMeta(uid, name, value, updatedAt, expected, active=()=>true) {
+      const ref=fs.doc(db,'users',uid,'meta',name);
+      if(expected===undefined){await fs.setDoc(ref,{value:plain(value),updatedAt});return;}
+      await fs.runTransaction(db,async tx=>{
+        const snap=await tx.get(ref);const current=snap.exists()?snap.data():null;
+        if(!active()||auth.currentUser?.uid!==uid)throw Object.assign(new Error('帳號已切換'),{cancelled:true});
+        if(stableJSON(current)!==stableJSON(expected))throw Object.assign(new Error('雲端資料在同步途中改變，請再同步確認。'),{code:'sync/meta-changed'});
+        tx.set(ref,{value:plain(value),updatedAt});
+      });
     },
   };
 }

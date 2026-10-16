@@ -212,6 +212,7 @@ export function renderWords(root) {
         for (const w of targets) if (getWords().some(item => item.id === w.id)) { deleteWord(w.id); n++; }
       }
       toast(`已刪除 ${n} 張字卡`);
+      (root.querySelector('[data-act="delete"]')||root.querySelector('#openAddWords'))?.focus({preventScroll:true});
     } catch (err) { toast(err.message, 'error'); }
     finally { confirmingDelete = false; }
   }

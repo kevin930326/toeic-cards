@@ -1,3 +1,4 @@
+import {currentSavedQuestion} from './question-policy.js';
 // 測驗出題的純邏輯（不碰畫面、不碰儲存、不呼叫 API），方便單獨測試
 //
 // 題型：
@@ -230,7 +231,9 @@ export function part5Question(word, q, rng = Math.random) {
     prompt: q.sentence,
     options,
     answerIndex: options.indexOf(q.answer),
-    extra: { translation: q.translation, explanation: q.explanation, qid: q.id },
+    extra: { translation: q.translation, explanation: q.explanation, qid: q.id,
+      policy:q.policy,source:q.source,revision:q.revision,review:q.review,signature:q.signature,
+      optionReasons:q.optionReasons ? options.map(o=>q.optionReasons[[q.answer,...q.distractors].indexOf(o)]) : [] },
   };
 }
 
@@ -294,14 +297,17 @@ export const FORMS_SCHEMA = PART5_SCHEMA;
 // 內建詞性變化題庫：{ packId, version, questions: [{ target, sentence, answer, distractors, translation, explanation }] }
 // 回傳 Map（單字 → 題目陣列）；每題都經過 normalizeFormQ，不合格的題目略過
 export function parseFormsBank(raw, normalize = (w) => String(w || '').trim().toLowerCase()) {
-  if (!raw || raw.packId !== 'toeic-1000' || raw.version !== 1 || !Array.isArray(raw.questions)) {
+  if (!raw || raw.packId !== 'toeic-1000' || raw.version !== 2 || !Array.isArray(raw.questions)) {
     throw new Error('詞性變化題庫格式不正確，請重新載入');
   }
   const bank = new Map();
+  bank.audit={total:raw.questions.length,active:0,pending:0};
   for (const item of raw.questions) {
     const word = normalize(item?.target);
     const q = word ? normalizeFormQ(item, word) : null;
-    if (!q) continue;
+    if (!q || item.review!=='approved-ai' || !currentSavedQuestion({...item,...q})) {bank.audit.pending++;continue;}
+    Object.assign(q,{id:item.id,policy:item.policy,source:item.source,revision:item.revision,review:item.review,optionReasons:item.optionReasons});
+    bank.audit.active++;
     if (!bank.has(word)) bank.set(word, []);
     bank.get(word).push(q);
   }

@@ -19,6 +19,7 @@ with sync_playwright() as p:
     page.on('pageerror',lambda error:errors.append(str(error)))
     page.on('request',lambda req:requests.append(req.url) if '/suggestions-v1/' in req.url else None)
     page.goto(URL+'#/stats');page.wait_for_load_state('networkidle')
+    page.evaluate('navigator.serviceWorker.ready');page.reload(wait_until='networkidle')
     assert not requests,'尚未輸入時不下載候選索引'
     page.click('#openLookup');page.fill('#lookupInput','a')
     expect(page.get_by_role('option',name='apple',exact=True)).to_be_visible()

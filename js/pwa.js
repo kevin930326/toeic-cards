@@ -111,8 +111,18 @@ export function initPWA({ onBackOnline } = {}) {
   });
 
   if (!swSupported()) return;
-  navigator.serviceWorker.register('./sw.js').catch((err) => console.warn('Service Worker 註冊失敗', err));
-  // Service Worker 準備好後，把這次載入用到的檔案告訴它，讓它存進快取（第一次開網站時它還沒接手）
+  navigator.serviceWorker.register('./sw.js', {updateViaCache: 'none'}).then((reg) => {
+    function notifyUpdate() {
+      if (!reg.waiting || !navigator.serviceWorker.controller || document.getElementById('appUpdateNotice')) return;
+      const notice = document.createElement('aside');
+      notice.id = 'appUpdateNotice'; notice.className = 'update-notice'; notice.setAttribute('role', 'status');
+      notice.textContent = '新版已準備好。請先確認資料已儲存，再關閉所有本網站分頁與主畫面 App，重新開啟即可更新。';
+      document.body.append(notice);
+    }
+    notifyUpdate();
+    reg.addEventListener('updatefound', () => reg.installing?.addEventListener('statechange', notifyUpdate));
+  }).catch((err) => console.warn('Service Worker 註冊失敗', err));
+  // 程式與單字包已由完整發布保存；另通知快取公開字型。
   navigator.serviceWorker.ready.then((reg) => {
     const urls = [location.href.split('#')[0], ...performance.getEntriesByType('resource').map((e) => e.name)];
     reg.active?.postMessage({ type: 'cache-urls', urls });

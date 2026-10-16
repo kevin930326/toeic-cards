@@ -114,7 +114,8 @@ with sync_playwright() as p:
     page.screenshot(path=os.path.join(OUT, 's5_review.png'))
 
     # a. 點擊翻面 → 按「會」
-    page.click('#card')
+    # 點單字本身翻面：沒有音標的卡，卡片正中央剛好是發音按鈕（點它只發音、不翻面）
+    page.click('.card-front .headword')
     page.wait_for_timeout(600)
     check('is-flipped' in page.get_attribute('#card', 'class'), '點擊翻面')
     page.click('#good')

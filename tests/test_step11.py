@@ -1,4 +1,5 @@
 from onboarding_helpers import existing_user
+from sync_helpers import sync_state
 """第 11 步：跨裝置同步（Firebase）端對端測試
 
 使用 Firebase 官方的本機模擬器（真的 Firebase SDK，不會碰到正式專案），並套用專案的 firestore.rules：
@@ -101,9 +102,11 @@ def wait_synced(pg, timeout=20000, since=0):
     # 注意：wait_for_function 遇到回傳 Promise 的函式會直接當成「成立」，所以改成自己輪詢
     end = time.time() + timeout / 1000
     while time.time() < end:
-        st = pg.evaluate("""() => import('/js/sync.js').then((m) => {
-          const s = m.syncState(); return { ok: !!s.user && s.status === 'idle' && s.lastSyncAt > 0, last: s.lastSyncAt, status: s.status, error: s.error };
-        })""")
+        if pg.locator('#guestMerge').count():
+            pg.click('#guestMerge')
+            pg.wait_for_load_state('domcontentloaded')
+        raw = sync_state(pg)
+        st = {'ok': bool(raw['user']) and raw['status']=='idle' and raw['lastSyncAt']>0, 'last':raw['lastSyncAt'], 'status':raw['status'], 'error':raw['error']}
         if st['ok'] and st['last'] > since:
             return st
         time.sleep(0.3)
@@ -116,7 +119,7 @@ def sync_now(pg):
     wait_synced(pg, since=before)
 
 def local_words(pg):
-    return {w['word']: w for w in pg.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words') || '[]')")}
+    return {w['word']: w for w in pg.evaluate("import('/js/store.js').then(s => {s.flushWords(); return s.getWords();})")}
 
 def today_combined(pg):
     return pg.evaluate("""async () => {
@@ -201,7 +204,7 @@ with sync_playwright() as p:
     B.click('#themeToggle')
     sync_now(B)
     sync_now(A)
-    sa_settings = A.evaluate("JSON.parse(localStorage.getItem('toeic-cards:settings') || '{}')")
+    sa_settings = A.evaluate("import('/js/store.js').then(s => s.getSettings())")
     check(sa_settings.get('dailyGoal') == 30, '每日目標同步到電腦')
     check(sa_settings.get('theme', 'system') != 'dark', '主題不同步（每台裝置各自設定）')
 
@@ -214,7 +217,7 @@ with sync_playwright() as p:
     A.locator('.option').nth((opts.index(answer) + 1) % 4).click()
     sync_now(A)
     sync_now(B)
-    bm = B.evaluate("JSON.parse(localStorage.getItem('toeic-cards:mistakes') || '[]')")
+    bm = B.evaluate("import('/js/mistakes.js').then(s => s.getMistakes())")
     b_id = local_words(B)[answer]['id']
     check(len(bm) == 1 and bm[0]['question']['wordId'] == b_id, f'錯題本同步到手機，並換成手機的單字 id（{answer}）')
 
@@ -498,7 +501,7 @@ with sync_playwright() as p:
     B.goto(URL + '#/settings')
     B.click('#signOut')
     B.wait_for_selector('#googleBtn')
-    check(state(B)['user'] is None and 'approve' in local_words(B), '登出後回到登入畫面，這台裝置的資料保留')
+    check(state(B)['user'] is None and 'approve' not in local_words(B), '登出回到訪客空間，帳號資料不顯示')
 
     browser.close()
 

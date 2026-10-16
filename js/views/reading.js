@@ -1,3 +1,4 @@
+import { profileStorage } from '../profile-storage.js';
 // 短文閱讀頁（多益 Part 6／7 風格）：用自己的單字讓 AI 寫一篇商務短文＋閱讀理解題
 //   - 文章裡的英文字都可以點來查（沿用全站查字視窗），自己的字會標出來
 //   - 每答一題就顯示解析，並計入每日目標；全部答完可以看中文翻譯
@@ -24,7 +25,7 @@ const newId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${
 
 export function loadReadings() {
   try {
-    return sanitizeSaved(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+    return sanitizeSaved(JSON.parse(profileStorage.getItem(STORAGE_KEY) || '[]'));
   } catch {
     return [];
   }
@@ -32,7 +33,7 @@ export function loadReadings() {
 
 function saveReadings(list) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, MAX_SAVED)));
+    profileStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, MAX_SAVED)));
     return true;
   } catch {
     toast('瀏覽器空間不足，這篇短文沒有存起來', 'error');

@@ -128,7 +128,7 @@ with sync_playwright() as p:
     with pg.expect_download() as download:
         pg.click('#exportBtn')
     with open(download.value.path(), encoding='utf-8') as f: backup = json.load(f)
-    check(backup['version'] == 2 and len(backup['data']['wordSets']) == 3, '新版備份包含全部單字集與分類')
+    check(backup['version'] >= 2 and len(backup['data']['wordSets']) == 3, f"新版備份包含全部單字集與分類（備份版本 {backup['version']}）")
     ctx2, restored = setup(browser)
     restored.goto(URL + '#/settings')
     restored.locator('#importFile').set_input_files({'name': 'sets.json', 'mimeType': 'application/json', 'buffer': json.dumps(backup).encode()})

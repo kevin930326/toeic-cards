@@ -70,6 +70,7 @@ with sync_playwright() as p:
     page.goto(URL + '#/settings')
     page.reload()
     page.wait_for_load_state('networkidle')
+    page.click('.settings-nav button:has-text("發音")')   # 設定頁分組後，「發音」預設收合，像使用者一樣點開
     labels = page.locator('input[name=accent] + span').all_inner_texts()
     check(labels == ['美式', '英式', '加拿大', '澳洲', '多益混合'], f'口音選項 {labels}')
     rows = page.locator('#accentList li')
@@ -149,6 +150,13 @@ with sync_playwright() as p:
 
     # ---- Part 5：朗讀整句（答案填進空格）----
     page.click('#home')   # 聽力測驗 5 題做完後在結果頁
+    # 第 43 步起，Part 5 只用「AI 已覆核」的題目；把測試資料標成新版格式（含內容指紋與四個選項理由）
+    page.evaluate("""async () => {
+      const s = await import('/js/store.js');
+      const { questionSignature, QUESTION_POLICY } = await import('/js/question-policy.js');
+      s.updateWords(s.getWords().map((w) => [w.id, { part5: (w.part5 || []).map((q) => ({ ...q, policy: QUESTION_POLICY,
+        source: 'ai', review: 'ai-checked', optionReasons: Array(4).fill('測試用的選項說明'), signature: questionSignature(q) })) }]));
+    }""")
     page.click('.mode-btn[data-mode=part5]')
     page.wait_for_selector('.q-sentence')
     page.keyboard.press('a')

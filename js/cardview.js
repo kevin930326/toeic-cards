@@ -74,20 +74,30 @@ export function backHTML(w, mode, { lookupEnabled = true } = {}) {
 export function flashcardHTML(w, { flipped, mode, corner, hint = '點一下翻面', lookupEnabled = true, lookupOnly = false }) {
   return `
     <div class="flashcard ${flipped ? 'is-flipped' : ''} ${w.unfamiliar ? 'is-unfamiliar' : ''}" id="card"
-      role="button" tabindex="0" data-lookup-only="${lookupOnly}" aria-label="${esc(w.word)}，${lookupOnly ? '點字查詢模式' : '按一下翻面'}">
-      <div class="card-face card-front">
+      role="group" aria-roledescription="可翻面的單字卡" tabindex="0" data-word="${esc(w.word)}" data-lookup-only="${lookupOnly}" aria-label="${esc(w.word)}，${lookupOnly ? '點字查詢模式' : flipped?'背面，按空白鍵翻面':'正面，按空白鍵翻面'}">
+      <div class="card-face card-front" aria-hidden="${flipped}" ${flipped?'inert':''}>
         <span class="card-corner">${esc(corner)}</span>
         ${w.unfamiliar ? '<span class="stamp">不熟</span>' : ''}
         <p class="headword">${esc(w.word)}</p>
         ${w.phonetic ? `<p class="phonetic">${esc(w.phonetic)}</p>` : ''}
         ${canSpeak() ? `<button class="icon-btn speak-btn" type="button" data-speak aria-label="播放 ${esc(w.word)} 的發音" title="發音">${speakerIcon}</button>` : ''}
-        <p class="hint">${esc(hint)}</p>
+        <button class="hint card-flip" type="button" aria-label="翻到背面">${esc(hint)}</button>
       </div>
-      <div class="card-face card-back">
+      <div class="card-face card-back" aria-hidden="${!flipped}" ${!flipped?'inert':''}>
         <span class="card-corner">${esc(w.word)}</span>
         ${backHTML(w, mode, { lookupEnabled })}
+        ${lookupOnly?'':'<button class="hint card-flip" type="button">翻回正面</button>'}
       </div>
     </div>`;
+}
+export function setCardFlipped(card,flipped) {
+  if(!card)return;
+  card.classList.toggle('is-flipped',flipped);
+  const front=card.querySelector('.card-front'),back=card.querySelector('.card-back');
+  front.inert=flipped;back.inert=!flipped;
+  if((flipped?front:back).contains(document.activeElement))card.focus({preventScroll:true});
+  front.setAttribute('aria-hidden',String(flipped));back.setAttribute('aria-hidden',String(!flipped));
+  card.setAttribute('aria-label',`${card.dataset.word}，${flipped?'背面':'正面'}，按空白鍵翻面`);
 }
 
 // 滑卡時浮現的「會／不熟」標籤（放在卡片外層，翻面時才不會跟著鏡像）

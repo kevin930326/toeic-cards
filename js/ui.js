@@ -45,8 +45,25 @@ const splitList = (s) => String(s || '').split(/[,，、]/).map((x) => x.trim())
 export function openEditor(id) {
   const w = getWord(id);
   if (!w) return Promise.resolve(false);
+  const priorFocus=document.activeElement;
+  const restoreFocus=()=>queueMicrotask(()=>{
+    const fallback=document.querySelector(`[data-id="${CSS.escape(id)}"] [data-act="edit"]`)||document.querySelector('#card')||document.querySelector('#view button');
+    (priorFocus?.isConnected?priorFocus:fallback)?.focus({preventScroll:true});
+  });
   const dialog = document.getElementById('editDialog');
   const form = document.getElementById('editForm');
+  dialog.querySelector('.sync-conflicts')?.remove();
+  if(w._conflicts?.length) {
+    const notice=document.createElement('div');notice.className='sync-conflicts pwa-note';
+    const labels={zh:'中文意思',en:'英文解釋',pos:'詞性',phonetic:'音標',srs:'複習排程',unfamiliar:'不熟標記',examples:'例句',collocations:'搭配詞',forms:'詞形',synonyms:'同義詞'};
+    notice.innerHTML=`<strong>這張卡有同步衝突</strong><p>不同欄位已合併；以下同一欄位有不同修改。請比較並選擇要保留的版本，也可以在下方表單再修改。按儲存代表已確認；取消仍保留兩份內容。</p>${w._conflicts.map((c,i)=>`<label> ${esc(labels[c.field]||'字卡內容')}<select data-conflict="${i}">${c.alternatives.map((a,j)=>`<option value="${j}" ${JSON.stringify(a.value)===JSON.stringify(w[c.field])?'selected':''}>${esc(typeof a.value==='string'?a.value:c.field==='srs'?`間隔 ${a.value?.interval||0} 天／連續答對 ${a.value?.reps||0} 次`:JSON.stringify(a.value))}</option>`).join('')}</select></label>`).join('')}`;
+    notice.addEventListener('change',e=>{
+      const c=w._conflicts[Number(e.target.dataset.conflict)];if(!c)return;
+      const value=c.alternatives[Number(e.target.value)].value,field=form.elements.namedItem(c.field);
+      if(field)field.value=Array.isArray(value)?c.field==='examples'?value.map(e=>e.en+(e.zh?' | '+e.zh:'')).join('\n'):value.join(', '):value??'';
+    });
+    form.prepend(notice);
+  }
   form.word.value = w.word;
   form.pos.value = w.pos;
   form.zh.value = w.zh;
@@ -86,17 +103,23 @@ export function openEditor(id) {
         for (const [k, v] of Object.entries(lists)) {
           if (JSON.stringify(v) !== JSON.stringify(w[k])) src[k] = 'user';
         }
-        updateWord(id, { word: form.word.value, pos, zh, en, src, ...lists });
+        const resolved={};
+        for(const select of dialog.querySelectorAll('[data-conflict]')) {
+          const c=w._conflicts[Number(select.dataset.conflict)];
+          if(!form.elements.namedItem(c.field))resolved[c.field]=c.alternatives[Number(select.value)].value;
+        }
+        updateWord(id, { word: form.word.value, pos, zh, en, src, ...lists, ...resolved, ...(w._conflicts?.length?{_conflicts:[]}: {}) });
         cleanup();
         dialog.close();
+        restoreFocus();
         toast('已儲存');
         resolve(true);
       } catch (err) {
         toast(err.message, 'error');
       }
     };
-    const onCancel = () => { cleanup(); dialog.close(); resolve(false); };
-    const onClose = () => { cleanup(); resolve(false); };
+    const onCancel = () => { cleanup(); dialog.close(); restoreFocus();resolve(false); };
+    const onClose = () => { cleanup(); restoreFocus();resolve(false); };
     form.addEventListener('submit', onSubmit);
     cancel.addEventListener('click', onCancel);
     dialog.addEventListener('close', onClose);

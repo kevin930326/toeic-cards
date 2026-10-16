@@ -58,6 +58,13 @@ def settings(page, **kw):
 def words(page):
     return {w['word']: w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words') || '[]')")}
 
+def open_ai_section(page):
+    """設定頁分組後，「AI」預設收合；像使用者一樣點上方的「AI」按鈕打開"""
+    page.wait_for_selector('.settings-nav')
+    page.locator('.settings-nav button', has_text='AI').first.click()
+    page.wait_for_selector('#testAi', state='visible')
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     ctx = browser.new_context(viewport={'width': 1000, 'height': 1000})
@@ -75,6 +82,7 @@ with sync_playwright() as p:
     page.goto(URL + '#/settings')
     page.reload()
     page.wait_for_load_state('networkidle')
+    open_ai_section(page)
     page.click('#testAi')
     page.wait_for_selector('#testAiResult .test-ok', timeout=10000)
     out = page.locator('#testAiResult').inner_text()
@@ -162,6 +170,7 @@ with sync_playwright() as p:
     # ---- 測試 AI 失敗時顯示原因 ----
     mode['bad_key'] = True
     page.goto(URL + '#/settings')
+    open_ai_section(page)
     page.click('#testAi')
     page.wait_for_selector('#testAiResult .ai-error', timeout=10000)
     check('金鑰' in page.locator('#testAiResult').inner_text(), '測試 AI 失敗時顯示原因')

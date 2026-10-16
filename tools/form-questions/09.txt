@@ -11,16 +11,16 @@ procurement | The ___ department handles all purchasing for the company. | procu
 legislation | New ___ will require companies to report their emissions. | legislation | legislate / legislative / legislator | 新的法律將要求企業申報排放量。 | 形容詞 New 後面接名詞當主詞；legislator 是可數名詞，單數需要冠詞。
 sustainability | The company is deeply committed to ___. | sustainability | sustain / sustainable / sustainably | 公司非常致力於永續發展。 | be committed to 的 to 是介系詞，後面接名詞。
 entitlement | Full-time employees are ___ to fifteen days of paid leave. | entitled | entitle / entitles / entitlement | 全職員工享有十五天的有薪假。 | are＋過去分詞，be entitled to 是「有權享有」。
-reimbursement | Approved travel expenses will be ___ within two weeks. | reimbursed | reimburse / reimbursement / reimbursable | 核准的差旅費會在兩週內報銷。 | will be＋過去分詞，是被動語態。
+reimbursement | The company will ___ approved travel expenses within two weeks. | reimburse | reimbursed / reimbursement / reimbursable | 公司將在兩週內報銷核准的差旅費。 | will 後面接原形動詞 reimburse；reimbursed 是過去式／過去分詞，reimbursement 是名詞，reimbursable 是形容詞。
 respect | Please treat all customers ___. | respectfully | respect / respectful / respected | 請以尊重的態度對待所有顧客。 | 句子已經完整，空格修飾動詞 treat，要用副詞。
 accountable | Department heads are held ___ for their team's results. | accountable | accountability / accounted / accounting | 部門主管要為團隊的成果負責。 | hold＋受詞＋形容詞，這裡是被動 are held＋形容詞；be held accountable for 是「被究責」。
 prompt | Please respond ___ to all customer emails. | promptly | prompt / prompted / promptness | 請迅速回覆所有顧客的電子郵件。 | 修飾動詞 respond，要用副詞。
 considerable | The renovation will take a ___ amount of time. | considerable | consider / considerably / consideration | 整修將花費相當多的時間。 | 冠詞 a 後面、名詞 amount 前面要用形容詞。
 substantial | Rents have increased ___ since last year. | substantially | substance / substantial / substantiate | 租金從去年以來大幅上漲。 | 修飾動詞 have increased，要用副詞。
-complementary | The two products ___ each other very well. | complement | complementary / complemented / complementing | 這兩項產品非常互補。 | 主詞 The two products 後面接動詞；複數主詞、現在式用原形。
+complementary | The two products must ___ each other to form a complete security system. | complement | complementary / complemented / complementing | 這兩項產品必須彼此互補，才能構成完整的安全系統。 | must 後面接原形動詞 complement；complemented 是過去式／過去分詞，complementing 是現在分詞，complementary 是形容詞，都不能直接接在 must 後面。
 prevalent | Online shopping is becoming more ___ among seniors. | prevalent | prevail / prevalence / prevailed | 網路購物在長者之間越來越普遍。 | becoming more 後面接形容詞（比較級）。
 comprehensive | The new manual covers every safety topic ___. | comprehensively | comprehend / comprehensive / comprehension | 新手冊全面涵蓋了所有安全主題。 | 句子已經完整，空格修飾動詞 covers，要用副詞。
 exceptional | The hotel staff were ___ helpful during our stay. | exceptionally | except / exception / exceptional | 住宿期間，飯店員工格外熱心幫忙。 | 修飾形容詞 helpful，要用副詞。
 managerial | The new booking system is very easy to ___. | manage | managerial / management / manager | 新的訂位系統非常容易管理。 | easy to 後面接原形動詞。
 definitive | We will ___ confirm the date of the meeting by Friday. | definitely | define / definition / definitive | 我們星期五前一定會確認會議日期。 | 夾在 will 和原形動詞 confirm 中間修飾動詞，要用副詞。
-negligent | The accident was caused by the driver's ___. | negligence | neglect / negligent / negligently | 這起意外是駕駛的疏忽造成的。 | 所有格 the driver's 後面要接名詞。
+negligent | The accident was caused by the driver's ___. | negligence | neglectful / negligent / negligently | 這起意外是駕駛的疏忽造成的。 | the driver’s 後面需要名詞 negligence；negligent 與 neglectful 都是形容詞，negligently 是副詞，均不能單獨作這裡的受詞。

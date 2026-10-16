@@ -75,11 +75,11 @@ with sync_playwright() as p:
     page.wait_for_load_state('networkidle')
     check(page.evaluate('!!navigator.serviceWorker.controller'), 'Service Worker 接手網頁')
     page.wait_for_function("""async () => {
-      const c = await caches.open('toeic-shell-v1');
+      const c = await caches.open((await caches.keys()).find(n=>n.startsWith('toeic-shell-')));
       return !!(await c.match(new URL('js/views/quiz.js', location.href).href));
     }""", timeout=10000)
-    shell = cached_paths(page, 'toeic-shell-v1')
-    need = ['/', '/index.html', '/css/style.css', '/js/app.js', '/js/srs.js', '/js/views/quiz.js', '/js/backup.js', '/js/pwa.js', '/manifest.webmanifest']
+    shell = cached_paths(page, page.evaluate("async()=> (await caches.keys()).find(n=>n.startsWith('toeic-shell-'))"))
+    need = ['/index.html', '/css/style.css', '/js/app.js', '/js/srs.js', '/js/views/quiz.js', '/js/backup.js', '/js/pwa.js', '/manifest.webmanifest']
     check(all(n in shell for n in need), f'網站檔案都存進快取（{len(shell)} 個）')
     fonts = cached_paths(page, 'toeic-fonts-v1')
     check(any('fonts.googleapis.com' in f for f in fonts) and any('fonts.gstatic.com' in f for f in fonts), f'字型也存起來（{len(fonts)} 個）')

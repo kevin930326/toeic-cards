@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 // 詞性變化題的單元測試：node --test "tests/unit/*.test.mjs"
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -53,16 +54,14 @@ test('詞性變化題：出題時選項打亂，答案位置正確，題型是 f
   assert.equal(q.extra.translation, good.translation);
 });
 
-test('內建題庫：格式不對丟出錯誤；不合格的題目略過，同一個字可以有多題', () => {
-  assert.throws(() => parseFormsBank({ packId: 'x', version: 1, questions: [] }));
-  assert.throws(() => parseFormsBank(null));
-  const bank = parseFormsBank({ packId: 'toeic-1000', version: 1, questions: [
-    good,
-    { ...good, sentence: 'All requests must be _____ by a manager before payment.', answer: 'approved', distractors: ['approval', 'approve', 'approves'] },
-    { ...good, target: 'company', distractors: ['reject', 'approved', 'approving'] },   // 混進別的字 → 略過
-  ] });
-  assert.equal(bank.get('approve').length, 2);
-  assert.equal(bank.has('company'), false);
+test('內建題庫：只啟用內容與審核指紋吻合的版本；待覆核與舊版拒用',()=>{
+ const raw=JSON.parse(readFileSync(new URL('../../data/packs/toeic-1000-forms.json',import.meta.url),'utf8'));
+ const bank=parseFormsBank(raw);
+ assert.equal(bank.audit.total,471); assert.equal(bank.audit.active,75); assert.equal(bank.audit.pending,396);
+ assert.equal(bank.has('invite'),false); assert.equal(bank.get('complementary')[0].answer,'complement');
+ assert.throws(()=>parseFormsBank({...raw,version:1}));
+ const changed=structuredClone(raw);changed.questions.find(q=>q.target==='complementary').sentence='The two products _____ each other.';
+ assert.equal(parseFormsBank(changed).has('complementary'),false);
 });
 
 test('測驗模式：詞性變化不需要其他字當錯誤選項，範圍有字就能考', () => {

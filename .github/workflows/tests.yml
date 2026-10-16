@@ -1,0 +1,40 @@
+name: Regression checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45   # 自動跑全部瀏覽器測試（約 12 分鐘），留餘裕
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Syntax, unit and release consistency
+        run: python tools/run_checks.py
+      - name: Install test tools
+        run: |
+          pip install playwright==1.64.0 pillow==12.3.0
+          playwright install --with-deps chromium
+      - name: Browser regressions against local Firebase only
+        env:
+          CI: 'true'
+        run: npx --yes firebase-tools@15.34.0 emulators:exec --project demo-toeic --only auth,firestore "python tools/run_browser_checks.py"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-diagnostics
+          path: |
+            tests/screenshots/
+            *-debug.log

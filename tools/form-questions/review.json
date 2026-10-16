@@ -1,0 +1,4715 @@
+{
+  "policy": 2,
+  "reviews": [
+    {
+      "id": "forms-amount",
+      "target": "amount",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:2",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6fba62cd8100b82432dd0cb9c5bc4b148f398748242d3a5c1f58a7007a706931"
+    },
+    {
+      "id": "forms-clinic",
+      "target": "clinic",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "266ebb9083a60ba504d3b743f5b8bb8aa382d6143751c04cea8a817833a03746"
+    },
+    {
+      "id": "forms-appointment",
+      "target": "appointment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "7911ae9a36c4fd4f44933fdbc2f4e31d91ea6182856f0cc1cad7c025bf7129e0"
+    },
+    {
+      "id": "forms-reservation",
+      "target": "reservation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "7873da90b519d8865b1aa24e92c77325e6345bb705ac122e86ff33e0e1a0cde7"
+    },
+    {
+      "id": "forms-employee",
+      "target": "employee",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:6",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "d968429b85a016d0767db6a7e0c2a872d88cda2bb750b1087c59845862ad6018"
+    },
+    {
+      "id": "forms-label",
+      "target": "label",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "354d182714d1198892a2a1655f52ef37bb1bf51344ef731c53b59e04e978d8b5"
+    },
+    {
+      "id": "forms-option",
+      "target": "option",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c6b85d9bd0b1e4eec018a083f9466812474dc213ed993f69c9a27e91ab851da2"
+    },
+    {
+      "id": "forms-receipt",
+      "target": "receipt",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b84d1a1e86651ea1b8f5be94c84cdad3b25698406129261fcae0a8b08a5a2b3e"
+    },
+    {
+      "id": "forms-printer",
+      "target": "printer",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:10",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "f70bd3f20e29d837b8bae90fc6af33cbdf53a707269efdb89cb5718a6615665d"
+    },
+    {
+      "id": "forms-author",
+      "target": "author",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a4b9a58f175c079bb35fca29e6be359d7f76a5a8991f1142a9792c1cbbb3271f"
+    },
+    {
+      "id": "forms-description",
+      "target": "description",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "13e6e135e5156c6bb0f2e292a22b30fb8d6457609c27efbfcf82d3e477cd6717"
+    },
+    {
+      "id": "forms-reminder",
+      "target": "reminder",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "330f575f78dfc9dd233ae21e5d5145c21f2c0783610ba67ebc60ba3970ed7afd"
+    },
+    {
+      "id": "forms-occupation",
+      "target": "occupation",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:14",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "f7b5d3b029a257e2d8f20298f34a5c47cd7c5f8525b6d415ba19752b66f4c3af"
+    },
+    {
+      "id": "forms-payment",
+      "target": "payment",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:15",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "a01401663d23214969cc84c820f85242281245cf499c2d785bb777c93d7373f6"
+    },
+    {
+      "id": "forms-account",
+      "target": "account",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:16",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "428402182381fdc220eaa58384912580570c753b36a7f77ad1fd345ab13527c0"
+    },
+    {
+      "id": "forms-region",
+      "target": "region",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0a2646d848dbe0adb9849b9dcce9de3e7e8d01d3846dea4a7744a0a8cf4acfee"
+    },
+    {
+      "id": "forms-item",
+      "target": "item",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:18",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "00af5b7bc86711af2a4fa4df736512c8b7b5b289e1e97ee0eb78eefb44edecea"
+    },
+    {
+      "id": "forms-permission",
+      "target": "permission",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "555ce89ba068e20dc6d9c3dc437ed3f6b4c1fc128823f9cc2aa2b4ee59a788b7"
+    },
+    {
+      "id": "forms-period",
+      "target": "period",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1122b32d310a18e46799da0bc84ed682127ea882468eb8e471867e326a2c6a89"
+    },
+    {
+      "id": "forms-equipment",
+      "target": "equipment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f16f5cf5f18ab295c488f40e3528f8a94875689c8f01a23bcc53eefb62639568"
+    },
+    {
+      "id": "forms-attendance",
+      "target": "attendance",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c4f2364e3a325cdbc38c9a29afa830e01a0216ad9917e35f009360423bf6875d"
+    },
+    {
+      "id": "forms-response",
+      "target": "response",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2e77c4a2dfeaefd780853dd2a2f5abfa7d3cdc81be58bdcf989a31a1b16e5007"
+    },
+    {
+      "id": "forms-sum",
+      "target": "sum",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:24",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "690e48703c8403b15b6997d83c17ca8dbd4bc4bcd1a271a77dc5b513c98bbdac"
+    },
+    {
+      "id": "forms-decision",
+      "target": "decision",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b1f3bc40302c621bcd2259553433b1ad64af4e4a20fcedce777b4246488dceb4"
+    },
+    {
+      "id": "forms-energy",
+      "target": "energy",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a7ae0793c0fc80c750cf77bddb8a6ea5cb460c95001036b4025a8fd9961e5b83"
+    },
+    {
+      "id": "forms-purpose",
+      "target": "purpose",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c652e576b33f9526a22b5d5959f5cebe7821c2aad9e6f2ebece79b66caef0cd9"
+    },
+    {
+      "id": "forms-selection",
+      "target": "selection",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:28",
+      "reason": "已改為 has selected，避開 select candidates 形容詞解讀。",
+      "sha256": "5f9076c76dd0371a4a7c2897094a1c56a579d524a709594b0c3db71abc3a7aad"
+    },
+    {
+      "id": "forms-sample",
+      "target": "sample",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:29",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "1581a878a9fd6d6fa12d3abfb4d8bbec08a58c273c5d73b7dbd6ccf0b1a187dd"
+    },
+    {
+      "id": "forms-quantity",
+      "target": "quantity",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:30",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "e96a8633ab252737d06d6c216f7ec42450b769273112046c6fe602c90b458de4"
+    },
+    {
+      "id": "forms-method",
+      "target": "method",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:31",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9ae22250d15ab45a37cf8139dbbf3ff5a7a7f6544712946d319a2fc9a36d8195"
+    },
+    {
+      "id": "forms-pollution",
+      "target": "pollution",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4498a574daa47b555e53d53d187495ef87c4824bf93627ecc30c93313fc104aa"
+    },
+    {
+      "id": "forms-condition",
+      "target": "condition",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:33",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0e95a1604f9c4b3a16ae2e47081768c1b546636aa376c52bd13ea099cc193370"
+    },
+    {
+      "id": "forms-departure",
+      "target": "departure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:34",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2e8912addfc6ca63458da32a3b9fa35e22e3234c544c5ca5c3137744c5a87238"
+    },
+    {
+      "id": "forms-solution",
+      "target": "solution",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:35",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "0707a49c8137d68f29129f45369fc10193be2438563b69fac6877fbc5176119c"
+    },
+    {
+      "id": "forms-confidence",
+      "target": "confidence",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:36",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2799306a9a7ad99b75c90219ecd470686245fde3161d739b5bb32833551e4ae5"
+    },
+    {
+      "id": "forms-instruction",
+      "target": "instruction",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:37",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f8ee2f8379a9a84aa79ef2ed89c947fbb140ebe7e575ce3c37e943487199f409"
+    },
+    {
+      "id": "forms-insurance",
+      "target": "insurance",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:38",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e3e8ceadb8e4b349e1ca0cd0c1803e300086246dcaccc35539e5b43383337599"
+    },
+    {
+      "id": "forms-growth",
+      "target": "growth",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:39",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "723ec6a0d76f076f465e80958ea60d7811296d2f2efec76af8bcaa9e6656cca3"
+    },
+    {
+      "id": "forms-variety",
+      "target": "variety",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6cbfcad507d9015f7d8c1bb7a2a7e390405e954bde27d109dc541455a1e496bf"
+    },
+    {
+      "id": "forms-accommodation",
+      "target": "accommodation",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:41",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "1dd50a8c205f3301967910da3c1bd8e17f080bdd756b035f0754546b1e5583a2"
+    },
+    {
+      "id": "forms-admission",
+      "target": "admission",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:42",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "92fe4104ba44e93170154312db2f489dad54a6b78da69f783aab69ffa1af0f87"
+    },
+    {
+      "id": "forms-expert",
+      "target": "expert",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:43",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3c8294d9b1bb09a6057b3850118d7451829ada1669fd66f7c93758e225bdfb3b"
+    },
+    {
+      "id": "forms-sequence",
+      "target": "sequence",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:44",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9d8857c20c1079173579138788fb8c064f569825516e79990eaac4e0f1236f01"
+    },
+    {
+      "id": "forms-advantage",
+      "target": "advantage",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:45",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0c5c46acb15a3e24ef0b69f5bb8c867ab2c6b1967e3f6e6df6a0d384a93baea4"
+    },
+    {
+      "id": "forms-facility",
+      "target": "facility",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:46",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "977e1cadfb1d71f0d9284c52b04aaecf4184a3652d1fe8b10dd8ed0c1244e869"
+    },
+    {
+      "id": "forms-complaint",
+      "target": "complaint",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:47",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "51059985bd156e8c960bc570cb0d34ef64839f63181cf098b47567c18739829a"
+    },
+    {
+      "id": "forms-supplier",
+      "target": "supplier",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:48",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "16753f1536490d546d8cf1af94e7d747229287cc43f0b74c226952e691bd973c"
+    },
+    {
+      "id": "forms-announcement",
+      "target": "announcement",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "01.txt:49",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "9afdbe23d2b64e3173d9de9a4fa0a7d60e0aba1e800491aa32ad2e6dfa68d8d0"
+    },
+    {
+      "id": "forms-standard",
+      "target": "standard",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:2",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "2445f4d3586036f55a0174b0c3b85b15650855bcd5b01190a4b8542efe2e8aca"
+    },
+    {
+      "id": "forms-minimum",
+      "target": "minimum",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:3",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "04955febb520ad31840b4716f9908f9fcdfa4d5e55e0c03baa82484ce0b0aa4f"
+    },
+    {
+      "id": "forms-budget",
+      "target": "budget",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8293a1d749d31622ae8f77f6759151f66c2a74f1b10d8b9f0860b284ba9dcf02"
+    },
+    {
+      "id": "forms-result",
+      "target": "result",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f097886532e4ed518ce0ab2c8b6b24417607a24d3d5dff6f14524f79b4d3b468"
+    },
+    {
+      "id": "forms-experience",
+      "target": "experience",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:6",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "96c6eacd33cefd9c6a973b98e1b1b651f41eb303843edc673ff55761535185b8"
+    },
+    {
+      "id": "forms-form",
+      "target": "form",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "da499b0b8ed36183b6f727c07f24aefb5c048f188ec51f2b0992b54dc2c860e0"
+    },
+    {
+      "id": "forms-tour",
+      "target": "tour",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "fe2f2f3a94a4a3022f28fb4428336ea3b33cd2a07dabb87ac39f7a259c8361ab"
+    },
+    {
+      "id": "forms-award",
+      "target": "award",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9d8b2dc840fe98de82ab6cd53debc087679896a61d9f9a8cd141be767d379fce"
+    },
+    {
+      "id": "forms-discount",
+      "target": "discount",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "37ba06a17a89bf5df414b1bbb61da0ee60307b36d62bf83d63f5e2d871ac6b4b"
+    },
+    {
+      "id": "forms-request",
+      "target": "request",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5ec54d028b28ccd2ab6da3a11c3f933e807ad1afa0ddc083b3c849bd22f5c712"
+    },
+    {
+      "id": "forms-trade",
+      "target": "trade",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5489e22b90e50db3c3f211dc85f9482e7b01622405c2c935f199476a3d80a2b7"
+    },
+    {
+      "id": "forms-display",
+      "target": "display",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "99c3ef4074e5c5ab2ba3951fbf0c9f41a27bf1df07d16998561e42f7143e2ba4"
+    },
+    {
+      "id": "forms-power",
+      "target": "power",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:14",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bcc550b279381180aa659dbd6d4c344abf6114d34d0aba82f654eb00904aec08"
+    },
+    {
+      "id": "forms-refund",
+      "target": "refund",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:15",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "891bb78e534fdeb5a44993da288df4772fc3041dbba89483e7119fe4cd58fd94"
+    },
+    {
+      "id": "forms-process",
+      "target": "process",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:16",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b082f34d5c68dc68ce51033dd5bf61f45eafb828d8c6a87a55345e1f489585ce"
+    },
+    {
+      "id": "forms-demand",
+      "target": "demand",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a537729b24dfe300cfcf2fd276c8b17ccb7cd1cf44683dd398e7af1b454d2130"
+    },
+    {
+      "id": "forms-progress",
+      "target": "progress",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:18",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e2763ff36eebe1933f4d09638e0ca0936e8db455aa05f055bf52bea8d536ee48"
+    },
+    {
+      "id": "forms-survey",
+      "target": "survey",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "92bddb234d055adeebd6fdaf43a8ce2daa9ada6dadab62589b5623c844019f4f"
+    },
+    {
+      "id": "forms-research",
+      "target": "research",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f823503236c57e4ed6a2dc766b9a66a136d29eee2d2511f94e84f204f0928435"
+    },
+    {
+      "id": "forms-project",
+      "target": "project",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e516143d77ac55e9e88851dc1a7c367e8635d122da15aa7baca236f815d3ca4a"
+    },
+    {
+      "id": "forms-private",
+      "target": "private",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3790a10f46bedb40653b183acb4c9b6bf5a04cdd320ef09b8f450bbf678122d6"
+    },
+    {
+      "id": "forms-personal",
+      "target": "personal",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1a94a816382d50e801b8f85506f2b3b86f057a7fb5041c0c2c5bfcfb820e6e73"
+    },
+    {
+      "id": "forms-regular",
+      "target": "regular",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:24",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0455f95d99b54bc42b3a2cfc27522ac4112d085a17993e7eb3772b5c076b2e04"
+    },
+    {
+      "id": "forms-major",
+      "target": "major",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ff70541fe52c42bfc3279b42c66fb5f03af94412cfe73ce8493e0410b0ce9ecd"
+    },
+    {
+      "id": "forms-available",
+      "target": "available",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "279110d05dcaf1ffcda342339bf126dbc986cffc763c09909b42078fda43aa0e"
+    },
+    {
+      "id": "forms-negative",
+      "target": "negative",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e1ecac6f80427a4f9782b2a2c4ae53f3497950a6a204077100282e7b446bff08"
+    },
+    {
+      "id": "forms-temporary",
+      "target": "temporary",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:28",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1be85605f48eda2a5070b22de77d3448fd78978e9c7ce88cd71cffdb876052dd"
+    },
+    {
+      "id": "forms-primary",
+      "target": "primary",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:29",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6f6442513df1d4c984645406dd91908fe932c30a30bd2c75de967f4335e36a20"
+    },
+    {
+      "id": "forms-typical",
+      "target": "typical",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:30",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "49420b47811dfe9fc918c23e1f89e0f07b39cec7233b19422641e64a1b8c8a6d"
+    },
+    {
+      "id": "forms-limited",
+      "target": "limited",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:31",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "f50d5f1d83b84349db88fb934d7be4c248e5e9c74a08290871a56c1d59a609c6"
+    },
+    {
+      "id": "forms-physical",
+      "target": "physical",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4f6397e2d842a96c88b9c2085b15152b120a54476eb25ed5e1b7893c89d88630"
+    },
+    {
+      "id": "forms-annual",
+      "target": "annual",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:33",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a88f533d22312105d5e3e3caaf71547534014a3017fd4d4b54b5b8db6dc8e97a"
+    },
+    {
+      "id": "forms-frequent",
+      "target": "frequent",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:34",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "25d75facacd2ce9661ae8107dca1aeda076ec333d13670cf5c3e1f695731f58b"
+    },
+    {
+      "id": "forms-various",
+      "target": "various",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:35",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "491268df5252898d166c5eef643c25ff09ea898ee31101659cefbcae4c742e45"
+    },
+    {
+      "id": "forms-suitable",
+      "target": "suitable",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:36",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f8c84653e72de0263e197791ca7f9a8c11898b8da390b2659fe8de30c58229cd"
+    },
+    {
+      "id": "forms-practical",
+      "target": "practical",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:37",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9aa2d39bdd33404ff34fdd3de4ceb851db4f34bda3c31f6cc3eb4c63e898925a"
+    },
+    {
+      "id": "forms-legal",
+      "target": "legal",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:38",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1f15be286a4fc20613de5319f57e0be34a54faa4b29e5633986769dc5f3d0256"
+    },
+    {
+      "id": "forms-traditional",
+      "target": "traditional",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:39",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "24853f4f589d718b9f5a8e1f0e77738127b065fdfb011aae85602b26a214e4f1"
+    },
+    {
+      "id": "forms-harmful",
+      "target": "harmful",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e7dcc411a99987f25621c3acc664b0ade61d964669a02982e1d629a481a2cd4c"
+    },
+    {
+      "id": "forms-stable",
+      "target": "stable",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:41",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "50d63a9be8ba78eb6afae7c7b1acc6327f9e881579237ab9ddfa778039f75041"
+    },
+    {
+      "id": "forms-optimistic",
+      "target": "optimistic",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:42",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "09f9a642cd13a04d3360e6e86f0f6b43ffd239b8c0f1f5283f6c870b1e84a1a7"
+    },
+    {
+      "id": "forms-capable",
+      "target": "capable",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:43",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4566f9efde346e7a1bea3ced16024c7235daa758a1f1b0620eb43db0345f2223"
+    },
+    {
+      "id": "forms-detailed",
+      "target": "detailed",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:44",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0593652abab52fbc06769fa8125cbc2cdd7b05e37c4167165b6c93489de7b76b"
+    },
+    {
+      "id": "forms-local",
+      "target": "local",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:45",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "61486effaeaf513d3798c62016f73d7f90b100148e731212fe571b3811e399fe"
+    },
+    {
+      "id": "forms-original",
+      "target": "original",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:46",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a3872a6802730ff064ea197a8d999f99a777fc29f50c795883b43c45d9dc37ff"
+    },
+    {
+      "id": "forms-secure",
+      "target": "secure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:47",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f3e0956f38342d594dc9dbad2784cee10b80df95c4f1966c0634824d09477794"
+    },
+    {
+      "id": "forms-initial",
+      "target": "initial",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:48",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "caa3cb501d3995e1eaef2f7557ac56515895b12a7a12b5bf749757375ae715c8"
+    },
+    {
+      "id": "forms-invite",
+      "target": "invite",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:49",
+      "reason": "invite 也可作名詞，kind invite 與 invitation 都可能成立。",
+      "sha256": "d1ae515594cda6401ba4e4e47d95ffb196109b61894cdc0496103f600ef68ada"
+    },
+    {
+      "id": "forms-attend",
+      "target": "attend",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:50",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "47eaa4794bdaaa218ccca644dd696738d1a1dc3b6d485bc7683d12281afbf74d"
+    },
+    {
+      "id": "forms-cancel",
+      "target": "cancel",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:51",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e8ffc099c44ff2fbdd50b98891fb75e897da8ec7d931153794574c610be1d025"
+    },
+    {
+      "id": "forms-compare",
+      "target": "compare",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:52",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "fc53b0033293d0e01bed308b36b6efdd045becb86456c37a1d2c2800689165e1"
+    },
+    {
+      "id": "forms-deliver",
+      "target": "deliver",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:53",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9583094225ecb8bb3ee2042296bacde099fd3800bdcf69486bdef498e9180b9d"
+    },
+    {
+      "id": "forms-apologize",
+      "target": "apologize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:54",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "94f6e235956786d4b16d1cdafc79af6e9da6b9f8b3e6e623be658de84e85c1ec"
+    },
+    {
+      "id": "forms-remove",
+      "target": "remove",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:55",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "58e9e4f27dfb763f723e2a19841eeba32b2bf5bca49d1f53102186296a6243a9"
+    },
+    {
+      "id": "forms-organize",
+      "target": "organize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:56",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0ebb0a5ed0c5e23f871855b5d8e232c1680acdbacd20ff7988eabeabc8396554"
+    },
+    {
+      "id": "forms-create",
+      "target": "create",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:57",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d6c8f27d204721e5166db8aa41c5bced95f74cc324359d687a9b1db4a0cb1dcb"
+    },
+    {
+      "id": "forms-recognize",
+      "target": "recognize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:58",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bd8a477201195765495c049ac77e3a713e27dea418392c89125afa49f14d54c3"
+    },
+    {
+      "id": "forms-book",
+      "target": "book",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:59",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f97f253c3da4145d61cb776f7160aaa6a873f4e7a092c2610a6e59e906b6aba4"
+    },
+    {
+      "id": "forms-mention",
+      "target": "mention",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:60",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "198743a7c5365c9697cf88c07680d0ba878060e13d1f78f8b93e0b9633dcb17b"
+    },
+    {
+      "id": "forms-calculate",
+      "target": "calculate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:61",
+      "reason": "My calculating 也可表示我的計算行為，需補足排他線索。",
+      "sha256": "7216adde333f81914dca2e63939dc3aa452e6fd428ec04b0e7e70f33e29523dd"
+    },
+    {
+      "id": "forms-install",
+      "target": "install",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:62",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1dfacb2ae9427c7ae2861d6029d61b58f58fdd8d7c1a66cbaee5ae251e79ae37"
+    },
+    {
+      "id": "forms-contain",
+      "target": "contain",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:63",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ea4319cc8acdefa89bbc3ed12afcdaf733e6e7c70738ec531215e7349bc7a04e"
+    },
+    {
+      "id": "forms-match",
+      "target": "match",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:64",
+      "reason": "已改為 must match，避開 matching／matched pants。",
+      "sha256": "f4bf31646c693e682151ac61bdd49a9ccdf5c37fc2e362a67535d7199b9bf34c"
+    },
+    {
+      "id": "forms-afford",
+      "target": "afford",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:65",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5867d4edc2ab4866eba7abfabacd7099199e7ed3e512a06bdb32f791f8dc43a0"
+    },
+    {
+      "id": "forms-assist",
+      "target": "assist",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:66",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "86ccad9db6077ecd9610c360e6fa8089c50ba6b848321df3d278f894e709b8da"
+    },
+    {
+      "id": "forms-attract",
+      "target": "attract",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:67",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ea084922786f38bfecf8685a652745285488e9ba3957947a51e992162e5cf874"
+    },
+    {
+      "id": "forms-develop",
+      "target": "develop",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:68",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e2dbf887f1f451c4e460d4ad696fc6309dfcefe580e63dbb2247e6d5bdb67efe"
+    },
+    {
+      "id": "forms-confirm",
+      "target": "confirm",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:69",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "aa5715803e87046f6a6813a6d7689760996f58703cd3a3990f0ec032092f021c"
+    },
+    {
+      "id": "forms-apply",
+      "target": "apply",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:70",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1651095e09edb99b1ff71b21b5e25f17b34a2308450511a78f2e993ee0552f2c"
+    },
+    {
+      "id": "forms-reduce",
+      "target": "reduce",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:71",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "df8251cf95a471d15aa619ccdbcec9e72fedc4da271830aca7758e66bd57d36a"
+    },
+    {
+      "id": "forms-reject",
+      "target": "reject",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:72",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "96781502045a8499053754b10e6edfca087079b3d0b89d3c3f2c8a8605737f53"
+    },
+    {
+      "id": "forms-experiment",
+      "target": "experiment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "02.txt:73",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "96c1eb26df154d8d9a609f698ea48a44259c14985c836fd3c736c4673633f0b4"
+    },
+    {
+      "id": "forms-remain",
+      "target": "remain",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:2",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "592b89f96a348cb3aa64bd4cdbed792ca4b7de37103aadc2e5f2ae4caafc3821"
+    },
+    {
+      "id": "forms-hire",
+      "target": "hire",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "69dcdcb293bd056a9a38d451947e2c97bed3f323557b4bad3e4716c4ea267d7e"
+    },
+    {
+      "id": "forms-expect",
+      "target": "expect",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3960444f23d3d257beea4d64f87260a5845a7c3d534b523515d30dc0c47dc516"
+    },
+    {
+      "id": "forms-advertise",
+      "target": "advertise",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b4362ed07506f6987305a02e5326f0b405b0a49df52e794fddbc41b976718b5b"
+    },
+    {
+      "id": "forms-arrange",
+      "target": "arrange",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:6",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "48c39dc26ae08c1314fc90301085594b4e0b3431384e9c1566ddc8ea2ca74c6e"
+    },
+    {
+      "id": "forms-represent",
+      "target": "represent",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "746090fd8a8013d411c78c934982691461fb1462d7c4ef43eb4e4928d6fd9dc4"
+    },
+    {
+      "id": "forms-intend",
+      "target": "intend",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "737656afda52349682bfd03f94581fb81b332bf96259c9101f42fa8a538c2fc9"
+    },
+    {
+      "id": "forms-recommend",
+      "target": "recommend",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "656d9a73df8182c78555218cb9df811c05ec8665ecd025dfd589fb927ffb2ac1"
+    },
+    {
+      "id": "forms-participate",
+      "target": "participate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a0dab00df79d13a86956f27a3c77c1561b3d2658284e961c81845b1dad9cf0b5"
+    },
+    {
+      "id": "forms-require",
+      "target": "require",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3e696793792a7ce3a5d44339b21bffb44e9088e01dbafaae82abcf28c388ad8b"
+    },
+    {
+      "id": "forms-subscribe",
+      "target": "subscribe",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:12",
+      "reason": "subscription 與 subscriber 都是名詞，原解析不足以排除另一名詞。",
+      "sha256": "8569abded22290060baa58ecf5ec9dad6ddbcb7757e7712939e2185360619d97"
+    },
+    {
+      "id": "forms-replace",
+      "target": "replace",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "97180a8d11c1c70ffa7dec596d7fdbf61b46cf781fcb6a9f9dbb10bd162fac2f"
+    },
+    {
+      "id": "forms-perform",
+      "target": "perform",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:14",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9088b291b29860813b2124113ef1db47e73d96ab7ebccc7cd502da9ba44ac2c0"
+    },
+    {
+      "id": "forms-introduce",
+      "target": "introduce",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:15",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1474c2b1b38ac484994fdba0a3569e11f197ed32d4056b608740f2a28ac4c430"
+    },
+    {
+      "id": "forms-prevent",
+      "target": "prevent",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:16",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "4291485b71e644fc9a6be02ad5ca8d657beec1af38eb6187b5b1d3a7e0685bc7"
+    },
+    {
+      "id": "forms-consider",
+      "target": "consider",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3156c583dc1b30d6f8755f0902ceda0b1f2ddee89b00e3077a14be57a4c53209"
+    },
+    {
+      "id": "forms-retire",
+      "target": "retire",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:18",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e1963f59050e4770b0e6a86995b21f2608dfb1f895d19ac01e99a2aac8e6136b"
+    },
+    {
+      "id": "forms-attach",
+      "target": "attach",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c357d7e86ce8c79020f3a33e59b462476428f7c74b12342f6761ab2fe5bd9485"
+    },
+    {
+      "id": "forms-interrupt",
+      "target": "interrupt",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d22178963936b6c53e6e99a2a292a05797b3640d955fcd307d32887406c5e9cf"
+    },
+    {
+      "id": "forms-depart",
+      "target": "depart",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:21",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "ae14335fd316a275405c915916f8f4492f0acdf9b302f04f912011e4b88bc3f7"
+    },
+    {
+      "id": "forms-disturb",
+      "target": "disturb",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:22",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "b80533c873b132509d89c1879fcea2b5aa8ea1e17325693fa3d41eb1f2a2618e"
+    },
+    {
+      "id": "forms-propose",
+      "target": "propose",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f6648e1be4a4da45adc0c0d850a64f6158901a4d40ac2c49ba6d4988f706cefa"
+    },
+    {
+      "id": "forms-identify",
+      "target": "identify",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:24",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0a98b2de50b2a494f65de56cfcc3a868fb40f3a1be668a5600256f6d1017f04d"
+    },
+    {
+      "id": "forms-increase",
+      "target": "increase",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "89912daa00cad0cbffc7081e563038be3f3cdb3d34512a7a4a8390a91cc5dd0f"
+    },
+    {
+      "id": "forms-interview",
+      "target": "interview",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8d82ecffc39ea62b06e21c63fba12b41bac4def05819e53547cc40732adc4d14"
+    },
+    {
+      "id": "forms-repair",
+      "target": "repair",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "dc48ac0869cbcfab2ce0b5f9b66623d187d129818ef5fab9ff61cca00a74866c"
+    },
+    {
+      "id": "forms-update",
+      "target": "update",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:28",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "97258d1fa7f287142563a9bdb7907bf17c09b655bd604ca7d28401e3171f76a0"
+    },
+    {
+      "id": "forms-reserve",
+      "target": "reserve",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:29",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b1534c15f2bcb281cbe0db44a571b82a59134d9eb52ffd743b088081248f5a03"
+    },
+    {
+      "id": "forms-support",
+      "target": "support",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:30",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ac3d4ae43d825e4c9d15d64702063d087eb1a5d93e1a6afc2e47bf11c58fe24d"
+    },
+    {
+      "id": "forms-permit",
+      "target": "permit",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:31",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5f14eadc56c7e34feea11a397c188a8282897d4340fe41bc0ded7d2ab90ea30f"
+    },
+    {
+      "id": "forms-benefit",
+      "target": "benefit",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "fb58966e7585266535697d8a239411debe75206a29dfa40f94be4ce7937fd215"
+    },
+    {
+      "id": "forms-supply",
+      "target": "supply",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:33",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "ef97678d4857534065efd565dcd59f069cdef7f7ddc4c7f8b236d836923110b7"
+    },
+    {
+      "id": "forms-damage",
+      "target": "damage",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:34",
+      "reason": "damaged 與 damaging 都可修飾 items，須排除不同合理語意。",
+      "sha256": "29678516d4bd090a3f935e70bbfd6fb32eeffbc8ba5540b691b7c3f4e8e888d9"
+    },
+    {
+      "id": "forms-transfer",
+      "target": "transfer",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:35",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c96968aeadfc4d8ddba863ccc637b3ee493f2903e511368cc328866a229af532"
+    },
+    {
+      "id": "forms-launch",
+      "target": "launch",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:36",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ef8ee9d2d6bc096be93d7d0601839e6b86df95e3012276a4ec55573839d98803"
+    },
+    {
+      "id": "forms-advance",
+      "target": "advance",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:37",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4b8cd79295a23c8212a072e0369f9a6b97d1b58f71a294188edc700352b30192"
+    },
+    {
+      "id": "forms-select",
+      "target": "select",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:38",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "9c74402d1a4410d6a927b5e3ab8b42793e98a79e6396559a8e14b2736ba22b3c"
+    },
+    {
+      "id": "forms-separate",
+      "target": "separate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:39",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c88818a1b3ff5d0ebae094e1f15911e09f893953137b233db47c6d4b91586782"
+    },
+    {
+      "id": "forms-construction",
+      "target": "construction",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6e77b3b77a6434b85e71d25c8ef619a770b2a7bc9ebf04c5b9317df890c9f8ad"
+    },
+    {
+      "id": "forms-competitor",
+      "target": "competitor",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:41",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6f342474fa7223ecd57ebfde5dfb2d0270c6829b9dd36028b3e633406b76723f"
+    },
+    {
+      "id": "forms-certificate",
+      "target": "certificate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:42",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b7b3d7cc78f73371de314df9103c3296c1f4200fc96abde62245729173190de8"
+    },
+    {
+      "id": "forms-summary",
+      "target": "summary",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:43",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a300515faf9fa7804dfe9ba305b451c26d96e33840d1a9a944c6e80a7b46e720"
+    },
+    {
+      "id": "forms-accountant",
+      "target": "accountant",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:44",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "269290d91042f8e61cde2dd7e3a4f2a4cf14267dd4e43c5c161657bd653559f9"
+    },
+    {
+      "id": "forms-assignment",
+      "target": "assignment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:45",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "75766c467f961e4c2cd159a5202d0bf19211437c1a52e0ce7365a6a4fb2bdaaa"
+    },
+    {
+      "id": "forms-industry",
+      "target": "industry",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:46",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f16a06dcf556bcc69cf8d06ff25f907a2087f5f6856bef483ab9c63734b4d90a"
+    },
+    {
+      "id": "forms-instructor",
+      "target": "instructor",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:47",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d3ef9bab25830c00e2083e5ff0c7174222e337cf11b0ae50f8473d63fb918131"
+    },
+    {
+      "id": "forms-donation",
+      "target": "donation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:48",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d671af927e9d423f61a470dde161489710420e25b71bf6339fe520702763239d"
+    },
+    {
+      "id": "forms-interest",
+      "target": "interest",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:49",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9c7a571f57ba6ef7bac6274ae4773afbb31ff2d73ec4c92ec0d085f92043a94c"
+    },
+    {
+      "id": "forms-conclusion",
+      "target": "conclusion",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:50",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "19b2fcde3ef606d5fd71a20d1400b973f17c29f8e290ef15018ed6c37ad58ecf"
+    },
+    {
+      "id": "forms-category",
+      "target": "category",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:51",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "330c1e24a7807583d37bfee7b54ac74ca8c13e8315a9702299fd0e9a26c37fee"
+    },
+    {
+      "id": "forms-application",
+      "target": "application",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:52",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ae95d46bcb8a7ad2a38c6bfe3b360284176b7e1e03fee4ba2ca868d977eff6a7"
+    },
+    {
+      "id": "forms-registration",
+      "target": "registration",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:53",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "537bf0cf0e91bf51f990ef0101fee19c9a039fb993c9fedd8a8b864a11aaec92"
+    },
+    {
+      "id": "forms-transportation",
+      "target": "transportation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:54",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6477f61b8ad920c3effc1ae1637b26c4ee513c3ae30129d93d424205cccbdbfd"
+    },
+    {
+      "id": "forms-promotion",
+      "target": "promotion",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:55",
+      "reason": "promotion campaign 是可成立的名詞複合結構。",
+      "sha256": "630a1abb334d66ff398fa04fb380f2c44a0d3654da51fc750540ba9827bae168"
+    },
+    {
+      "id": "forms-extension",
+      "target": "extension",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:56",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5dc139d4c466290b2bd63c44777060959b15362e3ac528fa02099480e99fbe2c"
+    },
+    {
+      "id": "forms-assembly",
+      "target": "assembly",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:57",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d851e0ad03e17a1f1b8addccfe6d9e012aedc50582c4d23363091fa67aeef1a2"
+    },
+    {
+      "id": "forms-expense",
+      "target": "expense",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:58",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bc7df6a7c3effc6f109293ec6640d11accf067f2a59f77be0dfc3aea79dd2e77"
+    },
+    {
+      "id": "forms-division",
+      "target": "division",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:59",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "947ea0cc59ff226b38ebec183cef311fbbb22b686436e6adee660f8aa84e49f1"
+    },
+    {
+      "id": "forms-employment",
+      "target": "employment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:60",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "378070de28b8c3ec4c6fe4dae3119b54957069ece13f5c13c56da7344a8b3a2c"
+    },
+    {
+      "id": "forms-investment",
+      "target": "investment",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:61",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "6ef4b73850294b26f4dd28d8687f60229325b244d2067554328aa4ebb04236d1"
+    },
+    {
+      "id": "forms-maintenance",
+      "target": "maintenance",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:62",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f6257b4a87077dde6a02a5fc135fa6fe4f842586a293f0abc4ad42af2b51409d"
+    },
+    {
+      "id": "forms-proposal",
+      "target": "proposal",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "03.txt:63",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e754a054298d6f7a1a076659340a5a27811a5fa787cfa20d26b6d17cc8b2aa75"
+    },
+    {
+      "id": "forms-structure",
+      "target": "structure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:2",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9104798168b0f4432b97a6404c8bde9ae6248e81173c9ff74d26002a4da7c227"
+    },
+    {
+      "id": "forms-obligation",
+      "target": "obligation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6af876953d9d380b08cfd257579fa3d5b2e97075dd919953ee561a3b8deb5cce"
+    },
+    {
+      "id": "forms-evidence",
+      "target": "evidence",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "7d341774fb97eed301a6597d98935e4696d411e7753e2f8f1ae323c3ccf6b308"
+    },
+    {
+      "id": "forms-editor",
+      "target": "editor",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "be9381317f66d3d6da1c1841b5bedf44ae36eb577dfe7a042fc637960c7ae789"
+    },
+    {
+      "id": "forms-consumer",
+      "target": "consumer",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:6",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "504ff5957e3f7088a3bde881841d7d7e2d5e0e902f8278a8a783f79802fdfbdb"
+    },
+    {
+      "id": "forms-resource",
+      "target": "resource",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1b67d5ebe2b450f3e020d19cf8d4804f5990b380cf8f788a7b16746ae0335599"
+    },
+    {
+      "id": "forms-shipment",
+      "target": "shipment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:8",
+      "reason": "will be shipping 可用於出貨中的商務敘述，與 shipped 需重新區別。",
+      "sha256": "4aea2bb0f72ec91eb23c4e6c62f5a60ef2b8341bdfe29c6d4d0f55a7d63e68f5"
+    },
+    {
+      "id": "forms-applicant",
+      "target": "applicant",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c7f18320f4c6f0465e08d8aa00394c80980201242b2270f2b00cb91e27752712"
+    },
+    {
+      "id": "forms-administration",
+      "target": "administration",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "666e313cc8044855f88e9b043db95caa8663de2ec3d62409df5825384d8ee635"
+    },
+    {
+      "id": "forms-supervisor",
+      "target": "supervisor",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d79c06367d06a2584372e49cf8ed71220c5976e8240d8b077a07e0f5b3db4c4c"
+    },
+    {
+      "id": "forms-improvement",
+      "target": "improvement",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1f3acf2603ba59826f7e9c23bc5b3b38c3479e6605f9c0302c59d1f166559ce7"
+    },
+    {
+      "id": "forms-presentation",
+      "target": "presentation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "38ac9d54a563660eaf5f9b6ef38d17065119e87b107854b025d00982c3df5413"
+    },
+    {
+      "id": "forms-reception",
+      "target": "reception",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:14",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f6b7a8bf7b709b3b869633759e78d53ac5824f9af3ee5186889ace22c0e987e2"
+    },
+    {
+      "id": "forms-priority",
+      "target": "priority",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:15",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "7b961ba86a8a0adf70473abfe56b06898acd0e04188876a82a5d295e6fa114b3"
+    },
+    {
+      "id": "forms-economy",
+      "target": "economy",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:16",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "07f1879eed3973dc4d42cc6ab4af9d7772e69f866be0bebb68c646b8fe8bdff4"
+    },
+    {
+      "id": "forms-appreciation",
+      "target": "appreciation",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:17",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "40ae2743a5c365f016a316fbf7e454255a9f725a5e438885b45a0e5c59ef027c"
+    },
+    {
+      "id": "forms-motivation",
+      "target": "motivation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:18",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a6f66df6f31b0da781507b3e0f80cd4f01ede08999fb39e6ffac8cec7dfdcc59"
+    },
+    {
+      "id": "forms-technician",
+      "target": "technician",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "38a323a25b2b9367d07c7614f2002786f7f9e69f875ff9e099ecaab04aa14bab"
+    },
+    {
+      "id": "forms-statement",
+      "target": "statement",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2cbb24409ae2d4f2e4a65822e03d738df4121eb8a82621e8ffad085ed8896325"
+    },
+    {
+      "id": "forms-responsibility",
+      "target": "responsibility",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f073236aa4104e24f89730115685b86628def83f91396911f16def68aa560507"
+    },
+    {
+      "id": "forms-commuter",
+      "target": "commuter",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "74157def8570e14e1d34234c92644cae0e8c859c49071d801c7adf28ad0c480e"
+    },
+    {
+      "id": "forms-quarter",
+      "target": "quarter",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "dc24c0f2f848d7f0a4a98f6deb8412dc22c14f386d03333f6af24c8fd540df2c"
+    },
+    {
+      "id": "forms-proportion",
+      "target": "proportion",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:24",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2cf7c779e1abc7f17204b80d2e542719ccb291fe3e815b9df80b70acc2dce8cc"
+    },
+    {
+      "id": "forms-reputation",
+      "target": "reputation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8ef005caa36cfbcd10cf908493d356165a0f2973ed17576078bd7165a5e47604"
+    },
+    {
+      "id": "forms-statistics",
+      "target": "statistics",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "63f7e7ba4bbdfa14b10cd091c0c71206715a2af45b6cefee60eeeb33ab160796"
+    },
+    {
+      "id": "forms-individual",
+      "target": "individual",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d261adb4fe9b55142ffe6fa90c7059812d5866b899d941fbab44105c4af6a0bc"
+    },
+    {
+      "id": "forms-reward",
+      "target": "reward",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:28",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "fac9029d6df064ac901ea1e4c6fa0eb05c073977cee9e5e443f9377b350db2ca"
+    },
+    {
+      "id": "forms-influence",
+      "target": "influence",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:29",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "204b490b3fad22853882b636f9d5be97606c4d8ded7adbc291acda07be022e51"
+    },
+    {
+      "id": "forms-contract",
+      "target": "contract",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:30",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bfd648d5fdaea7abfd65a9c6e5b2f009b569091f0b680ec991a7ee2eca0d85ae"
+    },
+    {
+      "id": "forms-profit",
+      "target": "profit",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:31",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "39272b062e392e99d0e2c14a05da7bd769506d302f409a211a818f38cadc49df"
+    },
+    {
+      "id": "forms-access",
+      "target": "access",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "83d332b0f71152261dfd379d548c30062b280d1361ed040485bfcb174c42c960"
+    },
+    {
+      "id": "forms-current",
+      "target": "current",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:33",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ae4c80a680814ca12a67839cabeb230d4801c9e181114a7abc47188ec0c1c233"
+    },
+    {
+      "id": "forms-specific",
+      "target": "specific",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:34",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "4a630c61de59da5f35e1d690dae3dfd55bc6a16817e8ad6bf78d47a34b2e5220"
+    },
+    {
+      "id": "forms-flexible",
+      "target": "flexible",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:35",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "7dd25f1ef52c0f7345ea14af26cbec3bba230d20a1c0ef6e6f5d9a502bafc95f"
+    },
+    {
+      "id": "forms-effective",
+      "target": "effective",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:36",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "62afba07dc88ba3ba70237892ced59c8725115ff876dabf3fa128af5906b1c0b"
+    },
+    {
+      "id": "forms-diverse",
+      "target": "diverse",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:37",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "b856e1518d79b58c14678e7cdb693d4668ee5022946c3cdc22824abbcb1b3f90"
+    },
+    {
+      "id": "forms-economic",
+      "target": "economic",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:38",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5422e36ed73a6f98a7ab2837504445fabe19d9516ae395b0e44ecbb65838ad28"
+    },
+    {
+      "id": "forms-domestic",
+      "target": "domestic",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:39",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "019f2918aedc6a5e8089265c942c07e116b50e8f3b5d4ff3984cba095cccad77"
+    },
+    {
+      "id": "forms-complimentary",
+      "target": "complimentary",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e07a8bf4b2426f0c6463f143c2372c28c652f4ad2edab26c5295f15ee5abbdd8"
+    },
+    {
+      "id": "forms-verbal",
+      "target": "verbal",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:41",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "eb9f5aeea5eb4d96b79659560d116449d415facc536d404c14726a20d31841a3"
+    },
+    {
+      "id": "forms-spacious",
+      "target": "spacious",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:42",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "92ded1d2e8e9dc15b63a7d3480d7ca12b84a00995ba14a13974bfd267fcf8a1b"
+    },
+    {
+      "id": "forms-cautious",
+      "target": "cautious",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:43",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "104bbb383f81ad2094c1116b7eb998c5c768c28c996de4f6aadb56ea450ee1f9"
+    },
+    {
+      "id": "forms-internal",
+      "target": "internal",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "04.txt:44",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "db156067870f31da2ef743fe6821aadbeb5470859d80de6198c403063a1602f4"
+    },
+    {
+      "id": "forms-valid",
+      "target": "valid",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:2",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "9851f760ff2c54843cd57d0f150861db88b56e1cb30d2a68a58e93daf556ae24"
+    },
+    {
+      "id": "forms-medical",
+      "target": "medical",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e3f87d1f370c532841b4347037c615d8305dd369e4ebcb7c67d050b1b226fc49"
+    },
+    {
+      "id": "forms-accessible",
+      "target": "accessible",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d2ca2e40daae58a18ac4ea7f703078d6f46c774d7b7157ccb9357291ed2a2217"
+    },
+    {
+      "id": "forms-additional",
+      "target": "additional",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f028b5cc3dbd4a10cc9676a0d231665e48908400d1c96d08ddd971e98f5f37e3"
+    },
+    {
+      "id": "forms-reasonable",
+      "target": "reasonable",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:6",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "61950ede5b6d0ebd669edbe556fa68e7e6e1899d8f6410a5312bf494151b095e"
+    },
+    {
+      "id": "forms-appropriate",
+      "target": "appropriate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8513ffed0e938c0611c0d26adc3846e5453fc85490200d98a4ffdf268e873e6d"
+    },
+    {
+      "id": "forms-extensive",
+      "target": "extensive",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "580a00c6709389e37d5da07324f5171b97ba1b7aebeb81250f5d273cb928caf0"
+    },
+    {
+      "id": "forms-potential",
+      "target": "potential",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9784f975f634ad04ccb4a3f1fbdb5aa0b8e3b3047ef0d73b15c14b0b026d4f4c"
+    },
+    {
+      "id": "forms-technical",
+      "target": "technical",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "51ba5172e4e03b4500c72cfd6936d9e4639c3146c5f81c52b534b7cc0e772c8a"
+    },
+    {
+      "id": "forms-essential",
+      "target": "essential",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2232364688df47c3842617e87785788b6fe1cf5922f777f258a8331dc5048369"
+    },
+    {
+      "id": "forms-professional",
+      "target": "professional",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "350bdb32c9be9302a669be7dbc7f304977ddd98781007e76660c6f09243dd684"
+    },
+    {
+      "id": "forms-commercial",
+      "target": "commercial",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "64b12223d98e9d2149a3857e8a41495e510705c730353410c9e8bceef3661f78"
+    },
+    {
+      "id": "forms-moderate",
+      "target": "moderate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:14",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d75d3e392434d4c5455fcd82572af7cf1d2e065899405603b0845d8a7712c439"
+    },
+    {
+      "id": "forms-approximately",
+      "target": "approximately",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:15",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "10f992b01b8c0fb9a8c5c2a671e87333a80a9b4742f0108eb40eb2f26a525d2c"
+    },
+    {
+      "id": "forms-concentrate",
+      "target": "concentrate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:16",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "2551a3b4b386ca5853e9571bcdb26c73e6930cb3bcb06c645a863c5f2c794166"
+    },
+    {
+      "id": "forms-postpone",
+      "target": "postpone",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "305321efdb29bd5da6560f143c39f23db0e54f5b4e0fb8aaba83b384ae57b12f"
+    },
+    {
+      "id": "forms-reschedule",
+      "target": "reschedule",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:18",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "703c4ad1c9808148c6beb7b52a4e82a7464ef557df10e1b1b9ce817998373c9a"
+    },
+    {
+      "id": "forms-predict",
+      "target": "predict",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c1252ed9b0da0c6f3623b8c3adb7ed2377b26dc834ab12e1aacaf2a66aa039f1"
+    },
+    {
+      "id": "forms-enroll",
+      "target": "enroll",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:20",
+      "reason": "Enrollment 與 Enrolling 都可作主詞，不能只用名詞／動詞分類排除。",
+      "sha256": "fc926d444e2fbefda2b82e7de40c2df533c197efe99cae61fc0b8cc27a2fd5e8"
+    },
+    {
+      "id": "forms-commute",
+      "target": "commute",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:21",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "927429084059226e41228c2e14cd996c2c2b086191ae3982b406ba59ac2cbdf5"
+    },
+    {
+      "id": "forms-involve",
+      "target": "involve",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8578f15563716de47d1e41a55781f17dae7a3f61dec15d9e2a594dc7347fc959"
+    },
+    {
+      "id": "forms-hesitate",
+      "target": "hesitate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:23",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "cf948ce64aacd0eb289a1b190ff81cd240af8442deeb030ce705341a95a6cb77"
+    },
+    {
+      "id": "forms-donate",
+      "target": "donate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:24",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ce05cb0d91da3bc53bef397d6daba405ceef85e6285bccd44b3b6456d059c84e"
+    },
+    {
+      "id": "forms-achieve",
+      "target": "achieve",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2d93aa27df705dc367c074da373d4f8648e6a6dda0ce84f3723bf286709b87d3"
+    },
+    {
+      "id": "forms-contribute",
+      "target": "contribute",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "7551cce0cac07eaef32f501a2700b697274b503552acab1ef5c9519d33fc8e7d"
+    },
+    {
+      "id": "forms-extend",
+      "target": "extend",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8cfaeb4f0e15d80bc46b43d2c86cdfdf0ab922c77e5509a88bbd0ce6e68b934e"
+    },
+    {
+      "id": "forms-interact",
+      "target": "interact",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:28",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "edc51f14bf8f9f1bc016ab06905b06b72c5260161e696ab478348537934edf0d"
+    },
+    {
+      "id": "forms-indicate",
+      "target": "indicate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:29",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8ad76786e8d25d287fd34e46335593085c005c18970ae489f245b6ccea9cffc5"
+    },
+    {
+      "id": "forms-occur",
+      "target": "occur",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:30",
+      "reason": "已加入 yesterday，排除週期性的現在式 occurs。",
+      "sha256": "20643c15bc7f7b7f3126caa75b6e9db2cc058b99a5031b0f1097b147e4b0131c"
+    },
+    {
+      "id": "forms-persuade",
+      "target": "persuade",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:31",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "baf0ce23b60b543d8646fae79cb1c42b372bfc2403af06cf11623f0aacabe62d"
+    },
+    {
+      "id": "forms-convince",
+      "target": "convince",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "78cc0e6e77d38ef33e3ac1f7072b16b5080f9dfa8dd0d1cd3e80b7e314165e9c"
+    },
+    {
+      "id": "forms-operate",
+      "target": "operate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:33",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "cdab14347a23a786d71ed2d15fd0bd717f9d54dd7279e489c396f9cd9fde5a30"
+    },
+    {
+      "id": "forms-alter",
+      "target": "alter",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:34",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c42e4fee8753925c59dd981cf40c85d4d9ce911f9cbc0d65ae80542f5f8c0bef"
+    },
+    {
+      "id": "forms-maintain",
+      "target": "maintain",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:35",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "a174dc0c2800e3ef2f9c1a5da153601a0bbbad451b7224a1bcd8d4665080c25a"
+    },
+    {
+      "id": "forms-employ",
+      "target": "employ",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:36",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e83a13ec224a0af734527a36e74cda2f93ee46486155c7aac9a9ac0ef0458afa"
+    },
+    {
+      "id": "forms-assemble",
+      "target": "assemble",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:37",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f9b312d71e4bc38179032cadef57a8c370466db04247d564497dc7612c21a846"
+    },
+    {
+      "id": "forms-assign",
+      "target": "assign",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:38",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1de2a7fa2ad2e30cb9111c2cb8f0c5a1a3bebf8d1ecae5ebbea549aa34be69cb"
+    },
+    {
+      "id": "forms-approve",
+      "target": "approve",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:39",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "649d65b929db26cdcb3924d8a5e16395d26b5b7a7404a2d3d560900b17ff9b25"
+    },
+    {
+      "id": "forms-suggest",
+      "target": "suggest",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6c4777099e194ebefc2132c305a25c2eb322893decaa2ad2728d235132192b37"
+    },
+    {
+      "id": "forms-conclude",
+      "target": "conclude",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:41",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "567f79139933466c1d0a5c52801c1b1402aa94f3f5da078b96fafb78a5b95789"
+    },
+    {
+      "id": "forms-motivate",
+      "target": "motivate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:42",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "85629673537bcd6e7f6e0d446aa90a33c299131a4013c4e6714c31c64a97d19e"
+    },
+    {
+      "id": "forms-submit",
+      "target": "submit",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:43",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c45e68303bf905fc535ac57f668d0309991b52a0f06ca538b717865d0e852570"
+    },
+    {
+      "id": "forms-activate",
+      "target": "activate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:44",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ed7cc0f4f6b6146df4931be892d82e94cbadb1f3c05adfc94f2a275143cf64a9"
+    },
+    {
+      "id": "forms-adjust",
+      "target": "adjust",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:45",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5fc974939e9beace435eefd9a9e96ce7a4b512a0100652d303016374d80a873b"
+    },
+    {
+      "id": "forms-promote",
+      "target": "promote",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:46",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4ab1965b93bd5ea8423d137dd21ffde9366f5774fd70ac4031323d264bfa81e6"
+    },
+    {
+      "id": "forms-adapt",
+      "target": "adapt",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:47",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3c1cb5e019b979756a7357e228ec4e6b8614177f9b432c8492361ac944c8cecd"
+    },
+    {
+      "id": "forms-revise",
+      "target": "revise",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:48",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "46b689bcb024b21ebf784c964b0b9e3b6f3790a0851fc396ce71d0ca9a559d23"
+    },
+    {
+      "id": "forms-invest",
+      "target": "invest",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:49",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f45c9231c49b1ec5f6b82451acb62d3b2f34f6a3fddda627ec9adf4e6e589b4b"
+    },
+    {
+      "id": "forms-locate",
+      "target": "locate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:50",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "85718af2763f3ac3205082560e331f7187abb29925c676088aa950c1f805817c"
+    },
+    {
+      "id": "forms-demonstrate",
+      "target": "demonstrate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:51",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e50281895d8f9b15f3aa086b9be7de75b570fafbb77f871d856cef0c00251d08"
+    },
+    {
+      "id": "forms-dominate",
+      "target": "dominate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:52",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "569aa4e9fd734edf0b3a806acb16b0769cc22c20a635e1a9cbba6d6fe476bef6"
+    },
+    {
+      "id": "forms-eliminate",
+      "target": "eliminate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:53",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "78f82c8b1c9550f3e5030e4bc3914801f742dd4bca41c4e6b6550428f67bd938"
+    },
+    {
+      "id": "forms-anticipate",
+      "target": "anticipate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:54",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "dfcbcd54c63b131463ea49cac748f05ebe3ce924cbe8d971f3e3e5210385d198"
+    },
+    {
+      "id": "forms-exceed",
+      "target": "exceed",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:55",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "252cdf571371d63e09f6979b7149534ec6793171dfea1eafa722c5dfb8272fb9"
+    },
+    {
+      "id": "forms-appoint",
+      "target": "appoint",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:56",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8b1da114d45703328e4c5518dcc4ef5361f759b40408fc42461ffaf8bebf0480"
+    },
+    {
+      "id": "forms-customize",
+      "target": "customize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:57",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "85503fc69d49fb0e5ea13d0e13d0c55d3090c009ab0426bc8e32216b6250b0be"
+    },
+    {
+      "id": "forms-commit",
+      "target": "commit",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:58",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1fcbac6944192dc41add78072324266b05f4b20518e8e074daa3edb27b2a42d6"
+    },
+    {
+      "id": "forms-sustain",
+      "target": "sustain",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:59",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4af503ce4f0a90b021e57defd08e85b05732efdb9ecaf2e85d79839fc7f80580"
+    },
+    {
+      "id": "forms-occupy",
+      "target": "occupy",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:60",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5efa41724351c9e2762a06bb714829fdfd67bf0b6b379f9f38bbff4e707c9ba4"
+    },
+    {
+      "id": "forms-nominate",
+      "target": "nominate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:61",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "87cb73a5bc76c72dcaae3cc08738c55217bf2b0034667c957b056fe9b364bf15"
+    },
+    {
+      "id": "forms-convert",
+      "target": "convert",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:62",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f6d1af87dcdc9a4fcde08610deb9ebee9998c3ae7b8f9847c032c15b2b27a5b2"
+    },
+    {
+      "id": "forms-merge",
+      "target": "merge",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:63",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "275f555d60f8052f062c359078da3f05e4cfbaa56acc1f6b4179045f24bf879f"
+    },
+    {
+      "id": "forms-function",
+      "target": "function",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:64",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c941652a0001d4b80635b73b9a712a37ee47856870670080ad3eaac18e662919"
+    },
+    {
+      "id": "forms-purchase",
+      "target": "purchase",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:65",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8aea39cbaf278c06477db5b7a2c89fb65bd0abe330a84c067f6458578d90c158"
+    },
+    {
+      "id": "forms-register",
+      "target": "register",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:66",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "e5c3ae317325eb319b6db5ef2b3a85c605e2bd2bc586177266efd744a2115aa6"
+    },
+    {
+      "id": "forms-sponsor",
+      "target": "sponsor",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "05.txt:67",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4b70c104520c614b92d629e107449316cf1dd0aa7e5da5f3b1ea06c45691cc75"
+    },
+    {
+      "id": "forms-commitment",
+      "target": "commitment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:2",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "57d19f2e9f4cacbe8db49c952c5210948c0327bfedc80f431261a7fc78448306"
+    },
+    {
+      "id": "forms-exposure",
+      "target": "exposure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4509c03410059c7dc62adf5d7b09d3c8977a20a94a9012b24c82a87c0109d569"
+    },
+    {
+      "id": "forms-distribution",
+      "target": "distribution",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "07828a8764b36de4eb58e3ff27f6066ab82d17742ec7e3b3a7d738b6ec022e49"
+    },
+    {
+      "id": "forms-foundation",
+      "target": "foundation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "28783166c9eb76e39d76608b60800dc3a81b85ef2691c1e6a549f201c73ae7c0"
+    },
+    {
+      "id": "forms-representative",
+      "target": "representative",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:6",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "6339ddf9f53bc4ad23076cb797093e5b30c904f5d5c903882e8e2bd9380cf2d5"
+    },
+    {
+      "id": "forms-publicity",
+      "target": "publicity",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:7",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "1c7aed614c6b31c79ca19bc554748dc6dfd67cc1b5af377d642352748f94c3fd"
+    },
+    {
+      "id": "forms-defect",
+      "target": "defect",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1d189d9dde2017f87cf3782258d7e2d7675416e1776f6e83cffb9efcf3dcf20c"
+    },
+    {
+      "id": "forms-coverage",
+      "target": "coverage",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0393ce3c7a1853058d9d424d39f06b3c3ad1964b819d1cab79dbd977d1dd29e8"
+    },
+    {
+      "id": "forms-orientation",
+      "target": "orientation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0f6ec6266d9bc92bd56371ffc4e742d6a51e1ae069eaaae87f81bdd38e0eb8b3"
+    },
+    {
+      "id": "forms-resolution",
+      "target": "resolution",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "12d191dee1b84a5228298480b00e977f3fcd3f852dd5e72365e36dfd4d8fe17e"
+    },
+    {
+      "id": "forms-compensation",
+      "target": "compensation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e2674a5afa2b2a6ffefd34074ce9ba5be186f775c7755a9f285494189fb800d6"
+    },
+    {
+      "id": "forms-prospect",
+      "target": "prospect",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8bd496e2f27bce483b0608f6d30dc2b341586bd5737007c0bf562685f2a381fe"
+    },
+    {
+      "id": "forms-controversy",
+      "target": "controversy",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:14",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9ad16863a3453c045a5455d55b8417200d12a1be4e46d66bf92fe384711dad1f"
+    },
+    {
+      "id": "forms-reference",
+      "target": "reference",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:15",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "77c96671bc2b18af98a013eea8d3a63dacfa2af7a69964e14f51f333e390fae8"
+    },
+    {
+      "id": "forms-emphasis",
+      "target": "emphasis",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:16",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "dfc8c05d45afab4360e8ca5e8240a2d100106ed7ffd13a37b21add2f76e88237"
+    },
+    {
+      "id": "forms-inspection",
+      "target": "inspection",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d3a0ab15bcea72c436003981a417b845b6aa23c159b472bed20a18a04687c7f2"
+    },
+    {
+      "id": "forms-operation",
+      "target": "operation",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:18",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "16915e80085f0ff5bff25b1b0b86e25aabc4b13289b03f81bb7d864e787a8b78"
+    },
+    {
+      "id": "forms-strategy",
+      "target": "strategy",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bde35ec633c2d0ccf600b6e41946283af8c95c05220365145ca299ad878fb578"
+    },
+    {
+      "id": "forms-consumption",
+      "target": "consumption",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a295d6c6116d0c065a415d695bad06605e3c1955d33eb3aef2099f1661a20df7"
+    },
+    {
+      "id": "forms-efficiency",
+      "target": "efficiency",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f1c81d03e2b817987dbd7632ffb461830efbbfc9e7dfac7e5dabe8ba0dd80728"
+    },
+    {
+      "id": "forms-analysis",
+      "target": "analysis",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:22",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "88f100076ea9103b58ef29c70696e882e91db3b47a7bd5fa548a70d900042367"
+    },
+    {
+      "id": "forms-innovation",
+      "target": "innovation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6ddc58178daafaaef9656b49270c260615b5108fed9df0864b63c1d73481d129"
+    },
+    {
+      "id": "forms-withdrawal",
+      "target": "withdrawal",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:24",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8788ce637afb3b8fa56be444232f60dfb4cf7d1d0c857d6371e3bebab6a49cf2"
+    },
+    {
+      "id": "forms-distinction",
+      "target": "distinction",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b842ad6a53cceb26c0ef477eaffe39b67b56d0ab7a5a3710c7be89f4568504fd"
+    },
+    {
+      "id": "forms-revision",
+      "target": "revision",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6bf0f3d777b77f7c8f296e000892080d59c335857ee357e41a9d4994dcbcc255"
+    },
+    {
+      "id": "forms-hazard",
+      "target": "hazard",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f37cddbd9dbdb9231d0f26e7d346a60c382c02c0475a81527cc35edf21920710"
+    },
+    {
+      "id": "forms-founder",
+      "target": "founder",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:28",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f5b7967b9dcd4b8dd06b12653a8219b0eda79f95e5726fe01ae809fe75e1e94a"
+    },
+    {
+      "id": "forms-authority",
+      "target": "authority",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:29",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "318d58d2cee6499b158375cec03e32d3b557f1d17d6efbb45d2fcdf2e23a99e3"
+    },
+    {
+      "id": "forms-expansion",
+      "target": "expansion",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:30",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "be287492f1f90b6292f0061c1e9dc62f0b4eee9ac0bc0cef0815359fc37938dd"
+    },
+    {
+      "id": "forms-investigation",
+      "target": "investigation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:31",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "446ec91f207d41386d90fa7f1275d443d2bab470ddd332d6e8d5b692a88bcadb"
+    },
+    {
+      "id": "forms-renovation",
+      "target": "renovation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1c0c81838a25443045e1d22a393bcc92266525d297a7a54e6cf65ebb11ad7c73"
+    },
+    {
+      "id": "forms-procedure",
+      "target": "procedure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:33",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a27db2ad71cf4d2a757b8ae3088f5f7c2fec42fb56cd1cdcfbe962f8e6569cb9"
+    },
+    {
+      "id": "forms-publication",
+      "target": "publication",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:34",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "dd495cf49e549264d8c6d255b6ac2d476b4dadaf46b3941a9cd14f7ec240207c"
+    },
+    {
+      "id": "forms-consequence",
+      "target": "consequence",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:35",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "fba47900bcf73c13eab52f323d9041b9528ad60f84c98d33c8e826a8995cd30c"
+    },
+    {
+      "id": "forms-invoice",
+      "target": "invoice",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:36",
+      "reason": "Clients are invoicing 可能表示客戶正在開發票，需排除主動解讀。",
+      "sha256": "acf766737a125667854ea93348d3ba748c4859d5dd16e954c36792432f14d3f9"
+    },
+    {
+      "id": "forms-contribution",
+      "target": "contribution",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:37",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "d9ed9fb8b4675a95f1cdd3aabecc501514b28458b76ff8a5e05355e7215db8a3"
+    },
+    {
+      "id": "forms-installation",
+      "target": "installation",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:38",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "7ad753c81ad576831c760be36bd954449697a3fae4cbb949515c874bd0589882"
+    },
+    {
+      "id": "forms-inconvenience",
+      "target": "inconvenience",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:39",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "eec73618d93e081f49253833428a398b5f9d2464a979a41bef3690fffb26d18c"
+    },
+    {
+      "id": "forms-amendment",
+      "target": "amendment",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1e8f8e3d19ea20eeee66f892277ca236f820c74814bcf1716ab3d101d10db167"
+    },
+    {
+      "id": "forms-alternative",
+      "target": "alternative",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:41",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9754047eafdd6680fbf3efc9fab5504f33fa06893cca8abb71d37ac376d1fceb"
+    },
+    {
+      "id": "forms-characteristic",
+      "target": "characteristic",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:42",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ec3eee24af990358a9c0cb5d0b205ff3624ad128b265a8f05013e421d413c794"
+    },
+    {
+      "id": "forms-measure",
+      "target": "measure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "06.txt:43",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "675d7ba5399b5b1d8a94da86a1f80952bb4e66633cd612fbaa8929318a2e170f"
+    },
+    {
+      "id": "forms-remarkable",
+      "target": "remarkable",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:2",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "99cd41deb081094d1cc4ee5790a93ccd995a95577a19b4237dcab08f064c0b30"
+    },
+    {
+      "id": "forms-critical",
+      "target": "critical",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3d27508e35104408689039284f4f73805192b061e76cb84c9a20f16b46676fe4"
+    },
+    {
+      "id": "forms-efficient",
+      "target": "efficient",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8864acba4f5941b9a4a2dcc34dc325365d29de268db50294e147a8168fc977e2"
+    },
+    {
+      "id": "forms-defective",
+      "target": "defective",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3b26d69751720575e5c70ee905e2ed04b46eacc7c61e651c4cf2b8badfdb720d"
+    },
+    {
+      "id": "forms-reliable",
+      "target": "reliable",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:6",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "101fffd8cf6bed78300ac9e6e4b87867efa862a14fe6b611611e7f81a421b32b"
+    },
+    {
+      "id": "forms-intensive",
+      "target": "intensive",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "dcdda86824cca2d8111ca4acdab96e8a01d2a9367320ab2b4837a5945e405478"
+    },
+    {
+      "id": "forms-ambitious",
+      "target": "ambitious",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2742ffd47e15acd487a306555b1e0b80476475b59d7702ba242c0c896aa37130"
+    },
+    {
+      "id": "forms-intense",
+      "target": "intense",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1bbc6610db36669590460daf5d20676c93dc0c3ffab9057b160eb3ff0365c1ca"
+    },
+    {
+      "id": "forms-exclusive",
+      "target": "exclusive",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b640dbf6fab8810df86cd366096db9a269c5aec8c3d99d486c98d23a9fe7837a"
+    },
+    {
+      "id": "forms-enthusiastic",
+      "target": "enthusiastic",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a39106dbb165798dd08714119772a61ff5f72e0698b17f52cffb426f0d60d2c2"
+    },
+    {
+      "id": "forms-significant",
+      "target": "significant",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "35899539569761e15e4f8f566071841e971511be45eadeae6cdec87747869aa3"
+    },
+    {
+      "id": "forms-dedicated",
+      "target": "dedicated",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "662b12cffcfeb9f50d80581e24e01bbe6b0b2fb71cbf9c24829fead1b052d192"
+    },
+    {
+      "id": "forms-consistent",
+      "target": "consistent",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:14",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c870e954b377ef19a66dd0c6d079378ec3204d472b04acb08b45b9f805b2ddde"
+    },
+    {
+      "id": "forms-authentic",
+      "target": "authentic",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:15",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "36e8cd651725a8497d2cf668999888c18bf0f274fa6e2b9bcc13e0aa0d796034"
+    },
+    {
+      "id": "forms-confidential",
+      "target": "confidential",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:16",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "9a3e6f9201acb4725a978b78e81da35d377c0f74f2d04d70bae39d25a148f97d"
+    },
+    {
+      "id": "forms-financial",
+      "target": "financial",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ac97fdc9c1f94039fe6e6558f45d0348e895ac816d25c1aacedbbb11db142ebc"
+    },
+    {
+      "id": "forms-duplicate",
+      "target": "duplicate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:18",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "178844332c4821130179fcb0474d5c8d1cf2b245a6027a72facd25b9277460c9"
+    },
+    {
+      "id": "forms-acquire",
+      "target": "acquire",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1ecea4ba4416b0ce5f98d2ee71fed1e35e45a566bae681430b8020c363b99352"
+    },
+    {
+      "id": "forms-explore",
+      "target": "explore",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0c743ea87fe11b4427aba52724f02e0cfba1b57eec8e063161768e55df0b8817"
+    },
+    {
+      "id": "forms-qualify",
+      "target": "qualify",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "57be5a799386accb604070606c2c2689b08fdee93ce761a1d367de36f135fc2f"
+    },
+    {
+      "id": "forms-emerge",
+      "target": "emerge",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "54785db1fbf68ea20a710890a6142a02a32b34841e4e284e3a850d5329f2838a"
+    },
+    {
+      "id": "forms-specialize",
+      "target": "specialize",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:23",
+      "reason": "已改為 will specialize，避開過去式 specialized。",
+      "sha256": "579d907573758e813824f625ad9ace671f7d335f2d1397a4882d0b59d7d153eb"
+    },
+    {
+      "id": "forms-establish",
+      "target": "establish",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:24",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c453ec629bfe7687edd7e1356eac0b1cd70f68704a4ea9ef3b1fd0255f6d662c"
+    },
+    {
+      "id": "forms-recruit",
+      "target": "recruit",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:25",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "f70695cf1b9a32f4777a559666c4deb8f9568db1147ce82074612fb82de12f4e"
+    },
+    {
+      "id": "forms-retain",
+      "target": "retain",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d7e6093ab57ec5c97bafe0c8707ff7663def2bc25f92714b8fd7f101ca6f41c8"
+    },
+    {
+      "id": "forms-consume",
+      "target": "consume",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "de299b5b18586477d1af07ded066294c297fc71de20bb76cb7f29b03c446802a"
+    },
+    {
+      "id": "forms-generate",
+      "target": "generate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:28",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3869b30a4ec1a9f6a4311abbe70c4421901ec93eb3cb21d6b7a215135a856196"
+    },
+    {
+      "id": "forms-supervise",
+      "target": "supervise",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:29",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "97b51abbcdd1e0b59859afaf15073cef70006e9312a71d90e51e1f24c80c8189"
+    },
+    {
+      "id": "forms-restrict",
+      "target": "restrict",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:30",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "57cdf72fddad1a67f10ab90a00a84c5f5d8f36acefe4223bc377674bb152b4d5"
+    },
+    {
+      "id": "forms-clarify",
+      "target": "clarify",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:31",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "90e017122e34313753788e2220ef27a21380abe4ce7b72895dac02ee70f4626e"
+    },
+    {
+      "id": "forms-resign",
+      "target": "resign",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bd4a205dab1bd147cf0a007ee8b72a7eb2586bff5bb2da7b0aad9c08bb911f43"
+    },
+    {
+      "id": "forms-compensate",
+      "target": "compensate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:33",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "b4cf4417dfb137cafb72427629292331f657f3639dc543b8109d310df0510282"
+    },
+    {
+      "id": "forms-fulfill",
+      "target": "fulfill",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:34",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1813e4836eefaca6977a40a757360261164bad9485e1f577c6e12f3e37243f0b"
+    },
+    {
+      "id": "forms-implement",
+      "target": "implement",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:35",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8f1b5535d666d621e7f38117b8722cfc4bdaee2fb5d249012697ae40ab471d88"
+    },
+    {
+      "id": "forms-resolve",
+      "target": "resolve",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:36",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "fc7c42b60c97c03b5ad5adcf3b8f7019e2f469d92ce3243332b0449dcd8e0bdd"
+    },
+    {
+      "id": "forms-evaluate",
+      "target": "evaluate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:37",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3fd4ed9c5e525c05a2c5bc9229546ddba75e3e49f65034538284bcb3cb5fbbec"
+    },
+    {
+      "id": "forms-specify",
+      "target": "specify",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:38",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8abb2391c9ef513c26545bf631a7bbafc42b2ab0592197cf595e6a11f4c17eee"
+    },
+    {
+      "id": "forms-collaborate",
+      "target": "collaborate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:39",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2132f9ca5f33747a2adb27486321af13445ca81f21305c36a15286ee18db27e3"
+    },
+    {
+      "id": "forms-analyze",
+      "target": "analyze",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bd8fed257769c4b88ade4a8f4c801263457830391957f28087de56373a8b8798"
+    },
+    {
+      "id": "forms-suspend",
+      "target": "suspend",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:41",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "37cd6a8398c0385cc86b10cbbb474079246d25636b00e9093f64b901129fdf30"
+    },
+    {
+      "id": "forms-justify",
+      "target": "justify",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:42",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ee4285f29185d3eb0f26a8e5e1026255a56c7ab4c92c4a0e9db859bad1b60b9a"
+    },
+    {
+      "id": "forms-detect",
+      "target": "detect",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:43",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e884be32638a7ac720ab97198a31ebc9434c3e4fd00e99f4277d5b501a8630cc"
+    },
+    {
+      "id": "forms-restore",
+      "target": "restore",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:44",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "118d4f67fd038295de78f5360230524915880ca2dbcb870a4382e01245572ae4"
+    },
+    {
+      "id": "forms-transform",
+      "target": "transform",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:45",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4c2021b80e670b4daeb8c67eade1e4320ea7661d90df085dddb58fcf7945ca3d"
+    },
+    {
+      "id": "forms-deduct",
+      "target": "deduct",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:46",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0a740259bb40059318f4e588e86b4538077f222fd2fb0441018e5e7f0f9fdb8e"
+    },
+    {
+      "id": "forms-redeem",
+      "target": "redeem",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:47",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "faf3c34c61fdbd8071571d2637db024e72ea6868ae576b1a23849ea425f8720c"
+    },
+    {
+      "id": "forms-expose",
+      "target": "expose",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:48",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "97571ffe36de7942c1aaef1c9234cdfe10b59217689cdcfe0784505f588230aa"
+    },
+    {
+      "id": "forms-determine",
+      "target": "determine",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:49",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bf4ea5686c720244dfeddecff599e6fe0f3517a37c62a979c92496771b5c5ccd"
+    },
+    {
+      "id": "forms-enforce",
+      "target": "enforce",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "07.txt:50",
+      "reason": "已改為 will enforce，避開 will be enforced／enforceable。",
+      "sha256": "a10296a426ed2baeea5e9fae0da52069d56d3f53c83a05d86e14e844af5d022a"
+    },
+    {
+      "id": "forms-acknowledge",
+      "target": "acknowledge",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:2",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "0a57f068fc45ca2cd91da83bff22987acc4131b7eff45f2d07462fe9020f5ec4"
+    },
+    {
+      "id": "forms-adopt",
+      "target": "adopt",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2559ff9727eb23854abd0cd75fd65af46adf5a7ef2f924128fa1dbc80f7f0fdd"
+    },
+    {
+      "id": "forms-consult",
+      "target": "consult",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f5bf7f0a6d42a318447d4bc3a7670a653f5c9b08e66722a6076bd080838751ad"
+    },
+    {
+      "id": "forms-emphasize",
+      "target": "emphasize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b21a3f2a182673404f6bc0a1087f87d0a4fe9b2a1951d39714bfa7c4d853d1f5"
+    },
+    {
+      "id": "forms-enhance",
+      "target": "enhance",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:6",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "4ec4d634f2b5d576eb75262c39fb9d04dde35394064be65869a3c619856b1173"
+    },
+    {
+      "id": "forms-obtain",
+      "target": "obtain",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:7",
+      "reason": "已改為 can obtain，避開 can be obtained／obtainable 兩種補語。",
+      "sha256": "6a89a851a91640c24c55a61ea5f15486176ca17a41aebd6682222ba8cc446f14"
+    },
+    {
+      "id": "forms-accommodate",
+      "target": "accommodate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c1f38e180920060a668525647392c8956fff545de01f8a43035fed2025b41101"
+    },
+    {
+      "id": "forms-dedicate",
+      "target": "dedicate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0c9d2cee61349e3d91ce82072e499ab80cb0abf917a137412978756e2fff4deb"
+    },
+    {
+      "id": "forms-accompany",
+      "target": "accompany",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3ca2759998bb79c66248973f7cdfe80b3ce2392ca7e113439219e383239fe9bc"
+    },
+    {
+      "id": "forms-imply",
+      "target": "imply",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e712a483cbf2e4fe0a34c1f16d817d7a87146816bd154774dcfe44c31ac48c10"
+    },
+    {
+      "id": "forms-prioritize",
+      "target": "prioritize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "53f68d320d4e97635cfcef405ff9395a23e78cfb8deea152a5f94372700a9085"
+    },
+    {
+      "id": "forms-evolve",
+      "target": "evolve",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "05695e5979f7a3726d127b707651b31a3ad13a486f286e3b01851f3b25c7f608"
+    },
+    {
+      "id": "forms-relocate",
+      "target": "relocate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:14",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "9dcc094c2bc81adc326ac15563df99b239e66cab7a5942efcc3c662186457a6c"
+    },
+    {
+      "id": "forms-investigate",
+      "target": "investigate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:15",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "64c74e9c053389efaaf644d71eb9aa77b4cd72ee57dfa56c2a5ecea24e347f56"
+    },
+    {
+      "id": "forms-pursue",
+      "target": "pursue",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:16",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "3821911381fe739d232c2c495483891157e482b589e665348f3db43af0a72c49"
+    },
+    {
+      "id": "forms-distribute",
+      "target": "distribute",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5401520eb0071dcfe441639d144620f0f5093fe7ff3b4c35c2482fa03c51176c"
+    },
+    {
+      "id": "forms-engage",
+      "target": "engage",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:18",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f2351cf0d9f4be8f9ad083210de0a9ad8d89b077ee84ed645681c71274e5bb2d"
+    },
+    {
+      "id": "forms-modify",
+      "target": "modify",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c55b3b387984027e7793e662dd3315ba4b5e1e37a6dc44b86944c914706259f1"
+    },
+    {
+      "id": "forms-renew",
+      "target": "renew",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "979fdf22f235acda687fdce96747c47e29f3556099ae9fc9aec80755528d27a3"
+    },
+    {
+      "id": "forms-notify",
+      "target": "notify",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "814160bbf13e079cadda631340ebf07339facbd1e9a725d552e78d4cc1d767cf"
+    },
+    {
+      "id": "forms-prescribe",
+      "target": "prescribe",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "760e7b2aadfbdcee12fd2f7d8bfe8a607a682554801917a1321a80b84db8cce6"
+    },
+    {
+      "id": "forms-disrupt",
+      "target": "disrupt",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "465ff2afc859f8e696b2e06561227d48354940822ba17d682ef1fa64d54c6e4f"
+    },
+    {
+      "id": "forms-allocate",
+      "target": "allocate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:24",
+      "reason": "已改為 will allocate，避開 budget allocated 的後置分詞解讀。",
+      "sha256": "891668c7b51d7ede9901c9cbd7001ad639c282705bdc81d9796e22a584736823"
+    },
+    {
+      "id": "forms-assume",
+      "target": "assume",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6f7ac3d3a5a7bbcc7853a3c6cffe6b2ef47fdfc5b912d06cefcdf0075468588d"
+    },
+    {
+      "id": "forms-manufacture",
+      "target": "manufacture",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:26",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "94540cde284bed86fff0950fefa7a4940c7ad8816677bd20dc29529aefb4eab6"
+    },
+    {
+      "id": "forms-estimate",
+      "target": "estimate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:27",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c82b730d6b268de48c1468797e61f9f889006e700af03675740f5ba24b405190"
+    },
+    {
+      "id": "forms-remark",
+      "target": "remark",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:28",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "d10c5c6c05a7fac58942d91cc6b84a12203e11a0d46e8cf665f48feaddbeec26"
+    },
+    {
+      "id": "forms-delegate",
+      "target": "delegate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:29",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "2616250826c75b4ee54b00c6c68c19de9c720edd027ed2272c37d38284a7a0e2"
+    },
+    {
+      "id": "forms-entrepreneur",
+      "target": "entrepreneur",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:30",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1d3fdb6ce044ca9783e9920b912144d8d0e5ef94a1852a5f10ba01cab9a86716"
+    },
+    {
+      "id": "forms-inflation",
+      "target": "inflation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:31",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5e77b88772fec9396288772ce5c3ff9a74f35774d508d60db89049aeaad4bad4"
+    },
+    {
+      "id": "forms-deduction",
+      "target": "deduction",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:32",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0fe2c6065ac006b9c8e750c020820b7ca01eaedbea0990b507407803814b289e"
+    },
+    {
+      "id": "forms-emission",
+      "target": "emission",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:33",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2609629252d0505606d2da6f3f938c49aa7673df74477ed9b267aacafe0b77b4"
+    },
+    {
+      "id": "forms-correspondence",
+      "target": "correspondence",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:34",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1dc1fe5903c20dcf8f71457e73327fe0393696c29cc238d1d016a6d268926224"
+    },
+    {
+      "id": "forms-compliance",
+      "target": "compliance",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:35",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "dc521711eb6c354c38df51558a4ac023b7315060b79881aa4b4ecdb11bd9bba4"
+    },
+    {
+      "id": "forms-connectivity",
+      "target": "connectivity",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:36",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a21641d1df4b51b53fe217f4e68e01e1578cbb82f7b429f25f505e1f9739f5c4"
+    },
+    {
+      "id": "forms-profitability",
+      "target": "profitability",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:37",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "039f14d588432010ac545583f73ea2a31577a2cf5bb217a8f1ccea93c476461b"
+    },
+    {
+      "id": "forms-inquiry",
+      "target": "inquiry",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:38",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b11e2c8bca6a01d5acdbf575bbb5b79e83f3a20d65972d00c3969e591c5aa433"
+    },
+    {
+      "id": "forms-initiative",
+      "target": "initiative",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:39",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "aad61013795198f3daa1ec50d1ae8aaf6d444b1105de6868ceca194083eb95a5"
+    },
+    {
+      "id": "forms-affiliation",
+      "target": "affiliation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:40",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "5b3c8cdc9388b296f67164a3b84cbd7f5ea977541f3b25c67d59152203d3a966"
+    },
+    {
+      "id": "forms-vision",
+      "target": "vision",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "08.txt:41",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2a341e9d5a6ec9483403e56d072c85e4c2e97dd9242e24c4c04538a28056109e"
+    },
+    {
+      "id": "forms-allegation",
+      "target": "allegation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:2",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6551f9d761e1abbc7c17a0048727164ea899b9f40a59cf1988cff319531769f8"
+    },
+    {
+      "id": "forms-accumulation",
+      "target": "accumulation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e53b8626d7170275355bc4dd12a073951a3e0ade4d7eb409073a74b367c57b5e"
+    },
+    {
+      "id": "forms-acquisition",
+      "target": "acquisition",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:4",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "2ca7b1adb2a7b20dd7f2a3d6d35ca8d78825dd2dff9dd386818724d7e23978b6"
+    },
+    {
+      "id": "forms-appraisal",
+      "target": "appraisal",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b32f1efd8f9451a5a98e3ed7d716cae89ab5fc21705605d42b72474dea1ece3a"
+    },
+    {
+      "id": "forms-provision",
+      "target": "provision",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:6",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "fd07b213ef08e98fdabfa170ca66a2864cf68cea8cceb5a8e61b957183c28ef8"
+    },
+    {
+      "id": "forms-audit",
+      "target": "audit",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1c80e3a6a7f4a308193a541ca7312df10be7180437ac4a76b26fe55bd574ad5b"
+    },
+    {
+      "id": "forms-expenditure",
+      "target": "expenditure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:8",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "7abacf1ea1b1c052dbc5320faac818db45136fe6f87ed926a12ee4e44c44725c"
+    },
+    {
+      "id": "forms-globalization",
+      "target": "globalization",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:9",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "36e509d198c9dbab3e347cafa914e2846f76cd8c9fe1e49eef71b856d18cdf34"
+    },
+    {
+      "id": "forms-procurement",
+      "target": "procurement",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:10",
+      "reason": "procurement department 與 procuring department 的分詞修飾需排除。",
+      "sha256": "c8d7bffe07c0389c22fa74d7d3c9528980efa4970068b5ea3a93ea25b44112b9"
+    },
+    {
+      "id": "forms-legislation",
+      "target": "legislation",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3eb727c6e7a20f7d8e7dd3fee73981e1ded0b722ad62c764dfcc636770a441ab"
+    },
+    {
+      "id": "forms-sustainability",
+      "target": "sustainability",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1268fbfc6fee2c855e556c8354737af39192d73306d2a9ef2bdeeb784c042f3d"
+    },
+    {
+      "id": "forms-entitlement",
+      "target": "entitlement",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "2d1070fb4e72a4c7b836c8f22ae2a0371ba6a654b833d02710fcb4d736b9e3d6"
+    },
+    {
+      "id": "forms-reimbursement",
+      "target": "reimbursement",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:14",
+      "reason": "已改為 will reimburse，避開 will be reimbursed／reimbursable。",
+      "sha256": "9d828c0ea92caadd03cdff467eac4f98191e8d9bd79ffa8583f669a6cd418bcc"
+    },
+    {
+      "id": "forms-respect",
+      "target": "respect",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:15",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "bfd6e5fe86f4fa5e0a14e5aeb6a0884690bc30fd64fc4e01f27cce1625893a4a"
+    },
+    {
+      "id": "forms-accountable",
+      "target": "accountable",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:16",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "4ca1224cb5c96e8fe6dbf4f349c9fab93daebfc73ff316b8ffd239ad1dc244eb"
+    },
+    {
+      "id": "forms-prompt",
+      "target": "prompt",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "b6452d3133e0193f11b38fcc25b8fd40f1c32fe97f593ec8f443aefde3dc40dd"
+    },
+    {
+      "id": "forms-considerable",
+      "target": "considerable",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:18",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c113ca5f7aefbd052ae6e9ea9bc52362b8f1b10679536cfd1f3ea16234be73f5"
+    },
+    {
+      "id": "forms-substantial",
+      "target": "substantial",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "c71cea3e200626ef09d56270ad78e1cdf87fcd4d93a087d9943dd1c0dd3ccebf"
+    },
+    {
+      "id": "forms-complementary",
+      "target": "complementary",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:20",
+      "reason": "已改為 must complement，加入排他的助動詞線索。",
+      "sha256": "4de6cd912a0e797c3b62976a1ed3c8f2ac2d98eb656b159a7c86a284ae11c5b2"
+    },
+    {
+      "id": "forms-prevalent",
+      "target": "prevalent",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "687c252f403972975cf8032cbe0ce661c6ca73dfa2da2665b1bda7a00a5a1d34"
+    },
+    {
+      "id": "forms-comprehensive",
+      "target": "comprehensive",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "a32a0e2ffa58c91d2119459737c28cb6287bdf734a3854184c0ae89db64811a7"
+    },
+    {
+      "id": "forms-exceptional",
+      "target": "exceptional",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "8d63e839130966ed54b3339c0431467cb9d045a4acdcabfdec76e001e8ef436c"
+    },
+    {
+      "id": "forms-managerial",
+      "target": "managerial",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:24",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "b33cc016b1f51cb62e0cacc5dd5d3556da43631cea38f7f0b65f80ffa014f8f1"
+    },
+    {
+      "id": "forms-definitive",
+      "target": "definitive",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "00b7ee7d78c40db1b257544fc171f6bf9c05619cfc3e7cb04bdaa0a7b072406d"
+    },
+    {
+      "id": "forms-negligent",
+      "target": "negligent",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "09.txt:26",
+      "reason": "移除同為名詞的 neglect，改為形容詞 neglectful。",
+      "sha256": "daebc914851e13542bce5ebc4c10c2c65d95fb340a17f8883b9433a00c994d7d"
+    },
+    {
+      "id": "forms-provisional",
+      "target": "provisional",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:2",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "3dfd13a42b46b14c593ebf1c8907f85ef9bd691d8c641b53d3c7b191699128db"
+    },
+    {
+      "id": "forms-insightful",
+      "target": "insightful",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:3",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "6b01522b6d229894a0ec52983b13c2906e5c9baa6d7d24d6257e0029e94b17f5"
+    },
+    {
+      "id": "forms-pharmaceutical",
+      "target": "pharmaceutical",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:4",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f369523051c0368d52fd6c5ad4cafff5efaa9398a93dbd3640e5d5b893199683"
+    },
+    {
+      "id": "forms-accomplished",
+      "target": "accomplished",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:5",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "30a7ded894f89da4c3d1f3c1d9cef83ae1ddb8e839167af3ee92075532836261"
+    },
+    {
+      "id": "forms-exempt",
+      "target": "exempt",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:6",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "e98ff55684ba57b97232f450fe0a2f56815cbe1fbab305878e5efd4927fa1775"
+    },
+    {
+      "id": "forms-fluctuate",
+      "target": "fluctuate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:7",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0eafac7cdec42466c16afc889cbc5db922c1c10a76cad248e2cd0c36acf12ae1"
+    },
+    {
+      "id": "forms-coordinate",
+      "target": "coordinate",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:8",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "555716018605134ccac261635fba87496a40664d6b6e0831a606f3998a55198e"
+    },
+    {
+      "id": "forms-disclose",
+      "target": "disclose",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:9",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "f0b27a129c19fb3f83bd88450b4f1057382a4a6e79d49407525ec5cc43053599"
+    },
+    {
+      "id": "forms-perceive",
+      "target": "perceive",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:10",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "fb8e3f1a697d9a28ece8479e32a5fcc01ab24b8c19b2c1de0bcebb3f10044cec"
+    },
+    {
+      "id": "forms-assess",
+      "target": "assess",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:11",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "da4fcd0af2d4f00fc1bdefefafd3ceb84a070a0a18ade3a5a7fcbf58de1c82a7"
+    },
+    {
+      "id": "forms-attain",
+      "target": "attain",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:12",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "fad84a035bf73eeef4da58488aebe776bf87ac370f59bdcd3473d6dfa6b6a5db"
+    },
+    {
+      "id": "forms-regulate",
+      "target": "regulate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:13",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "0ca80fecc476c293858b253ab82df06b28ef44c40194e2675911bf299c831307"
+    },
+    {
+      "id": "forms-restructure",
+      "target": "restructure",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:14",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ffd3c7a5382b1568c211e4cba3d33a1a25ed265e315e4beee5e987fa5cf14546"
+    },
+    {
+      "id": "forms-compile",
+      "target": "compile",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:15",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "1453c83e1c21ebbd42a9aa7d4cef4824aab0999aebecb197f17cba60a2e9e0c9"
+    },
+    {
+      "id": "forms-utilize",
+      "target": "utilize",
+      "revision": 2,
+      "status": "approved-ai",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:16",
+      "reason": "已核對句法、四個選項、中文與解析；原形／詞形線索能排除其餘選項。",
+      "sha256": "57ac2b2cbc16a9030da45973d9e2eda55d8cc3c23dd076cccb3258156e65bd00"
+    },
+    {
+      "id": "forms-consolidate",
+      "target": "consolidate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:17",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "361c8e3895c4ba11151c25d95955c955d9c7d6adcc7f9d9d8a12c5b379d44225"
+    },
+    {
+      "id": "forms-mediate",
+      "target": "mediate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:18",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "7e13b4c4e74fbdf7231dc39c4b0f1c7bed10aebe9872a6d43f1c0d1ada15fc55"
+    },
+    {
+      "id": "forms-succeed",
+      "target": "succeed",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:19",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "f24629f5f50fb46bba7afcfc1ea0e2c78fc4b8511d4c67aecc36b28d9b9d1284"
+    },
+    {
+      "id": "forms-illustrate",
+      "target": "illustrate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:20",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "525771c755520e89679e1606f09df9ba6c6a9bb43ba71c1aeee1389c21c453f4"
+    },
+    {
+      "id": "forms-endorse",
+      "target": "endorse",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:21",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "321d86880e32b2a4e74bb082aac5d62c2eef1f0b995d62def115e0fd9f910abb"
+    },
+    {
+      "id": "forms-terminate",
+      "target": "terminate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:22",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "ab1708d98c68d15b870fc5f4b0289436e29c4ada22789ee3f975a97245b03fcb"
+    },
+    {
+      "id": "forms-subsidize",
+      "target": "subsidize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:23",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "658cc91c4030f146ddfe884b7c800b7bd092cfb945ff9e5f2b2fe0f54fc47acd"
+    },
+    {
+      "id": "forms-optimize",
+      "target": "optimize",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:24",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "927f9cd71888235dc9fd050e17f062d8f9da7a5165d1db3a2d6ed226952a9819"
+    },
+    {
+      "id": "forms-designate",
+      "target": "designate",
+      "revision": 2,
+      "status": "pending",
+      "reviewer": "Codex AI 初審；尚無英文教師覆核",
+      "source": "10.txt:25",
+      "reason": "完成第一輪檢視，尚需逐一補足替代詞性、動名詞或不同合理語境的排除理由，暫停出題。",
+      "sha256": "23a912afbd2eea8c969a92b643afb1842ed2585c2597a8bca61b98b8cd7dfe85"
+    }
+  ]
+}

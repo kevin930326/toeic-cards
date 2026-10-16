@@ -22,7 +22,11 @@
 
 改完程式、commit、`git push`，GitHub Pages 大約 1 分鐘內就會自動更新。
 
-- Service Worker 對網站檔案採「先連網、斷線才用快取」。若修改帶版本參數的入口、樣式或模組，需更新相關引用的版本，避免 HTTP 快取造成新舊程式混用；目前版本以 `index.html` 和模組 import 的參數為準（見 [decisions #72](decisions.md)）。首次更新需重新整理已開啟的頁面。
+- 修改 HTML／CSS／JS／圖示／內建單字包後，先執行 `python tools/release_manifest.py` 更新 `sw.js` 的 SHA-256 完整發布清單，再執行 `python tools/run_checks.py`。這是開發者提交前檢查，網站仍直接提供靜態檔案，不需執行時建置。
+- Service Worker 先下載並核對整個發布；失敗保留舊版。成功後等待所有舊分頁與主畫面 App 關閉，再整份切換；不強制更新正在操作的頁面。若看到新版提示，先確認已存檔，再關閉所有分頁／App 重開。不要只重新整理其中一頁。
+- 舊版 `toeic-shell-v1` 原本逐檔連網，無法追溯修復已開啟頁面的混用；本次首次遷移前，所有裝置請先匯出備份、關閉舊分頁／App，再重新開啟。首次未被 Service Worker 控制的載入仍依網路；完整核對後才保證後續離線發布一致。瀏覽器若清除快取仍須重新連線。
+- **這次部署前必要步驟**：請使用者到 Firebase Console → Firestore Database → 規則，貼上根目錄完整 [`firestore.rules`](../firestore.rules) 並按「發布」。新版使用 `meta/learningLog` 保存來源帳本，舊規則會拒絕它，不能先推到 main 觸發上線。模擬器通過不等於正式規則已發布。
+- 所有裝置需一起停止使用舊客戶端；舊版不理解來源帳本、帳號歸屬及欄位衝突。規則發布後才合併 PR／push main，並由使用者驗證正式登入，禁止以正式帳號跑測試。
 - **例外：重新產生字典時**（執行 `tools/build_dict.py` 之後），要把 `sw.js` 裡的 `DICT_CACHE` 版本號加 1（例如 `toeic-dict-v1` → `toeic-dict-v2`），否則已經下載過字典的使用者會繼續用舊的
 
 ## 上傳前的安全檢查

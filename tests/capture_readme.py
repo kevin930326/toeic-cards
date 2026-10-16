@@ -24,6 +24,7 @@ PHONE = {'width': 390, 'height': 760}
 os.makedirs(OUT, exist_ok=True)
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--updates-only', action='store_true', help='只拍實際導覽、批次刪除及手機輸入的新展示圖')
+parser.add_argument('--reliability-only', action='store_true', help='只拍設定分組與題目審核狀態')
 args = parser.parse_args()
 
 INIT = """
@@ -167,6 +168,12 @@ with sync_playwright() as p:
     ctx.add_init_script('window.__toeicFirebaseConfig=null;')
     ctx.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
     page = ctx.new_page()
+
+    if args.reliability_only:
+        go(page, 'settings');shot(page, 'reliability-settings.png')
+        page.evaluate("async()=>{(await import('/js/store.js')).addWords(['approve','employee'],{autoGenerate:false})}")
+        go(page, 'quiz');page.wait_for_selector('.mode-btn[data-mode=forms]');shot(page, 'reliability-quality.png')
+        ctx.close();browser.close();raise SystemExit(0)
 
     # ---- 內建單字包：加入第 1 組 ----
     go(page, 'words')

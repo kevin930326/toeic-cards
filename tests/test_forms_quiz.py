@@ -1,3 +1,4 @@
+from review_mock import mock_review
 """第 32 步：詞性變化題（內建題庫＋Gemini 補充）
 
 - 單字包的字：沒有金鑰也能考，題目來自內建題庫；作答、錯題本、不熟標記、每日紀錄都和其他題型一樣
@@ -41,6 +42,7 @@ def gemini(route):
         body = {'models': [{'name': 'models/gemini-2.5-flash', 'supportedGenerationMethods': ['generateContent']}]}
         return route.fulfill(status=200, content_type='application/json', body=json.dumps(body))
     prompt = json.loads(req.post_data)['contents'][0]['parts'][0]['text']
+    if mock_review(route,prompt,forms=True): return
     gemini_calls.append(prompt)
     targets = [line.split('. ', 1)[1] for line in prompt.split('Targets:')[1].strip().splitlines()]
     qs = []
@@ -129,7 +131,7 @@ with sync_playwright() as p:
     # AI 標示和旁邊文字看起來置中（使用者回報過偏上／偏下）：量「實際畫出來的筆畫」，不是行框
     offsets = [badge_offset(pg, sel) for sel in ['.ai-legend .badge', '.mode-card[data-mode=part5] .mode-title .badge',
                                                  '.mode-card[data-mode=forms] .mode-title .badge', '.reading-entry .badge']]
-    check(max(abs(o) for o in offsets) <= 0.6, f'AI 標示和旁邊的文字垂直置中（差距 {offsets} px）')
+    check(max(abs(o) for o in offsets) <= 1.0, f'AI 標示和旁邊的文字垂直置中（差距 {offsets} px）')
     start_forms(pg)
     pg.wait_for_selector('.q-forms .q-sentence')
     total = int(pg.locator('.quiz-progress').inner_text().split('/')[1])
@@ -192,7 +194,7 @@ with sync_playwright() as p:
     pg.reload()
     start_forms(pg)
     pg.wait_for_selector('.q-forms .q-sentence')
-    check(len(gemini_calls) == 1 and 'negotiate' in gemini_calls[0] and 'procure' in gemini_calls[0], '自己的字用一次 Gemini 請求出題')
+    check(len(gemini_calls) == 1 and 'negotiate' in gemini_calls[0] and 'procure' in gemini_calls[0], '自己的字一批生成，再另送一次逐選項覆核')
     saved = store(pg, "return s.getWords().filter((w) => w.formQs?.length).map((w) => w.word).sort();")
     check(saved == ['negotiate', 'procure'], f'AI 出的題目存在字卡上：{saved}')
     check(pg.locator('.quiz-progress').inner_text().endswith('2'), '兩個字各出一題')

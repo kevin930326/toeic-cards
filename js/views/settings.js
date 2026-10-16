@@ -8,6 +8,7 @@ import { renderBackupPanel } from './backup-panel.js';
 import { renderPwaPanel } from './pwa-panel.js?v=dictionary-scale-1';
 import { renderSyncPanel } from './sync-panel.js';
 import { isValidExamDate } from '../exam-plan.js';
+import {bindSettingsSections} from './settings-sections.js';
 
 // 模型清單只在這次開啟網站時記住（不需要存）
 let modelCache = null;
@@ -82,7 +83,7 @@ export function renderSettings(root) {
           </select>
           ${key ? '<button class="btn btn-ghost btn-sm" type="button" id="loadModels">重新載入清單</button>' : ''}
         </div>
-        <p class="hint-text">免費方案只能用 Flash／Flash-Lite 系列；Pro 需要付費。Flash-Lite 額度通常較多、速度較快，但品質稍差。</p>
+        <p class="hint-text">可用模型、費率與免費額度以 Google AI Studio 帳戶顯示為準；不同模型的速度與品質可能不同。</p>
         ${key ? `<div class="ai-test">
           <button class="btn btn-outline btn-sm" type="button" id="testAi">測試 AI（用 3 個字試生成，不會存檔）</button>
           <div id="testAiResult" aria-live="polite"></div>
@@ -100,14 +101,14 @@ export function renderSettings(root) {
         </label>
 
         <p class="privacy">🔒 金鑰只存在這台電腦的瀏覽器裡，只會直接送給 Google，不會上傳到其他地方。
-          送給 Gemini 的內容只有英文單字。免費方案下 Google 可能用這些內容改進模型。</p>
+          使用 AI 時會送出所選單字、出題及覆核所需的句子、選項、翻譯與閱讀練習文字。資料處理與是否用於模型改進依 Google 服務條款及帳戶方案而定。</p>
       </div>
 
       <div class="panel" id="backupPanel"></div>
 
       <div class="panel" id="pwaPanel"></div>
 
-      <div class="panel">
+      <div class="panel" id="learningPanel">
         <h2 class="panel-title">複習</h2>
         <div class="setting-row wrap">
           <span class="setting-label">目標</span>
@@ -127,21 +128,21 @@ export function renderSettings(root) {
         <p class="hint-text">設定多益考試日期後，統計頁會顯示倒數天數，並依還沒學的字數建議每天學幾個新字。</p>
       </div>
 
-      <div class="panel">
+      <div class="panel" id="appearancePanel">
         <h2 class="panel-title">外觀</h2>
         ${segmented('theme', s.theme, [['system', '跟隨系統'], ['light', '淺色'], ['dark', '深色']], '主題')}
       </div>
 
-      <div class="panel">
+      <div class="panel" id="speechPanel">
         <h2 class="panel-title">發音</h2>
         ${canSpeak() ? `
           <div class="setting-row wrap">
             <span class="setting-label">口音</span>
             ${segmented('accent', s.accent, [...ACCENTS.map((a) => [a.id, a.label]), [MIXED, '多益混合']], '口音')}
           </div>
-          <p class="hint-text">多益聽力會出現美式、英式、加拿大、澳洲四種口音。「多益混合」每次隨機換一種，最接近真實考試。</p>
+          <p class="hint-text">多益聽力會出現美式、英式、加拿大、澳洲四種口音。「多益混合」從裝置可用的口音隨機選擇，供單字與例句練習，不能取代正式聽力教材。</p>
           <ul class="accent-list" id="accentList"></ul>
-          <p class="hint-text">發音使用瀏覽器內建的語音合成，免費、不需網路，也不用 AI 額度；可用的口音取決於裝置。
+          <p class="hint-text">發音使用裝置語音合成，不耗 Gemini 額度；音質、口音及是否可離線播放依裝置與已安裝語音而異。
             Windows 可到「設定 › 時間與語言 › 語音」新增英文語音；Edge 瀏覽器內建較多自然的語音。</p>
           <div class="setting-row">
             <span class="setting-label">速度</span>
@@ -155,6 +156,7 @@ export function renderSettings(root) {
   renderBackupPanel(root.querySelector('#backupPanel'));
   const unsubPwa = renderPwaPanel(root.querySelector('#pwaPanel'));
   const unsubSync = renderSyncPanel(root.querySelector('#syncPanel'));
+  bindSettingsSections(root);
 
   const statusEl = root.querySelector('#keyStatus');
   const setStatus = (msg, kind = '') => {

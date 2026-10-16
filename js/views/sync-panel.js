@@ -1,10 +1,11 @@
 // 設定頁的「帳號與同步」區塊
 import {
   syncState, onSyncChange, signInWithGoogle, sendEmailLink, completeEmailLink, signOutSync, syncNow,
-  signInWithPassword, registerWithPassword, setAccountPassword, sendPasswordReset,
+  signInWithPassword, registerWithPassword, setAccountPassword, sendPasswordReset, resolveGuestData,getMetaConflict,resolveMetaConflict,
 } from '../sync.js';
 import { isIOS, isStandalone } from '../pwa.js';
 import { esc, toast, confirmAction } from '../ui.js';
+import {getWords} from '../store.js';
 
 const googleIcon = '<svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
 
@@ -12,6 +13,11 @@ function fmtTime(ms) {
   if (!ms) return '';
   const d = new Date(ms);
   return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+function metaConflictHTML(c) {
+  const labels={dailyGoal:'每日目標',newPerDay:'每日新字',cardMode:'字卡語言',autoGenerate:'自動生成',quizScope:'測驗範圍',quizCount:'測驗題數',part5Fresh:'每次出新題',examDate:'考試日期'};
+  const preview=value=>c.name==='settings'?`<ul>${Object.entries(value||{}).map(([k,v])=>`<li>${esc(labels[k]||k)}：${esc(typeof v==='boolean'?(v?'開啟':'關閉'):v)}</li>`).join('')}</ul>`:`<p>${Array.isArray(value)?value.length:0} 題</p><ul>${(Array.isArray(value)?value:[]).slice(0,8).map(m=>`<li>${esc(m.question?.word)}：${esc(m.question?.prompt?.slice(0,100))}</li>`).join('')}</ul>`;
+  return `<div class="pwa-note meta-conflict"><h3>${c.name==='settings'?'學習設定':'錯題本'}有同步衝突</h3><p>兩邊都有修改，已保留兩份。這份資料以整份確認；保留本機會取代雲端版本，採用雲端則取代這台裝置的版本。建議先匯出備份。</p><details open><summary>比較本機與雲端</summary><h4>本機快照</h4>${preview(c.local)}<h4>雲端快照</h4>${preview(c.remote?.value)}</details><div class="backup-actions"><button class="btn btn-outline" id="metaLocal" type="button">保留本機並同步</button><button class="btn btn-outline" id="metaRemote" type="button">採用雲端版本</button></div></div>`;
 }
 
 export function renderSyncPanel(container) {
@@ -25,7 +31,7 @@ export function renderSyncPanel(container) {
   //   2. 重畫時保留輸入框的內容、「貼上連結」是否展開、以及游標所在的欄位
   function draw(st = syncState()) {
     const key = JSON.stringify([st.configured, st.user?.uid, st.user?.email, st.user?.providers, st.status, st.error,
-      st.lastSyncAt, st.summary, st.pendingLink, st.linkSentTo, panelError]);
+      st.lastSyncAt, st.summary, st.pendingLink, st.linkSentTo, st.guestChoice, panelError,getMetaConflict()]);
     if (key === lastKey && container.firstChild) return;
     lastKey = key;
     const typed = {};
@@ -54,7 +60,13 @@ export function renderSyncPanel(container) {
     }
 
     let body;
-    if (st.user) {
+    if (st.guestChoice) {
+      body = `<p class="sync-user">即將使用帳號：<strong>${esc(st.user.email || st.user.uid)}</strong></p>
+        <p class="panel-desc">這個瀏覽器有訪客資料。要將訪客的字卡、分類、紀錄與錯題合併到這個帳號嗎？確認前不會上傳任何資料。Gemini 金鑰不會移轉。</p>
+        <div class="backup-actions"><button class="btn btn-outline" id="guestKeep" type="button">保留訪客資料，僅載入帳號</button>
+        <button class="btn btn-primary" id="guestMerge" type="button">確認合併訪客資料</button>
+        <button class="btn btn-ghost" id="signOut" type="button">取消登入</button></div>`;
+    } else if (st.user) {
       const via = st.user.provider === 'google.com' ? 'Google' : 'Email';
       let line;
       if (st.status === 'syncing' || st.status === 'connecting') line = '<p class="sync-line">同步中…</p>';
@@ -68,17 +80,19 @@ export function renderSyncPanel(container) {
       body = `
         <p class="sync-user">已登入：<strong>${esc(st.user.email || st.user.name || '已登入')}</strong> <span class="muted">（${via}）</span></p>
         ${line}
+        ${getMetaConflict()?metaConflictHTML(getMetaConflict()):''}
+        ${getWords().some(w=>w._conflicts?.length) ? '<p class="pwa-note" role="status">部分字卡有同欄位修改衝突，兩份內容都已保留。請到單字庫開啟編輯，比較後儲存要保留的版本。</p>' : ''}
         <div class="backup-actions">
           <button class="btn btn-outline" type="button" id="syncNow" ${st.status === 'syncing' ? 'disabled' : ''}>立即同步</button>
           <button class="btn btn-ghost" type="button" id="signOut">登出</button>
         </div>
-        <p class="hint-text">資料改變後會自動同步；打開網站、切回這個 App 時也會同步。登出後，這台裝置的資料會保留。</p>
+        <p class="hint-text">資料改變後會自動同步。登出後回到獨立的訪客空間；此帳號的本機資料保留在自己的儲存區，下次登入同一帳號才能載入。</p>
         <div class="set-pw">
           <h3 class="sub-title">設定／變更密碼（讓 iPhone 主畫面 App 也能登入）</h3>
           <p class="hint-text">iPhone 主畫面 App 不能用 Google 登入。替這個帳號設定密碼後，在 App 裡用
             <strong>${esc(st.user.email)}</strong>＋密碼登入，就是同一個帳號。已經設定過的話，這裡可以改成新密碼。</p>
           <form id="setPwForm" class="email-form">
-            <input type="password" id="newPassword" placeholder="至少 6 個字元" minlength="6" required autocomplete="new-password">
+            <label class="login-field" for="newPassword">新密碼<input type="password" id="newPassword" placeholder="至少 6 個字元" minlength="6" required autocomplete="new-password"></label>
             <button class="btn btn-outline" type="submit">設定密碼</button>
           </form>
           ${panelError ? `<p class="ai-error" role="alert">⚠ ${esc(panelError)}</p>` : ''}
@@ -96,7 +110,7 @@ export function renderSyncPanel(container) {
       const confirmBlock = `
         <p class="panel-desc">${iosSafari ? '或者直接在 Safari 登入：' : ''}輸入<strong>收到這封信的 Email</strong> 完成登入：</p>
         <form id="confirmForm" class="email-form">
-          <input type="email" id="confirmEmail" placeholder="you@example.com" required autocomplete="email">
+          <label class="login-field" for="confirmEmail">收到登入信的 Email<input type="email" id="confirmEmail" placeholder="you@example.com" required autocomplete="email"></label>
           <button class="btn ${iosSafari ? 'btn-outline' : 'btn-primary'}" type="submit">在這裡登入</button>
         </form>`;
       body = `
@@ -116,8 +130,8 @@ export function renderSyncPanel(container) {
           : `<button class="btn btn-outline google-btn" type="button" id="googleBtn">${googleIcon} 用 Google 帳號登入</button>
              <p class="or-line"><span>或用 Email＋密碼</span></p>`}
         <form id="pwForm" class="email-form stacked">
-          <input type="email" id="pwEmail" placeholder="Email" required autocomplete="email">
-          <input type="password" id="pwPassword" placeholder="密碼（至少 6 個字元）" required minlength="6" autocomplete="current-password">
+          <label class="login-field" for="pwEmail">Email<input type="email" id="pwEmail" placeholder="Email" required autocomplete="email"></label>
+          <label class="login-field" for="pwPassword">密碼<input type="password" id="pwPassword" placeholder="密碼（至少 6 個字元）" required minlength="6" autocomplete="current-password"></label>
           <div class="backup-actions">
             <button class="btn ${iosApp ? 'btn-primary' : 'btn-outline'}" type="submit">登入</button>
             <button class="btn btn-ghost" type="button" id="registerBtn">建立新帳號</button>
@@ -128,7 +142,7 @@ export function renderSyncPanel(container) {
         <details class="link-login" ${st.linkSentTo ? 'open' : ''}>
           <summary>用 Email 登入連結（不用密碼；整個網站每天最多寄 5 封）</summary>
           <form id="emailForm" class="email-form">
-            <input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email" value="${esc(st.linkSentTo)}">
+            <label class="login-field" for="emailInput">接收登入連結的 Email<input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email" value="${esc(st.linkSentTo)}"></label>
             <button class="btn btn-outline" type="submit">寄登入連結</button>
           </form>
           ${st.linkSentTo ? `<p class="sync-line ok">✓ 已寄出登入連結到 ${esc(st.linkSentTo)}（也請看一下垃圾郵件）。</p>` : ''}
@@ -143,8 +157,8 @@ export function renderSyncPanel(container) {
               ? '在「郵件」App 裡<strong>長按連結 › 拷貝</strong>，或在 Safari 打開的頁面按「複製登入連結」，貼在這裡。'
               : '在信裡的連結上按右鍵（手機長按）› 複製連結網址，貼在下面。'}</p>
             <form id="pasteForm" class="email-form stacked">
-              <input type="email" id="pasteEmail" placeholder="收到信的 Email" required autocomplete="email" value="${esc(st.linkSentTo)}">
-              <input type="url" id="pasteLink" placeholder="貼上登入連結（https://…）" required>
+              <label class="login-field" for="pasteEmail">收到登入信的 Email<input type="email" id="pasteEmail" placeholder="收到信的 Email" required autocomplete="email" value="${esc(st.linkSentTo)}"></label>
+              <label class="login-field" for="pasteLink">登入連結<input type="url" id="pasteLink" placeholder="貼上登入連結（https://…）" required></label>
               <button class="btn btn-primary" type="submit">完成登入</button>
             </form>
           </details>
@@ -173,6 +187,10 @@ export function renderSyncPanel(container) {
   }
 
   function bind() {
+    container.querySelector('#metaLocal')?.addEventListener('click',e=>run(e.currentTarget,()=>resolveMetaConflict(false)));
+    container.querySelector('#metaRemote')?.addEventListener('click',e=>run(e.currentTarget,()=>resolveMetaConflict(true)));
+    container.querySelector('#guestKeep')?.addEventListener('click', e => run(e.currentTarget, () => resolveGuestData(false)));
+    container.querySelector('#guestMerge')?.addEventListener('click', e => run(e.currentTarget, () => resolveGuestData(true)));
     container.querySelector('#googleBtn')?.addEventListener('click', (e) => run(e.currentTarget, async () => {
       await signInWithGoogle();
       toast('已登入，開始同步');
@@ -246,7 +264,7 @@ export function renderSyncPanel(container) {
     });
     container.querySelector('#syncNow')?.addEventListener('click', (e) => run(e.currentTarget, syncNow));
     container.querySelector('#signOut')?.addEventListener('click', (e) => {
-      if (!confirmAction('確定要登出嗎？這台裝置的資料會保留，只是不再同步。')) return;
+      if (!confirmAction('確定要登出並回到訪客空間嗎？帳號資料會分開保留，不會交給下一個帳號。')) return;
       run(e.currentTarget, async () => { await signOutSync(); toast('已登出'); });
     });
   }

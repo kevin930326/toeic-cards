@@ -1,3 +1,5 @@
+import { profileStorage } from './profile-storage.js';
+import {stampWord,versionCeiling,birthClock,clockToken} from './word-versions.js';
 // 資料儲存：所有單字和設定都存在瀏覽器的 localStorage
 import { normalizeWord } from './parse.js';
 import { normalizeSetName, sanitizeSets, mergeSets, filterSetWords, UNFILED } from './word-sets.js?v=dictionary-scale-1';
@@ -28,7 +30,7 @@ const listeners = new Set();
 
 function readJSON(key, fallback) {
   try {
-    const raw = localStorage.getItem(key);
+    const raw = profileStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
   } catch (e) {
     console.warn('讀取資料失敗', key, e);
@@ -38,7 +40,7 @@ function readJSON(key, fallback) {
 
 function writeJSON(key, value) {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    profileStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
     console.error('儲存資料失敗', key, e);
     throw new Error('瀏覽器儲存空間不足或被封鎖，資料沒有存到。');
@@ -46,6 +48,9 @@ function writeJSON(key, value) {
 }
 
 let words = readJSON(WORDS_KEY, []);
+const revisionActor=crypto.randomUUID();
+let revisionCounter=Math.max(0,...words.map(versionCeiling),...Object.values(readJSON('toeic-cards:deleted',{})));
+function nextRevision(known=0) {revisionCounter=Math.max(revisionCounter,known)+1;return revisionCounter;}
 // id → 字卡的對照表：用 id 找字一步完成（原本每次從頭找，複習佇列幾百個字 × 3,000 張卡就很慢）
 // words 換成新陣列（刪除、整批取代）時重建；新增時順便加入
 let byId = new Map();
@@ -72,12 +77,14 @@ let wordsDirty = false;
 
 export function flushWords() {
   if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
-  if (!wordsDirty) return;
+  if (!wordsDirty) return true;
   try {
     writeJSON(WORDS_KEY, words);
     wordsDirty = false;   // 只有存成功才清除；暫時失敗後，離頁／切背景仍可重試。
+    return true;
   } catch (e) {
     window.dispatchEvent(new CustomEvent('toeic:save-error', { detail: { message: e.message } }));
+    return false;
   }
 }
 
@@ -89,6 +96,7 @@ function saveWords() {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('pagehide', flushWords);
+  window.addEventListener('toeic:profile-leave', e => { if (!flushWords()) e.preventDefault(); });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushWords(); });
 }
 
@@ -105,7 +113,9 @@ function newId() {
 }
 
 export function createWord(word) {
+  const n=nextRevision();
   return {
+    _rev:{birth:[n,revisionActor],fields:{}},
     id: newId(),
     word: normalizeWord(word),
     phonetic: '',
@@ -120,7 +130,7 @@ export function createWord(word) {
     src: {},            // 每個欄位的來源：'dict' | 'freedict' | 'llm' | 'user'
     lookup: {},         // 查詢紀錄，例如 { dictAt: 時間 }
     createdAt: Date.now(),
-    updatedAt: Date.now(),
+    updatedAt: n,
   };
 }
 
@@ -167,7 +177,7 @@ export function addWords(list, { autoGenerate = true, initialData = new Map() } 
       if (Object.hasOwn(prepared, key)) w[key] = structuredClone(prepared[key]);
     }
     if (!autoGenerate) w.autoGenerate = false;
-    w.createdAt = w.updatedAt = base + added.length;
+    w.createdAt = base + added.length;
     words.unshift(w);
     byId.set(w.id, w);
     added.push(w);
@@ -197,7 +207,7 @@ export function updateWord(id, patch) {
     }
     patch = { ...patch, word: n };
   }
-  Object.assign(w, patch, { updatedAt: Date.now() });
+  Object.assign(w, stampWord(w,patch,nextRevision(versionCeiling(w)),revisionActor));
   saveWords();
   return w;
 }
@@ -205,11 +215,10 @@ export function updateWord(id, patch) {
 // 一次更新多個字、只存一次檔（批次處理時比較快）。patches: [[id, patch], ...]
 export function updateWords(patches) {
   let changed = 0;
-  const now = Date.now();
   for (const [id, patch] of patches) {
     const w = getWord(id);
     if (!w) continue;
-    Object.assign(w, patch, { updatedAt: now });
+    Object.assign(w,stampWord(w,patch,nextRevision(versionCeiling(w)),revisionActor));
     changed++;
   }
   if (changed) saveWords();
@@ -227,8 +236,12 @@ export function deleteWords(ids) {
   if (!targets.length) return 0;
   // 留下「刪除紀錄」，同步時其他裝置也會跟著刪掉
   const tombs = getTombstones();
-  const now = Date.now();
-  for (const target of targets) tombs[target.word] = now;
+  const revisions=getTombRevisions();
+  for (const target of targets) {
+    const n=nextRevision(versionCeiling(target));tombs[target.word]=n;
+    revisions[target.word]=[n,revisionActor,clockToken(birthClock(target))];
+  }
+  setTombRevisions(revisions);
   // 寫入失敗時先拋錯，保留目前字卡，不先刪記憶體資料。
   setTombstones(tombs);
   words = words.filter(w => !selected.has(w.id));
@@ -239,11 +252,14 @@ export function deleteWords(ids) {
 
 // ---- 刪除紀錄（跨裝置同步用）：{ 單字: 刪除時間 } ----
 const TOMB_KEY = 'toeic-cards:deleted';
+export function getTombRevisions() {return readJSON('toeic-cards:tombRevisions',{});}
+export function setTombRevisions(map) {writeJSON('toeic-cards:tombRevisions',map||{});}
 export function getTombstones() {
   return readJSON(TOMB_KEY, {});
 }
 export function setTombstones(map) {
   writeJSON(TOMB_KEY, map || {});
+  revisionCounter=Math.max(revisionCounter,...Object.values(map||{}));
 }
 
 export function toggleUnfamiliar(id, value) {
@@ -255,6 +271,7 @@ export function toggleUnfamiliar(id, value) {
 // 匯入備份：整批換掉
 export function replaceWords(list) {
   words = Array.isArray(list) ? list : [];
+  revisionCounter=Math.max(revisionCounter,...words.map(versionCeiling));
   reindex();
   saveWords();
 }
@@ -280,9 +297,9 @@ const SETTINGS_AT_KEY = 'toeic-cards:settingsAt';
 export function updateSettings(patch, { fromSync = false } = {}) {
   const changedSynced = SYNCED_KEYS.some((k) => k in patch && patch[k] !== settings[k]);
   settings = { ...settings, ...patch };
-  writeJSON(SETTINGS_KEY, settings);
   // 記下「要同步的設定」最後修改的時間；從雲端套用時不算本機修改
-  if (changedSynced && !fromSync) writeJSON(SETTINGS_AT_KEY, Date.now());
+  if (changedSynced && !fromSync) {try {writeJSON(SETTINGS_AT_KEY, Date.now());}catch { /* 保留待重試時間 */ }}
+  try {writeJSON(SETTINGS_KEY, settings);}catch {emit();return false;}
   emit();
 }
 

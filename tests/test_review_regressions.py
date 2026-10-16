@@ -27,7 +27,7 @@ with sync_playwright() as p:
         return context,page
 
     context,page=setup();held=[]
-    context.route('**/data/packs/toeic-1000-forms.json',lambda r:held.append(r))
+    context.route('**/data/packs/toeic-1000-forms.json*',lambda r:held.append(r))
     page.click('a[data-route=quiz]');expect(page.locator('.mode-grid')).to_be_visible()
     for _ in range(20):
         if held: break
@@ -44,10 +44,11 @@ with sync_playwright() as p:
     context.close()
 
     context,page=setup(workers=True);bank_state={'fail':True}
-    context.route('**/data/packs/toeic-1000-forms.json',lambda r:r.fulfill(
+    context.route('**/data/packs/toeic-1000-forms.json*',lambda r:r.fulfill(
         status=503 if bank_state['fail'] else 200,content_type='application/json',body='{}' if bank_state['fail'] else BANK))
     page.evaluate('''async q=>{const s=await import('/js/store.js');
-      const result=s.addWords(['negotiate','amount'],{autoGenerate:false});
+      const p=await import('/js/question-policy.js');q={...q,policy:2,source:'ai',review:'ai-checked',optionReasons:['原形動詞符合句法','名詞不適合','形容詞不適合','過去式不適合'],signature:p.questionSignature(q)};
+      const result=s.addWords(['negotiate','employee'],{autoGenerate:false});
       for(const w of result.added)s.updateWord(w.id,{zh:'已有中文',en:'a saved word',lookup:{dictAt:1,enDone:true},
         ...(w.word==='negotiate'?{formQs:[q]}:{pack:{id:'toeic-1000',version:1}})});
     }''',SAVED_Q)
@@ -68,7 +69,9 @@ with sync_playwright() as p:
 
     # 沒載入題庫但已有快取題的字卡，在真正離線重整後也可作答。
     flush(page)
-    assert page.evaluate('async()=>{await navigator.serviceWorker.ready;return !!navigator.serviceWorker.controller}')
+    page.evaluate('navigator.serviceWorker.ready')
+    # 新版不 claim 已開啟頁面；下一次導覽才接手。模擬題庫快取被清除。
+    page.evaluate("async()=>{const n=(await caches.keys()).find(n=>n.startsWith('toeic-shell-'));const c=await caches.open(n);await c.delete(new URL('data/packs/toeic-1000-forms.json',location.href));}")
     context.set_offline(True);page.reload();page.wait_for_load_state('networkidle')
     expect(page.locator('.mode-btn[data-mode=forms]')).to_be_enabled()
     page.click('.mode-btn[data-mode=forms]');expect(page.locator('.q-sentence')).to_be_visible()
@@ -91,8 +94,8 @@ with sync_playwright() as p:
     context.close()
 
     context,page=setup()
-    context.route('**/data/packs/toeic-1000-forms.json',lambda r:r.fulfill(status=503,body='{}'))
-    page.evaluate("async()=>{const s=await import('/js/store.js');s.addWords(['amount'],{autoGenerate:false,initialData:new Map([['amount',{pack:{id:'toeic-1000',version:1}}]])});}")
+    context.route('**/data/packs/toeic-1000-forms.json*',lambda r:r.fulfill(status=503,body='{}'))
+    page.evaluate("async()=>{const s=await import('/js/store.js');s.addWords(['employee'],{autoGenerate:false,initialData:new Map([['employee',{pack:{id:'toeic-1000',version:1}}]])});}")
     page.click('a[data-route=quiz]');page.click('.mode-btn[data-mode=forms]')
     expect(page.locator('.ai-error')).to_contain_text('題庫目前讀不到')
     assert page.locator('.question').count()==0 and not ai_calls

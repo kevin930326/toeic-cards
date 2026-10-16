@@ -1,3 +1,4 @@
+import { profileStorage } from './profile-storage.js';
 // 每日學習紀錄（統計、每日目標、連續打卡都用它）
 // 存在 localStorage：{ '2026-10-14': { reviews, again, good, learned, quiz, quizCorrect, goal } }
 //   reviews／again／good／learned：複習；quiz／quizCorrect：測驗題數、答對題數
@@ -7,64 +8,65 @@
 // 其他裝置的紀錄放在 'toeic-cards:remoteLogs'（{ 裝置 id: 紀錄 }），顯示時加總（getLog）。
 import { dayKey } from './srs.js';
 import { getSettings } from './store.js';
-import { combineLogs } from './sync-core.js';
 
 const LOG_KEY = 'toeic-cards:log';
 const REMOTE_KEY = 'toeic-cards:remoteLogs';
 const listeners = new Set();
 
-function read() {
-  try {
-    const v = JSON.parse(localStorage.getItem(LOG_KEY) || '{}');
-    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
-  } catch (e) {
-    return {};
-  }
-}
+const LEDGER_KEY = 'toeic-cards:logLedger';
+const ORIGIN_KEY = 'toeic-cards:logOrigin';
+import { profileOwner } from './profile-storage.js';
+import { deviceId } from './device-id.js';
+import { cleanLedger, ledgerTotal } from './log-ledger.js';
 
+function json(key, fallback) {
+  try { return JSON.parse(profileStorage.getItem(key) || 'null') ?? fallback; } catch { return fallback; }
+}
+export function logOrigin() {
+  let id = json(ORIGIN_KEY, '');
+  if (!id) {
+    id = profileOwner() || Object.keys(json(LOG_KEY, {})).length ? deviceId() : `guest-${crypto.randomUUID()}`;
+    try {profileStorage.setItem(ORIGIN_KEY, JSON.stringify(id));}catch { /* 保留記憶體待重試 */ }
+  }
+  return id;
+}
+export function getLogLedger() {
+  const stored = json(LEDGER_KEY, null);
+  if (stored) return cleanLedger(stored);
+  const sources = Object.fromEntries(Object.entries(json(REMOTE_KEY, {})).map(([id,log])=>[id,{log,updatedAt:0}]));
+  const own = json(LOG_KEY, {});
+  if (Object.keys(own).length) sources[logOrigin()] = {log:own,updatedAt:Date.now()};
+  return cleanLedger({sources});
+}
+export function setLogLedger(raw) {
+  const ledger = cleanLedger(raw);
+  // ledger 為唯一真實來源，舊欄位僅相容既有測試與舊版匯出工具。
+  try {profileStorage.setItem(LEDGER_KEY, JSON.stringify(ledger));}catch {return false;}
+  const me = logOrigin();
+  try {
+    profileStorage.setItem(LOG_KEY, JSON.stringify(ledger.sources[me]?.log || {}));
+    profileStorage.setItem(REMOTE_KEY, JSON.stringify(Object.fromEntries(Object.entries(ledger.sources).filter(([id])=>id!==me).map(([id,s])=>[id,s.log]))));
+  }catch { /* 主帳本仍為唯一來源，失敗會有持續提示 */ }
+  return true;
+}
+function read() { return getLogLedger().sources[logOrigin()]?.log || {}; }
 function write(log) {
-  try { localStorage.setItem(LOG_KEY, JSON.stringify(log)); } catch (e) { console.error('寫入學習紀錄失敗', e); }
+  const ledger = getLogLedger();
+  const me = logOrigin();
+  ledger.sources[me] = {log, updatedAt:Math.max(Date.now(),(ledger.sources[me]?.updatedAt || 0)+1)};
+  setLogLedger(ledger);
   for (const fn of listeners) fn();
 }
-
-// 紀錄改變時通知（例如：達成每日目標的慶祝訊息）
-export function onLogChange(fn) {
-  listeners.add(fn);
-  return () => listeners.delete(fn);
-}
-
-function readRemote() {
-  try {
-    const v = JSON.parse(localStorage.getItem(REMOTE_KEY) || '{}');
-    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
-  } catch (e) {
-    return {};
-  }
-}
-
-// 所有裝置加總後的紀錄（統計、打卡、每日目標都用這個）
-export function getLog() {
-  return combineLogs(read(), Object.values(readRemote()));
-}
-
-// 只有這台裝置自己的紀錄（同步時上傳這份）
-export function getOwnLog() {
-  return read();
-}
-
-// 同步時把其他裝置的紀錄存起來（不跳慶祝訊息）
+export function onLogChange(fn) { listeners.add(fn); return () => listeners.delete(fn); }
+export function getLog() { return ledgerTotal(getLogLedger()); }
+export function getOwnLog() { return read(); }
 export function setRemoteLogs(map) {
-  try { localStorage.setItem(REMOTE_KEY, JSON.stringify(map && typeof map === 'object' ? map : {})); } catch (e) { /* 存不了只是統計少算 */ }
+  const ledger = getLogLedger();
+  for (const [id, log] of Object.entries(map || {})) ledger.sources[id] = {log, updatedAt:0};
+  setLogLedger(ledger);
 }
-
-// 匯入備份時整個換掉（不通知「紀錄改變」，免得匯入時跳出達標慶祝）
-export function replaceLog(log) {
-  try {
-    localStorage.setItem(LOG_KEY, JSON.stringify(log && typeof log === 'object' ? log : {}));
-  } catch (e) {
-    console.error('寫入學習紀錄失敗', e);
-  }
-}
+// 保留舊呼叫端語意：只取代本機來源，不把其他裝置加總寫進這裡。
+export function replaceLog(log) { write(log || {}); }
 
 export function currentGoal() {
   return Math.max(1, Number(getSettings().dailyGoal) || 20);

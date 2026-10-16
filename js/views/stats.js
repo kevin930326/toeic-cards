@@ -134,7 +134,7 @@ export function renderStats(root) {
 
         <section class="panel chart-card" aria-labelledby="hMastery">
           <h2 class="panel-title" id="hMastery">熟練度</h2>
-          <p class="chart-sub">依目前複習間隔分組，不受上方期間影響。按一次「會」不代表長期熟記；隨複習累積，間隔會逐步拉長。</p>
+          <p class="chart-sub">依目前複習間隔分組，不受上方期間影響。系統判定熟記是排程分類，不能作為實際記憶能力或學習成效的證明。按一次「會」不代表長期熟記；隨複習累積，間隔會逐步拉長。</p>
           ${words.length ? `
             <div class="mastery-bar" role="img" aria-label="${MASTERY_LEVELS.map((l) => `${l.label} ${m[l.key]} 個`).join('，')}">
               ${MASTERY_LEVELS.filter((l) => m[l.key]).map((l) => `<span class="mastery-seg lvl-${l.key}" style="flex-grow:${m[l.key]}"></span>`).join('')}

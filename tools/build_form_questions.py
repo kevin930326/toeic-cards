@@ -14,6 +14,7 @@
 import json
 import re
 import sys
+import hashlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -61,6 +62,8 @@ def check(line, pack_words):
 
 def main():
     pack_words = {w.lower() for w in json.loads(PACK.read_text(encoding='utf-8'))['words']}
+    review_doc=json.loads((SRC/'review.json').read_text(encoding='utf-8'))
+    reviews={r['target']:r for r in review_doc['reviews']}
     questions, errors = [], []
     for f in sorted(SRC.glob('*.txt')):
         for n, line in enumerate(f.read_text(encoding='utf-8').splitlines(), 1):
@@ -70,14 +73,30 @@ def main():
             if err:
                 errors.append(f'{f.name}:{n}  {err}')
             else:
+                r=reviews.get(q['target'])
+                digest=hashlib.sha256(json.dumps(q,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
+                if not r or r['sha256']!=digest:
+                    errors.append(f'{f.name}:{n} 題目已變動或缺少審核紀錄，請重新審核 review.json')
+                    continue
+                q.update(id=r['id'],revision=r['revision'],policy=2,source='builtin',review=r['status'],reviewReason=r['reason'])
+                if r['status']=='approved-ai':
+                    q['optionReasons']=[q['explanation'],*[f'「{d}」不是這裡需要的' + ('原形動詞。' if '原形動詞' in q['explanation'] else '名詞。' if q['target']=='negligent' else '過去分詞。' if q['target'] in ['selection','approve'] else '過去式。') for d in q['distractors']]]
                 questions.append(q)
     if errors:
         print('\n'.join(errors))
         sys.exit(f'有 {len(errors)} 題不合格，沒有產生題庫')
-    OUT.write_text(json.dumps({'packId': 'toeic-1000', 'version': 1, 'questions': questions},
+    OUT.write_text(json.dumps({'packId': 'toeic-1000', 'version': 2, 'questions': questions},
                               ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     words = {q['target'] for q in questions}
     print(f'完成：{len(questions)} 題，涵蓋 {len(words)} / {len(pack_words)} 個字，{OUT.stat().st_size / 1024:.0f} KB')
+    def signature(q):
+        text=json.dumps([q['sentence'],q['answer'],sorted(q['distractors']),q['translation'],q['explanation']],ensure_ascii=False,separators=(',',':'))
+        h=2166136261
+        for c in text: h=((h^ord(c))*16777619)&0xffffffff
+        return format(h,'x')
+    approved={q['id']:{'revision':q['revision'],'signature':signature(q)} for q in questions if q['review']=='approved-ai'}
+    (ROOT/'js/forms-catalog.js').write_text('// 由 tools/build_form_questions.py 產生；修改題目須重新審核。\nexport const FORMS_CATALOG = '+json.dumps(approved,separators=(',',':'))+';\n',encoding='utf-8')
+    print(f'啟用 {len(approved)}；待覆核並停用 {len(questions)-len(approved)}')
 
 
 if __name__ == '__main__':

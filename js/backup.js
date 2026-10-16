@@ -12,9 +12,11 @@
 import { normalizeWord } from './parse.js';
 import { mistakeKey } from './mistakes.js';
 import { sanitizeSets, mergeSets } from './word-sets.js?v=dictionary-scale-1';
+import { cleanLedger, mergeLedgers, ledgerTotal } from './log-ledger.js';
+import {sanitizeVersions,WORD_FIELDS,mergeVersionedWords} from './word-versions.js';
 
 export const BACKUP_APP = 'toeic-cards';
-export const BACKUP_VERSION = 2;
+export const BACKUP_VERSION = 3;
 export const MAX_BACKUP_CHARS = 20 * 1024 * 1024;
 const MAX_MISTAKES = 300;
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -38,13 +40,14 @@ export function backupFileName(now = Date.now()) {
   return `toeic-cards-backup-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.json`;
 }
 
-export function buildBackup({ words, settings, log, mistakes, wordSets = [] }, now = Date.now()) {
+export function buildBackup({ words, settings, log, mistakes, wordSets = [], logLedger }, now = Date.now()) {
   return {
     app: BACKUP_APP,
     version: BACKUP_VERSION,
     exportedAt: new Date(now).toISOString(),
     counts: { words: words.length, days: Object.keys(log).length, mistakes: mistakes.length, wordSets: wordSets.filter((s) => !s.deleted).length },
-    data: { words, settings, log, mistakes, wordSets },
+    data: { words, settings, log: logLedger ? ledgerTotal(logLedger) : log, mistakes, wordSets,
+      ...(logLedger ? {logLedger:cleanLedger(logLedger)} : {}) },
   };
 }
 
@@ -73,7 +76,12 @@ function sanitizePart5(v) {
     explanation: str(q.explanation, 400),
     at: num(q.at),
     usedAt: num(q.usedAt),
+    ...sanitizeQuestionMeta(q),
   })).filter((q) => q.sentence.includes('_____') && q.answer && q.distractors.length === 3).slice(-3);
+}
+function sanitizeQuestionMeta(q) {
+  return {policy:num(q.policy),source:str(q.source,20),review:str(q.review,30),revision:num(q.revision),
+    signature:str(q.signature,30),optionReasons:strList(q.optionReasons,4,400)};
 }
 
 export function sanitizeWord(raw) {
@@ -110,6 +118,9 @@ export function sanitizeWord(raw) {
     ...(Array.isArray(raw.formQs) ? { formQs: sanitizePart5(raw.formQs) } : {}),   // AI 出的詞性變化題（格式和 Part 5 一樣）
     createdAt: num(raw.createdAt),
     updatedAt: num(raw.updatedAt),
+    ...(sanitizeVersions(raw._rev) ? {_rev:sanitizeVersions(raw._rev)} : {}),
+    ...(Array.isArray(raw._conflicts) ? {_conflicts:raw._conflicts.filter(c=>isObj(c)&&WORD_FIELDS.includes(c.field)&&Array.isArray(c.alternatives))
+      .slice(-30).map(c=>({key:str(c.key,300),field:str(c.field,60),alternatives:c.alternatives.slice(0,2).map(a=>({clock:Array.isArray(a.clock)?a.clock.slice(0,3):[],value:a.value}))}))} : {}),
   };
 }
 
@@ -141,7 +152,8 @@ export function sanitizeMistakes(raw) {
       prompt: str(q.prompt, 600),
       options,
       answerIndex,
-      ...(isObj(q.extra) ? { extra: { translation: str(q.extra.translation, 400), explanation: str(q.extra.explanation, 400) } } : {}),
+      ...(isObj(q.extra) ? { extra: { translation: str(q.extra.translation, 400), explanation: str(q.extra.explanation, 400),
+        qid:str(q.extra.qid,80),...sanitizeQuestionMeta(q.extra) } } : {}),
       ...(typeof q.accent === 'string' ? { accent: str(q.accent, 10) } : {}),
     };
     if (!question.wordId) continue;
@@ -193,6 +205,8 @@ export function parseBackup(text, defaultSettings) {
       words: [...byWord.values()],
       settings: sanitizeSettings(obj.data.settings, defaultSettings),
       log: sanitizeLog(obj.data.log),
+      ...(isObj(obj.data.logLedger) ? { logLedger: cleanLedger(obj.data.logLedger) } : {}),
+      legacyLog: !isObj(obj.data.logLedger),
       mistakes: sanitizeMistakes(obj.data.mistakes),
       wordSets: mergeSets([], sanitizeSets(obj.data.wordSets)),
       skipped,
@@ -218,6 +232,10 @@ export function mergeBackup(local, incoming) {
       byWord.set(w.word, nw);
       added.push(nw);
       idMap.set(w.id, id);
+    } else if (w._rev || cur._rev) {
+      const merged=mergeVersionedWords(cur,w);
+      if(JSON.stringify(merged)!==JSON.stringify(cur)){byWord.set(w.word,{...merged,id:cur.id});updated++;}else kept++;
+      idMap.set(w.id,cur.id);
     } else if (w.updatedAt > cur.updatedAt) {
       byWord.set(w.word, { ...w, id: cur.id });   // 保留目前的 id
       updated++;
@@ -256,7 +274,8 @@ export function mergeBackup(local, incoming) {
   return {
     words,
     wordSets: mergeSets(local.wordSets, incoming.wordSets),
-    log,
+    log: local.logLedger && incoming.logLedger ? ledgerTotal(mergeLedgers(local.logLedger, incoming.logLedger)) : log,
+    ...(local.logLedger && incoming.logLedger ? {logLedger:mergeLedgers(local.logLedger, incoming.logLedger)} : {}),
     mistakes: [...mistakes.values()].sort((a, b) => b.at - a.at).slice(0, MAX_MISTAKES),
     summary: { added: added.length, updated, kept },
   };

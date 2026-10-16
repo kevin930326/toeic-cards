@@ -25,7 +25,7 @@ sum | Please ___ the main findings in no more than one page. | summarize | summa
 decision | The manager acted ___ when the shipment was delayed. | decisively | decide / decision / decisive | 貨物延遲時，經理果斷地採取行動。 | 修飾動詞 acted，要用副詞。
 energy | Our new sales trainer is very ___ and enthusiastic. | energetic | energy / energize / energetically | 我們新的業務講師非常有活力又熱情。 | very 後面、和形容詞 enthusiastic 並列，要用形容詞。
 purpose | The lobby was ___ designed to let in as much natural light as possible. | purposely | purpose / purposes / purposeful | 大廳是刻意設計成盡量引進自然光的。 | 夾在 was 和過去分詞 designed 中間修飾動詞，要用副詞。
-selection | Only ___ candidates will be invited to a second interview. | selected | select / selection / selecting | 只有被選上的應徵者會受邀參加第二次面試。 | 空格修飾名詞 candidates，表示「被選上的」，要用過去分詞當形容詞。
+selection | The panel has ___ three candidates for the final interview. | selected | select / selection / selecting | 評審小組已經選出三位應徵者參加最終面試。 | has 後面接過去分詞 selected 構成現在完成式；select 是原形，selection 是名詞，selecting 是現在分詞，均不能直接接在 has 後面。
 sample | Shoppers were invited to ___ the new coffee blend for free. | sample | samples / sampled / sampling | 顧客受邀免費試喝新的綜合咖啡。 | to 後面接原形動詞（不定詞）。
 quantity | It is often difficult to ___ the benefits of employee training. | quantify | quantity / quantities / quantifiable | 員工訓練的效益常常很難量化。 | to 後面接原形動詞（不定詞）。
 method | Ms. Wu reviewed the contract ___, checking every clause. | methodically | method / methods / methodical | 吳小姐有條不紊地審閱合約，檢查每一條條款。 | 修飾動詞 reviewed，要用副詞。

@@ -13,6 +13,7 @@
 import { sanitizeWord, sanitizeLog, sanitizeMistakes, sanitizeSettings } from './backup.js';
 import { normalizeWord } from './parse.js';
 import { mistakeKey } from './mistakes.js';
+import {mergeVersionedWords,birthClock,compareClock} from './word-versions.js';
 
 // 只同步「學習相關」的設定；外觀、口音（每台裝置的語音不同）、模型、統計期間留在各自的裝置
 export const SYNCED_SETTINGS = ['dailyGoal', 'newPerDay', 'cardMode', 'autoGenerate', 'quizScope', 'quizCount', 'part5Fresh', 'examDate'];
@@ -28,17 +29,41 @@ export function toRemoteWord(w) {
   return { word: w.word, updatedAt: w.updatedAt || 0, deleted: false, data: w };
 }
 
-export function toRemoteTombstone(word, time) {
-  return { word: normalizeWord(word), updatedAt: time, deleted: true, data: null };
+export function toRemoteTombstone(word, time, revision) {
+  return { word: normalizeWord(word), updatedAt: time, deleted: true, data: revision ? {deletedRevision:revision} : null };
+}
+export function remoteVersion(r) {
+  if(!r.data?._rev&&!r.data?.deletedRevision)return r.updatedAt;
+  const text=JSON.stringify({...r,data:r.deleted?r.data:sanitizeWord(r.data)});
+  // 同步 checkpoint 只留雙 32-bit 指紋，不再複製整份字卡內容佔用 localStorage。
+  let a=2166136261,b=5381;
+  for(let i=0;i<text.length;i++){const c=text.charCodeAt(i);a=Math.imul(a^c,16777619);b=Math.imul(b,33)^c;}
+  return 'fields-2:'+(a>>>0).toString(16).padStart(8,'0')+(b>>>0).toString(16).padStart(8,'0');
+}
+export function mergeRemoteRecord(a,b) {
+  if(!a)return b;if(!b)return a;
+  if(!a.deleted&&!b.deleted) {
+    const left=sanitizeWord(a.data),right=sanitizeWord(b.data);
+    if(!left)return b;if(!right)return a;
+    const data=mergeVersionedWords(left,right);
+    return {...a,word:data.word,updatedAt:data.updatedAt,data};
+  }
+  if(a.deleted&&b.deleted) {
+    const ca=a.data?.deletedRevision||[a.updatedAt,'legacy'];const cb=b.data?.deletedRevision||[b.updatedAt,'legacy'];
+    return compareClock(ca,cb)>=0?a:b;
+  }
+  const dead=a.deleted?a:b,live=a.deleted?b:a,dc=dead.data?.deletedRevision;
+  return dc&&live.data?._rev ? (compareClock(birthClock(live.data),dc)>0?live:dead) : live.updatedAt>dead.updatedAt?live:dead;
 }
 
 // 把雲端拉下來的單字套用到本機
 //   local：本機單字陣列；tombstones：本機的刪除紀錄 { 單字: 刪除時間 }；remote：雲端文件陣列
 // 回傳新的 words、tombstones，以及新增／更新／刪除的數量
-export function applyRemoteWords(local, tombstones, remote) {
+export function applyRemoteWords(local, tombstones, remote, tombRevisions={}) {
   const byWord = new Map(local.map((w) => [w.word, w]));
   const usedIds = new Set(local.map((w) => w.id));
   const tombs = { ...tombstones };
+  const revisions={...tombRevisions};
   const added = [];
   let updated = 0;
   let deleted = 0;
@@ -50,17 +75,19 @@ export function applyRemoteWords(local, tombstones, remote) {
     const cur = byWord.get(word);
     if (r.deleted) {
       // 別的裝置刪掉了：本機的版本比較舊才跟著刪（本機刪之後又修改過就保留）
-      if (cur && cur.updatedAt <= time) {
+      const deletion=r.data?.deletedRevision;
+      if (cur && (deletion && cur._rev ? compareClock(birthClock(cur),deletion)<=0 : cur.updatedAt <= time)) {
         byWord.delete(word);
         deleted++;
       }
       tombs[word] = Math.max(tombs[word] || 0, time);
+      if(deletion && (!revisions[word] || compareClock(deletion,revisions[word])>0)) revisions[word]=deletion;
       continue;
     }
     const data = sanitizeWord(r.data);
     if (!data) continue;
     data.updatedAt = time;
-    if ((tombs[word] || 0) >= time) continue;   // 本機在這之後刪掉了，以刪除為準
+    if (revisions[word] && data._rev ? compareClock(birthClock(data),revisions[word])<=0 : (tombs[word] || 0)>=time) continue;
     if (!cur) {
       let id = data.id;
       while (usedIds.has(id)) id = `${data.id}-${Math.random().toString(36).slice(2, 6)}`;
@@ -69,9 +96,9 @@ export function applyRemoteWords(local, tombstones, remote) {
       byWord.set(word, nw);
       added.push(nw);
       delete tombs[word];
-    } else if (time > cur.updatedAt) {
-      byWord.set(word, { ...data, id: cur.id });   // 保留本機的 id（錯題本用 id 對應單字）
-      updated++;
+    } else {
+      const merged=mergeVersionedWords(cur,data);
+      if(JSON.stringify(merged)!==JSON.stringify(cur)) {byWord.set(word,merged);updated++;}
     }
   }
   // 新的字放最前面（和平常新增單字一樣），其他維持原本順序
@@ -79,18 +106,20 @@ export function applyRemoteWords(local, tombstones, remote) {
     ...added.sort((a, b) => b.createdAt - a.createdAt),
     ...local.map((w) => byWord.get(w.word)).filter(Boolean),   // 被刪掉的字在 byWord 裡已經不存在
   ];
-  return { words, tombstones: tombs, summary: { added: added.length, updated, deleted } };
+  return { words, tombstones: tombs, tombRevisions:revisions, summary: { added: added.length, updated, deleted } };
 }
 
 // 找出要上傳的東西：最後修改時間比「上次上傳的版本」新的字，以及新的刪除紀錄
 //   pushed：{ 單字: 上次上傳時的 updatedAt }
-export function pendingChanges(words, tombstones, pushed) {
+export function pendingChanges(words, tombstones, pushed, tombRevisions={}) {
   const out = [];
   for (const w of words) {
-    if ((w.updatedAt || 0) > (pushed[w.word] || 0)) out.push(toRemoteWord(w));
+    const r=toRemoteWord(w);
+    if (w._rev ? remoteVersion(r)!==pushed[w.word] : (w.updatedAt || 0) > (pushed[w.word] || 0)) out.push(r);
   }
   for (const [word, time] of Object.entries(tombstones)) {
-    if (time > (pushed[word] || 0)) out.push(toRemoteTombstone(word, time));
+    const r=toRemoteTombstone(word,time,tombRevisions[word]);
+    if(tombRevisions[word] ? remoteVersion(r)!==pushed[word] : time>(pushed[word]||0)) out.push(r);
   }
   return out;
 }
