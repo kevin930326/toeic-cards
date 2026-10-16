@@ -61,6 +61,10 @@ with sync_playwright() as p:
     expect(pg.locator('#bulkAssign')).to_be_enabled()
     pg.click('#toggleBulk')
     check(not pg.locator('.word-select').first.is_visible() and not pg.locator('.word-select').first.is_checked(),'完成整理會清空選取並隱藏方框')
+    # 說明文字和「編輯模式」按鈕同一列時，垂直置中（使用者回報過偏高 7px）
+    gap=pg.evaluate('''()=>{const h=document.querySelector('#libraryEditHint').getBoundingClientRect(),b=document.querySelector('#toggleLibraryEdit').getBoundingClientRect();
+      return Math.abs((h.top+h.height/2)-(b.top+b.height/2));}''')
+    check(gap<=1,f'批次整理／編輯模式旁的說明文字垂直置中（差 {gap:.1f}px）')
     pg.click('#toggleBulk')
     pg.locator('.word-select').first.check()
     pg.click('#toggleLibraryEdit')

@@ -482,6 +482,8 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 
 .word-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 .library-edit-tools { display: flex; align-items: center; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+/* 說明文字和按鈕同一列置中；.hint-text 預設的下方間距會讓它看起來偏高 7px */
+.library-edit-tools .hint-text { margin: 0; }
 .word-list:not(.is-selecting) .word-select { display: none; }
 .word-list.is-selecting .word-row:has(.word-select:checked) { background: var(--surface-2); }
 .library-bulk { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 20px; margin-bottom: 16px; }
