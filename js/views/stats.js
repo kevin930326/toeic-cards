@@ -2,7 +2,7 @@
 // 期間篩選（7／30／90 天）放在最上面，套用到下面所有「期間」相關的數字和圖表
 import { getWords, getSettings, updateSettings, subscribe, scopedWords, activeSetId, getWordSets } from '../store.js';
 import { esc, goalRingHTML } from '../ui.js';
-import { getLog, todayProgress, currentGoal } from '../log.js';
+import { getLog, todayProgress, currentGoal, onLogTotals } from '../log.js';
 import { columnChart } from '../charts.js';
 import {
   streak, longestStreak, dailySeries, totals, masteryBuckets, MASTERY_LEVELS, FAMILIAR_DAYS, forecast,
@@ -207,5 +207,6 @@ export function renderStats(root) {
 
   draw();
   const unsub = subscribe(draw);
-  return () => { unsub(); cleanups.forEach((fn) => fn()); };
+  const unsubLog = onLogTotals(draw);   // 別台裝置的學習紀錄同步進來也重畫
+  return () => { unsub(); unsubLog(); cleanups.forEach((fn) => fn()); };
 }

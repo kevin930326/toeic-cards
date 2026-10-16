@@ -1,5 +1,5 @@
 """兩台裝置同時開著「今日複習」：同步進來別台的複習結果後，佇列要跟著更新（真實 Firebase 模擬器）。"""
-import json, os, time, urllib.request
+import json, os, re, time, urllib.request
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
 from sync_helpers import sync_state
@@ -97,6 +97,52 @@ with sync_playwright() as p:
     queue = a.evaluate("import('/js/views/review.js?v=exam-1').then(m=>m.reviewBadgeCount())")
     assert queue == 2, queue
     print(f'PASS 自己按「不熟」的 {mine} 留在這一輪（仍 2 張）')
+
+    # 5. 兩台在同步前都複習了同一張卡 → 以最後一次複習為準，不跳「同步衝突」
+    # （A 的時間在上一段被調快 11 分鐘，這裡先還原）
+    a.evaluate("()=>{delete Date.now;}")
+    a.reload(); a.locator('.page-review, .done-state').first.wait_for()
+    sync(a); sync(b)
+    a.evaluate("""async()=>{const s=await import('/js/store.js');const w=s.getWords().find(x=>x.word==='budget');
+      s.updateWord(w.id,{srs:{reps:0,interval:0,ease:2.3,lapses:1,due:Date.now()+600000,last:Date.now()-60000},unfamiliar:true});}""")
+    b.evaluate("""async()=>{const s=await import('/js/store.js');const w=s.getWords().find(x=>x.word==='budget');
+      s.updateWord(w.id,{srs:{reps:3,interval:7,ease:2.5,lapses:0,due:Date.now()+7*86400000,last:Date.now()},unfamiliar:false});}""")
+    sync(a); sync(b); sync(a)
+    got = [pg.evaluate("import('/js/store.js').then(s=>s.getWords().find(x=>x.word==='budget'))") for pg in (a, b)]
+    assert all(not (w.get('_conflicts') or []) for w in got), [w.get('_conflicts') for w in got]
+    assert got[0]['srs'] == got[1]['srs'] and got[0]['srs']['interval'] == 7 and got[0]['unfamiliar'] is False
+    a.goto(URL + '#/settings')
+    assert '同欄位修改衝突' not in a.locator('#syncPanel').inner_text()
+    print('PASS 兩台都複習同一張卡：以較晚的那次為準、兩邊一致、沒有衝突提示')
+
+    # 6. B 做了測驗 → A 的今日目標不重新整理也更新
+    a.goto(URL + '#/review'); a.locator('.page-review, .done-state').first.wait_for()
+    # 有卡時看右上的目標徽章，複習完時看完成畫面的「今日目標 n / 20 題」
+    shown = lambda: int(re.search(r'今日目標 (\d+) / ', a.locator('.goal-pill').get_attribute('aria-label') if a.locator('.goal-pill').count() else a.locator('.goal-todo').inner_text()).group(1))
+    n0 = shown()
+    b.evaluate("import('/js/log.js').then(l=>{for(let i=0;i<5;i++) l.recordQuiz(true);})")
+    sync(b); sync(a)
+    end = time.time() + 10
+    while shown() != n0 + 5 and time.time() < end:
+        a.wait_for_timeout(100)
+    n1 = shown()
+    assert n1 == n0 + 5, (n0, n1)
+    a.goto(URL + '#/stats'); a.wait_for_timeout(500)
+    stats_before = a.locator('main').inner_text()
+    b.evaluate("import('/js/log.js').then(l=>l.recordQuiz(true))")
+    sync(b); sync(a)
+    expect(a.locator('main')).not_to_have_text(stats_before)
+    print(f'PASS 別台的測驗同步進來：今日目標 {n0} → {n1}、統計頁都自動更新')
+
+    # 7. 複習頁開著跨過一天 → 換成今天的清單，和導覽列數字一致
+    a.goto(URL + '#/review'); a.locator('.page-review, .done-state').first.wait_for()
+    a.evaluate("()=>{const real=Date.now;Date.now=()=>real()+86400000;document.dispatchEvent(new Event('visibilitychange'));}")
+    a.wait_for_timeout(300)
+    page_count = remain(a)
+    badge = a.evaluate("import('/js/views/review.js?v=exam-1').then(m=>m.reviewBadgeCount())")
+    expected = a.evaluate("""async()=>{const s=await import('/js/store.js');return s.scopedWords().filter(w=>w.srs&&w.srs.due<=Date.now()).length;}""")
+    assert page_count == badge == expected, (page_count, badge, expected)
+    print(f'PASS 跨日後複習頁自動換成今天的清單（{page_count} 張），和導覽列一致')
 
     browser.close()
 print('ALL PASSED')

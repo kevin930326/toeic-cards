@@ -16,6 +16,13 @@ export function stampWord(w,patch,n,actor) {
   for(const k of WORD_FIELDS) if(!equal(value(w,k),value(next,k)) || (patch._conflicts?.length===0 && w._conflicts?.some(c=>c.field===k))) rev.fields[k]=[n,actor,clockToken(fieldClock(w,k))];
   return {...next,_rev:rev,updatedAt:n};
 }
+// 複習紀錄（排程與「不熟」）不請使用者手動選：兩台在同步前都複習了同一張卡時，以最後一次複習（srs.last）為準。
+// 只有同時、各自改過（互不知道對方）才這樣處理；一般的先後修改（例如復原）仍照版本先後。
+const REVIEW_FIELDS=['srs','unfamiliar'];
+function concurrentChange(a,b,k) {
+  const ca=fieldClock(a,k),cb=fieldClock(b,k);
+  return compareClock(ca,cb)!==0 && !equal(value(a,k),value(b,k)) && ca[1]!=='legacy' && cb[1]!=='legacy' && ca[2]!==clockToken(cb) && cb[2]!==clockToken(ca);
+}
 export function mergeVersionedWords(a,b) {
   if(!a?._rev && !b?._rev) return (b.updatedAt||0)>(a.updatedAt||0) ? {...b,id:a.id} : a;
   // 刪後重新建立是另一代卡片，不能把舊進度重新拼回。
@@ -26,14 +33,22 @@ export function mergeVersionedWords(a,b) {
   for(const k of WORD_FIELDS) {
     const ca=fieldClock(a,k),cb=fieldClock(b,k),cmp=compareClock(ca,cb);
     if(cmp<0) {put(out,k,value(b,k));out._rev.fields[k]=cb;}
-    if(!['lookup','llm','part5','formQs'].includes(k) && !k.startsWith('src.') && cmp && !equal(value(a,k),value(b,k)) && ca[1]!=='legacy' && cb[1]!=='legacy' && ca[2]!==clockToken(cb) && cb[2]!==clockToken(ca)) {
+    if(!['lookup','llm','part5','formQs',...REVIEW_FIELDS].includes(k) && !k.startsWith('src.') && cmp && !equal(value(a,k),value(b,k)) && ca[1]!=='legacy' && cb[1]!=='legacy' && ca[2]!==clockToken(cb) && cb[2]!==clockToken(ca)) {
       const pair=[{clock:ca,value:value(a,k)},{clock:cb,value:value(b,k)}].sort((x,y)=>compareClock(x.clock,y.clock));
       const key=k+'|'+pair.map(x=>clockToken(x.clock)).join('|');
       conflicts.set(key,{key,field:k,alternatives:pair});
     }
   }
-  out._conflicts=[...conflicts.values()].filter(c=>!resolved.includes(c.key)).sort((x,y)=>x.key<y.key?-1:x.key>y.key?1:0).slice(-30);
-  out.updatedAt=Math.max(versionCeiling(a),versionCeiling(b));
+  if(concurrentChange(a,b,'srs')) {
+    const ca=fieldClock(a,'srs'),cb=fieldClock(b,'srs'),la=a.srs?.last||0,lb=b.srs?.last||0;
+    const winner=la!==lb ? (lb>la?b:a) : (compareClock(cb,ca)>0?b:a);
+    const top=compareClock(ca,cb)>0?ca:cb;
+    // 新版本號比兩邊都大，兩台各自合併也會得到一樣的結果，下次同步不會再分歧
+    const clock=[top[0]+1,fieldClock(winner,'srs')[1],clockToken(top)];
+    for(const k of REVIEW_FIELDS) {put(out,k,value(winner,k));out._rev.fields[k]=clock;}
+  }
+  out._conflicts=[...conflicts.values()].filter(c=>!resolved.includes(c.key) && !REVIEW_FIELDS.includes(c.field)).sort((x,y)=>x.key<y.key?-1:x.key>y.key?1:0).slice(-30);
+  out.updatedAt=Math.max(versionCeiling(a),versionCeiling(b),versionCeiling(out));
   return out;
 }
 export function sanitizeVersions(raw) {

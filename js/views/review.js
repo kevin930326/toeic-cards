@@ -10,7 +10,7 @@ import { attachSwipe, flyOut } from '../swipe.js?v=swipe-isolation-1';
 import {
   grade, buildQueue, reconcileQueue, previewIntervals, formatInterval, isNew, dayKey, dayStart, DAY, MASTERED_DAYS,
 } from '../srs.js';
-import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal } from '../log.js';
+import { recordReview, learnedToday, getDay, todayProgress, getLog, currentGoal, onLogTotals } from '../log.js';
 import { streak } from '../stats.js?v=stats-progress-1';
 import { onLookupStatus } from '../dictionary.js?v=dictionary-scale-1';
 import { onGenerateStatus } from '../generate.js?v=dictionary-scale-1';
@@ -82,6 +82,8 @@ export function renderReview(root) {
 
   function draw() {
     detachSwipe?.();
+    // 頁面開著跨過一天（例如主畫面 App 停在背景到隔天）：換成今天的清單
+    if (session.day !== dayKey(Date.now())) startSession();
     const nextScope = scopeKey();
     if (session.scope !== nextScope) {
       const [oldSet, oldIds] = JSON.parse(session.scope);
@@ -267,7 +269,10 @@ export function renderReview(root) {
     session.queue = h.queue;
     session.known.set(h.id, h.srs?.last || 0);
     session.flipped = false;
+    // 扣回紀錄會觸發重畫；字卡還沒還原前先不要畫（否則佇列會以為這張在別處複習過而拿掉）
+    busy = true;
     recordReview(h.rating, h.wasNew, h.at, -1);
+    busy = false;
     updateWord(h.id, { srs: h.srs, unfamiliar: h.unfamiliar });
   }
 
@@ -290,8 +295,13 @@ export function renderReview(root) {
 
   draw();
   const unsub = subscribe(() => { if (!busy) draw(); });
+  // 今日目標、完成畫面的次數：別台裝置的紀錄同步進來也要更新
+  const unsubLog = onLogTotals(() => { if (!busy) draw(); });
   // 沒有資料變動時，也要讓時間到了的字（例如 10 分鐘前在別台按「不熟」）出現
-  const recheck = () => { if (!busy && document.visibilityState !== 'hidden' && syncSession()) draw(); };
+  const recheck = () => {
+    if (busy || document.visibilityState === 'hidden') return;
+    if (session.day !== dayKey(Date.now()) || syncSession()) draw();
+  };
   const timer = setInterval(recheck, 30000);
   document.addEventListener('visibilitychange', recheck);
   const unsubLookup = onLookupStatus(() => { if (!busy) draw(); });
@@ -302,7 +312,7 @@ export function renderReview(root) {
   });
   document.addEventListener('keydown', onKey);
   return () => {
-    detachSwipe?.(); unsub(); unsubLookup(); unsubGen(); clearInterval(timer);
+    detachSwipe?.(); unsub(); unsubLog(); unsubLookup(); unsubGen(); clearInterval(timer);
     document.removeEventListener('keydown', onKey); document.removeEventListener('visibilitychange', recheck);
   };
 }
@@ -310,6 +320,7 @@ export function renderReview(root) {
 // 導覽列上的待複習數字
 export function reviewBadgeCount() {
   syncSession();
+  // 跨日後 session 是昨天的；導覽列和頁面都用今天重算的清單（頁面下次畫面更新時會重建）
   if (session && session.day === dayKey(Date.now()) && session.scope === scopeKey()) return session.queue.filter((id) => getWord(id)).length;
   return buildQueue(scopedWords(), Date.now(), newLimitLeft()).length;
 }

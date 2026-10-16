@@ -11,7 +11,8 @@ import { getSettings } from './store.js';
 
 const LOG_KEY = 'toeic-cards:log';
 const REMOTE_KEY = 'toeic-cards:remoteLogs';
-const listeners = new Set();
+const listeners = new Set();       // 這台裝置記錄了學習（同步用來排程上傳）
+const totalListeners = new Set();  // 畫面上的總數可能變了：本機記錄，或同步／還原寫入整本帳本
 
 const LEDGER_KEY = 'toeic-cards:logLedger';
 const ORIGIN_KEY = 'toeic-cards:logOrigin';
@@ -42,6 +43,7 @@ export function setLogLedger(raw) {
   const ledger = cleanLedger(raw);
   // ledger 為唯一真實來源，舊欄位僅相容既有測試與舊版匯出工具。
   try {profileStorage.setItem(LEDGER_KEY, JSON.stringify(ledger));}catch {return false;}
+  for (const fn of totalListeners) fn();
   const me = logOrigin();
   try {
     profileStorage.setItem(LOG_KEY, JSON.stringify(ledger.sources[me]?.log || {}));
@@ -58,6 +60,8 @@ function write(log) {
   for (const fn of listeners) fn();
 }
 export function onLogChange(fn) { listeners.add(fn); return () => listeners.delete(fn); }
+// 給畫面用：其他裝置的紀錄同步進來時也會通知（onLogChange 不會，否則同步會一直觸發上傳）
+export function onLogTotals(fn) { totalListeners.add(fn); return () => totalListeners.delete(fn); }
 export function getLog() { return ledgerTotal(getLogLedger()); }
 export function getOwnLog() { return read(); }
 export function setRemoteLogs(map) {

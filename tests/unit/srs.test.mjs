@@ -93,3 +93,20 @@ test('按鈕上的間隔預覽與格式', () => {
   assert.equal(formatInterval(45 * DAY), '2 個月');
   assert.equal(formatInterval(400 * DAY), '1.1 年');
 });
+
+test('佇列和同步資料對齊：別處複習過的拿掉、新到期的補上、自己重排的保留', async () => {
+  const { reconcileQueue } = await import('../../js/srs.js');
+  const due = (id, last, dueAt = NOW - 1000) => ({ id, srs: { due: dueAt, last } });
+  const words = [due('a', 1), due('b', 2, NOW + 10 * MINUTE), due('c', 3), due('d', 4), due('e', 50, NOW + 5 * MINUTE)];
+  // 佇列 a、b、c、e；b 在別處被複習（last 2→… 這裡已是 2，但 known 記得 1），還沒到期 → 拿掉
+  // e 是這台自己按「不熟」重排（known 已更新成 50）→ 保留；d 不在佇列但已到期 → 補上
+  const known = new Map([['a', 1], ['b', 1], ['c', 3], ['e', 50]]);
+  const r = reconcileQueue(['a', 'b', 'c', 'e'], known, words, NOW);
+  assert.deepEqual(r.queue, ['a', 'c', 'e', 'd']);
+  assert.equal(r.removed, 1);
+  assert.equal(r.added, 1);
+  assert.equal(r.known.get('b'), 2);
+  // 再對一次沒有變化
+  const again = reconcileQueue(r.queue, r.known, words, NOW);
+  assert.equal(again.removed + again.added, 0);
+});
