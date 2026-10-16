@@ -19,6 +19,7 @@ with sync_playwright() as p:
     page.on('pageerror', lambda error:errors.append(str(error)))
     page.goto(URL + '#/stats'); page.wait_for_load_state('networkidle')
     await_ready = '''async()=>{await navigator.serviceWorker.ready;return !!navigator.serviceWorker.controller;}'''
+    page.evaluate('navigator.serviceWorker.ready');page.reload(wait_until='networkidle')
     assert page.evaluate(await_ready)
     requests=[]
     page.on('request', lambda req: requests.append(req.url) if '/data/dict/extended-v1/' in req.url else None)

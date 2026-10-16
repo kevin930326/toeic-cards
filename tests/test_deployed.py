@@ -87,10 +87,10 @@ with sync_playwright() as p:
     check(page.evaluate('!!navigator.serviceWorker.controller'), 'Service Worker 接手網頁')
     for _ in range(100):
         if page.evaluate("""async () => {
-          const c = await caches.open('toeic-shell-v1');
+          const c = await caches.open((await caches.keys()).find(n=>n.startsWith('toeic-shell-')));
           const url = performance.getEntriesByType('resource').map((r) => r.name)
             .find((name) => new URL(name).pathname.endsWith('/js/views/quiz.js'));
-          return !!url && !!(await c.match(url));
+          return !!url && !!(await c.match(url,{ignoreSearch:true}));
         }"""): break
         page.wait_for_timeout(200)
     else: raise AssertionError('測驗模組未完成離線快取')

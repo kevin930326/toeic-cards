@@ -1421,3 +1421,5 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
 .sync-conflicts label { display:block; margin-top:12px; }
 .sync-conflicts select { display:block; width:100%; max-width:100%; font:inherit; color:var(--ink); padding:10px; border:1px solid var(--line); border-radius:10px; background:var(--surface); }
 .meta-conflict { scroll-margin-top:140px; }
+
+.update-notice{position:sticky;bottom:0;z-index:1100;background:var(--surface);color:var(--ink);padding:1rem;border-top:2px solid var(--accent);font-size:.9rem;}

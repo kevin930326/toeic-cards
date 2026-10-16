@@ -140,3 +140,13 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 ```bash
 python tests/test_deployed.py
 ```
+
+## 資料可靠性與持續整合
+
+`python tools/run_checks.py` 執行全部 JS 語法、151 項單元及完整發布清單檢查。修改網站資源後先執行 `python tools/release_manifest.py`；純靜態網站無執行時建置。
+
+官方模擬器已啟動且 8123 未被占用時，`python tools/run_browser_checks.py` 自行管理 HTTP 伺服器並依序執行回歸；可加測試短名稱選跑，例如 `python tools/run_browser_checks.py account_isolation backup_sync`。GitHub Actions 用固定工具版本與 demo-toeic emulators:exec，禁止正式資料。
+
+新增涵蓋帳號／訪客／晚回應與跨分頁、v3 備份＋同步去重及取代、欄位與快照衝突、配額恢復、題目審核與封存、設定與焦點、完整發布更新及產品說明。逐項結果及限制見 [改善報告](../docs/improvement-review.md)。
+
+`python tests/capture_readme.py --reliability-only` 拍攝設定與題庫狀態新展示圖，再執行合成腳本；其餘展示圖保留。

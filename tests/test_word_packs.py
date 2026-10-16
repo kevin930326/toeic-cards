@@ -43,13 +43,14 @@ def setup(browser, key=False, worker=True):
     pg.wait_for_load_state('networkidle')
     if worker:
         pg.evaluate('navigator.serviceWorker.ready')
+        pg.reload(wait_until='networkidle')
         pg.wait_for_function('() => !!navigator.serviceWorker.controller')
         # SW 接手不代表初次載入的 ES modules 已快取完；離線前等待全部依賴。
         for _ in range(60):
             shell_ready = pg.evaluate("""async () => {
-              const cache=await caches.open('toeic-shell-v1');
+              const cache=await caches.open((await caches.keys()).find(n=>n.startsWith('toeic-shell-')));
               const required=performance.getEntriesByType('resource').map(e=>e.name).filter(u=>u.startsWith(location.origin)&&new URL(u).pathname.endsWith('.js'));
-              return (await Promise.all(required.map(u=>cache.match(u)))).every(Boolean);
+              return (await Promise.all(required.map(u=>cache.match(u,{ignoreSearch:true})))).every(Boolean);
             }""")
             if shell_ready: break
             pg.wait_for_timeout(100)
@@ -159,7 +160,7 @@ with sync_playwright() as p:
     check(backup_ok, '備份還原保留整包分類與不自動生成的選擇')
     cached = False
     for _ in range(30):
-        cached = pg.evaluate("async () => !!(await (await caches.open('toeic-shell-v1')).match(new URL('data/packs/toeic-1000.json',location.href)))")
+        cached = pg.evaluate("async () => !!(await (await caches.open((await caches.keys()).find(n=>n.startsWith('toeic-shell-')))).match(new URL('data/packs/toeic-1000.json',location.href)))")
         if cached: break
         pg.wait_for_timeout(100)
     check(cached, '單字包資料已存入 Service Worker 快取')
@@ -193,7 +194,7 @@ with sync_playwright() as p:
     open_pack(ai)
     # 先等十份內容確實寫入快取，再從全新的離線頁面加入。
     for _ in range(40):
-        ready = ai.evaluate(r"async () => { const c=await caches.open('toeic-shell-v1'); return (await c.keys()).filter(r=>/data\/packs\/toeic-1000\/\d+\.json/.test(r.url)).length===10; }")
+        ready = ai.evaluate(r"async () => { const c=await caches.open((await caches.keys()).find(n=>n.startsWith('toeic-shell-'))); return (await c.keys()).filter(r=>/data\/packs\/toeic-1000\/\d+\.json/.test(r.url)).length===10; }")
         if ready: break
         ai.wait_for_timeout(100)
     check(ready, '十份完整內容均已快取')

@@ -118,9 +118,9 @@ with sync_playwright() as p:
     page.locator('#lookupDialog [data-close]').tap()
     ready=False
     for _ in range(60):
-        ready=page.evaluate('''async()=>{const c=await caches.open('toeic-shell-v1');
+        ready=page.evaluate('''async()=>{const c=await caches.open((await caches.keys()).find(n=>n.startsWith('toeic-shell-')));
           const urls=performance.getEntriesByType('resource').map(e=>e.name).filter(u=>u.startsWith(location.origin)&&new URL(u).pathname.endsWith('.js'));
-          return urls.some(u=>u.includes('card-lookup-mode.js')) && (await Promise.all(urls.map(u=>c.match(u)))).every(Boolean);}''')
+          return urls.some(u=>u.includes('card-lookup-mode.js')) && (await Promise.all(urls.map(u=>c.match(u,{ignoreSearch:true})))).every(Boolean);}''')
         if ready: break
         page.wait_for_timeout(100)
     assert ready, '新版查字模式依賴需完成快取'

@@ -69,7 +69,9 @@ with sync_playwright() as p:
 
     # 沒載入題庫但已有快取題的字卡，在真正離線重整後也可作答。
     flush(page)
-    assert page.evaluate('async()=>{await navigator.serviceWorker.ready;return !!navigator.serviceWorker.controller}')
+    page.evaluate('navigator.serviceWorker.ready')
+    # 新版不 claim 已開啟頁面；下一次導覽才接手。模擬題庫快取被清除。
+    page.evaluate("async()=>{const n=(await caches.keys()).find(n=>n.startsWith('toeic-shell-'));const c=await caches.open(n);await c.delete(new URL('data/packs/toeic-1000-forms.json',location.href));}")
     context.set_offline(True);page.reload();page.wait_for_load_state('networkidle')
     expect(page.locator('.mode-btn[data-mode=forms]')).to_be_enabled()
     page.click('.mode-btn[data-mode=forms]');expect(page.locator('.q-sentence')).to_be_visible()
