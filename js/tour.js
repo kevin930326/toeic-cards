@@ -105,6 +105,10 @@ export function startTour(topic = 'start') {
     showStep();
   }
   function visible(selector) {
+    // 設定分組收合時，先展開教學目標所在區塊，不聚焦輸入欄位。
+    if(entering)for(const el of document.querySelectorAll(selector)) {
+      const group=el.closest('details.settings-section');if(group)group.open=true;
+    }
     // 依列出的優先順序找，不能讓 DOM 中較前面的備援父容器搶過實際按鈕。
     return selector.split(',').flatMap(part => [...document.querySelectorAll(part.trim())])
       .find(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');

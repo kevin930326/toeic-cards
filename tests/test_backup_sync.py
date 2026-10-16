@@ -32,7 +32,7 @@ with sync_playwright() as p:
         ctx.route('https://api.dictionaryapi.dev/**',lambda r:r.fulfill(status=404,body='{}'))
         pg=ctx.new_page();pg.on('dialog',lambda d:d.accept());pg.goto(URL+'#/settings',wait_until='networkidle')
         pg.fill('#pwEmail',email);pg.fill('#pwPassword','test-password');pg.click('#pwForm button[type=submit]')
-        pg.locator('#signOut').wait_for();sync(pg)
+        pg.locator('#signOut').wait_for();sync(pg);pg.locator('.settings-nav').get_by_role('button',name='備份',exact=True).click()
         return pg
     a=device();b=device()
     for pg,n in [(a,10),(b,20)]:

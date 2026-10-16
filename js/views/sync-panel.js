@@ -92,7 +92,7 @@ export function renderSyncPanel(container) {
           <p class="hint-text">iPhone 主畫面 App 不能用 Google 登入。替這個帳號設定密碼後，在 App 裡用
             <strong>${esc(st.user.email)}</strong>＋密碼登入，就是同一個帳號。已經設定過的話，這裡可以改成新密碼。</p>
           <form id="setPwForm" class="email-form">
-            <input type="password" id="newPassword" placeholder="至少 6 個字元" minlength="6" required autocomplete="new-password">
+            <label class="login-field" for="newPassword">新密碼<input type="password" id="newPassword" placeholder="至少 6 個字元" minlength="6" required autocomplete="new-password"></label>
             <button class="btn btn-outline" type="submit">設定密碼</button>
           </form>
           ${panelError ? `<p class="ai-error" role="alert">⚠ ${esc(panelError)}</p>` : ''}
@@ -110,7 +110,7 @@ export function renderSyncPanel(container) {
       const confirmBlock = `
         <p class="panel-desc">${iosSafari ? '或者直接在 Safari 登入：' : ''}輸入<strong>收到這封信的 Email</strong> 完成登入：</p>
         <form id="confirmForm" class="email-form">
-          <input type="email" id="confirmEmail" placeholder="you@example.com" required autocomplete="email">
+          <label class="login-field" for="confirmEmail">收到登入信的 Email<input type="email" id="confirmEmail" placeholder="you@example.com" required autocomplete="email"></label>
           <button class="btn ${iosSafari ? 'btn-outline' : 'btn-primary'}" type="submit">在這裡登入</button>
         </form>`;
       body = `
@@ -130,8 +130,8 @@ export function renderSyncPanel(container) {
           : `<button class="btn btn-outline google-btn" type="button" id="googleBtn">${googleIcon} 用 Google 帳號登入</button>
              <p class="or-line"><span>或用 Email＋密碼</span></p>`}
         <form id="pwForm" class="email-form stacked">
-          <input type="email" id="pwEmail" placeholder="Email" required autocomplete="email">
-          <input type="password" id="pwPassword" placeholder="密碼（至少 6 個字元）" required minlength="6" autocomplete="current-password">
+          <label class="login-field" for="pwEmail">Email<input type="email" id="pwEmail" placeholder="Email" required autocomplete="email"></label>
+          <label class="login-field" for="pwPassword">密碼<input type="password" id="pwPassword" placeholder="密碼（至少 6 個字元）" required minlength="6" autocomplete="current-password"></label>
           <div class="backup-actions">
             <button class="btn ${iosApp ? 'btn-primary' : 'btn-outline'}" type="submit">登入</button>
             <button class="btn btn-ghost" type="button" id="registerBtn">建立新帳號</button>
@@ -142,7 +142,7 @@ export function renderSyncPanel(container) {
         <details class="link-login" ${st.linkSentTo ? 'open' : ''}>
           <summary>用 Email 登入連結（不用密碼；整個網站每天最多寄 5 封）</summary>
           <form id="emailForm" class="email-form">
-            <input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email" value="${esc(st.linkSentTo)}">
+            <label class="login-field" for="emailInput">接收登入連結的 Email<input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email" value="${esc(st.linkSentTo)}"></label>
             <button class="btn btn-outline" type="submit">寄登入連結</button>
           </form>
           ${st.linkSentTo ? `<p class="sync-line ok">✓ 已寄出登入連結到 ${esc(st.linkSentTo)}（也請看一下垃圾郵件）。</p>` : ''}
@@ -157,8 +157,8 @@ export function renderSyncPanel(container) {
               ? '在「郵件」App 裡<strong>長按連結 › 拷貝</strong>，或在 Safari 打開的頁面按「複製登入連結」，貼在這裡。'
               : '在信裡的連結上按右鍵（手機長按）› 複製連結網址，貼在下面。'}</p>
             <form id="pasteForm" class="email-form stacked">
-              <input type="email" id="pasteEmail" placeholder="收到信的 Email" required autocomplete="email" value="${esc(st.linkSentTo)}">
-              <input type="url" id="pasteLink" placeholder="貼上登入連結（https://…）" required>
+              <label class="login-field" for="pasteEmail">收到登入信的 Email<input type="email" id="pasteEmail" placeholder="收到信的 Email" required autocomplete="email" value="${esc(st.linkSentTo)}"></label>
+              <label class="login-field" for="pasteLink">登入連結<input type="url" id="pasteLink" placeholder="貼上登入連結（https://…）" required></label>
               <button class="btn btn-primary" type="submit">完成登入</button>
             </form>
           </details>

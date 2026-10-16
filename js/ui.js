@@ -45,6 +45,11 @@ const splitList = (s) => String(s || '').split(/[,，、]/).map((x) => x.trim())
 export function openEditor(id) {
   const w = getWord(id);
   if (!w) return Promise.resolve(false);
+  const priorFocus=document.activeElement;
+  const restoreFocus=()=>queueMicrotask(()=>{
+    const fallback=document.querySelector(`[data-id="${CSS.escape(id)}"] [data-act="edit"]`)||document.querySelector('#card')||document.querySelector('#view button');
+    (priorFocus?.isConnected?priorFocus:fallback)?.focus({preventScroll:true});
+  });
   const dialog = document.getElementById('editDialog');
   const form = document.getElementById('editForm');
   dialog.querySelector('.sync-conflicts')?.remove();
@@ -106,14 +111,15 @@ export function openEditor(id) {
         updateWord(id, { word: form.word.value, pos, zh, en, src, ...lists, ...resolved, ...(w._conflicts?.length?{_conflicts:[]}: {}) });
         cleanup();
         dialog.close();
+        restoreFocus();
         toast('已儲存');
         resolve(true);
       } catch (err) {
         toast(err.message, 'error');
       }
     };
-    const onCancel = () => { cleanup(); dialog.close(); resolve(false); };
-    const onClose = () => { cleanup(); resolve(false); };
+    const onCancel = () => { cleanup(); dialog.close(); restoreFocus();resolve(false); };
+    const onClose = () => { cleanup(); restoreFocus();resolve(false); };
     form.addEventListener('submit', onSubmit);
     cancel.addEventListener('click', onCancel);
     dialog.addEventListener('close', onClose);

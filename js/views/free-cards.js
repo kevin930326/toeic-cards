@@ -1,6 +1,6 @@
 // 自由翻卡只讀目前範圍；不呼叫 SRS 評分或每日紀錄。
 import { scopedWords, activeSetId, getSettings, updateSettings, toggleUnfamiliar, subscribe } from '../store.js';
-import { flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=dictionary-scale-1';
+import { setCardFlipped, flashcardHTML, handleCardTap, modeToggleHTML } from '../cardview.js?v=dictionary-scale-1';
 import { createCardLookupMode } from '../card-lookup-mode.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
 import { speak } from '../speech.js';
@@ -21,7 +21,7 @@ export function renderFreeCards(root) {
     const byId = new Map(words.map(w => [w.id, w]));
     return order.map(id => byId.get(id));
   }
-  function flip() { flipped = !flipped; root.querySelector('#card')?.classList.toggle('is-flipped', flipped); }
+  function flip() { flipped = !flipped; setCardFlipped(root.querySelector('#card'),flipped); }
   function go(step) {
     if (disposed) return;
     const words = deck();

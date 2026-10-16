@@ -8,6 +8,7 @@ import { renderBackupPanel } from './backup-panel.js';
 import { renderPwaPanel } from './pwa-panel.js?v=dictionary-scale-1';
 import { renderSyncPanel } from './sync-panel.js';
 import { isValidExamDate } from '../exam-plan.js';
+import {bindSettingsSections} from './settings-sections.js';
 
 // 模型清單只在這次開啟網站時記住（不需要存）
 let modelCache = null;
@@ -107,7 +108,7 @@ export function renderSettings(root) {
 
       <div class="panel" id="pwaPanel"></div>
 
-      <div class="panel">
+      <div class="panel" id="learningPanel">
         <h2 class="panel-title">複習</h2>
         <div class="setting-row wrap">
           <span class="setting-label">目標</span>
@@ -127,12 +128,12 @@ export function renderSettings(root) {
         <p class="hint-text">設定多益考試日期後，統計頁會顯示倒數天數，並依還沒學的字數建議每天學幾個新字。</p>
       </div>
 
-      <div class="panel">
+      <div class="panel" id="appearancePanel">
         <h2 class="panel-title">外觀</h2>
         ${segmented('theme', s.theme, [['system', '跟隨系統'], ['light', '淺色'], ['dark', '深色']], '主題')}
       </div>
 
-      <div class="panel">
+      <div class="panel" id="speechPanel">
         <h2 class="panel-title">發音</h2>
         ${canSpeak() ? `
           <div class="setting-row wrap">
@@ -155,6 +156,7 @@ export function renderSettings(root) {
   renderBackupPanel(root.querySelector('#backupPanel'));
   const unsubPwa = renderPwaPanel(root.querySelector('#pwaPanel'));
   const unsubSync = renderSyncPanel(root.querySelector('#syncPanel'));
+  bindSettingsSections(root);
 
   const statusEl = root.querySelector('#keyStatus');
   const setStatus = (msg, kind = '') => {

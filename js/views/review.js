@@ -4,7 +4,7 @@
 import { getWord, getSettings, updateSettings, updateWord, subscribe } from '../store.js';
 import { openEditor, goalRingHTML } from '../ui.js';
 import { speak } from '../speech.js';
-import { handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=dictionary-scale-1';
+import { setCardFlipped, handleCardTap, flashcardHTML, modeToggleHTML, swipeLabelsHTML } from '../cardview.js?v=dictionary-scale-1';
 import { createCardLookupMode } from '../card-lookup-mode.js';
 import { attachSwipe, flyOut } from '../swipe.js?v=swipe-isolation-1';
 import {
@@ -210,7 +210,7 @@ export function renderReview(root) {
 
   function flip() {
     session.flipped = !session.flipped;
-    root.querySelector('#card')?.classList.toggle('is-flipped', session.flipped);
+    setCardFlipped(root.querySelector('#card'),session.flipped);
   }
 
   // 評分：更新複習排程、記錄、換下一張
