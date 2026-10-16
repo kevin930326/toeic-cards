@@ -10,7 +10,9 @@ import { prepareForms, loadFormsBank, loadedFormsBank } from '../forms-quiz.js?v
 import { normalizeWord } from '../parse.js';
 import { loadReadings } from './reading.js?v=badge-1';
 import { aiBadge, AI_BADGE_LEGEND } from '../ai-badge.js';
-import { getMistakes, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
+import { getMistakes, archivedMistakeCount, addMistake, removeMistake, mistakeKey } from '../mistakes.js';
+import {currentSavedQuestion} from '../question-policy.js';
+import {questionEnabled, reportQuestion, questionReports} from '../question-reports.js';
 import { recordQuiz } from '../log.js';
 import { scopedWords } from '../store.js';
 import { setScopeHTML, bindSetScope } from '../set-ui.js?v=dictionary-scale-1';
@@ -27,7 +29,7 @@ const isSentence = (mode) => SENTENCE_MODES.includes(mode);
 function hasFormSource(w) {
   const bank = loadedFormsBank();
   const builtin = bank ? bank.has(normalizeWord(w.word)) : w.pack?.id === 'toeic-1000';
-  return builtin || !!(w.formQs && w.formQs.length);
+  return builtin || (w.formQs||[]).some(currentSavedQuestion);
 }
 const modeTitle = (mode) => (MODE_INFO[mode] ? MODE_INFO[mode].title : '錯題重做');
 const LETTERS = ['A', 'B', 'C', 'D'];
@@ -45,7 +47,7 @@ function targetsForScope() {
 function reshuffle(q) {
   const answer = q.options[q.answerIndex];
   const options = shuffle(q.options);
-  return { ...q, options, answerIndex: options.indexOf(answer) };
+  return { ...q, options, answerIndex: options.indexOf(answer),extra:q.extra ? {...q.extra,optionReasons:options.map(o=>q.extra.optionReasons?.[q.options.indexOf(o)]||'')} : undefined };
 }
 
 function newSession(mode, questions, { fromMistakes = false } = {}) {
@@ -127,6 +129,9 @@ export function renderQuiz(root) {
           </label>
         </div>
         <p class="hint-text ai-legend">${AI_BADGE_LEGEND}</p>
+        <p class="question-quality">內建詞性題：${loadedFormsBank()?.audit?.active ?? '載入中'} 題啟用、${loadedFormsBank()?.audit?.pending ?? '…'} 題待覆核並停用；啟用題為 AI 初審，尚未經英文教師覆核。<a href="https://github.com/kevin930326/toeic-cards/blob/main/docs/question-quality.md" target="_blank" rel="noopener">來源與審核限制</a></p>
+        ${archivedMistakeCount() ? `<p class="question-quality">${archivedMistakeCount()} 題舊版／已修訂錯題已封存，不再重做或計分；原內容仍保留在備份。</p>` : ''}
+        ${questionReports().length ? '<button class="btn btn-outline btn-sm" type="button" id="exportQuestionReports">匯出題目回報</button><a href="https://github.com/kevin930326/toeic-cards/issues/new" target="_blank" rel="noopener">手動提交回報</a>' : ''}
         <div class="mode-grid">${cards}</div>
         <a class="panel mistake-entry reading-entry" href="#/reading">
           <span class="mistake-title">短文閱讀（Part 6／7）${aiBadge('required')}</span>
@@ -141,6 +146,10 @@ export function renderQuiz(root) {
       </section>`;
 
     bindSetScope(root);
+    root.querySelector('#exportQuestionReports')?.addEventListener('click',()=>{
+      const url=URL.createObjectURL(new Blob([JSON.stringify(questionReports(),null,2)],{type:'application/json'}));
+      const a=document.createElement('a');a.href=url;a.download='toeic-question-reports.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    });
     root.querySelectorAll('input[name="scope"]').forEach((i) =>
       i.addEventListener('change', () => updateSettings({ quizScope: i.value })));
     root.querySelectorAll('input[name="count"]').forEach((i) =>
@@ -266,6 +275,7 @@ export function renderQuiz(root) {
       if (isSentence(q.mode)) {
         detail = `${q.extra?.translation ? `<p class="fb-trans">${esc(q.extra.translation)}</p>` : ''}
            ${q.extra?.explanation ? `<p class="fb-explain">💡 ${esc(q.extra.explanation)}</p>` : ''}
+           ${q.extra?.optionReasons?.length===4 ? `<ul class="option-explanations">${q.options.map((o,i)=>`<li><strong>${esc(o)}</strong>：${esc(q.extra.optionReasons[i])}</li>`).join('')}</ul>` : ''}
            ${canSpeak() ? `<button class="btn btn-ghost btn-sm fb-read" type="button" id="readSentence">${speakerIcon} 朗讀整句</button>` : ''}`;
       } else if (q.mode === 'listen' && q.accent) {
         detail = `<p class="fb-explain">這題是<strong>${esc(accentLabel(q.accent))}</strong>口音</p>`;
@@ -294,6 +304,7 @@ export function renderQuiz(root) {
         <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
         <div class="question q-${q.mode}">${prompt}</div>
         <div class="options ${isSentence(q.mode) ? 'options-part5' : ''}">${options}</div>
+        ${isSentence(q.mode) ? `<p class="question-quality">${q.extra?.source==='builtin' ? '內建題・AI 初審，尚未經英文教師覆核' : 'AI 生成＋第二輪逐選項檢查，仍可能有誤'}<button type="button" class="btn btn-ghost btn-sm" id="reportQuestion">題目有疑義？停用並回報</button></p>` : ''}
         ${feedback}
         <p class="kbd-hint">鍵盤：${isSentence(q.mode) ? 'A–D' : '1–4'} 作答　Enter 下一題${q.mode === 'listen' ? '　P 再聽一次' : ''}</p>
       </section>`;
@@ -308,6 +319,13 @@ export function renderQuiz(root) {
       if (s.results.length) { state.view = 'result'; } else { state.view = 'home'; state.session = null; }
       draw();
     });
+    root.querySelector('#reportQuestion')?.addEventListener('click',async()=>{
+      if(await reportQuestion(q)) {
+        s.questions.splice(s.index,1);s.answered=null;
+        if(s.index>=s.questions.length) {state.view='home';state.session=null;}
+        draw();toast('本題已停用，回報保存在這個瀏覽器。');
+      }
+    });
     if (answered) root.querySelector('#next')?.focus();
   }
 
@@ -315,6 +333,7 @@ export function renderQuiz(root) {
     const s = state.session;
     if (!s || s.answered !== null) return;
     const q = s.questions[s.index];
+    if(!questionEnabled(q)) {toast('此題已停用或版本過期，請重新開始測驗。','error');state.view='home';state.session=null;draw();return;}
     const correct = i === q.answerIndex;
     s.answered = i;
     s.results.push({ q, chosen: i, correct });

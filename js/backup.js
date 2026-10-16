@@ -75,7 +75,12 @@ function sanitizePart5(v) {
     explanation: str(q.explanation, 400),
     at: num(q.at),
     usedAt: num(q.usedAt),
+    ...sanitizeQuestionMeta(q),
   })).filter((q) => q.sentence.includes('_____') && q.answer && q.distractors.length === 3).slice(-3);
+}
+function sanitizeQuestionMeta(q) {
+  return {policy:num(q.policy),source:str(q.source,20),review:str(q.review,30),revision:num(q.revision),
+    signature:str(q.signature,30),optionReasons:strList(q.optionReasons,4,400)};
 }
 
 export function sanitizeWord(raw) {
@@ -143,7 +148,8 @@ export function sanitizeMistakes(raw) {
       prompt: str(q.prompt, 600),
       options,
       answerIndex,
-      ...(isObj(q.extra) ? { extra: { translation: str(q.extra.translation, 400), explanation: str(q.extra.explanation, 400) } } : {}),
+      ...(isObj(q.extra) ? { extra: { translation: str(q.extra.translation, 400), explanation: str(q.extra.explanation, 400),
+        qid:str(q.extra.qid,80),...sanitizeQuestionMeta(q.extra) } } : {}),
       ...(typeof q.accent === 'string' ? { accent: str(q.accent, 10) } : {}),
     };
     if (!question.wordId) continue;

@@ -14,7 +14,7 @@ import { mergeBackup, parseBackup, buildBackup } from './backup.js';
 import { mergeLedgers } from './log-ledger.js';
 import { getOwnLog, getLogLedger, setLogLedger, onLogChange } from './log.js';
 export { deviceId } from './device-id.js';
-import { getMistakes, mistakesUpdatedAt, setMistakesFromSync } from './mistakes.js';
+import { getAllMistakes as getMistakes, mistakesUpdatedAt, setMistakesFromSync } from './mistakes.js';
 import {
   applyRemoteWords, pendingChanges, pickSyncedSettings, remoteSettings, remoteLogs, remapMistakes, newerSide,
 } from './sync-core.js';

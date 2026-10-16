@@ -20,7 +20,7 @@ acquire | The ___ of the smaller firm was completed in May. | acquisition | acqu
 explore | We are always open to ___ new business opportunities. | exploring | explore / exploration / explored | 我們隨時願意探索新的商機。 | be open to 的 to 是介系詞，後面接動名詞，而且還有受詞 opportunities。
 qualify | Only ___ applicants will be contacted for an interview. | qualified | qualify / qualification / qualifies | 只有符合資格的應徵者會被通知面試。 | 空格修飾名詞 applicants，qualified 是「符合資格的」。
 emerge | The company is investing heavily in ___ markets. | emerging | emerge / emergence / emerges | 這家公司大舉投資新興市場。 | 空格修飾名詞 markets，emerging markets 是「新興市場」。
-specialize | Our law firm ___ in international tax law. | specializes | specialize / specialist / specialized | 我們律師事務所專精國際稅法。 | 主詞 Our law firm 是第三人稱單數，現在式動詞要加 s。
+specialize | Our law firm will ___ in international tax law after the merger. | specialize | specializes / specialist / specialized | 合併後，我們的律師事務所將專注於國際稅法。 | will 後面接原形動詞 specialize；specializes 是第三人稱單數，specialist 是名詞，specialized 是過去式／過去分詞。
 establish | The family business was ___ more than a century ago. | established | establish / establishment / establishing | 這家家族企業是一百多年前創立的。 | was＋過去分詞，是被動語態。
 recruit | We need to ___ more part-time staff for the holiday season. | recruit | recruitment / recruiter / recruited | 我們需要為假期招募更多兼職人員。 | need to 後面接原形動詞。
 retain | Employee ___ has improved since we raised salaries. | retention | retain / retained / retaining | 調薪之後，員工留任率提高了。 | Employee 後面接名詞當主詞，動詞是單數 has。
@@ -47,4 +47,4 @@ deduct | Income taxes are ___ from your salary every month. | deducted | deduct 
 redeem | Gift vouchers can be ___ at any of our stores. | redeemed | redeem / redemption / redeeming | 禮券可以在我們任何一家門市兌換。 | can be＋過去分詞，是被動語態。
 expose | Workers who are ___ to loud noise must wear ear protection. | exposed | expose / exposure / exposing | 暴露在噪音環境的工人必須戴耳罩。 | are＋過去分詞是被動語態，be exposed to 是「暴露於」。
 determine | Mr. Diaz is ___ to finish the project before the deadline. | determined | determine / determination / determining | 迪亞茲先生決心在截止日前完成專案。 | be determined to 是「下定決心」，用過去分詞。
-enforce | The new parking rules will be strictly ___. | enforced | enforce / enforcement / enforceable | 新的停車規定將會嚴格執行。 | will be＋副詞 strictly 後面接過去分詞，表示被動。
+enforce | Security guards will strictly ___ the new parking rules. | enforce | enforced / enforcement / enforceable | 警衛將嚴格執行新的停車規定。 | will 加上副詞 strictly 後面仍要接原形動詞 enforce；enforced 是過去式／過去分詞，enforcement 是名詞，enforceable 是形容詞。

@@ -4,7 +4,7 @@ adopt | The ___ of the new accounting software took several months. | adoption |
 consult | We hired a marketing ___ to help with the product launch. | consultant | consult / consulted / consulting | 我們請了一位行銷顧問協助產品上市。 | 冠詞 a＋marketing 後面要接名詞（指人），當 hired 的受詞。
 emphasize | The safety guide places strong ___ on wearing protective gear. | emphasis | emphasize / emphatic / emphasized | 安全手冊特別強調要穿戴防護裝備。 | 形容詞 strong 後面接名詞，place emphasis on 是「強調」。
 enhance | The new features will greatly ___ the user experience. | enhance | enhancement / enhanced / enhancing | 新功能將大幅提升使用者體驗。 | 助動詞 will＋副詞 greatly 後面接原形動詞。
-obtain | A visitor pass can be ___ at the security desk. | obtained | obtain / obtainable / obtaining | 訪客證可以在警衛室領取。 | can be＋過去分詞，是被動語態。
+obtain | Visitors can ___ a temporary pass at the security desk. | obtain | obtained / obtainable / obtaining | 訪客可以在警衛室取得臨時通行證。 | can 後面接原形動詞 obtain；obtained 是過去式／過去分詞，obtainable 是形容詞，obtaining 是現在分詞。
 accommodate | The hotel offers comfortable ___ for business travelers. | accommodations | accommodate / accommodated / accommodating | 這家飯店為商務旅客提供舒適的住宿。 | 形容詞 comfortable 後面接名詞，當 offers 的受詞。
 dedicate | This year's award is ___ to all of our volunteers. | dedicated | dedicate / dedication / dedicating | 今年的獎項獻給我們所有的志工。 | is＋過去分詞是被動語態，be dedicated to 是「獻給」。
 accompany | Children under twelve must be ___ by an adult. | accompanied | accompany / accompaniment / accompanying | 十二歲以下的兒童必須由大人陪同。 | must be＋過去分詞＋by，是被動語態。
@@ -21,7 +21,7 @@ renew | Your magazine subscription is due for ___ next month. | renewal | renew 
 notify | You will be ___ by email when your order ships. | notified | notify / notification / notifying | 訂單出貨時，我們會用電子郵件通知您。 | will be＋過去分詞＋by，是被動語態。
 prescribe | This medicine is only available with a doctor's ___. | prescription | prescribe / prescribed / prescribing | 這種藥只憑醫師處方才能取得。 | 所有格 a doctor's 後面要接名詞。
 disrupt | The typhoon caused major ___ to domestic flights. | disruption | disrupt / disruptive / disrupted | 颱風對國內航班造成嚴重影響。 | 形容詞 major 後面接名詞，當 caused 的受詞。
-allocate | The budget ___ for marketing has been increased this year. | allocation | allocate / allocated / allocating | 今年分配給行銷的預算增加了。 | The budget 後面接名詞當主詞，動詞是單數 has been。
+allocate | The committee will ___ additional funds for staff training. | allocate | allocation / allocated / allocating | 委員會將為員工訓練分配額外資金。 | will 後面接原形動詞 allocate；allocation 是名詞，allocated 是過去式／過去分詞，allocating 是現在分詞。
 assume | The sales plan is based on the ___ that demand will grow. | assumption | assume / assumed / assuming | 這份銷售計畫是以需求會成長為前提。 | 冠詞 the 後面接名詞，後面的 that 子句說明它的內容。
 manufacture | The company is a leading ___ of office furniture. | manufacturer | manufacture / manufactured / manufacturing | 這家公司是辦公家具的主要製造商。 | 冠詞 a＋形容詞 leading 後面接名詞（指公司），當主詞補語。
 estimate | The ___ cost of the new building is two million dollars. | estimated | estimate / estimation / estimating | 新大樓的預估成本是兩百萬美元。 | 空格修飾名詞 cost，表示「被估計的」，要用過去分詞。

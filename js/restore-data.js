@@ -2,14 +2,14 @@
 import { getWords, getSettings, getSetRecords, replaceWords, replaceSettings, replaceSetRecords,
   restoreSetRecords, getTombstones, setTombstones, setSettingsUpdatedAt, flushWords } from './store.js';
 import { getLog, getLogLedger, setLogLedger } from './log.js';
-import { getMistakes, replaceMistakes } from './mistakes.js';
+import { getAllMistakes, replaceMistakes } from './mistakes.js';
 import { mergeBackup } from './backup.js';
 import { legacyLedger, resetLedger } from './log-ledger.js';
 import { profileStorage } from './profile-storage.js';
 import { invalidateSync } from './sync.js';
 
 export function currentData() {
-  return {words:getWords(),settings:getSettings(),wordSets:getSetRecords(),mistakes:getMistakes(),log:getLog(),logLedger:getLogLedger()};
+  return {words:getWords(),settings:getSettings(),wordSets:getSetRecords(),mistakes:getAllMistakes(),log:getLog(),logLedger:getLogLedger()};
 }
 export function restoreBackup(incoming, replace = false) {
   invalidateSync();

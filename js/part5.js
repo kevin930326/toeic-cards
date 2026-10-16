@@ -1,3 +1,6 @@
+import {currentSavedQuestion} from './question-policy.js';
+import {reviewGenerated} from './question-review.js';
+import {questionEnabled} from './question-reports.js';
 // 多益 Part 5 句子填空：用 Gemini 出題，題目存在單字上重複使用
 //
 // word.part5 = [{ id, sentence, answer, distractors, translation, explanation, at, usedAt }]
@@ -14,7 +17,7 @@ const MAX_PER_WORD = 3;
 const newId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
 
 export function cachedCount(word) {
-  return word.part5?.length || 0;
+  return (word.part5||[]).filter(currentSavedQuestion).length;
 }
 
 // 一批字送一次請求；回傳成功存下題目的字 id
@@ -34,13 +37,15 @@ async function generateBatch(batch, pool, signal) {
   });
   const list = Array.isArray(data?.questions) ? data.questions : [];
   const byTarget = new Map(list.map((q) => [String(q?.target || '').trim().toLowerCase(), q]));
+  const normalized = items.map((it,i)=>normalizePart5(byTarget.get(it.target) || (list.length===items.length ? list[i] : null)));
+  const approved = await reviewGenerated(normalized.filter(Boolean),signal);
   const now = Date.now();
   const patches = [];
   const ok = [];
   items.forEach((it, i) => {
     let raw = byTarget.get(it.target);
     if (!raw && list.length === items.length) raw = list[i];   // 對不到字就用順序對應
-    const q = normalizePart5(raw);
+    const q = approved.get(normalized[i]);
     const w = getWord(it.word.id);
     if (!q || !w) return;
     const saved = [...(w.part5 || []), { id: newId(), ...q, at: now, usedAt: 0 }].slice(-MAX_PER_WORD);
@@ -81,7 +86,7 @@ export async function preparePart5(targets, pool, { fresh = false, signal, onPro
   const patches = [];
   for (const t of targets) {
     const w = getWord(t.id);
-    const saved = w?.part5 || [];
+    const saved = (w?.part5 || []).filter(currentSavedQuestion);
     if (!saved.length || (fresh && failed.includes(t.id))) continue;
     const q = fresh
       ? saved[saved.length - 1]
@@ -90,5 +95,5 @@ export async function preparePart5(targets, pool, { fresh = false, signal, onPro
     patches.push([w.id, { part5: saved.map((x) => (x.id === q.id ? { ...x, usedAt: now } : x)) }]);
   }
   updateWords(patches);
-  return { questions, failed };
+  return { questions:questions.filter(questionEnabled), failed };
 }

@@ -1,3 +1,6 @@
+import {currentSavedQuestion} from './question-policy.js';
+import {questionEnabled} from './question-reports.js';
+import {reviewGenerated} from './question-review.js';
 // 詞性變化題：四個選項是同一個字的不同形式（approve／approval／approving／approved），多益 Part 5 最常考的題型
 //
 // 每個字的題目來源（依序）：
@@ -10,7 +13,7 @@ import { generateJSON, LlmError, hasApiKey } from './llm.js';
 import { normalizeWord } from './parse.js';
 import { buildFormsPrompt, FORMS_SCHEMA, normalizeFormQ, formsQuestion, parseFormsBank, pickTargets } from './quiz.js?v=forms-1';
 
-export const FORMS_BANK_URL = new URL('../data/packs/toeic-1000-forms.json', import.meta.url);
+export const FORMS_BANK_URL = new URL('../data/packs/toeic-1000-forms.json?v=quality-2', import.meta.url);
 const BATCH_SIZE = 10;
 const MAX_PER_WORD = 3;
 let bankPromise = null;
@@ -50,13 +53,15 @@ async function generateBatch(batch, signal) {
   });
   const list = Array.isArray(data?.questions) ? data.questions : [];
   const byTarget = new Map(list.map((q) => [normalizeWord(q?.target), q]));
+  const normalized=batch.map((it,i)=>normalizeFormQ(byTarget.get(normalizeWord(it.word)) || (list.length===batch.length ? list[i] : null),it.word));
+  const approved=await reviewGenerated(normalized.filter(Boolean),signal);
   const now = Date.now();
   const patches = [];
   const ok = [];
   batch.forEach((it, i) => {
     let raw = byTarget.get(normalizeWord(it.word));
     if (!raw && list.length === batch.length) raw = list[i];   // 對不到字就用順序對應
-    const q = normalizeFormQ(raw, it.word);
+    const q = approved.get(normalized[i]);
     const w = getWord(it.id);
     if (!q || !w) return;
     patches.push([w.id, { formQs: [...(w.formQs || []), { id: newId(), ...q, at: now, usedAt: 0 }].slice(-MAX_PER_WORD) }]);
@@ -80,8 +85,8 @@ export async function prepareForms(targets, count, { fresh = false, signal, onPr
   // 題庫不可用時，只重用已存題目；不能把原本免費的內建字誤送給 AI。
   const canAI = hasApiKey() && !bankError;
   const useFresh = fresh && !bankError;
-  const inBank = (w) => bank.has(normalizeWord(w.word));
-  const hasSaved = (w) => !!(w.formQs && w.formQs.length);
+  const inBank = (w) => (bank.get(normalizeWord(w.word))||[]).some(q=>questionEnabled(formsQuestion(w,q)));
+  const hasSaved = (w) => (w.formQs||[]).some(q=>currentSavedQuestion(q)&&questionEnabled(formsQuestion(w,q)));
   if (bankError && !targets.some(hasSaved)) throw bankError;
   const answerable = (w) => inBank(w) || hasSaved(w) || canAI;
   const ordered = pickTargets('forms', targets, targets.length);
@@ -112,17 +117,17 @@ export async function prepareForms(targets, count, { fresh = false, signal, onPr
   for (const t of picked) {
     const w = getWord(t.id);
     if (!w) continue;
-    const builtin = bank.get(normalizeWord(w.word));
-    if (builtin) {
+    const builtin = (bank.get(normalizeWord(w.word))||[]).filter(q=>questionEnabled(formsQuestion(w,q)));
+    if (builtin.length) {
       questions.push(formsQuestion(w, builtin[Math.floor(Math.random() * builtin.length)]));
       continue;
     }
-    const saved = w.formQs || [];
+    const saved = (w.formQs || []).filter(q=>currentSavedQuestion(q)&&questionEnabled(formsQuestion(w,q)));
     if (!saved.length || (useFresh && failed.includes(w.id))) continue;
     const q = useFresh ? saved[saved.length - 1] : [...saved].sort((a, b) => (a.usedAt || 0) - (b.usedAt || 0))[0];
     questions.push(formsQuestion(w, q));
     patches.push([w.id, { formQs: saved.map((x) => (x.id === q.id ? { ...x, usedAt: now } : x)) }]);
   }
   updateWords(patches);
-  return { questions, failed, skipped, bankUnavailable: !!bankError };
+  return { questions:questions.filter(questionEnabled), failed, skipped, bankUnavailable: !!bankError };
 }

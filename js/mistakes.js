@@ -1,4 +1,5 @@
 import { profileStorage } from './profile-storage.js';
+import {currentQuizQuestion} from './question-policy.js';
 // 錯題本：記下每一題答錯的題目（整題存下來，重做時不需要再呼叫 AI）
 // 存在 localStorage：[{ key, question, chosen, count, at }]
 //   重做時答對 → 從錯題本移除；又答錯 → count + 1
@@ -39,11 +40,13 @@ export function mistakeKey(q) {
 }
 
 export function getMistakes() {
-  return read();
+  return read().filter(m=>currentQuizQuestion(m.question));
 }
+export function getAllMistakes() {return read();}
+export function archivedMistakeCount() {return read().length-getMistakes().length;}
 
 export function countMistakes() {
-  return read().length;
+  return getMistakes().length;
 }
 
 export function addMistake(question, chosen) {

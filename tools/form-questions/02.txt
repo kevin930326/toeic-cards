@@ -61,7 +61,7 @@ mention | As ___ in my last email, the office will be closed on Monday. | mentio
 calculate | My ___ shows that we are slightly over budget. | calculation | calculate / calculated / calculating | 我的計算顯示我們稍微超出預算。 | 所有格 My 後面要接名詞。
 install | ___ of the new software takes about ten minutes. | Installation | Install / Installed / Installs | 安裝新軟體大約需要十分鐘。 | 空格是句子的主詞，後面接 of，要用名詞。
 contain | Each box ___ twelve bottles of mineral water. | contains | contain / container / containing | 每個箱子裝有十二瓶礦泉水。 | 主詞 Each box 是第三人稱單數，現在式動詞要加 s。
-match | All staff should wear a dark jacket and ___ pants. | matching | match / matches / matched | 所有員工都應穿深色外套和搭配的褲子。 | 空格修飾名詞 pants，matching 是「相配的」。
+match | The two teams must ___ their uniforms to the agreed color scheme. | match | matching / matches / matched | 兩支隊伍都必須使制服符合約定的配色。 | must 後面接原形動詞 match；matching 是現在分詞，matches 是第三人稱單數，matched 是過去式／過去分詞。
 afford | The new model is much more ___ than the old one. | affordable | afford / affordably / affordability | 新款比舊款便宜得多。 | more 後面接形容詞（比較級），修飾主詞的狀態。
 assist | If you need any ___, please contact the front desk. | assistance | assist / assistant / assisted | 如果需要任何協助，請聯絡櫃台。 | any 後面接不可數名詞 assistance；assistant 是人，要用 an 或複數。
 attract | The new store design is very ___ to young shoppers. | attractive | attract / attraction / attracted | 新的店面設計很吸引年輕顧客。 | very 後面接形容詞，be attractive to 是「對……有吸引力」。

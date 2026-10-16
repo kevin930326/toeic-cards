@@ -27,7 +27,7 @@ contribute | Ms. Park made a significant ___ to the success of the project. | co
 extend | The store has ___ its opening hours for the holiday season. | extended | extend / extension / extensive | 這家店在假期延長了營業時間。 | has＋過去分詞是現在完成式。
 interact | The science museum offers many ___ exhibits for children. | interactive | interact / interaction / interactively | 科學博物館為兒童提供許多互動式展覽。 | 空格修飾名詞 exhibits，要用形容詞。
 indicate | As ___ on the map, the emergency exit is on the left. | indicated | indicate / indication / indicator | 如地圖所示，緊急出口在左邊。 | As indicated 是「如……所示」，用過去分詞。
-occur | The power outage ___ shortly after midnight. | occurred | occur / occurs / occurrence | 停電發生在午夜過後不久。 | 描述已經發生的事，要用過去式。
+occur | The power outage ___ shortly after midnight yesterday. | occurred | occur / occurs / occurrence | 停電發生在昨天午夜過後不久。 | yesterday 限定已結束的過去時間，唯一過去式為 occurred；occur 是原形，occurs 是現在式，occurrence 是名詞。
 persuade | Mr. Lee presented a very ___ argument for the new plan. | persuasive | persuade / persuasion / persuasively | 李先生為新計畫提出了非常有說服力的論點。 | very 後面接形容詞修飾名詞 argument。
 convince | The marketing team argued ___ for a larger budget. | convincingly | convince / convinced / convinces | 行銷團隊有說服力地爭取更多預算。 | 修飾動詞 argued，要用副詞。
 operate | The new factory will be fully ___ by May. | operational | operate / operation / operator | 新工廠將在五月前全面運作。 | will be＋副詞 fully 後面接形容詞當補語。

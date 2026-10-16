@@ -1401,3 +1401,8 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
 .ai-legend .badge { vertical-align: 0; }
 .mode-title .badge { vertical-align: 1px; }
 .explore-more { padding: 8px 4px; text-align: center; }
+.question-quality { font-size: .9rem; line-height: 1.65; color: var(--ink); }
+.question-report-dialog { max-width: 34rem; width: calc(100% - 2rem); max-height: 85dvh; overflow: auto; border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: 18px; padding: 1.5rem; background: var(--surface); color: var(--ink); }
+.question-report-dialog::backdrop { background: rgb(0 0 0 / .5); }
+.question-report-dialog textarea { display: block; width: 100%; margin: .5rem 0 1rem; }
+.option-explanations { line-height: 1.7; padding-left: 1.25rem; }
