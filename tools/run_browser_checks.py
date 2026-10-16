@@ -9,9 +9,9 @@ class Quiet(SimpleHTTPRequestHandler):
 server=ThreadingHTTPServer(('127.0.0.1',8123),partial(Quiet,directory=str(ROOT)))
 threading.Thread(target=server.serve_forever,daemon=True).start()
 os.environ['BASE_URL']='http://127.0.0.1:8123/'
-TESTS=['account_isolation','backup_sync','sync_conflicts','storage_recovery','question_quality',
-       'accessibility','release_update','security','step9','card_lookup_mode','tour_keyboard','tour_overlap','onboarding',
-       'forms_quiz','step6','review_regressions','bulk_delete','batch_add_responsiveness','product_copy','word_packs','dictionary_scale','lookup_suggestions','step11']
+# 自動找出所有瀏覽器測試（tests/test_*.py），新增的測試不會因為忘了加進清單而沒跑。
+# test_deployed 會連到正式網站，不在這裡跑。
+TESTS=sorted(p.stem.removeprefix('test_') for p in (ROOT/'tests').glob('test_*.py') if p.stem!='test_deployed')
 try:
     for name in (sys.argv[1:] or TESTS):
         print('RUN',name,flush=True)

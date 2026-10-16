@@ -8,7 +8,7 @@ permissions:
 jobs:
   regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 45   # 自動跑全部瀏覽器測試（約 12 分鐘），留餘裕
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
