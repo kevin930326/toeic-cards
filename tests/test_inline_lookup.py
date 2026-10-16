@@ -39,7 +39,7 @@ with sync_playwright() as p:
     remain=pg.locator('#remain').inner_text()
     original=store(pg,'return s.getWords().map(w=>[w.id,w.srs]);')
     log=pg.evaluate("localStorage.getItem('toeic-cards:log')")
-    pg.click('#card')
+    pg.click('.card-front .headword')   # 點單字翻面（卡片正中央可能是發音按鈕）
     pg.locator('#swipe').screenshot(path=str(OUT/'inline-lookup-reading.png'),animations='disabled')
     arrangement=pg.locator('.back-en [data-lookup-word=arrangement]')
     arrangement.click()

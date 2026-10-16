@@ -136,6 +136,8 @@ with sync_playwright() as p:
           '從20字套用上限200字後仍誠實提示來不及，不誤報達標')
     pg.screenshot(path=doc_shot('36-exam-plan-limit.png'))
     pg.set_viewport_size({'width':375,'height':812})
+    # 圖表在下一個畫面才依新寬度重畫，等它畫完再檢查（最多 2 秒）
+    pg.wait_for_function('() => document.documentElement.scrollWidth<=innerWidth', timeout=2000)
     check(pg.evaluate('document.documentElement.scrollWidth<=innerWidth'),'超出上限的完整提示在手機不溢出')
 
     ctx.close()
