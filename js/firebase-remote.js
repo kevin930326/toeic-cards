@@ -4,9 +4,10 @@
 // - Google 登入用彈出視窗（signInWithPopup）：網站不在 Firebase 自己的網域（我們在 GitHub Pages），
 //   瀏覽器會擋掉「跳轉登入」需要的第三方儲存空間，官方建議改用彈出視窗
 // - Email 登入連結：寄一封信，點信裡的連結就登入，不用密碼
-import { wordDocId } from './sync-core.js';
+import { wordDocId, mergeRemoteRecord } from './sync-core.js';
 import { mergeSets } from './word-sets.js?v=dictionary-scale-1';
 import { cleanLedger, mergeLedgers } from './log-ledger.js';
+import {stableJSON} from './meta-sync.js';
 
 export const FIREBASE_SDK_VERSION = '13.0.0';
 const CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
@@ -116,14 +117,25 @@ export async function createFirebaseRemote(config) {
 
     // 上傳單字（Firestore 一次批次最多 500 筆，這裡每 400 筆一批）
     async pushWords(uid, items, active = () => true) {
+      const results=[];
       for (let i = 0; i < items.length; i += 400) {
         if (!active() || auth.currentUser?.uid !== uid) throw Object.assign(new Error('帳號已切換'), { cancelled: true });
-        const batch = fs.writeBatch(db);
-        for (const it of items.slice(i, i + 400)) {
-          batch.set(fs.doc(wordsCol(uid), wordDocId(it.word)), { ...plain(it), syncedAt: fs.serverTimestamp() });
-        }
-        await batch.commit();
+        const chunk=items.slice(i,i+400);
+        const merged=await fs.runTransaction(db,async tx=>{
+          const refs=chunk.map(it=>fs.doc(wordsCol(uid),wordDocId(it.word)));
+          const snaps=await Promise.all(refs.map(ref=>tx.get(ref)));
+          if(!active()||auth.currentUser?.uid!==uid) throw Object.assign(new Error('帳號已切換'),{cancelled:true});
+          const docs=chunk.map((it,j)=>{
+            const data=snaps[j].exists()?snaps[j].data():null;
+            const cloud=data?{word:data.word,updatedAt:data.updatedAt,deleted:data.deleted,data:data.data}:null;
+            return mergeRemoteRecord(cloud,it);
+          });
+          docs.forEach((it,j)=>tx.set(refs[j],{...plain(it),syncedAt:fs.serverTimestamp()}));
+          return docs;
+        });
+        results.push(...merged);
       }
+      return results;
     },
 
     async pullLogs(uid) {
@@ -179,8 +191,15 @@ export async function createFirebaseRemote(config) {
         return merged;
       });
     },
-    async setMeta(uid, name, value, updatedAt) {
-      await fs.setDoc(fs.doc(db, 'users', uid, 'meta', name), { value: plain(value), updatedAt });
+    async setMeta(uid, name, value, updatedAt, expected, active=()=>true) {
+      const ref=fs.doc(db,'users',uid,'meta',name);
+      if(expected===undefined){await fs.setDoc(ref,{value:plain(value),updatedAt});return;}
+      await fs.runTransaction(db,async tx=>{
+        const snap=await tx.get(ref);const current=snap.exists()?snap.data():null;
+        if(!active()||auth.currentUser?.uid!==uid)throw Object.assign(new Error('帳號已切換'),{cancelled:true});
+        if(stableJSON(current)!==stableJSON(expected))throw Object.assign(new Error('雲端資料在同步途中改變，請再同步確認。'),{code:'sync/meta-changed'});
+        tx.set(ref,{value:plain(value),updatedAt});
+      });
     },
   };
 }

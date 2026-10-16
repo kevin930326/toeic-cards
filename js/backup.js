@@ -13,6 +13,7 @@ import { normalizeWord } from './parse.js';
 import { mistakeKey } from './mistakes.js';
 import { sanitizeSets, mergeSets } from './word-sets.js?v=dictionary-scale-1';
 import { cleanLedger, mergeLedgers, ledgerTotal } from './log-ledger.js';
+import {sanitizeVersions,WORD_FIELDS,mergeVersionedWords} from './word-versions.js';
 
 export const BACKUP_APP = 'toeic-cards';
 export const BACKUP_VERSION = 3;
@@ -117,6 +118,9 @@ export function sanitizeWord(raw) {
     ...(Array.isArray(raw.formQs) ? { formQs: sanitizePart5(raw.formQs) } : {}),   // AI 出的詞性變化題（格式和 Part 5 一樣）
     createdAt: num(raw.createdAt),
     updatedAt: num(raw.updatedAt),
+    ...(sanitizeVersions(raw._rev) ? {_rev:sanitizeVersions(raw._rev)} : {}),
+    ...(Array.isArray(raw._conflicts) ? {_conflicts:raw._conflicts.filter(c=>isObj(c)&&WORD_FIELDS.includes(c.field)&&Array.isArray(c.alternatives))
+      .slice(-30).map(c=>({key:str(c.key,300),field:str(c.field,60),alternatives:c.alternatives.slice(0,2).map(a=>({clock:Array.isArray(a.clock)?a.clock.slice(0,3):[],value:a.value}))}))} : {}),
   };
 }
 
@@ -228,6 +232,10 @@ export function mergeBackup(local, incoming) {
       byWord.set(w.word, nw);
       added.push(nw);
       idMap.set(w.id, id);
+    } else if (w._rev || cur._rev) {
+      const merged=mergeVersionedWords(cur,w);
+      if(JSON.stringify(merged)!==JSON.stringify(cur)){byWord.set(w.word,{...merged,id:cur.id});updated++;}else kept++;
+      idMap.set(w.id,cur.id);
     } else if (w.updatedAt > cur.updatedAt) {
       byWord.set(w.word, { ...w, id: cur.id });   // 保留目前的 id
       updated++;

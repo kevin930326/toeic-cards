@@ -26,7 +26,7 @@ export function logOrigin() {
   let id = json(ORIGIN_KEY, '');
   if (!id) {
     id = profileOwner() || Object.keys(json(LOG_KEY, {})).length ? deviceId() : `guest-${crypto.randomUUID()}`;
-    profileStorage.setItem(ORIGIN_KEY, JSON.stringify(id));
+    try {profileStorage.setItem(ORIGIN_KEY, JSON.stringify(id));}catch { /* 保留記憶體待重試 */ }
   }
   return id;
 }
@@ -41,10 +41,13 @@ export function getLogLedger() {
 export function setLogLedger(raw) {
   const ledger = cleanLedger(raw);
   // ledger 為唯一真實來源，舊欄位僅相容既有測試與舊版匯出工具。
-  profileStorage.setItem(LEDGER_KEY, JSON.stringify(ledger));
+  try {profileStorage.setItem(LEDGER_KEY, JSON.stringify(ledger));}catch {return false;}
   const me = logOrigin();
-  profileStorage.setItem(LOG_KEY, JSON.stringify(ledger.sources[me]?.log || {}));
-  profileStorage.setItem(REMOTE_KEY, JSON.stringify(Object.fromEntries(Object.entries(ledger.sources).filter(([id])=>id!==me).map(([id,s])=>[id,s.log]))));
+  try {
+    profileStorage.setItem(LOG_KEY, JSON.stringify(ledger.sources[me]?.log || {}));
+    profileStorage.setItem(REMOTE_KEY, JSON.stringify(Object.fromEntries(Object.entries(ledger.sources).filter(([id])=>id!==me).map(([id,s])=>[id,s.log]))));
+  }catch { /* 主帳本仍為唯一來源，失敗會有持續提示 */ }
+  return true;
 }
 function read() { return getLogLedger().sources[logOrigin()]?.log || {}; }
 function write(log) {

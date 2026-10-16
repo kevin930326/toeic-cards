@@ -1,10 +1,11 @@
 // 設定頁的「帳號與同步」區塊
 import {
   syncState, onSyncChange, signInWithGoogle, sendEmailLink, completeEmailLink, signOutSync, syncNow,
-  signInWithPassword, registerWithPassword, setAccountPassword, sendPasswordReset, resolveGuestData,
+  signInWithPassword, registerWithPassword, setAccountPassword, sendPasswordReset, resolveGuestData,getMetaConflict,resolveMetaConflict,
 } from '../sync.js';
 import { isIOS, isStandalone } from '../pwa.js';
 import { esc, toast, confirmAction } from '../ui.js';
+import {getWords} from '../store.js';
 
 const googleIcon = '<svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
 
@@ -12,6 +13,11 @@ function fmtTime(ms) {
   if (!ms) return '';
   const d = new Date(ms);
   return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+function metaConflictHTML(c) {
+  const labels={dailyGoal:'每日目標',newPerDay:'每日新字',cardMode:'字卡語言',autoGenerate:'自動生成',quizScope:'測驗範圍',quizCount:'測驗題數',part5Fresh:'每次出新題',examDate:'考試日期'};
+  const preview=value=>c.name==='settings'?`<ul>${Object.entries(value||{}).map(([k,v])=>`<li>${esc(labels[k]||k)}：${esc(typeof v==='boolean'?(v?'開啟':'關閉'):v)}</li>`).join('')}</ul>`:`<p>${Array.isArray(value)?value.length:0} 題</p><ul>${(Array.isArray(value)?value:[]).slice(0,8).map(m=>`<li>${esc(m.question?.word)}：${esc(m.question?.prompt?.slice(0,100))}</li>`).join('')}</ul>`;
+  return `<div class="pwa-note meta-conflict"><h3>${c.name==='settings'?'學習設定':'錯題本'}有同步衝突</h3><p>兩邊都有修改，已保留兩份。這份資料以整份確認；保留本機會取代雲端版本，採用雲端則取代這台裝置的版本。建議先匯出備份。</p><details open><summary>比較本機與雲端</summary><h4>本機快照</h4>${preview(c.local)}<h4>雲端快照</h4>${preview(c.remote?.value)}</details><div class="backup-actions"><button class="btn btn-outline" id="metaLocal" type="button">保留本機並同步</button><button class="btn btn-outline" id="metaRemote" type="button">採用雲端版本</button></div></div>`;
 }
 
 export function renderSyncPanel(container) {
@@ -25,7 +31,7 @@ export function renderSyncPanel(container) {
   //   2. 重畫時保留輸入框的內容、「貼上連結」是否展開、以及游標所在的欄位
   function draw(st = syncState()) {
     const key = JSON.stringify([st.configured, st.user?.uid, st.user?.email, st.user?.providers, st.status, st.error,
-      st.lastSyncAt, st.summary, st.pendingLink, st.linkSentTo, st.guestChoice, panelError]);
+      st.lastSyncAt, st.summary, st.pendingLink, st.linkSentTo, st.guestChoice, panelError,getMetaConflict()]);
     if (key === lastKey && container.firstChild) return;
     lastKey = key;
     const typed = {};
@@ -74,6 +80,8 @@ export function renderSyncPanel(container) {
       body = `
         <p class="sync-user">已登入：<strong>${esc(st.user.email || st.user.name || '已登入')}</strong> <span class="muted">（${via}）</span></p>
         ${line}
+        ${getMetaConflict()?metaConflictHTML(getMetaConflict()):''}
+        ${getWords().some(w=>w._conflicts?.length) ? '<p class="pwa-note" role="status">部分字卡有同欄位修改衝突，兩份內容都已保留。請到單字庫開啟編輯，比較後儲存要保留的版本。</p>' : ''}
         <div class="backup-actions">
           <button class="btn btn-outline" type="button" id="syncNow" ${st.status === 'syncing' ? 'disabled' : ''}>立即同步</button>
           <button class="btn btn-ghost" type="button" id="signOut">登出</button>
@@ -179,6 +187,8 @@ export function renderSyncPanel(container) {
   }
 
   function bind() {
+    container.querySelector('#metaLocal')?.addEventListener('click',e=>run(e.currentTarget,()=>resolveMetaConflict(false)));
+    container.querySelector('#metaRemote')?.addEventListener('click',e=>run(e.currentTarget,()=>resolveMetaConflict(true)));
     container.querySelector('#guestKeep')?.addEventListener('click', e => run(e.currentTarget, () => resolveGuestData(false)));
     container.querySelector('#guestMerge')?.addEventListener('click', e => run(e.currentTarget, () => resolveGuestData(true)));
     container.querySelector('#googleBtn')?.addEventListener('click', (e) => run(e.currentTarget, async () => {

@@ -1406,3 +1406,5 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
 .question-report-dialog::backdrop { background: rgb(0 0 0 / .5); }
 .question-report-dialog textarea { display: block; width: 100%; margin: .5rem 0 1rem; }
 .option-explanations { line-height: 1.7; padding-left: 1.25rem; }
+.storage-notice { max-width: 1000px; margin: 1rem auto; padding: 1rem; color: var(--ink); }
+.storage-notice[hidden] { display:none; }

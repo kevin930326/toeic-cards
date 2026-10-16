@@ -3,7 +3,7 @@ const OWNER = 'toeic-cards:profileOwner';
 const MIGRATED = 'toeic-cards:profiles-v1';
 export const PROFILE_KEYS = ['words', 'settings', 'wordSets', 'deleted', 'log', 'remoteLogs',
   'settingsAt', 'mistakes', 'mistakesAt', 'lastBackup', 'celebrated', 'readings', 'gemini-key', 'thinking',
-  'logLedger', 'logOrigin', 'logReset', 'restoreIntent', 'pendingGuest', 'questionReports'];
+  'logLedger', 'logOrigin', 'logReset', 'restoreIntent', 'restoreIncomplete', 'pendingGuest', 'questionReports', 'tombRevisions', 'metaConflict'];
 let raw;
 try { raw = globalThis.localStorage; } catch { /* 被封鎖時仍讓網站可開啟 */ }
 const parse = (s, fallback) => { try { return JSON.parse(s) ?? fallback; } catch { return fallback; } };
@@ -12,6 +12,17 @@ const legacyOwner = parse(readRaw(MIGRATED), null)?.legacyOwner ?? parse(readRaw
 const persistedOwner = () => parse(readRaw(OWNER), legacyOwner);
 const owner = persistedOwner();
 let leaving = false;
+const pendingWrites=new Map();
+const recoverable=/^toeic-cards:(logLedger|logOrigin|log|remoteLogs|settings|settingsAt|mistakes|mistakesAt|readings|metaConflict)$/;
+function storageFailure(key,error) {
+  if(typeof window!=='undefined') window.dispatchEvent(new CustomEvent('toeic:save-error',{detail:{message:'瀏覽器儲存空間不足或被封鎖，部分修改尚未存到。請重試或先匯出備份。'}}));
+}
+export function pendingProfileWrites() {return pendingWrites.size;}
+export function retryProfileWrites(flush=()=>true) {
+  leaving=true;
+  try {for(const [key,value] of pendingWrites) {raw.setItem(profileKey(key),value);pendingWrites.delete(key);}return !!flush()&&!pendingWrites.size;}
+  finally {leaving=false;}
+}
 export function profileKey(key, uid = owner) {
   if (uid === legacyOwner) return key;
   return `toeic-cards:account:${uid ? encodeURIComponent(uid) : '_guest'}:${key.replace('toeic-cards:', '')}`;
@@ -20,6 +31,7 @@ export const profileOwner = () => owner;
 export const profileIsCurrent = () => persistedOwner() === owner;
 export function pinProfileLayout() {
   check();
+  if(parse(readRaw(MIGRATED),null)?.legacyOwner===legacyOwner)return;
   if (!raw) throw new Error('瀏覽器封鎖了儲存空間，無法安全切換帳號');
   raw.setItem(MIGRATED, JSON.stringify({legacyOwner}));
 }
@@ -27,9 +39,13 @@ function check() {
   if (!profileIsCurrent() && !leaving) throw new Error('帳號已在另一個頁面切換，請重新整理後再操作。');
 }
 export const profileStorage = {
-  getItem(key) { check(); return readRaw(profileKey(key)); },
-  setItem(key, value) { check(); if (!raw) throw new Error('瀏覽器封鎖了儲存空間'); raw.setItem(profileKey(key), value); },
-  removeItem(key) { check(); raw?.removeItem(profileKey(key)); },
+  getItem(key) { return pendingWrites.has(key)?pendingWrites.get(key):readRaw(profileKey(key)); },
+  setItem(key, value) {
+    check();
+    try {if(!raw)throw new Error('瀏覽器封鎖了儲存空間');raw.setItem(profileKey(key),value);pendingWrites.delete(key);}
+    catch(error) {if(recoverable.test(key))pendingWrites.set(key,value);storageFailure(key,error);throw error;}
+  },
+  removeItem(key) { check(); raw?.removeItem(profileKey(key));pendingWrites.delete(key); },
 };
 export function readProfile(uid) {
   return Object.fromEntries(PROFILE_KEYS.map(k => [k, parse(readRaw(profileKey('toeic-cards:' + k, uid)), null)]));
@@ -68,6 +84,8 @@ if (typeof window !== 'undefined') window.addEventListener('storage', e => {
   leaving = true;
   const event = new Event('toeic:profile-leave', {cancelable:true});
   window.dispatchEvent(event);
+  if(pendingWrites.size)event.preventDefault();
   leaving = false;
   if (!event.defaultPrevented) location.reload();
+  else window.dispatchEvent(new Event('toeic:profile-blocked'));
 });

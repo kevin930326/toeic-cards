@@ -1,4 +1,5 @@
 import { profileStorage } from './profile-storage.js';
+import {initStorageNotice} from './storage-notice.js';
 // 主程式：依網址的 #/xxx 切換頁面
 import { getWords, getSettings, updateSettings, subscribe } from './store.js';
 import { renderReview, reviewBadgeCount } from './views/review.js?v=exam-1';
@@ -37,6 +38,7 @@ const routes = {
 };
 
 const view = document.getElementById('view');
+initStorageNotice();
 initWordLookup();
 let cleanup = null;
 

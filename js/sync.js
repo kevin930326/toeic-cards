@@ -7,16 +7,17 @@ import { firebaseConfig } from './firebase-config.js';
 import {
   getWords, replaceWords, getTombstones, setTombstones, getSettings, updateSettings, getDefaultSettings,
   settingsUpdatedAt, setSettingsUpdatedAt, subscribe,
-  getSetRecords, mergeSetRecords, flushWords,
+  getSetRecords, mergeSetRecords, flushWords, getTombRevisions, setTombRevisions,
 } from './store.js';
-import { profileStorage, profileOwner, profileIsCurrent, pinProfileLayout, hasGuestData, readProfile, writeProfile, activateProfile } from './profile-storage.js';
-import { mergeBackup, parseBackup, buildBackup } from './backup.js';
+import { profileStorage, pendingProfileWrites, profileOwner, profileIsCurrent, pinProfileLayout, hasGuestData, readProfile, writeProfile, activateProfile } from './profile-storage.js';
+import { mergeBackup, parseBackup, buildBackup,sanitizeMistakes } from './backup.js';
 import { mergeLedgers } from './log-ledger.js';
+import {metaAction,metaSignature} from './meta-sync.js';
 import { getOwnLog, getLogLedger, setLogLedger, onLogChange } from './log.js';
 export { deviceId } from './device-id.js';
 import { getAllMistakes as getMistakes, mistakesUpdatedAt, setMistakesFromSync } from './mistakes.js';
 import {
-  applyRemoteWords, pendingChanges, pickSyncedSettings, remoteSettings, remoteLogs, remapMistakes, newerSide,
+  applyRemoteWords, pendingChanges, pickSyncedSettings, remoteSettings, remoteLogs, remapMistakes, newerSide,remoteVersion,
 } from './sync-core.js';
 
 const STATE_KEY = 'toeic-cards:sync';            // { [uid]: { lastPullAt, pushed } }
@@ -66,7 +67,7 @@ function changeAccount(user) {
       emit({ guestChoice: true });
       location.hash = '#/settings';
     } else {
-      if (!flushWords()) throw new Error('目前字卡尚未存好，請先匯出備份並釋放空間，再重新整理。暫停同步以保護資料。');
+      if (!flushWords()||pendingProfileWrites()) throw new Error('目前資料尚未存好，請先匯出備份並釋放空間，再重新整理。暫停同步以保護資料。');
       activateProfile(uid);
     }
   } else if (uid) syncNow();
@@ -116,6 +117,27 @@ function emit(patch) {
 }
 
 export function invalidateSync() { invalidateSession(); }
+export function getMetaConflict() {try{return JSON.parse(profileStorage.getItem('toeic-cards:metaConflict')||'null');}catch{return null;}}
+function metaValue(name,value) {
+  return name==='settings' ? remoteSettings({...getDefaultSettings(),...(value||{})},getDefaultSettings()) : sanitizeMistakes(value||[]);
+}
+function metaSig(name,value) {
+  if(name==='settings')return metaSignature(metaValue(name,value));
+  const list=metaValue(name,value).map(m=>({...m,key:'',question:{...m.question,wordId:''}}));
+  list.sort((a,b)=>{const x=a.question.word+'|'+a.question.mode+'|'+a.question.prompt,y=b.question.word+'|'+b.question.mode+'|'+b.question.prompt;return x<y?-1:x>y?1:0;});
+  return metaSignature(list);
+}
+export function resolveMetaConflict(useRemote) {
+  const c=getMetaConflict(),uid=state.user?.uid;if(!c||uid!==profileOwner())return;
+  const st=loadState(uid);st.metaKnown ||= {};
+  if(useRemote) {
+    if(c.name==='settings'){updateSettings(metaValue('settings',c.remote?.value),{fromSync:true});setSettingsUpdatedAt(c.remote?.updatedAt||0);}
+    else setMistakesFromSync(remapMistakes(c.remote?.value,getWords()),c.remote?.updatedAt||0);
+  }
+  const cloud=c.remote?metaSig(c.name,c.remote.value):'none';
+  st.metaKnown[c.name]={cloud,local:useRemote?metaSig(c.name,c.name==='settings'?getSettings():getMistakes()):cloud};
+  saveState(uid,st);profileStorage.removeItem('toeic-cards:metaConflict');emit({status:'idle',error:''});syncNow();
+}
 
 function loadState(uid) {
   const all = ls.get(STATE_KEY, {});
@@ -169,7 +191,7 @@ async function ensureRemote() {
           if (!profileIsCurrent()) return;
           if (state.user?.uid === user?.uid && (user?.uid || '') === profileOwner()) return;
           try { changeAccount(user); }
-          catch (err) { emit({ status: 'error', error: friendlyError(err) }); }
+          catch (err) { emit({ status: 'error', error: friendlyError(err) });if((user?.uid||'')!==profileOwner())window.dispatchEvent(new Event('toeic:profile-blocked')); }
         });
         return remote;
       })
@@ -222,6 +244,7 @@ export async function initSync() {
     }
   });
   window.addEventListener('online', () => { if (state.user) syncNow(); });
+  window.addEventListener('toeic:storage-recovered',()=>{if(state.user)syncNow();});
   window.addEventListener('offline', () => { if (state.user) emit({ status: 'offline' }); });
 }
 
@@ -302,6 +325,8 @@ export async function sendPasswordReset(email) {
 
 export async function signOutSync() {
   if (!state.remote) return;
+  invalidateSession();
+  if(!flushWords()||pendingProfileWrites())throw new Error('尚有修改未儲存，請先匯出備份並重試儲存，再登出。');
   signingOut = true;
   invalidateSession();
   try { await state.remote.signOut(); if (profileIsCurrent() && state.user) changeAccount(null); }
@@ -323,6 +348,9 @@ async function doSync() {
   const remote = state.remote;
   const user = state.user;
   if (!remote || !user || state.guestChoice || signingOut || user.uid !== profileOwner() || !profileIsCurrent()) return;
+  if(profileStorage.getItem('toeic-cards:restoreIncomplete')){emit({status:'error',error:'備份尚未完整套用，請先重試匯入原備份，再同步。'});return;}
+  if(pendingProfileWrites()||!flushWords()){emit({status:'error',error:'本機修改尚未存好，請先重試儲存或匯出備份。'});return;}
+  if(getMetaConflict()){emit({status:'error',error:'設定或錯題本有同步衝突，請先在帳號與同步確認要保留的版本。'});return;}
   const token = session;
   const active = () => token === session && !signingOut && profileIsCurrent() && state.user?.uid === user.uid;
   const check = () => { if (!active()) throw Object.assign(new Error('帳號已切換'), { cancelled: true }); };
@@ -341,29 +369,39 @@ async function doSync() {
       const now = Math.max(Date.now(),...docs.map(d=>(Number(d.updatedAt)||0)+1),...getWords().map(w=>w.updatedAt+1));
       const wanted = new Set(getWords().map(w=>w.word));
       const tombs = {...getTombstones()};
+      const revisions={...getTombRevisions()};
+      const actor=crypto.randomUUID();
       for (const d of docs) if (!wanted.has(d.word)) tombs[d.word]=now;
-      for (const word of wanted) delete tombs[word];
+      for (const word of Object.keys(tombs)) revisions[word]=[now,actor,'restore'];
+      for (const word of wanted) {delete tombs[word];delete revisions[word];}
       setTombstones(tombs);
-      replaceWords(getWords().map(w=>({...w,updatedAt:now})));
+      setTombRevisions(revisions);
+      replaceWords(getWords().map((w,i)=>({...w,updatedAt:now+i+1,_rev:{birth:[now+i+1,actor],fields:{}},_conflicts:[]})));
       st.pushed = {};
     }
-    const applied = applyRemoteWords(getWords(), getTombstones(), docs);
-    for (const d of docs) st.pushed[d.word] = Math.max(st.pushed[d.word] || 0, Number(d.updatedAt) || 0);
+    const applied = applyRemoteWords(getWords(), getTombstones(), docs,getTombRevisions());
+    for (const d of docs) st.pushed[d.word] = remoteVersion(d);
     st.lastPullAt = maxSyncedAt;
-    saveState(uid, st);
     const s = applied.summary;
     setTombstones(applied.tombstones);
+    setTombRevisions(applied.tombRevisions);
     if (s.added || s.updated || s.deleted) {
       applying = true;
       try { replaceWords(applied.words); } finally { applying = false; }
     }
+    if(!flushWords()) throw new Error('同步資料尚未存到本機；請匯出備份、釋放空間後再同步。');
+    saveState(uid,st);
 
     // 2. 上傳本機有變更的單字和刪除紀錄
-    const pending = pendingChanges(getWords(), getTombstones(), st.pushed);
+    const pending = pendingChanges(getWords(), getTombstones(), st.pushed,getTombRevisions());
     if (pending.length) {
-      await remote.pushWords(uid, pending, active);
+      const merged=await remote.pushWords(uid, pending, active);
       check();
-      for (const p of pending) st.pushed[p.word] = p.updatedAt;
+      const fresh=applyRemoteWords(getWords(),getTombstones(),merged,getTombRevisions());
+      applying=true;
+      try {setTombstones(fresh.tombstones);setTombRevisions(fresh.tombRevisions);replaceWords(fresh.words);} finally {applying=false;}
+      if(!flushWords()) throw new Error('雲端已收到資料，但本機尚未存好；請保留備份並重試。');
+      for (const p of merged) st.pushed[p.word] = remoteVersion(p);
       saveState(uid, st);
     }
 
@@ -371,31 +409,34 @@ async function doSync() {
     const ledger = await remote.syncLogLedger(uid, getLogLedger(), !!profileStorage.getItem('toeic-cards:logReset'), active);
     check();
     const latest = getLogLedger();
-    setLogLedger(mergeLedgers(ledger, latest.epoch.id === ledger.epoch.id ? {...latest,epoch:ledger.epoch} : latest));
+    if(!setLogLedger(mergeLedgers(ledger, latest.epoch.id === ledger.epoch.id ? {...latest,epoch:ledger.epoch} : latest))) throw new Error('學習紀錄尚未存到本機，請匯出備份並重試儲存。');
     profileStorage.removeItem('toeic-cards:logReset');
 
-    // 4. 設定：比較新的勝出
-    const rs = await remote.getMeta(uid, 'settings');
-    check();
-    if (restoring) setSettingsUpdatedAt(Math.max(Date.now(),(rs?.updatedAt||0)+1));
-    const sSide = newerSide(settingsUpdatedAt(), rs);
-    if (sSide === 'pull') {
-      applying = true;
-      try { updateSettings(remoteSettings(rs.value, getDefaultSettings()), { fromSync: true }); } finally { applying = false; }
-      setSettingsUpdatedAt(rs.updatedAt);
-    } else if (sSide === 'push') {
-      await remote.setMeta(uid, 'settings', pickSyncedSettings(getSettings()), settingsUpdatedAt());
-      check();
+    // 4–5. 設定／錯題使用上次確認過的兩側快照指紋，並行修改先提示，不依時鐘猜測。
+    st.metaKnown ||= {};
+    for(const name of ['settings','mistakes']) {
+      const rs=await remote.getMeta(uid,name);check();
+      const local=metaValue(name,name==='settings'?getSettings():getMistakes());
+      const localSig=metaSig(name,local),cloudSig=rs?metaSig(name,rs.value):'none';
+      const at=name==='settings'?settingsUpdatedAt():mistakesUpdatedAt();
+      const action=restoring?'push':metaAction(st.metaKnown[name],localSig,cloudSig,at,!!rs);
+      if(action==='conflict') {
+        profileStorage.setItem('toeic-cards:metaConflict',JSON.stringify({name,local,remote:rs}));
+        throw new Error('設定或錯題本在兩邊都有修改，已保留兩份。請在帳號與同步確認版本。');
+      }
+      if(action==='pull') {
+        applying=true;
+        try {if(name==='settings'){updateSettings(metaValue(name,rs.value),{fromSync:true});setSettingsUpdatedAt(rs.updatedAt);}else setMistakesFromSync(remapMistakes(rs.value,getWords()),rs.updatedAt);}
+        finally{applying=false;}
+        st.metaKnown[name]={cloud:cloudSig,local:metaSig(name,name==='settings'?getSettings():getMistakes())};
+      } else if(action==='push') {
+        const next=Math.max(at,Number(rs?.updatedAt)||0)+1;
+        await remote.setMeta(uid,name,local,next,rs,active);check();
+        if(name==='settings')setSettingsUpdatedAt(next);else if(metaSig(name,getMistakes())===localSig)setMistakesFromSync(getMistakes(),next);
+        st.metaKnown[name]={cloud:localSig,local:localSig};
+      } else st.metaKnown[name]={cloud:cloudSig,local:localSig};
+      saveState(uid,st);
     }
-
-    // 5. 錯題本：比較新的勝出（題目裡的單字 id 換成本機的）
-    const rm = await remote.getMeta(uid, 'mistakes');
-    check();
-    if (restoring) setMistakesFromSync(getMistakes(),Math.max(Date.now(),(rm?.updatedAt||0)+1));
-    const mSide = newerSide(mistakesUpdatedAt(), rm);
-    if (mSide === 'pull') setMistakesFromSync(remapMistakes(rm.value, getWords()), rm.updatedAt);
-    else if (mSide === 'push') await remote.setMeta(uid, 'mistakes', getMistakes(), mistakesUpdatedAt());
-    check();
 
     // 6. 單字集與每個成員分別合併；等待網路期間的新修改也要保留。
     const sets = await remote.syncWordSets(uid, getSetRecords(), active, restoring);
@@ -419,6 +460,7 @@ async function doSync() {
     // 其他裝置的紀錄和錯題不經過 store，主動通知畫面重畫
     applying = true;
     try { updateSettings({}, { fromSync: true }); } finally { applying = false; }
+    if(pendingProfileWrites())throw new Error('部分本機修改尚未存好，請先重試儲存或匯出備份。');
     emit({ status: 'idle', lastSyncAt: Date.now(), summary: { ...s, pushed: pending.length } });
   } catch (err) {
     if (!active() || err.cancelled) return;

@@ -5,7 +5,7 @@ import { getLog, getLogLedger, setLogLedger } from './log.js';
 import { getAllMistakes, replaceMistakes } from './mistakes.js';
 import { mergeBackup } from './backup.js';
 import { legacyLedger, resetLedger } from './log-ledger.js';
-import { profileStorage } from './profile-storage.js';
+import { profileStorage,pendingProfileWrites } from './profile-storage.js';
 import { invalidateSync } from './sync.js';
 
 export function currentData() {
@@ -13,7 +13,9 @@ export function currentData() {
 }
 export function restoreBackup(incoming, replace = false) {
   invalidateSync();
+  profileStorage.removeItem('toeic-cards:metaConflict');
   const before = currentData();
+  profileStorage.setItem('toeic-cards:restoreIncomplete','true');
   const result = replace ? incoming : mergeBackup(before, incoming);
   let ledger = result.logLedger;
   if (!ledger) ledger = legacyLedger(result.log, `legacy-${crypto.randomUUID()}`);
@@ -36,6 +38,7 @@ export function restoreBackup(incoming, replace = false) {
   replaceMistakes(result.mistakes);
   setLogLedger(ledger);
   if (replace) { replaceSettings(result.settings); setSettingsUpdatedAt(Date.now()); }
-  if (!flushWords()) throw new Error('備份尚未完整存到，請保留原備份並釋放空間後重試。');
+  if (!flushWords()||pendingProfileWrites()) throw new Error('備份尚未完整存到，請保留原備份並釋放空間後重試。');
+  profileStorage.removeItem('toeic-cards:restoreIncomplete');
   return result;
 }

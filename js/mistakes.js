@@ -20,8 +20,8 @@ const AT_KEY = 'toeic-cards:mistakesAt';   // 最後修改時間（跨裝置同�
 function write(list, { touch = true } = {}) {
   try {
     profileStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX)));
-    if (touch) profileStorage.setItem(AT_KEY, String(Date.now()));
   } catch (e) { console.error('寫入錯題本失敗', e); }
+  if(touch)try {profileStorage.setItem(AT_KEY,String(Date.now()));}catch { /* 與內容一同保留待重試 */ }
 }
 
 export function mistakesUpdatedAt() {
