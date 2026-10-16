@@ -1,5 +1,6 @@
 from onboarding_helpers import existing_user
 from library_helpers import open_add, close_add, open_ai
+from storage_helpers import flush
 """第 9 步：PWA（安裝、離線使用）端對端測試"""
 import json, os, re, sys
 from playwright.sync_api import sync_playwright
@@ -155,6 +156,7 @@ with sync_playwright() as p:
     close_add(page)
     page.wait_for_selector('.ai-error', timeout=10000)
     check('連不上 Gemini' in page.locator('.ai-error').inner_text(), '離線時 AI 生成顯示「連不上」')
+    flush(page)   # 新增的字延後約 50ms 才寫進 localStorage，讀之前先存好
     y = [w for w in page.evaluate("JSON.parse(localStorage.getItem('toeic-cards:words'))") if w['word'] == 'yield'][0]
     check(not y.get('llm'), '離線時的字不會被標成「生成失敗」')
     ctx.set_offline(False)
