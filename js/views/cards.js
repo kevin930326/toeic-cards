@@ -81,7 +81,7 @@ export function renderCards(root) {
           <button class="btn btn-ghost btn-sm" id="editBtn" type="button">編輯內容</button></div>
           <div class="explore-reading">${backHTML(word, 'both')}</div>`;
       } else {
-        detail.innerHTML = `<div class="empty-state"><h2 class="empty-title">${state.query.trim() ? '找不到符合的收藏' : scopedWords().length ? '沒有標記為「不熟」的字' : activeSetId() ? '這個單字集還沒有字卡' : '還沒有收藏的單字'}</h2>
+        detail.innerHTML = `<div class="empty-state"><h2 class="empty-title">${state.query.trim() ? '找不到符合的收藏' : scopedWords().length ? '沒有標記為「不熟」的字' : activeSetId().includes(',') ? '這些單字集還沒有字卡' : activeSetId() ? '這個單字集還沒有字卡' : '還沒有收藏的單字'}</h2>
           <p>${state.query.trim() ? '搜尋只包含目前範圍內的收藏；也能用上方「查單字」查字典。' : '可切換單字集或範圍，也能到單字庫加入想學的字。'}</p>
           ${state.query.trim() ? '<button class="btn btn-outline" id="clearExploreSearch" type="button">清除搜尋</button>' : '<a class="btn btn-primary" href="#/words">前往單字庫</a>'}</div>`;
       }

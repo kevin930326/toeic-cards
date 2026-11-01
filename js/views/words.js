@@ -14,7 +14,7 @@ import {
 import { speak, canSpeak, speakerIcon } from '../speech.js';
 import { getSetRecords, scopedWords, activeSetId, assignWordSet } from '../store.js';
 import { indexMembership } from '../word-sets.js?v=dictionary-scale-1';
-import { setScopeHTML, bindSetScope, refreshSetScope, setOptions, bindCreateSet } from '../set-ui.js?v=dictionary-scale-1';
+import { setScopeHTML, bindSetScope, refreshSetScope, setOptions, bindCreateSet, addTargetSet } from '../set-ui.js?v=dictionary-scale-1';
 import { renderSetsPanel } from './sets-panel.js?v=dictionary-scale-1';
 import { renderWordPackPanel } from './word-pack-panel.js';
 
@@ -52,7 +52,7 @@ export function renderWords(root) {
         <button class="btn btn-primary" id="openAddWords" type="button">＋ 加入單字</button></div>
       <div id="wordPackPanel"></div>
       <div id="setsPanel"></div>
-      <label class="set-scope add-set-scope"><span>新增時加入</span><select id="addToSet">${setOptions(activeSetId() === 'unfiled' ? '' : activeSetId(), { create: true })}</select></label>
+      <label class="set-scope add-set-scope"><span>新增時加入</span><select id="addToSet">${setOptions(addTargetSet(), { create: true })}</select></label>
       <form class="add-form panel" id="addForm" autocomplete="off">
         <label class="field grow">
           <span>新增英文單字</span>
@@ -167,7 +167,7 @@ export function renderWords(root) {
   if (new URLSearchParams(location.hash.split('?')[1] || '').get('pack') === 'toeic-1000') { addDialog.showModal(); chooseTool('pack'); }
   bindSetScope(root);
   root.querySelector('#setScope').addEventListener('change', () => {
-    root.querySelector('#addToSet').value = activeSetId() === 'unfiled' ? '' : activeSetId();
+    root.querySelector('#addToSet').value = addTargetSet();
     drawPreview();
   });
 

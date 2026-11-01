@@ -251,6 +251,15 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .word-set-tags:empty { display: none; }
 .word-set-tags .chip { max-width: 100%; overflow-wrap: anywhere; white-space: normal; font-size: 11px; padding: 1px 7px; margin-top: 4px; }
 .set-name-dialog { max-width: 460px; }
+.set-multi-dialog { max-width: 460px; }
+.set-multi-dialog .hint-text { margin: -6px 0 12px; }
+.set-multi-list { display: grid; gap: 2px; max-height: min(50dvh, 360px); overflow-y: auto; margin: 0; padding: 4px; border: 1px solid var(--line); border-radius: 8px; }
+.set-multi-list .check-row { display: flex; align-items: center; gap: 10px; margin: 0; padding: 9px 10px; border-radius: 6px; cursor: pointer; }
+.set-multi-list .check-row:hover { background: var(--accent-soft); }
+.set-multi-list input { flex-shrink: 0; width: 18px; height: 18px; accent-color: var(--focus); }
+.set-multi-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.set-multi-count { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.set-multi-total { margin: 12px 0 4px; color: var(--ink-soft); }
 .set-error { color: var(--accent); }
 .word-pack summary { cursor: pointer; font-weight: 700; }
 .word-pack .summary-hint { margin-left: 12px; color: var(--ink-soft); font-size: 12px; font-weight: 400; }

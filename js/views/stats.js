@@ -12,10 +12,9 @@ import { examPlan } from '../exam-plan.js?v=review-fixes-1';
 
 // 目前單字集的名稱（考試計畫依這個範圍計算，和今日複習一樣）
 function scopeName() {
-  const id = activeSetId();
-  if (!id) return '全部單字';
-  if (id === 'unfiled') return '未分類';
-  return getWordSets().find((s) => s.id === id)?.name || '全部單字';
+  const ids = activeSetId().split(',').filter(Boolean);
+  if (!ids.length) return '全部單字';
+  return ids.map((id) => id === 'unfiled' ? '未分類' : getWordSets().find((s) => s.id === id)?.name).join('、');
 }
 
 const fmtExam = (d) => d.replaceAll('-', '/');

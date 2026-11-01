@@ -93,3 +93,13 @@ test('分類反向索引排除刪除集、移出紀錄與未收藏字，同字�
   assert.deepEqual(result.byWord.get('budget').map((s) => s.id), ['a', 'b']);
   assert.equal(result.unfiled, 1);
 });
+
+test('多選單字集取聯集，重複的字只出現一次', () => {
+  const all = [...words, { id: 'c', word: 'invoice' }, { id: 'd', word: 'salary' }];
+  const sets = mergeSets([], [set('finance', { members: { budget: { at: 1, present: true }, invoice: { at: 1, present: true } } }),
+    set('mock', { members: { invoice: { at: 1, present: true }, agenda: { at: 1, present: true } } })]);
+  assert.deepEqual(filterSetWords(all, sets, 'finance,mock').map((w) => w.word), ['budget', 'agenda', 'invoice']);
+  assert.deepEqual(filterSetWords(all, sets, 'unfiled,finance').map((w) => w.word), ['budget', 'invoice', 'salary']);
+  assert.deepEqual(filterSetWords(all, sets, 'finance,deleted-id').map((w) => w.word), ['budget', 'invoice']);
+  assert.equal(filterSetWords(all, sets, 'gone,deleted-id'), all);
+});

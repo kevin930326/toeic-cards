@@ -63,9 +63,16 @@ export function setsForWord(sets, word) {
   return sets.filter((s) => !s.deleted && s.members[normalizeWord(word)]?.present);
 }
 
-export function filterSetWords(words, sets, id = '') {
-  if (id === UNFILED) return words.filter((w) => !setsForWord(sets, w.word).length);
-  if (!id) return words;
-  const set = sets.find((s) => s.id === id && !s.deleted);
-  return set ? words.filter((w) => set.members[w.word]?.present) : words;
+// 範圍可以同時選多個單字集（含未分類），用逗號串成一個字串存（id 本身不含逗號）。
+// 舊版只認得單一 id，看到不認得的值會當成全部單字，不會壞掉。
+export const scopeIds = (scope) => String(scope || '').split(',').filter(Boolean);
+
+// 多個單字集取聯集：屬於任一個勾選的單字集就算，同一個字只出現一次
+export function filterSetWords(words, sets, scope = '') {
+  const ids = scopeIds(scope);
+  const live = sets.filter((s) => !s.deleted && ids.includes(s.id));
+  const unfiled = ids.includes(UNFILED);
+  if (!live.length && !unfiled) return words;
+  return words.filter((w) => live.some((s) => s.members[w.word]?.present)
+    || (unfiled && !setsForWord(sets, w.word).length));
 }

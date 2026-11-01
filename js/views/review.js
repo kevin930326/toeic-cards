@@ -191,7 +191,7 @@ export function renderReview(root) {
 
     let body;
     if (!words.length) {
-      body = `<p class="empty-title">${activeSetId() ? '這個單字集還沒有字卡' : '還沒有任何字卡'}</p>
+      body = `<p class="empty-title">${activeSetId().includes(',') ? '這些單字集還沒有字卡' : activeSetId() ? '這個單字集還沒有字卡' : '還沒有任何字卡'}</p>
         <p>到「單字庫」輸入英文單字，就可以開始複習。</p>
         <a class="btn btn-primary" href="#/words">新增單字</a>`;
     } else {

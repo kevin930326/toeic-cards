@@ -2,7 +2,7 @@ import { profileStorage } from './profile-storage.js';
 import {stampWord,versionCeiling,birthClock,clockToken} from './word-versions.js';
 // 資料儲存：所有單字和設定都存在瀏覽器的 localStorage
 import { normalizeWord } from './parse.js';
-import { normalizeSetName, sanitizeSets, mergeSets, filterSetWords, UNFILED } from './word-sets.js?v=dictionary-scale-1';
+import { normalizeSetName, sanitizeSets, mergeSets, filterSetWords, scopeIds, UNFILED } from './word-sets.js?v=dictionary-scale-1';
 
 const WORDS_KEY = 'toeic-cards:words';
 const SETTINGS_KEY = 'toeic-cards:settings';
@@ -24,7 +24,7 @@ const DEFAULT_SETTINGS = {
   aiPrefetchDaily: 24,  // 背景備題每天最多幾次請求：12 | 24 | 40
   statsDays: 30,        // 統計頁的期間：7 | 30 | 90
   dailyGoal: 20,        // 每日目標：複習＋測驗合計題數，達標才算打卡
-  activeSetId: '',      // 本機目前選的單字集：空字串全部、unfiled 未分類
+  activeSetId: '',      // 本機目前選的單字集：空字串全部、unfiled 未分類；多選時以逗號串起（a,b）
   examDate: '',         // 多益考試日期 'YYYY-MM-DD'（空字串＝沒設定），用來倒數和建議每天新字數
 };
 
@@ -318,9 +318,10 @@ export function setSettingsUpdatedAt(t) {
 // ---- 自訂單字集：獨立於卡片內容、共用同一張卡的複習進度 ----
 export function getSetRecords() { return wordSets; }
 export function getWordSets() { return wordSets.filter((s) => !s.deleted); }
+// 只留下還存在的單字集，並依選單順序排好，同樣的選擇永遠得到同樣的字串
 export function activeSetId() {
-  const id = settings.activeSetId;
-  return id === UNFILED || getWordSets().some((s) => s.id === id) ? id : '';
+  const ids = scopeIds(settings.activeSetId);
+  return [UNFILED, ...getWordSets().map((s) => s.id)].filter((id) => ids.includes(id)).join(',');
 }
 export function scopedWords() { return filterSetWords(words, wordSets, activeSetId()); }
 
