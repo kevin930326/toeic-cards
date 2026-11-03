@@ -167,7 +167,7 @@ with sync_playwright() as p:
     page.click('#good')
     page.wait_for_selector('.done-state')
     log = today_log(page)
-    check(log == {'reviews': 6, 'again': 1, 'good': 5, 'learned': 3}, f'今日紀錄 {log}')
+    check(log == {'reviews': 6, 'again': 1, 'good': 5, 'learned': 3, 'repeat': 1}, f'今日紀錄 {log}')
     done = page.locator('.done-state').inner_text()
     check('今天的複習完成了' in done and '複習了 6 次' in done, '完成畫面顯示統計')
     check('再學 2 個新字' in done, '還有新字時可以「再學」')

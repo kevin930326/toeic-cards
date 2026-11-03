@@ -123,3 +123,11 @@ test('打卡：今天一律用目前的目標（今天把目標調高，今天�
   assert.deepEqual(streak(log, NOW, 5), { days: 2, todayDone: true });
   assert.deepEqual(streak(log, NOW, 50), { days: 1, todayDone: false });   // 昨天仍算，今天要達到 50
 });
+
+test('同一張卡當天重複評分不計入打卡', () => {
+  // 複習 12 次，其中 4 次是同一張卡又出現（repeat）：只算 8 張＋測驗 2 題
+  assert.equal(goalMet({ reviews: 12, repeat: 4, quiz: 2, goal: 10 }, 99), true);
+  assert.equal(goalMet({ reviews: 12, repeat: 4, quiz: 1, goal: 10 }, 99), false);
+  // 舊紀錄沒有 repeat，照原本的次數
+  assert.equal(goalMet({ reviews: 10, goal: 10 }, 99), true);
+});

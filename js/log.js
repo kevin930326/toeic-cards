@@ -1,7 +1,8 @@
 import { profileStorage } from './profile-storage.js';
 // 每日學習紀錄（統計、每日目標、連續打卡都用它）
-// 存在 localStorage：{ '2026-10-14': { reviews, again, good, learned, quiz, quizCorrect, goal } }
+// 存在 localStorage：{ '2026-10-14': { reviews, again, good, learned, repeat, quiz, quizCorrect, goal } }
 //   reviews／again／good／learned：複習；quiz／quizCorrect：測驗題數、答對題數
+//   repeat：同一張卡當天第二次以後的評分（例如按「不熟」後又出現），不計入每日目標
 //   goal：那一天的每日目標（之後改目標，不會影響過去的打卡紀錄）
 //
 // 跨裝置同步時：'toeic-cards:log' 只放「這台裝置自己」的紀錄；
@@ -78,12 +79,13 @@ export function currentGoal() {
 
 // 某一天（所有裝置加總）
 export function getDay(now = Date.now()) {
-  return { reviews: 0, again: 0, good: 0, learned: 0, quiz: 0, quizCorrect: 0, ...getLog()[dayKey(now)] };
+  return { reviews: 0, again: 0, good: 0, learned: 0, repeat: 0, quiz: 0, quizCorrect: 0, ...getLog()[dayKey(now)] };
 }
 
-// 每日目標的進度：複習一張卡或測驗答一題都算 1
+// 每日目標的進度：今天複習過的每張卡算 1（同一張卡重複出現不再加）、測驗答一題算 1
+//   舊紀錄沒有 repeat，照原本的評分次數計算，過去的打卡結果不變
 export function dayProgress(day) {
-  return Math.max(0, (Number(day?.reviews) || 0) + (Number(day?.quiz) || 0));
+  return Math.max(0, (Number(day?.reviews) || 0) - (Number(day?.repeat) || 0) + (Number(day?.quiz) || 0));
 }
 
 // 今天的進度一律對照「目前的目標」（今天改目標會立刻生效）
@@ -105,11 +107,13 @@ function update(now, fn) {
 }
 
 // 記錄一次複習；delta 為 +1（記錄）或 -1（復原）
-export function recordReview(rating, wasNew, now = Date.now(), delta = 1) {
+//   repeat：這張卡今天已經評分過（在這台或別台），這次不再計入每日目標
+export function recordReview(rating, wasNew, now = Date.now(), delta = 1, repeat = false) {
   update(now, (d) => {
     d.reviews += delta;
     d[rating] += delta;
     if (wasNew) d.learned += delta;
+    if (repeat) d.repeat = Math.max(0, (Number(d.repeat) || 0) + delta);
   });
 }
 

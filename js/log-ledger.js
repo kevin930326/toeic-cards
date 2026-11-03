@@ -1,5 +1,5 @@
 // 每個來源保留獨立快照。同來源取較新 revision，不把加總結果當成新的裝置紀錄。
-const fields = ['reviews', 'again', 'good', 'learned', 'quiz', 'quizCorrect', 'goal'];
+const fields = ['reviews', 'again', 'good', 'learned', 'repeat', 'quiz', 'quizCorrect', 'goal'];
 const number = value => Number.isFinite(Number(value)) ? Math.max(0,Number(value)) : 0;
 export function cleanDays(raw) {
   const out = {};

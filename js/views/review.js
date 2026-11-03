@@ -245,7 +245,9 @@ export function renderReview(root) {
     }
     const now = Date.now();
     const wasNew = isNew(w);
-    session.history.push({ id: w.id, srs: w.srs || null, unfamiliar: w.unfamiliar, rating, wasNew, at: now, queue: [...session.queue] });
+    // 今天已經評分過這張卡（按「不熟」後又出現，或別台複習過）：只記次數，不再計入每日目標
+    const repeat = !!w.srs?.last && dayKey(w.srs.last) === dayKey(now);
+    session.history.push({ id: w.id, srs: w.srs || null, unfamiliar: w.unfamiliar, rating, wasNew, repeat, at: now, queue: [...session.queue] });
     if (session.history.length > 50) session.history.shift();
 
     const srs = grade(w.srs, rating, now);
@@ -257,7 +259,7 @@ export function renderReview(root) {
     session.queue.shift();
     if (rating === 'again') session.queue.splice(Math.min(AGAIN_GAP, session.queue.length), 0, w.id);
     session.flipped = false;
-    recordReview(rating, wasNew, now);
+    recordReview(rating, wasNew, now, 1, repeat);
     busy = false;
     updateWord(w.id, patch);   // 會觸發 subscribe → draw()
   }
@@ -271,7 +273,7 @@ export function renderReview(root) {
     session.flipped = false;
     // 扣回紀錄會觸發重畫；字卡還沒還原前先不要畫（否則佇列會以為這張在別處複習過而拿掉）
     busy = true;
-    recordReview(h.rating, h.wasNew, h.at, -1);
+    recordReview(h.rating, h.wasNew, h.at, -1, h.repeat);
     busy = false;
     updateWord(h.id, { srs: h.srs, unfamiliar: h.unfamiliar });
   }

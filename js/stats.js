@@ -11,12 +11,12 @@ export function isActive(day) {
   return !!day && (n(day.reviews) > 0 || n(day.quiz) > 0);
 }
 
-// 那一天有沒有「打卡」：複習＋測驗題數達到當天的目標
+// 那一天有沒有「打卡」：複習的卡數（同一張卡當天只算一次）＋測驗題數達到當天的目標
 //   當天紀錄裡有 goal 就用它（之後改目標不影響過去）；舊資料沒有 goal 時用目前的目標
 export function goalMet(day, fallbackGoal) {
   if (!day) return false;
   const goal = n(day.goal) || n(fallbackGoal) || 1;
-  return n(day.reviews) + n(day.quiz) >= goal;
+  return Math.max(0, n(day.reviews) - n(day.repeat)) + n(day.quiz) >= goal;
 }
 
 // 從今天往回數 count 天的 key（舊 → 新），用 setDate 避免夏令時間差一小時

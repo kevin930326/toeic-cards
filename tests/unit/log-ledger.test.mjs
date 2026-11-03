@@ -30,3 +30,9 @@ test('舊版總數以獨立基準保存，不和原裝置再加一次',()=>{
  const b=resetLedger(legacyLedger({[day]:{reviews:30}},'legacy'),'reset',10);
  assert.equal(ledgerTotal(mergeLedgers(a,b))[day].reviews,30);
 });
+
+test('重複評分次數跟著帳本加總與清理保留', () => {
+  const ledger = cleanLedger({ sources: { pc: { log: { '2026-11-04': { reviews: 5, repeat: 2 } }, updatedAt: 1 },
+    phone: { log: { '2026-11-04': { reviews: 3, repeat: 1 } }, updatedAt: 1 } } });
+  assert.deepEqual(ledgerTotal(ledger)['2026-11-04'], { reviews: 8, repeat: 3 });
+});
