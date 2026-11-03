@@ -1,4 +1,6 @@
-"""有／無複習數字時，主導覽的文字垂直位置一致。"""
+"""有／無複習數字時，主導覽的文字垂直位置一致。
+
+第 56 步改版後桌機是左側欄（上下排列）、手機是底部導覽，所以改量「文字在自己按鈕裡的垂直位置」是否一致。"""
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
@@ -17,17 +19,24 @@ with sync_playwright() as p:
         for badge in ['', '1','16','1000']:
             pg.locator('#reviewBadge').evaluate('(el,t)=>{el.hidden=!t;el.textContent=t;}',badge)
             centers=pg.evaluate('''()=>[document.querySelector('#reviewNav > a'),...document.querySelectorAll('.nav > a')].map(el=>{
-              const r=document.createRange();r.selectNode(el.firstChild);const b=r.getBoundingClientRect();return b.y+b.height/2;
+              const r=document.createRange();r.selectNode(el.firstChild);const b=r.getBoundingClientRect();const box=el.getBoundingClientRect();return (b.y+b.height/2)-(box.y+box.height/2);
             })''')
             gap=max(centers)-min(centers)
             print(f'{width}px badge={badge or "hidden"}: text gap={gap:.2f}px',flush=True)
             assert gap<0.6, '複習與其他導覽文字應在同一高度'
+            # 橫向排列（頂部列、底部導覽）時，五個字也要在同一條水平線上
+            row=pg.evaluate('''()=>{const els=[document.querySelector('#reviewNav > a'),...document.querySelectorAll('.nav > a')];
+              const tops=els.map(e=>e.getBoundingClientRect().top);if(Math.max(...tops)-Math.min(...tops)>4)return null;
+              return els.map(el=>{const r=document.createRange();r.selectNode(el.firstChild);const b=r.getBoundingClientRect();return b.y+b.height/2;});}''')
+            if row: assert max(row)-min(row)<0.6, '同一列的導覽文字應在同一高度'
+            # 複習數字不能蓋住「▾」
+            if badge: assert pg.evaluate("document.querySelector('#reviewBadge').getBoundingClientRect().right<=document.querySelector('#reviewMenuToggle').getBoundingClientRect().left+1"), '複習數字蓋住選單鈕'
             assert pg.evaluate('document.documentElement.scrollWidth<=innerWidth')
         pg.click('#reviewMenuToggle');expect(pg.locator('#reviewChoices')).to_be_visible()
         pg.keyboard.press('Escape');expect(pg.locator('#reviewMenuToggle')).to_be_focused()
     pg.set_viewport_size({'width':390,'height':900})
     pg.locator('#reviewBadge').evaluate("el=>{el.hidden=false;el.textContent='16';}")
     pg.locator('#reviewMenuToggle').evaluate('el=>el.blur()')
-    pg.locator('.topbar').screenshot(path=doc_shot('28-nav-alignment.png'),animations='disabled')
+    pg.locator('.topbar .nav').screenshot(path=doc_shot('28-nav-alignment.png'),animations='disabled')
     b.close()
 print('ALL PASSED')

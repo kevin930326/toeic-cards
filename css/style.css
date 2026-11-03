@@ -1525,7 +1525,6 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
 
 /* ===== 動畫（改版：只動 transform／opacity；時間與 easing 用上方 token） =====
    頁面切換：#view 只做淡入（不位移，避免影響教學光圈量位置與固定元素）。 */
-.view.page-enter { animation: fade-in var(--dur-page) var(--ease-out); }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes rise-in { from { opacity: 0; } }
 @keyframes pop-in { from { opacity: 0; } }
@@ -1539,4 +1538,242 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
   .review-choices, .done-mark, .done-state > *, .feedback, .option.is-wrong, .option.is-correct .option-key, .dialog[open], .question-report-dialog[open], .view.page-enter { animation-name: fade-in !important; animation-duration: 120ms !important; animation-delay: 0s !important; }
   .btn:not(.input-with-btn .btn):active:not(:disabled), .icon-btn:active:not(:disabled), .option:active:not(:disabled) { transform: none; }
   .mode-card:hover:not(.is-disabled) { transform: none; }
+}
+
+
+/* =====================================================================
+   第二版版面（ui-ux-pro-max：Swiss Modernism 2.0 ＋ Paper，寬鬆密度）
+   - 手機 ≤ 720px：導覽改到底部（五格圖示＋文字），頂部只留一列
+   - 桌機 ≥ 1080px：導覽改成固定左側欄
+   - 標題改成襯線大字，複習頁重新構圖
+   只用 CSS 重新排列，不改 JS 依賴的 id／class 與 DOM 順序。
+   ===================================================================== */
+:root {
+  --font-display: 'Fraunces', 'Noto Serif TC', 'Georgia', serif;
+  --font-zh-display: 'Noto Serif TC', 'Noto Sans TC', serif;
+  --bottom-nav-h: 64px;
+  --sidebar-w: 236px;
+}
+
+.nav-icon { display: none; flex: none; }
+
+/* ---- 標題：襯線大字、英文小標 ---- */
+.page-title, .review-purpose h1 {
+  font-family: var(--font-zh-display);
+  font-weight: 700;
+  font-size: clamp(28px, 4.2vw, 38px);
+  line-height: 1.2;
+  letter-spacing: .04em;
+}
+.page-title.inline { font-size: clamp(24px, 3.4vw, 30px); }
+.review-purpose h1::before, .page-free-cards > .page-title::before {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: var(--warm);
+}
+.review-purpose h1::before { content: "TODAY'S REVIEW" / ""; }
+.page-free-cards > .page-title::before { content: 'BROWSE AT YOUR PACE' / ""; }
+.review-purpose { margin: 0 0 24px; }
+.review-purpose p { margin-top: 8px; font-size: 13px; line-height: 1.7; }
+
+/* ---- 複習頁：資訊列一條、字卡置中、背後露出疊卡 ---- */
+.page-review { max-width: 720px; }
+.page-review .set-scope { margin-bottom: 14px; }
+.review-head {
+  gap: 12px;
+  padding: 10px 10px 10px 16px;
+  margin-bottom: 0;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.review-head .goal-pill { margin-left: 4px; }
+.review-progress { height: 3px; margin: 0 0 28px; border-radius: 0 0 4px 4px; }
+.review-stage { margin: 0 6px; isolation: isolate; }
+/* 疊卡：只是兩張靜態的紙，不動畫、不吃點擊 */
+.review-stage::before, .review-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  pointer-events: none;
+  z-index: -1;
+}
+.review-stage::before { transform: translateY(10px) scale(.96); opacity: .7; }
+.review-stage::after { transform: translateY(20px) scale(.92); opacity: .4; }
+.review-stage .card-face { box-shadow: var(--shadow-lg); }
+.page-review .grade-controls { margin-top: 40px; gap: 14px; }
+.page-review .grade-btn { min-height: 64px; }
+.page-review .review-tools { margin-top: 14px; }
+.headword { font-family: var(--font-en); }
+.card-face { padding: 56px 32px 32px; }
+
+/* ---- 其他頁面：更多呼吸空間 ---- */
+.page { padding-top: 36px; }
+.panel { padding: 22px 24px; }
+.library-heading, .explore-heading { margin-bottom: 32px; }
+
+/* =====================================================================
+   手機：底部導覽列
+   ===================================================================== */
+@media (max-width: 720px) {
+  body { padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom)); }
+  /* 捲動到目標（教學、鍵盤焦點）時避開頂部列與底部導覽 */
+  html { scroll-padding-top: calc(max(10px, env(safe-area-inset-top)) + 64px); scroll-padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 12px); }
+
+  /* 頂部只留一列：品牌、查單字、設定、主題（backdrop-filter 會讓 fixed 的子元素跟著它定位，所以手機改實色） */
+  .topbar { flex-wrap: nowrap; gap: 8px; padding-top: max(10px, env(safe-area-inset-top)); padding-bottom: 10px; backdrop-filter: none; -webkit-backdrop-filter: none; background: color-mix(in srgb, var(--bg) 96%, var(--surface)); }
+  .topbar .brand { display: flex; margin-right: auto; }
+  .brand-text { display: inline; font-size: 15px; }
+  .topbar .nav-lookup { margin-left: auto; }
+  .nav-lookup span { display: inline; }
+  .theme-toggle, .settings-link { width: 40px; height: 40px; }
+
+  /* 底部導覽 */
+  .topbar .nav {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 40;
+    order: 0;
+    flex: none;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    height: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom));
+    padding: 4px max(6px, env(safe-area-inset-left)) env(safe-area-inset-bottom) max(6px, env(safe-area-inset-right));
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -8px 24px -18px rgba(0, 0, 0, .35);
+  }
+  .topbar .nav > a, .nav .review-nav > a {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 56px;
+    padding: 4px 2px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: .04em;
+    background: transparent;
+  }
+  .nav-icon { display: block; transition: transform var(--dur-micro) var(--ease-out); }
+  .topbar .nav > a.active, .nav .review-nav.active > a { color: var(--accent); background: transparent; font-weight: 600; }
+  .topbar .nav > a.active .nav-icon, .nav .review-nav.active > a .nav-icon { transform: translateY(-1px); }
+  /* 選到的那格上方一條短線 */
+  .topbar .nav > a::after, .nav .review-nav > a::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 22px; height: 2px;
+    margin-left: -11px;
+    border-radius: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform var(--dur-enter) var(--ease-out);
+  }
+  .topbar .nav > a.active::after, .nav .review-nav.active > a::after { transform: scaleX(1); }
+  .topbar .nav .review-nav { flex: none; display: flex; align-items: stretch; background: transparent; border-radius: 12px; }
+  .nav .review-nav > a { flex: 1; min-width: 0; padding-right: 2px; }
+  .nav .review-nav.active { background: transparent; }
+  #reviewMenuToggle { flex: none; width: 28px; min-height: 48px; padding: 0; margin-left: 0; font-size: 12px; align-self: center; }
+  .nav-badge { position: absolute; top: 3px; left: auto; right: 0; margin: 0; min-width: 17px; max-width: 30px; overflow: hidden; text-overflow: clip; padding: 0 4px; font-size: 10px; line-height: 16px; }
+  /* 「複習 ▾」選單往上開 */
+  .review-choices { top: auto; bottom: calc(100% + 10px); left: 4px; transform-origin: bottom left; }
+
+  /* 固定在底部的東西都要讓開底部導覽 */
+  .toast { bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 14px); }
+  .update-notice { bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom)); z-index: 5; }
+  .offline-bar { top: calc(max(10px, env(safe-area-inset-top)) + 51px); }
+
+  /* 手機寬鬆化 */
+  .page { padding: 24px 20px 40px; }
+  .page-title, .review-purpose h1 { font-size: 28px; margin-bottom: 14px; }
+  .review-purpose { margin-bottom: 18px; }
+  .review-purpose p { display: none; }
+  .review-head { flex-wrap: wrap; row-gap: 6px; gap: 8px; padding: 8px 8px 8px 12px; }
+  .review-count { font-size: 13px; }
+  .review-count strong { font-size: 24px; }
+  .review-head .goal-pill { margin-left: 0; }
+  .review-head .segmented { margin-left: auto; }
+  .review-head .seg span { padding: 6px 10px; }
+  .review-progress { margin-bottom: 22px; }
+  .card-face { padding: 52px 20px 24px; }
+  .page-review .grade-controls { margin-top: 34px; gap: 12px; }
+  .panel { padding: 18px; }
+  .set-scope { gap: 10px; font-size: 14px; }
+  .library-heading, .explore-heading { margin-bottom: 24px; }
+  .mode-grid { gap: 14px; }
+  .options { gap: 12px; }
+  .question { padding: 26px 20px; }
+}
+@media (max-width: 340px) {
+  .brand-text { display: none; }
+  .page { padding-left: 16px; padding-right: 16px; }
+}
+
+/* =====================================================================
+   桌機：左側欄
+   ===================================================================== */
+@media (min-width: 1080px) {
+  body { padding-left: var(--sidebar-w); }
+  .topbar {
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: var(--sidebar-w);
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas: "brand brand brand" "nav nav nav" "space space space" "lookup set theme";
+    align-items: center;
+    gap: 8px;
+    padding: 28px 18px 22px;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+    background: var(--surface-2);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .topbar .brand { grid-area: brand; margin: 0 0 30px 6px; }
+  .brand-mark { width: 34px; height: 34px; font-size: 20px; }
+  .brand-text { font-family: var(--font-zh-display); font-size: 18px; }
+  .topbar .nav { grid-area: nav; flex-direction: column; align-items: stretch; gap: 4px; }
+  .topbar .nav > a, .nav .review-nav > a {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 12px;
+    min-height: 44px;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 15px;
+  }
+  .nav-icon { display: block; width: 20px; height: 20px; }
+  .nav .review-nav { width: 100%; }
+  .nav .review-nav > a { flex: 1; }
+  .nav .review-nav .nav-badge { margin-left: auto; order: -1; }
+  #reviewMenuToggle { padding: 10px 12px; }
+  .review-choices { left: 0; right: 0; min-width: 0; }
+  .topbar .nav-lookup { grid-area: lookup; justify-content: flex-start; }
+  .topbar .settings-link { grid-area: set; }
+  .topbar .theme-toggle { grid-area: theme; }
+  .offline-bar { top: 0; }
+  .page { padding-top: 56px; }
+  .explore-index { top: 24px; }
+  .tutorial-banner { padding-left: 24px; padding-right: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar .nav > a::after, .nav .review-nav > a::after, .nav-icon { transition: none; }
 }

@@ -168,7 +168,10 @@ export function startTour(topic = 'start') {
     const usable = target && (!dialog || dialog.contains(target));
     layer.querySelector('#tourInstruction').textContent = s.action && usable ? '請點亮起的實際按鈕，或按「先略過」繼續。' : usable ? '可以直接操作畫面；看完後按下一步。' : '目前沒有這個控制項，或已切換操作。可先略過，之後從使用教學重看。';
     const width = viewport?.width || innerWidth;
-    const height = viewport?.height || innerHeight;
+    // 手機底部導覽固定在畫面下方：光圈與浮窗的可用高度要扣掉它，免得框到導覽列後面
+    const bottomNav = document.querySelector('.topbar .nav');
+    const navH = !dialog && bottomNav && getComputedStyle(bottomNav).position === 'fixed' ? bottomNav.getBoundingClientRect().height : 0;
+    const height = (viewport?.height || innerHeight) - navH;
     const x = viewport?.offsetLeft || 0, y = viewport?.offsetTop || 0;
     // 與 target 一樣用 client 座標，再扣除固定定位原點，避免 Safari 的固定層位移被加算兩次。
     const base = origin.getBoundingClientRect();
@@ -235,8 +238,18 @@ export function startTour(topic = 'start') {
   function positionInline() {
     // 教學成為正常排版的一部分，沒有疊在目標上的浮窗或巨大備援光圈。
     ring.hidden = true;
-    tip.style.width = '100%'; tip.style.maxHeight = `${Math.max(130, (viewport?.height || innerHeight) - 24)}px`;
-    if (entering) { entering = false; tip.scrollIntoView({ block: 'nearest', behavior: 'instant' }); tip.focus({ preventScroll: true }); }
+    const bottomNav = document.querySelector('.topbar .nav');
+    const reserved = bottomNav && getComputedStyle(bottomNav).position === 'fixed' ? bottomNav.getBoundingClientRect().height + document.querySelector('.topbar').getBoundingClientRect().height : 0;
+    tip.style.width = '100%'; tip.style.maxHeight = `${Math.max(130, (viewport?.height || innerHeight) - 24 - reserved)}px`;
+    if (entering) {
+      entering = false; tip.scrollIntoView({ block: 'nearest', behavior: 'instant' }); tip.focus({ preventScroll: true });
+      // 手機底部導覽固定在下方：排版完成後若按鈕還被它蓋住，再往上捲一點（不超過頂部列）
+      if (reserved) requestAnimationFrame(() => {
+        const r = tip.getBoundingClientRect(), navTop = bottomNav.getBoundingClientRect().top - 12;
+        const barBottom = document.querySelector('.topbar').getBoundingClientRect().bottom + 8;
+        if (r.bottom > navTop) scrollBy({ top: Math.max(0, Math.min(r.bottom - navTop, r.top - barBottom)), behavior: 'instant' });
+      });
+    }
   }
   function schedule() { if (!stopped && !frame) frame = requestAnimationFrame(position); }
   function showStep() {
