@@ -52,6 +52,10 @@ function render() {
   const name = currentRoute();
   if (cleanup) cleanup();
   cleanup = routes[name](view) || null;
+  // 換頁時輕輕淡入（只動 opacity；同頁重畫不會重播）
+  view.classList.remove('page-enter');
+  void view.offsetWidth;
+  view.classList.add('page-enter');
   document.querySelectorAll('a[data-route]').forEach((a) => {
     a.classList.toggle('active', a.dataset.route === name);
     if (a.dataset.route === name) a.setAttribute('aria-current', 'page');
