@@ -13,7 +13,7 @@ export function confirmWordDeletion(words, { signal } = {}) {
     <p id="deleteWordsDescription">這些字卡與複習進度會從整個單字庫、所有單字集中刪除，無法直接復原。登入同步後，其他裝置也會套用刪除。</p>
     <div class="delete-preview" aria-label="即將刪除的單字">${words.slice(0, 8).map(w => `<span class="chip" lang="en">${esc(w.word)}</span>`).join('')}${words.length > 8 ? `<span class="delete-preview-more">另 ${words.length - 8} 個字</span>` : ''}</div>
     <p class="delete-alternative">只想移除分類？請取消後使用「移出單字集」，字卡和進度就會保留。</p>
-    <div class="dialog-actions"><button class="btn btn-outline" type="button" id="cancelWordDeletion" autofocus>保留字卡</button><button class="btn btn-primary" type="button" id="confirmWordDeletion">刪除 ${words.length} 張字卡</button></div>`;
+    <div class="dialog-actions"><button class="btn btn-outline" type="button" id="cancelWordDeletion" autofocus>保留字卡</button><button class="btn btn-danger" type="button" id="confirmWordDeletion">刪除 ${words.length} 張字卡</button></div>`;
   document.body.append(dialog);
   return new Promise(resolve => {
     let settled = false;
