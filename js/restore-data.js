@@ -5,6 +5,7 @@ import { getLog, getLogLedger, setLogLedger } from './log.js';
 import { getAllMistakes, replaceMistakes } from './mistakes.js';
 import { mergeBackup } from './backup.js';
 import { legacyLedger, resetLedger } from './log-ledger.js';
+import { randomId } from './device-id.js';
 import { profileStorage,pendingProfileWrites } from './profile-storage.js';
 import { invalidateSync } from './sync.js';
 
@@ -18,9 +19,9 @@ export function restoreBackup(incoming, replace = false) {
   profileStorage.setItem('toeic-cards:restoreIncomplete','true');
   const result = replace ? incoming : mergeBackup(before, incoming);
   let ledger = result.logLedger;
-  if (!ledger) ledger = legacyLedger(result.log, `legacy-${crypto.randomUUID()}`);
+  if (!ledger) ledger = legacyLedger(result.log, `legacy-${randomId()}`);
   if (replace || incoming.legacyLog) {
-    ledger = resetLedger(ledger,crypto.randomUUID());
+    ledger = resetLedger(ledger,randomId());
     profileStorage.setItem('toeic-cards:logReset','true');
   }
   if (replace) {

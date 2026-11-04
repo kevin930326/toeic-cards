@@ -12,6 +12,7 @@ import {
 import { profileStorage, pendingProfileWrites, profileOwner, profileIsCurrent, pinProfileLayout, hasGuestData, readProfile, writeProfile, activateProfile } from './profile-storage.js';
 import { mergeBackup, parseBackup, buildBackup,sanitizeMistakes } from './backup.js';
 import { mergeLedgers } from './log-ledger.js';
+import { randomId } from './device-id.js';
 import {metaAction,metaSignature} from './meta-sync.js';
 import { getOwnLog, getLogLedger, setLogLedger, onLogChange } from './log.js';
 export { deviceId } from './device-id.js';
@@ -370,7 +371,7 @@ async function doSync() {
       const wanted = new Set(getWords().map(w=>w.word));
       const tombs = {...getTombstones()};
       const revisions={...getTombRevisions()};
-      const actor=crypto.randomUUID();
+      const actor=randomId();
       for (const d of docs) if (!wanted.has(d.word)) tombs[d.word]=now;
       for (const word of Object.keys(tombs)) revisions[word]=[now,actor,'restore'];
       for (const word of wanted) {delete tombs[word];delete revisions[word];}

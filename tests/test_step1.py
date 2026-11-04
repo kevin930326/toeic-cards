@@ -98,7 +98,7 @@ with sync_playwright() as p:
     # 深色模式
     page.click('#themeToggle')
     bg = page.evaluate("getComputedStyle(document.body).backgroundColor")
-    check(bg == 'rgb(22, 24, 29)', f'深色模式背景 {bg}')
+    check(bg == 'rgb(18, 22, 20)', f'深色模式背景 {bg}')
     page.screenshot(path=os.path.join(OUT, 's1_dark.png'))
     page.reload()
     page.wait_for_load_state('networkidle')

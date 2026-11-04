@@ -160,9 +160,9 @@ with sync_playwright() as p:
     light_fill = page.evaluate("getComputedStyle(document.querySelector('#chartReviews .chart-col path')).fill")
     page.click('#themeToggle')
     dark_fill = page.evaluate("getComputedStyle(document.querySelector('#chartReviews .chart-col path')).fill")
-    check(light_fill == 'rgb(42, 120, 214)' and dark_fill == 'rgb(57, 135, 229)', f'系列顏色跟著深淺模式切換（{light_fill} → {dark_fill}）')
+    check(light_fill == 'rgb(47, 111, 120)' and dark_fill == 'rgb(111, 176, 171)', f'系列顏色跟著深淺模式切換（{light_fill} → {dark_fill}）')
     lvl = page.evaluate("getComputedStyle(document.querySelector('.mastery-seg.lvl-mastered')).backgroundColor")
-    check(lvl == 'rgb(205, 226, 251)', f'深色模式的熟練度色階改為「越熟越亮」（{lvl}）')
+    check(lvl == 'rgb(207, 231, 227)', f'深色模式的熟練度色階改為「越熟越亮」（{lvl}）')
     page.screenshot(path=os.path.join(OUT, 's7_dark.png'), full_page=True)
     page.click('#themeToggle')
 

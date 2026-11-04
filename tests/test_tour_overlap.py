@@ -53,6 +53,8 @@ with sync_playwright() as p:
                 assert separate(pg,'.tour-tip','.done-state')
                 assert separate(pg,'.tour-tip','.done-state a[href="#/words"]')
                 assert pg.evaluate('document.documentElement.scrollWidth<=innerWidth')
+                # 手機底部導覽不能蓋住教學的「下一步／結束導覽」
+                assert pg.evaluate("[...document.querySelectorAll('#tourNext,#tourExit')].every(b=>{const r=b.getBoundingClientRect();const e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return e===b||b.contains(e);})"), '教學按鈕被底部導覽蓋住'
                 if width==393:
                     pg.evaluate("document.querySelector('#toast').classList.remove('show')")
                     pg.screenshot(path=doc_shot('40-tour-empty-review.png'))

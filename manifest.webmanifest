@@ -9,8 +9,8 @@
   "id": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f4efe4",
-  "theme_color": "#f4efe4",
+  "background_color": "#f3f1eb",
+  "theme_color": "#f3f1eb",
   "categories": ["education"],
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

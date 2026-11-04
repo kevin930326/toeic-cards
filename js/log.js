@@ -18,7 +18,7 @@ const totalListeners = new Set();  // 畫面上的總數可能變了：本機記
 const LEDGER_KEY = 'toeic-cards:logLedger';
 const ORIGIN_KEY = 'toeic-cards:logOrigin';
 import { profileOwner } from './profile-storage.js';
-import { deviceId } from './device-id.js';
+import { deviceId, randomId } from './device-id.js';
 import { cleanLedger, ledgerTotal } from './log-ledger.js';
 
 function json(key, fallback) {
@@ -27,7 +27,7 @@ function json(key, fallback) {
 export function logOrigin() {
   let id = json(ORIGIN_KEY, '');
   if (!id) {
-    id = profileOwner() || Object.keys(json(LOG_KEY, {})).length ? deviceId() : `guest-${crypto.randomUUID()}`;
+    id = profileOwner() || Object.keys(json(LOG_KEY, {})).length ? deviceId() : `guest-${randomId()}`;
     try {profileStorage.setItem(ORIGIN_KEY, JSON.stringify(id));}catch { /* 保留記憶體待重試 */ }
   }
   return id;
