@@ -359,14 +359,14 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .brand-mark {
   display: grid; place-items: center;
   width: 30px; height: 30px;
-  border-radius: 9px;
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-family: var(--font-en);
-  font-weight: 600;
-  font-size: 18px;
-  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.14);
+  border-radius: 22%;
+  flex: none;
+  /* 標誌本身是 SVG（書本 T，見 tools/make_icons.py）；淺色底上加一圈極淡的陰影，深色底上加細亮邊，兩邊都看得出輪廓 */
+  box-shadow: 0 1px 2px rgba(30, 36, 34, 0.18);
 }
+.brand-logo { display: block; width: 100%; height: 100%; }
+:root[data-theme="dark"] .brand-mark { box-shadow: 0 0 0 1px rgba(134, 189, 182, 0.22); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-mark { box-shadow: 0 0 0 1px rgba(134, 189, 182, 0.22); } }
 .brand-text { font-weight: 700; letter-spacing: 0.06em; }
 
 .nav { display: flex; align-items: center; gap: 2px; }
@@ -1751,7 +1751,7 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
     -webkit-backdrop-filter: none;
   }
   .topbar .brand { grid-area: brand; margin: 0 0 30px 6px; }
-  .brand-mark { width: 34px; height: 34px; font-size: 20px; }
+  .brand-mark { width: 34px; height: 34px; }
   .brand-text { font-family: var(--font-zh-display); font-size: 18px; }
   .topbar .nav { grid-area: nav; flex-direction: column; align-items: stretch; gap: 4px; }
   .topbar .nav > a, .nav .review-nav > a {

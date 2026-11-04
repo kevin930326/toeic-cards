@@ -1,4 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#c8402f"/>
-  <text x="32" y="47" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="46" fill="#fffdf7">T</text>
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e6670"/><stop offset="1" stop-color="#24545c"/></linearGradient></defs>
+<rect width="64" height="64" rx="15" fill="url(#g)"/>
+<g transform="translate(0 0) scale(1)"><path d="M27 24h10v27l-5-4.6-5 4.6z" fill="#c98552"/>
+<path d="M32 20C26 16.3 17.8 15.6 9.5 17.4v10.4c8-1.5 16.2-.8 22.5 3z" fill="#f4efe3"/>
+<path d="M32 20c6-3.7 14.2-4.4 22.5-2.6v10.4c-8-1.5-16.2-.8-22.5 3z" fill="#e3ddcf"/></g>
 </svg>
