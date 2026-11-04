@@ -427,7 +427,10 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 }
 
 /* ===== 版面 ===== */
-.view { outline: none; }
+/* 滑卡飛出時卡片會超出螢幕右邊；裁掉內容區的橫向溢出，iPhone 才不會把整頁撐寬、往左偏。
+   用 clip 而不是 hidden：clip 不會變成捲動容器，裡面的 sticky（探索清單）照常運作 */
+.view { outline: none; overflow-x: clip; }
+@supports not (overflow: clip) { .view { overflow-x: hidden; } }
 .page { max-width: 760px; margin: 0 auto; padding: 28px 16px 64px; }
 .page-title { font-size: 28px; line-height: var(--leading-tight); margin: 8px 0 20px; letter-spacing: 0.03em; }
 

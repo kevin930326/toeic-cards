@@ -133,6 +133,14 @@ with sync_playwright() as p:
     page.locator('.card-front .speak-btn').tap()
     assert page.evaluate('spoken.length') > 0
     print('PASS 發音正常')
+
+    # 卡片飛出畫面時不能把整頁撐寬（iPhone 會整頁往左偏）
+    page.evaluate("window.__maxSW=0;(function f(){window.__maxSW=Math.max(__maxSW,document.documentElement.scrollWidth,document.body.scrollWidth);if(!window.__stopSW)requestAnimationFrame(f)})()")
+    page.evaluate("import('/js/swipe.js').then((m) => m.flyOut(document.querySelector('#swipe'), 'right'))")
+    page.wait_for_timeout(400)
+    page.evaluate('window.__stopSW = true')
+    assert page.evaluate('__maxSW') <= page.evaluate('innerWidth'), page.evaluate('__maxSW')
+    print('PASS 卡片飛出時頁面不會變寬、不會橫向偏移')
     assert not errors, errors
     browser.close()
 print('ALL PASSED（iPhone Safari／主畫面 App 系統手勢仍需真機驗證）')
