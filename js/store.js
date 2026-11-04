@@ -1,4 +1,5 @@
 import { profileStorage } from './profile-storage.js';
+import { randomId } from './device-id.js';
 import {stampWord,versionCeiling,birthClock,clockToken} from './word-versions.js';
 // 資料儲存：所有單字和設定都存在瀏覽器的 localStorage
 import { normalizeWord } from './parse.js';
@@ -50,7 +51,7 @@ function writeJSON(key, value) {
 }
 
 let words = readJSON(WORDS_KEY, []);
-const revisionActor=crypto.randomUUID();
+const revisionActor=randomId();
 let revisionCounter=Math.max(0,...words.map(versionCeiling),...Object.values(readJSON('toeic-cards:deleted',{})));
 function nextRevision(known=0) {revisionCounter=Math.max(revisionCounter,known)+1;return revisionCounter;}
 // id → 字卡的對照表：用 id 找字一步完成（原本每次從頭找，複習佇列幾百個字 × 3,000 張卡就很慢）
@@ -114,7 +115,7 @@ export function subscribe(fn) {
 export { normalizeWord };
 
 function newId() {
-  return (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return randomId();
 }
 
 export function createWord(word) {
