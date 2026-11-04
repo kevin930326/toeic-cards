@@ -105,12 +105,12 @@ export function chooseSets(current, apply) {
   };
   dialog.addEventListener('change', update);
   dialog.addEventListener('close', () => dialog.remove(), { once: true });
-  dialog.querySelector('button[type="button"]').addEventListener('click', () => dialog.close());
+  dialog.querySelector('button[type="button"]').addEventListener('click', () => dismissDialog(dialog));
   dialog.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
     const ids = scope();
     if (!ids) return;
-    dialog.close();
+    dismissDialog(dialog);
     apply(ids);
   });
   update();
@@ -121,6 +121,13 @@ export function chooseSets(current, apply) {
 export function refreshSetScope(root) {
   const el = root.querySelector('#setScope');
   if (el) el.innerHTML = setOptions(activeSetId(), { scopes: true });
+}
+
+// 關閉後立刻移出頁面：瀏覽器的 close 事件是稍後才觸發，若只在 close 事件移除，
+// 馬上再開一個同類視窗時，舊的（已關閉）會短暫留在頁面上，同時存在兩個。Escape 仍靠 close 事件移除。
+function dismissDialog(dialog) {
+  dialog.close();
+  dialog.remove();
 }
 
 // 命名（改名、新增）使用原生 dialog，支援 Enter 儲存、Escape 取消與焦點返回。
@@ -134,10 +141,10 @@ export function askSetName(name, save, { title = '重新命名單字集', submit
     </div></form>`;
   document.body.append(dialog);
   dialog.addEventListener('close', () => dialog.remove(), { once: true });
-  dialog.querySelector('button[type="button"]').addEventListener('click', () => dialog.close());
+  dialog.querySelector('button[type="button"]').addEventListener('click', () => dismissDialog(dialog));
   dialog.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
-    try { save(dialog.querySelector('input').value); dialog.close(); }
+    try { save(dialog.querySelector('input').value); dismissDialog(dialog); }
     catch (err) { const msg = dialog.querySelector('[role="alert"]'); msg.hidden = false; msg.textContent = err.message; }
   });
   dialog.showModal();
