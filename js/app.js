@@ -48,12 +48,15 @@ function currentRoute() {
   return routes[name] ? name : 'review';
 }
 
+const pageFadeOff = matchMedia('(prefers-reduced-motion: reduce), (max-width: 720px), (pointer: coarse)');
+
 function render(animate = false) {
   const name = currentRoute();
   if (cleanup) cleanup();
   cleanup = routes[name](view) || null;
-  // 換頁時輕輕淡入（只動 opacity；同頁重畫不會重播）。用 Web Animations，不必強制重新排版
-  if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) view.animate?.([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'cubic-bezier(.2, .7, .2, 1)' });
+  // 換頁時輕輕淡入（只動 opacity；同頁重畫不會重播）。用 Web Animations，不必強制重新排版。
+  // 手機不做：整頁淡入要先把整頁畫成一張圖層，長頁面在手機上反而會卡一下
+  if (animate && !pageFadeOff.matches) view.animate?.([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'cubic-bezier(.2, .7, .2, 1)' });
   document.querySelectorAll('a[data-route]').forEach((a) => {
     a.classList.toggle('active', a.dataset.route === name);
     if (a.dataset.route === name) a.setAttribute('aria-current', 'page');

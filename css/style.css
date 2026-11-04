@@ -1549,8 +1549,10 @@ a.exam-empty:hover { border-color: var(--accent); color: var(--ink); }
    只用 CSS 重新排列，不改 JS 依賴的 id／class 與 DOM 順序。
    ===================================================================== */
 :root {
-  --font-display: 'Fraunces', 'Noto Serif TC', 'Georgia', serif;
-  --font-zh-display: 'Noto Serif TC', 'Noto Sans TC', serif;
+  /* 中文襯線標題用系統內建字型（iPhone／Mac 的宋體），不另外下載 Noto Serif TC：
+     Google Fonts 的中文字型按用到的字分段下載，每換一頁就要多抓幾段、重新排版，手機上會卡一下 */
+  --font-display: 'Fraunces', 'Songti TC', 'Noto Serif CJK TC', 'Georgia', serif;
+  --font-zh-display: 'Songti TC', 'Noto Serif CJK TC', 'Source Han Serif TC', 'Noto Sans TC', serif;
   --bottom-nav-h: 64px;
   --sidebar-w: 236px;
 }
