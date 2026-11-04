@@ -51,6 +51,7 @@ with sync_playwright() as p:
 
     # 取消 → 回到原本的選擇，不建立
     dialog.locator('button[type=button]').click()
+    check(dialog.count() == 0, '取消後命名視窗立刻移出頁面（不會和下一個同時存在）')
     check(page.locator('#lookupSet').input_value() == '' and sets(page) == [], '取消就回到原本的選擇，不建立單字集')
     check(page.locator('#lookupDialog').evaluate('d => d.open'), '取消後查單字視窗還開著')
 

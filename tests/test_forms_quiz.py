@@ -62,7 +62,8 @@ def gemini(route):
 
 
 def badge_offset(pg, sel):
-    """徽章框的中心，和旁邊文字筆畫中心的差距（px，負數＝徽章偏上）。用 3 倍解析度截圖找出有筆畫的列"""
+    """徽章框的中心，和旁邊文字筆畫中心的差距（px，負數＝徽章偏上）。用 3 倍解析度截圖找出有筆畫的列；
+    截圖時停掉動畫（換頁淡入途中截到的畫面太淡，會找不到筆畫）"""
     bb = pg.locator(sel).first.bounding_box()
     tb = pg.evaluate("""(sel) => { const b = document.querySelector(sel);
       let n = b.nextSibling; while (n && !(n.nodeType === 3 && n.textContent.trim())) n = n.nextSibling;
@@ -71,7 +72,7 @@ def badge_offset(pg, sel):
       const t = [...r.getClientRects()].find((x) => x.height); return { x: t.x, y: t.y, width: Math.min(t.width, 120), height: t.height }; }""", sel)
     top = min(bb['y'], tb['y']) - 4
     bottom = max(bb['y'] + bb['height'], tb['y'] + tb['height']) + 4
-    img = Image.open(io.BytesIO(pg.screenshot(clip={'x': tb['x'], 'y': top, 'width': tb['width'], 'height': bottom - top}))).convert('L')
+    img = Image.open(io.BytesIO(pg.screenshot(clip={'x': tb['x'], 'y': top, 'width': tb['width'], 'height': bottom - top}, animations='disabled'))).convert('L')
     px, (w, h) = img.load(), img.size
     rows = [y for y in range(h) if any(abs(px[x, y] - px[0, 0]) > 60 for x in range(w))]
     scale = h / (bottom - top)
