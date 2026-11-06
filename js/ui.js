@@ -9,8 +9,9 @@ export function esc(s) {
 
 // 把中文意思拆成多行；每行若以詞性開頭（如「v. 核准」）就分出詞性
 const POS_RE = /^((?:[a-z]+\.\s*(?:&|\/)?\s*)+)\s*(.*)$/i;
+// 「也譯作：」那一行另外顯示（見 alt-meaning-ui.js），不算在主要意思裡
 export function zhLines(zh) {
-  return String(zh || '').split('\n').map((l) => l.trim()).filter(Boolean).map((line) => {
+  return String(zh || '').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('也譯作：')).map((line) => {
     const m = line.match(POS_RE);
     return m ? { pos: m[1].trim(), text: m[2] } : { pos: '', text: line };
   });

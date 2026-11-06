@@ -1,0 +1,1 @@
+{"version":2,"source":"ECDICT CSV (common words, TOEIC pack, common-word phrases) + TOEIC 1000 pack zh","converters":["s2twp","s2tw"],"buckets":512,"per_char":400,"per_char_rare":60,"pairs":298661,"words":166847,"bytes":14547265,"max_bytes":92469,"s2t_chars":2635,"shard":"ord(CJK char) % 512, three-digit hex; merge shards of each query char"}

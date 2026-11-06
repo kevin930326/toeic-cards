@@ -1,0 +1,132 @@
+# 中文反查補充詞表：ECDICT 沒收、但台灣常說的多益情境用語。
+# 格式：中文<Tab>英文（多個用逗號分隔，常用的放前面）。由 tools/build_reverse_index.py 併入索引。
+# 只放意思明確、一般字典都會這樣翻的對應；不確定的不放。
+開會	have a meeting,meet,hold a meeting
+出差	business trip,travel on business
+退房	check out
+入住	check in
+辦理入住	check in
+報到	check in,report
+櫃台	front desk,counter,reception
+櫃臺	front desk,counter,reception
+服務台	front desk,information desk,reception
+外帶	takeout,to go,takeaway
+內用	for here,dine in
+打卡	clock in,punch in
+下班打卡	clock out,punch out
+年假	annual leave,paid vacation
+特休	paid leave,annual leave
+病假	sick leave
+請病假	call in sick,take sick leave
+事假	personal leave
+產假	maternity leave
+育嬰假	parental leave
+新進員工	new employee,new hire
+新人	newcomer,new hire
+試用期	probation period,trial period
+離職	leave a job,resign,quit
+離職員工	former employee
+加班費	overtime pay
+上班	go to work,work
+下班	get off work,leave work
+通勤	commute
+投影機	projector
+投影片	slide,presentation slide
+影印	photocopy,copy
+傳真	fax
+印表機	printer
+筆電	laptop
+筆記型電腦	laptop,notebook computer
+網路	internet,network
+上網	go online
+寄信	send an email,mail a letter
+電子郵件	email
+附件	attachment
+回覆	reply,respond
+轉寄	forward
+收件人	recipient
+寄件人	sender
+登機	board
+登機證	boarding pass
+登機門	gate,boarding gate
+轉機	transfer,connecting flight,layover
+直飛	nonstop flight,direct flight
+訂位	make a reservation,book
+訂房	book a room,make a reservation
+取消訂位	cancel a reservation
+候補	waiting list,standby
+行程	itinerary,schedule
+行程表	itinerary
+時刻表	timetable,schedule
+誤點	delayed
+客滿	fully booked,full
+售完	sold out
+缺貨	out of stock
+有現貨	in stock
+到貨	arrive,be delivered
+運費	shipping fee,shipping cost
+免運	free shipping
+退貨	return,return goods
+換貨	exchange
+保固期	warranty period
+發票號碼	invoice number
+報帳	submit expenses,claim expenses
+請款	request payment,invoice
+付款	pay,payment
+分期付款	installment,pay in installments
+刷卡	pay by credit card,swipe a card
+信用卡	credit card
+現金	cash
+找零	change
+收銀台	checkout,cash register
+結帳	check out,pay the bill
+買單	pay the bill,check
+打包	pack,wrap up
+預購	preorder
+促銷	promotion,sale
+特價	special price,on sale
+折價券	coupon,voucher
+會員	member,membership
+客服	customer service
+客訴	customer complaint
+問卷	questionnaire,survey
+業績	sales performance,results
+業務	business,sales
+業務員	salesperson,sales representative
+人資	human resources
+人事部	personnel department,human resources
+會計部	accounting department
+總公司	headquarters,head office
+分公司	branch,branch office
+董事會	board of directors
+執行長	chief executive officer
+經理	manager
+助理	assistant
+實習生	intern
+實習	internship
+兼職	part-time
+全職	full-time
+約聘	contract,contract worker
+應徵者	applicant,candidate
+求職	look for a job,job hunting
+職缺	job opening,vacancy
+履歷表	résumé,resume
+推薦信	recommendation letter,reference
+截止	deadline,close
+延期	postpone,delay,put off
+提早	early,in advance
+準時	on time,punctual
+遲到	be late
+會議室	conference room,meeting room
+議程	agenda
+會議紀錄	minutes
+視訊會議	video conference
+簽名	sign,signature
+搞定	get it done,handle,sort out
+處理	handle,deal with,process
+負責	be in charge of,be responsible for
+裝修	renovate,renovation
+維修中	under repair,out of order
+停電	power outage,blackout
+施工	construction,under construction
+停車位	parking space

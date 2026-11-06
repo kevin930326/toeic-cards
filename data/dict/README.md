@@ -34,3 +34,16 @@ node --test tests/unit/dictionary-suggestions.test.mjs
 來源仍是上方 ECDICT。排序先常用字、再取 frq／bnc 的較小有效排名，再按長度及拼字；無詞頻者排後。單字母另選常見入門候選，方便初學者辨認（a → apple 等），不是 AI 生成或拼字修正。精確拼字及最多三個收藏字由前端合併。
 
 索引重產發布時應更換 `suggestions-v1` 目錄、前端路徑及 Service Worker 快取版本。候選葉片的離線快取最多 32 片；路由索引放在常用字典快取中，避免葉片淘汰後無法再定位已快取的其他開頭。
+
+## 中文反查索引
+
+`reverse-v1/000.json`～`1ff.json` 讓查單字可以輸入中文找英文。來源是 ECDICT 原始 CSV 的完整釋義（含 [網路] 釋義，排序較後），收錄常用字典的字、`data/packs/toeic-1000/` 的字，以及每個字都是核心字（牛津核心或柯林斯有星）的三字以內片語；中文同時用 OpenCC `s2twp` 與 `s2tw` 轉換，台灣用詞與一般繁體都查得到。另併入 `tools/reverse-extra.tsv` 的台灣常用說法（字典沒收的退房、外帶等）。
+
+釋義拆成短中文詞（去詞性、括號、縮寫行與人名地名），中文詞裡每個字都登記一次，依碼位 % 512 分檔；每字保留排名前 400 個，冷僻字與片語每字最多 60 個（優先留中文詞短的）。合計約 14.5 MiB，最大分片約 92 KiB。`s2t.json` 是 2,635 個簡→繁字對照（約 16 KiB），讓簡體輸入也能查。前端查詢時只讀對照表與查詢中每個字的分片。
+
+```bash
+python tools/build_reverse_index.py data/raw/ecdict.csv data/dict
+node --test tests/unit/dictionary-reverse.test.mjs
+```
+
+索引重產發布時應更換 `reverse-v1` 目錄、`js/dictionary-reverse.js` 路徑與 Service Worker 的 `toeic-reverse-v1` 快取名稱。

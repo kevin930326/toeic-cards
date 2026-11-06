@@ -190,6 +190,17 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .lookup-suggestions [role="option"] { min-height: 44px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; border-radius: 8px; overflow-wrap: anywhere; }
 .lookup-suggestions [aria-selected="true"], .lookup-suggestions [role="option"]:hover { background: var(--surface-2); }
 .lookup-suggestions small { flex-shrink: 0; color: var(--ink-soft); font-size: 12px; }
+.lookup-candidate { display: flex; align-items: baseline; gap: 10px; min-width: 0; flex-wrap: wrap; }
+.lookup-candidate-zh { color: var(--ink-soft); font-size: 14px; }
+.lookup-candidate-zh i { font-family: var(--font-en); color: var(--warm); font-size: 13px; }
+.lookup-candidate-zh em { font-style: normal; font-size: 12px; margin-left: 6px; padding: 1px 6px; border-radius: 999px; background: var(--surface-2); }
+.lookup-ai { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; }
+.lookup-reverse { padding-top: 18px; }
+.lookup-reverse-list { list-style: none; padding: 0; margin: 10px 0 14px; display: grid; gap: 6px; }
+.lookup-reverse-item { width: 100%; min-height: 48px; padding: 10px 14px; display: flex; align-items: baseline; gap: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: inherit; font: inherit; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.lookup-reverse-item > span[lang="en"] { font: 600 18px var(--font-en); }
+.lookup-reverse-item small { margin-left: auto; flex-shrink: 0; color: var(--ink-soft); font-size: 12px; }
+.lookup-reverse-item:hover, .lookup-reverse-item:focus-visible { background: var(--surface-2); border-color: var(--accent); }
 .tool-empty { padding: 35px 0; text-align: center; font-size: 16px; }
 .tool-empty span { color: var(--ink-soft); font-size: 13px; }
 .lookup-card { padding-top: 26px; overflow-wrap: anywhere; }
@@ -673,6 +684,14 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .back-zh { font-size: clamp(24px, 6vw, 34px); font-weight: 700; line-height: 1.4; }
 .back-zh p { margin: 0; }
 .back-zh.multi { font-size: clamp(19px, 4.6vw, 24px); display: grid; gap: 6px; }
+.back-alt { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 10px; font-size: 15px; color: var(--ink-soft); }
+.back-alt p { margin: 0; }
+.back-alt-label { font-size: 12px; font-weight: 600; color: var(--warm); margin-right: 6px; letter-spacing: .04em; }
+.back-alt-add { min-height: 32px; padding: 4px 10px; border: 1px dashed var(--line); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; cursor: pointer; }
+.back-alt-add:hover, .back-alt-add:focus-visible { color: var(--accent); border-color: currentColor; }
+.explore-reading .back-alt { justify-content: flex-start; }
+.alt-dialog { width: min(440px, calc(100vw - 24px)); }
+.alt-dialog h2 { margin: 4px 0 8px; }
 .zh-pos { font-family: var(--font-en); font-style: italic; font-weight: 400; color: var(--warm); font-size: 0.75em; margin-right: 8px; }
 .back-en { margin: 0; font-family: var(--font-en); font-size: clamp(20px, 5vw, 26px); line-height: 1.45; max-width: 30ch; }
 .back-empty { margin: 0; color: var(--ink-faint); font-size: 18px; }
