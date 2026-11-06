@@ -7,6 +7,7 @@
 import { getWord, getWords, updateWords } from './store.js';
 import { generateJSON, hasApiKey, LlmError } from './llm.js';
 import { enqueueLookup } from './dictionary.js?v=dictionary-scale-1';
+import { altMeanings, withAlt, ALT_PREFIX } from './meaning-compare.js';
 
 const BATCH_SIZE = 20;
 const FIRST_BATCH_SIZE = 5;   // 第一批少一點，幾秒內就能看到結果，不用等 20 個字全部生成完
@@ -86,6 +87,7 @@ const SCHEMA = {
           collocations: { type: 'ARRAY', items: { type: 'STRING' } },
           forms: { type: 'ARRAY', items: { type: 'STRING' } },
           synonyms: { type: 'ARRAY', items: { type: 'STRING' } },
+          zhAlt: { type: 'ARRAY', items: { type: 'STRING' } },
         },
         required: ['word', 'pos', 'zh', 'en', 'examples', 'collocations', 'forms', 'synonyms'],
       },
@@ -107,6 +109,7 @@ Rules for each item:
 - "collocations": 2-4 common collocations containing the word.
 - "forms": related word-family members with part of speech, e.g. "approval (n.)". Do not repeat the word itself. Empty array if none.
 - "synonyms": 1-3 synonyms for the TOEIC meaning.
+- "zhAlt": 0-3 other Traditional Chinese (Taiwan) renderings of the SAME first TOEIC meaning that learners often memorize from dictionaries or textbooks (e.g. for "prospective" whose zh is "潛在的；未來可能的": ["預期的", "將來的"]). Do not repeat words already in "zh"; do not list other meanings. Empty array if none.
 Return every input word exactly once, in the same order.
 
 Words:
@@ -129,7 +132,16 @@ export function sanitizeCard(item) {
     collocations: strList(item.collocations, 5),
     forms: strList(item.forms, 6),
     synonyms: strList(item.synonyms, 4),
+    // 「也譯作」併在中文意思最後一行（見 meaning-compare.js），不新增欄位
+    zhAlt: strList(item.zhAlt, 3).map((s) => s.slice(0, 20)).filter((s) => /[㐀-鿿]/.test(s)),
   };
+}
+
+// 把 AI 給的「也譯作」接到中文意思後面；和主要意思重複或太像的會被 altMeanings 拿掉
+function zhWithAlt(card) {
+  if (!card.zh || !card.zhAlt?.length) return card.zh;
+  const terms = altMeanings({ zh: `${card.zh}\n${ALT_PREFIX}${card.zhAlt.join('；')}` });
+  return withAlt(card.zh, terms);
 }
 
 function mergePatch(w, card) {
@@ -137,7 +149,7 @@ function mergePatch(w, card) {
   const src = { ...(w.src || {}) };
   for (const f of FIELDS) {
     if (src[f] === 'user') continue;             // 使用者改過的不動
-    const v = card[f];
+    const v = f === 'zh' ? zhWithAlt(card) : card[f];
     if (Array.isArray(v) ? !v.length : !v) continue;  // LLM 沒給就保留原本的
     patch[f] = v;
     src[f] = 'llm';

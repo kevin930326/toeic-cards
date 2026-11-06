@@ -42,3 +42,14 @@ python tools/extract_toeic_pack.py --source "原始 PDF 路徑"
 - 重建內容檔：先依 `tools/build_dict.py` 的說明備妥本機 `data/raw/ecdict.csv`，再執行 `python tools/build_pack_content.py`。網站直接讀取已提交的 JSON，使用者不需執行腳本。
 - 單元測試驗證 1,000 字覆蓋、順序、欄位完整與格式；另檢查例句包含目標字或其變化形、例句未重複。這些是內容與結構檢查，並非語言教師逐字審訂，亦不是官方多益教材。
 - 內容版本目前為 1；內容與來源標記隨字卡備份及同步。新版靜態檔不會自動覆蓋使用者已加入或編輯的字卡。
+
+## 也譯作（其他常見譯法）
+
+`toeic-1000-alt.json` 是同一個意思的其他常見中文說法（例如 prospective 卡片寫「潛在的；未來可能的」，也譯作「預期的；將來的」），讓之前背過其他說法的人認得出是同一個字。來源是 `tools/pack-alt-meanings.tsv`：逐字比對 ECDICT 主要釋義與卡片不同的字，再人工挑出同一個意思、台灣教材常見的說法；字典的其他意思或過時釋義不收。非官方。
+
+```bash
+python tools/build_pack_alt.py
+node --test tests/unit/meaning-compare.test.mjs
+```
+
+網站只在畫到單字包字卡時讀取並顯示，不寫進使用者的字卡。

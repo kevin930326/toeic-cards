@@ -91,6 +91,8 @@ for f in js/*.js js/views/*.js sw.js; do node --check "$f" || echo "語法錯誤
 | `test_lookup_suggestions.py` | a／ac 候選、觸控與滑鼠、鍵盤與 Escape、輸入法組字、回應競態、收藏標記、直接查原拼字、離線重整／重試、候選快取32片上限與窄螢幕；不呼叫外部 API |
 | `test_reverse_lookup.py` | 手機／桌機：中文輸入出現英文候選、按查詢列出清單、鍵盤選字、自己字卡優先、簡體與口語說法、部分符合、沒金鑰只提示、有金鑰按鈕才呼叫 AI（假回應）、開站不下載索引 |
 | `unit/dictionary-reverse.test.mjs` | 比對等級、去重、收藏優先、分片合併與失敗；實際索引的常見多益中文反查 |
+| `test_alt_meanings.py` | 手機／桌機：單字包字卡背面「也譯作」、一鍵加上我背的譯法（不翻面、存成使用者修改）、單字探索顯示、AI 生成附其他譯法（假回應） |
+| `unit/meaning-compare.test.mjs` | 拆詞與相似規則、也譯作合併與寫回；整理表的字都在單字包裡且不和主要意思重複 |
 | `unit/dictionary-suggestions.test.mjs` | 完整字表與前綴路由、葉片32KiB上限、候選排序／去重／收藏合併、同片請求合併、失敗重試、無效輸入、物件原型與重音字 |
 | `test_dictionary_scale.py` | 擴充字與明確詞形、原拼字收藏、同片請求合併、真正離線重整、連線恢復重試、載入 130 片後只保留 128 片且保留常用字典 |
 | `unit/dictionary-data.test.mjs` | 全部 672,241 筆分片雜湊與字義核對、詞形優先及錯字不更正、LRU 淘汰／合併請求／失敗重試 |

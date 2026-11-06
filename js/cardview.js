@@ -4,6 +4,7 @@ import { canSpeak, speakerIcon, speak } from './speech.js';
 import { isLookingUp } from './dictionary.js?v=dictionary-scale-1';
 import { isGenerating } from './generate.js?v=dictionary-scale-1';
 import { wordTokens } from './word-tokens.js';
+import { altLineHTML, openAltDialog } from './alt-meaning-ui.js';
 
 const lookupText = (text, enabled = true) => !enabled ? esc(text) : wordTokens(text).map((part) => part.word
   ? `<button class="lookup-token" type="button" data-lookup-word="${esc(part.word)}" aria-label="查詢 ${esc(part.text)}">${esc(part.text)}</button>`
@@ -30,6 +31,8 @@ export function handleCardTap(target, word, flip) {
   const sp = target.closest('[data-speak-text]');
   if (sp) { speak(sp.dataset.speakText); return; }
   if (target.closest('[data-speak]')) { speak(word.word); return; }
+  const altAdd = target.closest('[data-alt-add]');
+  if (altAdd) { openAltDialog(altAdd.dataset.altAdd, altAdd); return; }   // 「＋ 我背的譯法」不翻面
   if (target.closest('[data-lookup-only="true"]')) return;
   flip();
 }
@@ -46,7 +49,7 @@ export function backHTML(w, mode, { lookupEnabled = true } = {}) {
     main = lines.length
       ? `${mode !== 'both' && !inlinePos && w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}
          <div class="back-zh ${lines.length > 1 ? 'multi' : ''}">${lines.map((l) => `
-           <p>${l.pos || (mode === 'both' && !inlinePos && w.pos) ? `<span class="zh-pos">${esc(l.pos || w.pos)}</span>` : ''}${esc(l.text)}</p>`).join('')}</div>`
+           <p>${l.pos || (mode === 'both' && !inlinePos && w.pos) ? `<span class="zh-pos">${esc(l.pos || w.pos)}</span>` : ''}${esc(l.text)}</p>`).join('')}</div>${w.id ? altLineHTML(w) : ''}`
       : empty;
   } else {
     main = w.en
