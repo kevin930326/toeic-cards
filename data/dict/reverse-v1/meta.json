@@ -1,0 +1,1 @@
+{"version":1,"source":"ECDICT common subset + TOEIC 1000 pack (zh)","buckets":256,"pairs":90839,"words":31202,"bytes":6810804,"max_bytes":64042,"per_char":300,"shard":"ord(CJK char) % 256, two-digit hex; merge shards of each query char"}

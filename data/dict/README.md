@@ -34,3 +34,14 @@ node --test tests/unit/dictionary-suggestions.test.mjs
 來源仍是上方 ECDICT。排序先常用字、再取 frq／bnc 的較小有效排名，再按長度及拼字；無詞頻者排後。單字母另選常見入門候選，方便初學者辨認（a → apple 等），不是 AI 生成或拼字修正。精確拼字及最多三個收藏字由前端合併。
 
 索引重產發布時應更換 `suggestions-v1` 目錄、前端路徑及 Service Worker 快取版本。候選葉片的離線快取最多 32 片；路由索引放在常用字典快取中，避免葉片淘汰後無法再定位已快取的其他開頭。
+
+## 中文反查索引
+
+`reverse-v1/00.json`～`ff.json` 讓查單字可以輸入中文找英文。來源是上方常用字典 `a.json～z.json` 與 `data/packs/toeic-1000/` 的中文；釋義拆成短中文詞（去詞性、括號、縮寫、[網路] 行與人名地名），中文詞裡每個字都登記一次，依碼位 % 256 分檔，每字保留排名前 300 個。合計約 6.8 MiB，最大分片約 64 KiB；前端查詢時只讀查詢中每個字的分片。
+
+```bash
+python tools/build_reverse_index.py data/raw/ecdict.csv data/dict
+node --test tests/unit/dictionary-reverse.test.mjs
+```
+
+索引重產發布時應更換 `reverse-v1` 目錄、`js/dictionary-reverse.js` 路徑與 Service Worker 的 `toeic-reverse-v1` 快取名稱。
