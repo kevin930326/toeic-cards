@@ -37,7 +37,9 @@ node --test tests/unit/dictionary-suggestions.test.mjs
 
 ## 中文反查索引
 
-`reverse-v1/00.json`～`ff.json` 讓查單字可以輸入中文找英文。來源是上方常用字典 `a.json～z.json` 與 `data/packs/toeic-1000/` 的中文；釋義拆成短中文詞（去詞性、括號、縮寫、[網路] 行與人名地名），中文詞裡每個字都登記一次，依碼位 % 256 分檔，每字保留排名前 300 個。合計約 6.8 MiB，最大分片約 64 KiB；前端查詢時只讀查詢中每個字的分片。
+`reverse-v1/000.json`～`1ff.json` 讓查單字可以輸入中文找英文。來源是 ECDICT 原始 CSV 的完整釋義（含 [網路] 釋義，排序較後），收錄常用字典的字、`data/packs/toeic-1000/` 的字，以及每個字都是核心字（牛津核心或柯林斯有星）的三字以內片語；中文同時用 OpenCC `s2twp` 與 `s2tw` 轉換，台灣用詞與一般繁體都查得到。另併入 `tools/reverse-extra.tsv` 的台灣常用說法（字典沒收的退房、外帶等）。
+
+釋義拆成短中文詞（去詞性、括號、縮寫行與人名地名），中文詞裡每個字都登記一次，依碼位 % 512 分檔；每字保留排名前 400 個，冷僻字與片語每字最多 60 個（優先留中文詞短的）。合計約 14.5 MiB，最大分片約 92 KiB。`s2t.json` 是 2,635 個簡→繁字對照（約 16 KiB），讓簡體輸入也能查。前端查詢時只讀對照表與查詢中每個字的分片。
 
 ```bash
 python tools/build_reverse_index.py data/raw/ecdict.csv data/dict

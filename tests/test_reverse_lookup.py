@@ -1,4 +1,6 @@
-"""中文反查英文：輸入中文出現英文候選、點選查完整解釋、按查詢列出清單、收藏字卡優先、找不到時提示。"""
+"""中文反查英文：輸入中文出現英文候選、點選查完整解釋、按查詢列出清單、收藏字卡優先、
+簡體輸入、口語補充詞、部分符合、找不到時的 AI 備援（Gemini 以假回應代替）。"""
+import json
 import os
 from playwright.sync_api import sync_playwright, expect
 from onboarding_helpers import existing_user
@@ -15,6 +17,13 @@ with sync_playwright() as p:
         context.add_init_script('window.__toeicFirebaseConfig=null;')
         context.route('https://fonts.googleapis.com/**', lambda r: r.fulfill(status=200, body=''))
         context.route('https://api.dictionaryapi.dev/**', lambda r: r.fulfill(status=404, body='{}'))
+        ai_calls = []
+        def gemini(route):
+            ai_calls.append(route.request.post_data or '')
+            words = {'words': [{'word': 'file taxes', 'pos': 'phrase', 'zh': '報稅'}, {'word': 'tax return', 'pos': 'n.', 'zh': '報稅單'}]}
+            route.fulfill(status=200, content_type='application/json',
+                          body=json.dumps({'candidates': [{'content': {'parts': [{'text': json.dumps(words)}]}, 'finishReason': 'STOP'}]}))
+        context.route('https://generativelanguage.googleapis.com/**', gemini)
         page = context.new_page(); errors = []; requests = []
         page.on('pageerror', lambda error: errors.append(str(error)))
         page.on('request', lambda req: requests.append(req.url) if '/reverse-v1/' in req.url else None)
@@ -27,7 +36,7 @@ with sync_playwright() as p:
         option = page.locator('[role=option]').first
         expect(option).to_contain_text('invoice')
         expect(option).to_contain_text('發票')
-        assert 1 <= len(requests) <= 2, requests
+        assert 1 <= len(requests) <= 3, requests  # s2t 對照（16 KB）＋發、票兩片
         if name == 'mobile':
             page.screenshot(path=doc_shot('57-reverse-lookup-mobile.png'))
         option.click()
@@ -65,11 +74,49 @@ with sync_playwright() as p:
         expect(first).to_contain_text('zorbify'); expect(first).to_contain_text('已收藏')
         print(f'PASS[{name}] 自己字卡的中文排最前面並標已收藏', flush=True)
 
-        # 找不到
-        page.fill('#lookupInput', '鑫鑫鑫')
-        expect(page.locator('#lookupSuggestionStatus')).to_contain_text('找不到符合的英文')
+        # 簡體輸入：自動轉繁體
+        page.fill('#lookupInput', '会议')
         page.locator('#lookupForm button').click()
-        expect(page.locator('#lookupResult')).to_contain_text('找不到')
+        expect(page.locator('.lookup-reverse')).to_contain_text('已把簡體「会议」轉成「會議」查詢')
+        expect(page.locator('.lookup-reverse-item', has_text='meeting').first).to_be_visible()
+        # 口語補充詞與片語
+        page.fill('#lookupInput', '退房')
+        expect(page.locator('[role=option]').first).to_contain_text('check out')
+        page.fill('#lookupInput', '利率')
+        expect(page.locator('[role=option]').first).to_contain_text('interest rate')
+        print(f'PASS[{name}] 簡體會議、口語退房、片語利率都查得到', flush=True)
+
+        # 部分符合
+        page.fill('#lookupInput', '海關申報')
+        page.locator('#lookupForm button').click()
+        expect(page.locator('.lookup-reverse')).to_contain_text('以下是部分符合')
+        expect(page.locator('.lookup-reverse-item em').first).to_have_text('部分符合')
+
+        # 找不到、沒有金鑰：提示可設定金鑰，不呼叫 AI
+        page.fill('#lookupInput', '鑫鑫鑫')
+        expect(page.locator('#lookupSuggestionStatus')).to_contain_text('字典找不到符合的英文')
+        page.locator('#lookupForm button').click()
+        expect(page.locator('#lookupResult')).to_contain_text('字典找不到')
+        expect(page.locator('#lookupResult')).to_contain_text('填入 Gemini 金鑰')
+        assert not ai_calls
+        print(f'PASS[{name}] 部分符合標示；找不到且沒金鑰時只提示', flush=True)
+
+        # 有金鑰：按 AI 才送出，只送輸入的中文
+        page.evaluate("localStorage.setItem('toeic-cards:gemini-key', 'test-key')")
+        page.fill('#lookupInput', '報稅')
+        page.locator('#lookupForm button').click()
+        expect(page.locator('#lookupAiStatus')).to_contain_text('送到 Google Gemini')
+        assert not ai_calls, '按下按鈕前不呼叫 AI'
+        page.click('#lookupAi')
+        expect(page.locator('.lookup-ai .lookup-reverse-item').first).to_contain_text('file taxes')
+        expect(page.locator('.lookup-ai')).to_contain_text('AI 的建議可能有誤')
+        assert len(ai_calls) == 1 and '報稅' in ai_calls[0]
+        if name == 'mobile':
+            page.screenshot(path=doc_shot('57-reverse-lookup-ai.png'))
+        page.locator('.lookup-ai .lookup-reverse-item', has_text='tax return').click()
+        expect(page.locator('#lookupResult h3')).to_have_text('tax return')
+        page.evaluate("localStorage.removeItem('toeic-cards:gemini-key')")
+        print(f'PASS[{name}] 有金鑰時按鈕才呼叫 AI 一次，點選建議改用字典查詢', flush=True)
 
         # 英文查字照舊
         page.fill('#lookupInput', 'a')

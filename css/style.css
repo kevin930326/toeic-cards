@@ -192,6 +192,9 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .lookup-suggestions small { flex-shrink: 0; color: var(--ink-soft); font-size: 12px; }
 .lookup-candidate { display: flex; align-items: baseline; gap: 10px; min-width: 0; flex-wrap: wrap; }
 .lookup-candidate-zh { color: var(--ink-soft); font-size: 14px; }
+.lookup-candidate-zh i { font-family: var(--font-en); color: var(--warm); font-size: 13px; }
+.lookup-candidate-zh em { font-style: normal; font-size: 12px; margin-left: 6px; padding: 1px 6px; border-radius: 999px; background: var(--surface-2); }
+.lookup-ai { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; }
 .lookup-reverse { padding-top: 18px; }
 .lookup-reverse-list { list-style: none; padding: 0; margin: 10px 0 14px; display: grid; gap: 6px; }
 .lookup-reverse-item { width: 100%; min-height: 48px; padding: 10px 14px; display: flex; align-items: baseline; gap: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: inherit; font: inherit; text-align: left; cursor: pointer; overflow-wrap: anywhere; }

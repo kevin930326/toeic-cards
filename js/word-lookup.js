@@ -7,6 +7,8 @@ import { setOptions, bindCreateSet, addTargetSet } from './set-ui.js?v=dictionar
 import { speak, canSpeak, speakerIcon } from './speech.js';
 import { lookupSuggestions } from './dictionary-suggestions.js';
 import { lookupReverse, hasChinese, normalizeChinese } from './dictionary-reverse.js';
+import { aiReverseLookup } from './reverse-ai.js';
+import { hasApiKey } from './llm.js';
 import { focusEntryInput } from './input-focus.js';
 
 export function initWordLookup() {
@@ -38,6 +40,8 @@ export function initWordLookup() {
   let viewingCard = false;
   let manual = { pos: '', zh: '', en: '' };
   let returnTrigger = null;
+  // 中文候選的右側小字：詞性＋對到的中文；部分符合另外標示
+  const zhLabel = (item) => item.term ? `<span class="lookup-candidate-zh">${item.pos ? `<i lang="en">${esc(item.pos)}</i> ` : ''}${esc(item.term)}${item.partial ? '<em>部分符合</em>' : ''}</span>` : '';
   const saved = (word) => getWords().find((w) => w.word === word);
   function clearSuggestions() {
     suggestionSequence++;
@@ -70,14 +74,14 @@ export function initWordLookup() {
         : await lookupSuggestions(prefix, getWords().map((word) => word.word));
       if (token !== suggestionSequence || !dialog.open || normalizeWord(input.value) !== prefix) return;
       candidates = response.words;
-      suggestions.innerHTML = candidates.map((item, index) => `<li id="lookupSuggestion-${index}" role="option" tabindex="-1" aria-selected="false" data-candidate="${index}"><span class="lookup-candidate"><span lang="en">${esc(item.word)}</span>${item.term ? `<span class="lookup-candidate-zh">${esc(item.term)}</span>` : ''}</span>${item.owned ? '<small>已收藏</small>' : ''}</li>`).join('');
+      suggestions.innerHTML = candidates.map((item, index) => `<li id="lookupSuggestion-${index}" role="option" tabindex="-1" aria-selected="false" data-candidate="${index}"><span class="lookup-candidate"><span lang="en">${esc(item.word)}</span>${zhLabel(item)}</span>${item.owned ? '<small>已收藏</small>' : ''}</li>`).join('');
       suggestions.hidden = !candidates.length;
       input.setAttribute('aria-expanded', String(!!candidates.length));
       suggestionStatus.textContent = response.status === 'unavailable'
         ? (chinese ? '部分中文索引尚未快取，連網後可補齊。' : '部分候選索引尚未快取，連網後可補齊；仍可直接查詢。')
         : candidates.length ? (chinese ? '點選英文單字看完整解釋，或用上下鍵選擇、Enter 查詢。' : '可點選單字，或用上下鍵選擇、Enter 查詢。')
         : response.status === 'invalid' ? ''
-        : chinese ? '找不到符合的英文，試試較短或常見的說法（例如「會議」）。' : '沒有符合的候選字，仍可直接查詢原拼字。';
+        : chinese ? `字典找不到符合的英文；${hasApiKey() ? '按「查詢」可以用 AI 找。' : '試試較短或常見的說法（例如「會議」）。'}` : '沒有符合的候選字，仍可直接查詢原拼字。';
       suggestionStatus.hidden = !suggestionStatus.textContent;
     }, 150);
   }
@@ -202,7 +206,8 @@ export function initWordLookup() {
       if (button) button.disabled = false;
     }
   }
-  // 輸入中文按「查詢」：列出可能的英文字，點選後再查完整解釋
+  // 輸入中文按「查詢」：列出可能的英文字，點選後再查完整解釋；字典沒有完整符合時提供 AI 備援
+  const reverseList = (words) => `<ul class="lookup-reverse-list">${words.map((item) => `<li><button type="button" class="lookup-reverse-item" data-pick="${esc(item.word)}"><span lang="en">${esc(item.word)}</span>${zhLabel(item)}${item.owned ? '<small>已收藏</small>' : item.ai ? '<small>AI</small>' : ''}</button></li>`).join('')}</ul>`;
   async function reverseQuery(value) {
     clearSuggestions();
     stop();
@@ -212,13 +217,42 @@ export function initWordLookup() {
     result.innerHTML = '<p class="tool-empty" role="status">用中文尋找英文單字…</p>';
     const response = await lookupReverse(text, getWords());
     if (token !== sequence || !dialog.open) return;
+    const shown = response.query || text;
+    const full = response.words.filter((item) => !item.partial);
+    const converted = shown !== text ? `<p class="hint-text">已把簡體「${esc(text)}」轉成「${esc(shown)}」查詢。</p>` : '';
+    const ai = hasApiKey()
+      ? `<div class="lookup-ai"><button type="button" class="btn btn-ghost btn-sm" id="lookupAi">${full.length ? '都不是想找的？用 AI 找英文' : '用 AI 找英文'}</button>
+         <p class="hint-text" id="lookupAiStatus" role="status">會把「${esc(shown)}」送到 Google Gemini（用你的金鑰，算 1 次請求）。</p></div>`
+      : !full.length ? '<p class="hint-text">在設定填入 Gemini 金鑰後，字典查不到的說法可以改用 AI 找。</p>' : '';
     if (!response.words.length) {
-      result.innerHTML = `<p class="tool-empty" role="status">${response.status === 'unavailable' ? '目前無法載入中文索引，請連網後重試。' : `找不到「${esc(text)}」對應的英文。<br><span>試試較短或常見的說法，例如「開會」改成「會議」。</span>`}</p>`;
-      return;
+      result.innerHTML = `<div class="lookup-reverse"><p class="tool-empty" role="status">${response.status === 'unavailable' ? '目前無法載入中文索引，請連網後重試。' : `字典找不到「${esc(shown)}」對應的英文。<br><span>試試較短或常見的說法，例如「開會」改成「會議」。</span>`}</p>${converted}${ai}</div>`;
+    } else {
+      result.innerHTML = `<div class="lookup-reverse"><p class="eyebrow">${full.length ? `「${esc(shown)}」可能是` : `字典沒有完整的「${esc(shown)}」，以下是部分符合`}</p>
+        ${reverseList(response.words)}${converted}
+        <p class="hint-text">中文對應來自 ECDICT 字典、多益單字包與常用說法補充表，點選單字看完整解釋與發音。</p>${ai}</div>`;
     }
-    result.innerHTML = `<div class="lookup-reverse"><p class="eyebrow">「${esc(text)}」可能是</p>
-      <ul class="lookup-reverse-list">${response.words.map((item) => `<li><button type="button" class="lookup-reverse-item" data-pick="${esc(item.word)}"><span lang="en">${esc(item.word)}</span><span class="lookup-candidate-zh">${esc(item.term)}</span>${item.owned ? '<small>已收藏</small>' : ''}</button></li>`).join('')}</ul>
-      <p class="hint-text">中文對應來自 ECDICT 字典與多益單字包，點選單字看完整解釋與發音。</p></div>`;
+    result.querySelector('#lookupAi')?.addEventListener('click', () => aiQuery(shown));
+  }
+  async function aiQuery(text) {
+    const token = sequence;
+    const button = result.querySelector('#lookupAi');
+    const status = result.querySelector('#lookupAiStatus');
+    if (button) button.disabled = true;
+    if (status) status.textContent = 'AI 正在找英文…';
+    controller?.abort(); controller = new AbortController();
+    try {
+      const words = await aiReverseLookup(text, { signal: controller.signal });
+      if (token !== sequence || !dialog.open) return;
+      const own = new Set(getWords().map((word) => word.word));
+      const box = result.querySelector('.lookup-ai');
+      if (!words.length) { if (status) status.textContent = 'AI 也找不到合適的英文，換個說法試試。'; return; }
+      box.innerHTML = `<p class="eyebrow">AI 建議</p>${reverseList(words.map((item) => ({ ...item, owned: own.has(item.word.toLowerCase()) })))}
+        <p class="hint-text">AI 的建議可能有誤；點選後會用字典顯示中文，請對照確認再收藏。</p>`;
+    } catch (err) {
+      if (token !== sequence || !dialog.open || err.name === 'AbortError') return;
+      if (status) status.textContent = `AI 查詢失敗：${err.message}`;
+      if (button) button.disabled = false;
+    }
   }
   result.addEventListener('click', (event) => {
     const pick = event.target.closest('[data-pick]');
