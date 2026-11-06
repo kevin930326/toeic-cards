@@ -42,20 +42,18 @@ export function backHTML(w, mode, { lookupEnabled = true } = {}) {
     ? `<p class="back-empty">${isGenerating(w.id) ? 'AI 生成中…' : '查字典中…'}</p>`
     : mode === 'both' ? '<p class="hint-text">尚無中文詞義，可用「編輯內容」補充。</p>'
       : '<p class="back-empty">還沒有資料<br><span>點下方「編輯」手動填寫</span></p>';
-  let main;
-  if (mode === 'zh' || mode === 'both') {
-    const lines = zhLines(w.zh);
-    const inlinePos = lines.some((l) => l.pos);
-    main = lines.length
-      ? `${mode !== 'both' && !inlinePos && w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}
+  const lines = zhLines(w.zh);
+  const inlinePos = lines.some((l) => l.pos);
+  const zhHTML = () => `${mode !== 'both' && !inlinePos && w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}
          <div class="back-zh ${lines.length > 1 ? 'multi' : ''}">${lines.map((l) => `
-           <p>${l.pos || (mode === 'both' && !inlinePos && w.pos) ? `<span class="zh-pos">${esc(l.pos || w.pos)}</span>` : ''}${esc(l.text)}</p>`).join('')}</div>${w.id ? altLineHTML(w) : ''}`
-      : empty;
-  } else {
-    main = w.en
-      ? `${w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}<p class="back-en">${lookupText(w.en, lookupEnabled)}</p>`
-      : empty;
-  }
+           <p>${l.pos || (mode === 'both' && !inlinePos && w.pos) ? `<span class="zh-pos">${esc(l.pos || w.pos)}</span>` : ''}${esc(l.text)}</p>`).join('')}</div>${w.id ? altLineHTML(w) : ''}`;
+  const enHTML = () => `${w.pos ? `<p class="back-pos">${esc(w.pos)}</p>` : ''}<p class="back-en">${lookupText(w.en, lookupEnabled)}</p>`;
+  // 目前模式的內容還沒有、另一種有時，先顯示另一種並註明，不要整張空白（例如英文版但只查到中文）
+  const fallbackNote = (text) => `<p class="back-fallback hint-text">${text}</p>`;
+  let main;
+  if (mode === 'both') main = lines.length ? zhHTML() : empty;
+  else if (mode === 'zh') main = lines.length ? zhHTML() : w.en ? `${fallbackNote('還沒有中文意思，先顯示英文解釋')}${enHTML()}` : empty;
+  else main = w.en ? enHTML() : lines.length ? `${fallbackNote('還沒有英文解釋，先顯示中文意思')}${zhHTML()}` : empty;
   if (mode === 'both') main = `<div class="explore-definition"><h3>中文詞義</h3>${main}</div>
     <div class="explore-definition"><h3>英文解釋</h3>${w.en ? `<p class="back-en" lang="en">${w.pos ? `<span class="zh-pos">${esc(w.pos)}</span>` : ''}${lookupText(w.en, lookupEnabled)}</p>` : '<p class="hint-text">尚無英文解釋，可用「編輯內容」補充。</p>'}</div>`;
   const extras = [];

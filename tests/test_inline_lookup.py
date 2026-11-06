@@ -79,7 +79,7 @@ with sync_playwright() as p:
     # 不把來源資料的 HTML 當成標記執行。
     store(pg,"const w=s.getWords().find(w=>w.word==='appointment');s.updateWord(w.id,{en:'<img src=x onerror=alert(1)> a meeting.'});")
     check(pg.locator('.back-en img').count()==0 and '<img' in pg.locator('.back-en').inner_text(),'英文內容含HTML字樣時仍安全顯示為文字')
-    check(not calls,'整個點字與收藏流程不使用個人AI額度')
+    check('gemini' not in calls,'整個點字與收藏流程不使用個人AI額度（收藏後只用免費英文字典補英文解釋）')
     ctx.close()
     mobile,mp,_,mobile_calls=setup(b,True)
     mp.tap('.card-front .headword')

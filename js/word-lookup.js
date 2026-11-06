@@ -1,7 +1,7 @@
 // 全站查字典：不切換頁面、不使用 Gemini，也不影響學習紀錄。
 import { getWords, addWords, assignWordSet, subscribe } from './store.js';
 import { normalizeWord } from './parse.js';
-import { lookupLocalResult, lookupEnglish } from './dictionary.js?v=dictionary-scale-1';
+import { lookupLocalResult, lookupEnglish, enqueueLookup } from './dictionary.js?v=dictionary-scale-1';
 import { esc, toast, zhLines } from './ui.js';
 import { setOptions, bindCreateSet, addTargetSet } from './set-ui.js?v=dictionary-scale-1';
 import { speak, canSpeak, speakerIcon } from './speech.js';
@@ -173,8 +173,10 @@ export function initWordLookup() {
           for (const key of ['pos', 'zh', 'en']) if (fields[key]) src[key] = manual[key].trim() ? 'user' : key === 'en' ? 'freedict' : 'dict';
           const initialData = new Map([[current.word, { phonetic: current.phonetic || '', ...fields,
             src,
-            lookup: { dictAt: Date.now(), enDone: true } }]]);
+            // 還沒查到英文解釋時不標成「已查過」，收藏後在背景補查（之前會讓英文版卡片一直空白）
+            lookup: { dictAt: Date.now(), enDone: !!fields.en } }]]);
           word = addWords([current.word], { autoGenerate: false, initialData }).added[0];
+          if (!fields.en) enqueueLookup([word.id]);
           viewingCard = true;
         }
         if (setId) assignWordSet([word.id], setId);

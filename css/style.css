@@ -696,6 +696,7 @@ code { font-size: 0.9em; padding: 0 4px; border-radius: 4px; background: var(--s
 .back-en { margin: 0; font-family: var(--font-en); font-size: clamp(20px, 5vw, 26px); line-height: 1.45; max-width: 30ch; }
 .back-empty { margin: 0; color: var(--ink-faint); font-size: 18px; }
 .back-empty span { font-size: 14px; }
+.back-fallback { margin: 0 0 8px; font-size: 13px; }
 
 .extras { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); display: grid; gap: 12px; }
 .extra h3 { margin: 6px 0 4px; font-size: 11px; letter-spacing: 0.14em; color: var(--warm); font-weight: 600; }

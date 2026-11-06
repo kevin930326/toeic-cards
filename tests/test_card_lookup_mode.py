@@ -132,6 +132,7 @@ with sync_playwright() as p:
     expect(page.locator('.lookup-meaning')).to_be_visible()
     print('PASS 手機真正離線重新整理後仍可切換模式並查已快取中文字典')
     c.close();browser.close()
-    assert not calls, calls
+    # 收藏後會用免費英文字典補英文解釋（dev-log 59）；不可以用到 AI 額度
+    assert not [u for u in calls if 'generativelanguage' in u], calls
     assert not errors, errors
 print('ALL PASSED')
